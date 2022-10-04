@@ -12,10 +12,14 @@
 }
 
 .user_card{
-    width: 300px;
-    height: 200px;
+    width: 180px;
+    height: 220px;
     background-color: #1E2B32;
     border-radius: 10px 10px;
+    position: relative;
+    position: absolute;
+    top: 0;
+    right: 0;
     
   }
 
@@ -29,6 +33,8 @@ h3{
   color: #FFFFFF;
   font-family: 'Roboto', sans-serif;
   margin-left: 1rem;
+  width: 180px;
+  height:12px;
 }
 
 .iconM{
@@ -82,3 +88,8 @@ li:hover{
   display: block;
   cursor: pointer;
 }
+
+a {
+    color: inherit; /* blue colors for links too */
+    text-decoration: inherit; /* no underline */
+  }
