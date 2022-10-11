@@ -1,6 +1,8 @@
-<h3>This is series master page</h3>
+<h3>This is Product master page</h3>
 <link rel="stylesheet" href="../../styles/style.css">
+<link rel="stylesheet" href="../../styles/result-entry.css">
 <link rel="stylesheet" href="../../icons/css/all.css">
+<link rel="stylesheet" href="../styles/button.css">
 <div class="container">
   <div class="menu_card">
     <div class="header">
@@ -12,8 +14,8 @@
         <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/result-entry.html">Result Entry</a> </li>
         <li><i class="fas fa-boxes icon"></i>Master Data Configuration
           <ul>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/brand-master.html">Brand Master</a></li>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/series-master.html"> Series Master</a></li>
+            <li><i class="fas fa-boxes icon"></i><a href="../master-config/product-master.html">Product Master</a></li>
+            <li><i class="fas fa-boxes icon"></i><a href="../master-config/defect-master.html"> Defect Master</a></li>
             <li><i class="fas fa-boxes icon"></i><a href="../master-config/station-master.html"> Station Master</a></li>
           </ul>
         </li>
@@ -37,5 +39,22 @@
         <li><i class="fas fa-door-open icon"></i><a href="../user-panel/auth.html">Logout</a></li>
       </ul>
     </div>
+  </div>
+  <div class="product_master_card">
+    <div class="header">
+      <h3>Product Master</h3>
+    </div>
+    <div class="body">
+        <!-- <form action="/action_page.php"> -->
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" name="firstname" placeholder="Your name..">
+      
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+
+          <input id="search_button"type="submit" value="Search">
+          <input id="create_button" type="submit" value="Create">
+        </form>
+      </div>
   </div>
    </div>
