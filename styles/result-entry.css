@@ -25,7 +25,7 @@ body {
     
   }
 
-.product_master_card{
+.product-master-card{
     width: 1250px;
     height: 600px;
     background-color: #1E2B32;
@@ -106,4 +106,17 @@ li:hover{
 a {
     color: inherit; /* blue colors for links too */
     text-decoration: inherit; /* no underline */
+  }
+label{
+  transition: 1s all;
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  padding: 15px;
+  /* margin-left: -40px;
+  margin-top: 0px; */
+  color: #fff;
+  list-style: none;
+  display: block;
+  border-top-right-radius: 10px 10px;
+  border-bottom-right-radius: 10px 10px;
   }
