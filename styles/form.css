@@ -1,0 +1,6 @@
+* {box-sizing:border-box;}
+
+.some-class {
+    width:200px;
+    padding:20px;
+  }
