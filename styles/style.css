@@ -55,7 +55,7 @@ h3{
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
   padding: 15px;
-  margin-left: -40px;
+  margin-left: -25px;
   margin-top: 0px;
   color: #fff;
   list-style: none;
@@ -79,7 +79,7 @@ li:hover{
 
 .body li ul{
   background: #1E2B32;
-  margin-left: 280px;
+  margin-left: 270px;
   margin-top: -38px;
   display: none;
   position: absolute;
@@ -96,3 +96,4 @@ a {
     color: inherit; /* blue colors for links too */
     text-decoration: inherit; /* no underline */
   }
+
