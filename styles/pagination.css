@@ -1,0 +1,63 @@
+.duet-table-action-row.content-editable td:not(:last-child) {
+    border: 1px solid red;
+  }
+
+  .example-menu {
+    text-align: right;
+  }
+
+  .example-menu ul {
+    padding: 0 1rem;
+  }
+
+  .example-menu li {
+    display: inline-block;
+    list-style: none;
+    border-left: 1px solid #ccc;
+    padding: 0 1rem;
+  }
+
+  .example-menu li.menu-select {
+    min-width: 100px;
+    text-align: right;
+  }
+
+  .pagination-menu {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(300px, 600px) minmax(100px, 300px) minmax(100px, 150px);
+    grid-template-rows: 1fr;
+    gap: 0 0;
+    grid-template-areas: "pager ranger select";
+    justify-content: start;
+    align-content: center;
+    justify-items: baseline;
+    align-items: center;
+  }
+  .pagination-menu duet-pagination {
+    grid-area: pager;
+    justify-self: start;
+    align-self: center;
+    width: 100%;
+  }
+  .pagination-menu duet-range-stepper {
+    justify-self: end;
+    align-self: center;
+    grid-area: ranger;
+  }
+  .pagination-menu duet-select {
+    justify-self: end;
+    align-self: center;
+    grid-area: select;
+  }
+  @media only screen and (max-width: 48em) {
+    .pagination-menu {
+      display: block;
+    }
+    duet-range-stepper {
+      display: none;
+    }
+    duet-select {
+      display: none !important;
+    }
+  }

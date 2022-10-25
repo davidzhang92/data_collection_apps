@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>
+		How to tell if a script tag failed
+		to load in JavaScript ?
+	</title>
+	
+	<script>
+		var loaded = false;
+	</script>
+	
+	<script src=
+"../templates/pagination.js"
+				onload="loaded=true;" >
+	</script>
+</head>
+
+<body style = "text-align:center;">
+	
+	<h1 style = "color:green;">
+		GeeksgorGeeks
+	</h1>
+	
+	<p id = "GFG_UP" style =
+		"font-size: 15px; font-weight: bold;">
+	</p>
+	
+	<button onclick = "gfg_Run()">
+		Click here
+	</button>
+	
+	<p id = "GFG_DOWN" style =
+		"font-size: 23px; font-weight: bold; color: green; ">
+	</p>
+	
+	<script>
+		var el_up = document.getElementById("GFG_UP");
+		var el_down = document.getElementById("GFG_DOWN");
+		
+		el_up.innerHTML = "Click on the button to check "
+					+ "whether script is loaded or not.";
+		
+		function gfg_Run() {
+			if(loaded) {
+				el_down.innerHTML = "Loaded Successfully!";
+			}
+			else {
+				el_down.innerHTML = "Not loaded!";
+			}
+		}		
+	</script>
+</body>
+
+</html>
