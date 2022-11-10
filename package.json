@@ -1,18 +1,8 @@
 {
-  "dependencies": {
-    "@duetds/angular": "^6.1.0",
-    "@duetds/components": "^6.1.0",
-    "@duetds/css": "^2.0.8",
-    "@duetds/fonts": "^2.0.8",
-    "@duetds/icons": "^3.0.8",
-    "@duetds/react": "^6.1.0",
-    "jquery": "^3.6.1",
-    "materialize-css": "^1.0.0-rc.2"
-  },
   "name": "data_collection_apps",
-  "description": "this is experimental and my first attempt to make web based app with my barely working knowledge in html, css, and python.",
   "version": "1.0.0",
-  "main": "index.html",
+  "description": "this is experimental and my first attempt to make web based app with my barely working knowledge in html, css, and python.",
+  "main": "/",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -20,13 +10,13 @@
     "type": "git",
     "url": "git+https://github.com/davidzhang92/data_collection_apps.git"
   },
-  "author": "david.zhang",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/davidzhang92/data_collection_apps/issues"
   },
   "homepage": "https://github.com/davidzhang92/data_collection_apps#readme",
-  "devDependencies": {
-    "copyfiles": "^2.4.1"
+  "dependencies": {
+    "@angular/core": "^14.2.10"
   }
 }
