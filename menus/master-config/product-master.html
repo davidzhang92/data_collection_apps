@@ -4,8 +4,6 @@
 <link rel="stylesheet" href="../../styles/product-master.css">
 <link rel="stylesheet" href="../../icons/css/all.css">
 <link rel="stylesheet" href="../../styles/form.css">
-
-<script src="../../scripts/collapsible.js"></script>
 <div class="container">
   <div class="menu_card">
     <div class="header">
@@ -79,74 +77,6 @@
   </div>
   
   <div class="pagination-card">
-      <link rel="stylesheet" href="/node_modules/@duetds/fonts/lib/localtapiola.css"  />
-      <link rel="stylesheet" href="/node_modules/@duetds/css/lib/duet.min.css"  />
-      <link rel="stylesheet" href="/node_modules/@duetds/tokens/lib/tokens.custom-properties.css"  />
-      <script type="module" src="/node_modules/@duetds/components/lib/duet/duet.esm.js" ></script>
-      <script nomodule src="/node_modules/@duetds/components/lib/duet/duet.js"></script>
-    
-      <link rel="stylesheet" href="/styles/pagination.css"/>
-      <duet-layout center>
-        <div slot="main">
-          <duet-card>
-            <duet-heading level="h1" visual-level="h3">Duet-editable-table with Duet-pagination</duet-heading>
-      
-            <duet-editable-table margin="auto" sticky sticky-distance="none" variation="striped" sortable>
-              <div class="example-menu" slot="thead-first">
-                <div>
-                  <ul role="menubar">
-                    <li role="menuitem">
-                      <duet-button
-                        accessible-label="Download the table as a CSV file"
-                        fixed
-                        icon="action-download"
-                        icon-size="medium"
-                        margin="none"
-                        padding="none"
-                        variation="plain"
-                      >
-                        Download as CSV
-                      </duet-button>
-                    </li>
-                    <li role="menuitem">
-                      <duet-button
-                        accessible-label="Copy the data to you Clipboard as csv"
-                        fixed
-                        icon="form-file"
-                        icon-size="medium"
-                        margin="none"
-                        padding="none"
-                        variation="plain"
-                      >
-                        copy
-                      </duet-button>
-                    </li>
-                    <li role="menuitem" class="menu-select">
-                      <duet-select
-                        label-hidden
-                        label="which types to show in table"
-                        value="all"
-                        variation="tiny"
-                        id="invoice-type"
-                      ></duet-select>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div class="pagination-menu" slot="tfoot">
-                <duet-pagination take="5" visible-items="5" total="1000"></duet-pagination>
-                <duet-select label-hidden label="select range" value="5" variation="tiny" id="pagination-take"></duet-select>
-              </div>
-            </duet-editable-table>
-            <duet-paragraph> </duet-paragraph>
-          </duet-card>
-        </div>
-      </duet-layout>
-      
-      <script src="/scripts/pagination-script-1.js"></script>
-      <script src="/scripts/pagination-script-2.js"></script>
-      <script src="/scripts/pagination-script-3.js"></script>
-      
   </div>
 </div>
 

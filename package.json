@@ -5,7 +5,9 @@
     "@duetds/css": "^2.0.8",
     "@duetds/fonts": "^2.0.8",
     "@duetds/icons": "^3.0.8",
-    "@duetds/react": "^6.1.0"
+    "@duetds/react": "^6.1.0",
+    "jquery": "^3.6.1",
+    "materialize-css": "^1.0.0-rc.2"
   },
   "name": "data_collection_apps",
   "description": "this is experimental and my first attempt to make web based app with my barely working knowledge in html, css, and python.",
