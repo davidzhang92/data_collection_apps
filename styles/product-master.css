@@ -11,6 +11,13 @@
   margin-left:10px;
   
     }
+
+.pagination-card{
+ 
+  left: 330px;
+  top: 75px;  
+  }
+  
 /* product name and desc field */
 label{
   color: #FFFFFF;
