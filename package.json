@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/davidzhang92/data_collection_apps#readme",
   "dependencies": {
-    "@angular/core": "^14.2.10"
+    "@angular/cli": "^14.2.9",
+    "@angular/core": "^14.2.10",
+    "angular": "^1.8.2",
+    "jquery": "^3.6.1",
+    "materialize-css": "^1.0.0"
   }
 }
