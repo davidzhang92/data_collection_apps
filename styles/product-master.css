@@ -1,6 +1,6 @@
 .product-master-card{
   width: 78%;
-  height: 150px;
+  height: auto;
   background-color: #1E2B32;
   border-radius: 10px 10px;
   position:absolute;
@@ -12,18 +12,19 @@
   
     }
 
-  .pagination-card {
-    width: 78%;
-    height: 150px;
-    background-color: #1E2B32;
-    border-radius: 10px 10px;
-    position:absolute;
-    left: 330px;
-    top: 75px;
-    margin-top: -25px;,.
-    margin-right: 5px;
-    margin-left:10px;
+.pagination-card {
+      width: 500px;
+      height: 300px;
+      background-color: #1E2B32;
+      border-radius: 10px 10px;
+      position: absolute;
+      left: 330px;
+      top: 75px;
+      margin-top: -25px;
+      margin-right: 5px;
+      margin-left: 10px;
     }
+    
   
 /* product name and desc field */
 label{
