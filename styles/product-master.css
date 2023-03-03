@@ -96,12 +96,12 @@ background-color: #5FCF80;
 
 .ph-search{
   /* float: left; */
-  width: 22%;
-  padding: 110px;  
-  padding-top: 50px;  
+  /* width: 22%; */
+  /* padding: 110px;   */
+  /* padding-top: 50px;   */
   text-align: center;
   position: absolute;
-  left:440px;
+  left:550px;
   top: 25px;
   
 }
