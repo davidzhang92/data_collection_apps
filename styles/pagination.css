@@ -33,3 +33,11 @@ button {
   padding: 5px 39px 6px;
   font-size: 18px;
 }
+
+#btn-edit {
+  /* add your styles for the edit button here */
+}
+
+#btn-delete {
+  /* add your styles for the delete button here */
+}
