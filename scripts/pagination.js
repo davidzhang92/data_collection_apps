@@ -1,78 +1,62 @@
-const tableRows = document.querySelectorAll('tbody tr');
-const prevBtn = document.querySelector('.prev-btn');
-const nextBtn = document.querySelector('.next-btn');
+// get reference to table and pagination controls
+const table = document.getElementById("myTable");
+const paginationControls = document.getElementById("paginationControls");
 
-let currentPage = 1;
+// number of rows to display per page
 const rowsPerPage = 5;
 
-function showPage(page) {
-  // Hide all rows
-  tableRows.forEach(row => row.style.display = 'none');
+// create pagination
+createPagination(table, rowsPerPage, paginationControls);
 
-  // Show only the rows for the current page
-  for (let i = (page - 1) * rowsPerPage; i < page * rowsPerPage; i++) {
-    if (tableRows[i]) {
-      tableRows[i].style.display = 'table-row';
-    }
+// handle click events for pagination controls
+paginationControls.addEventListener("click", function(event) {
+  event.preventDefault();
+  const target = event.target;
+  if (target.tagName === "A") {
+    const page = target.textContent;
+    showPage(table, page, rowsPerPage);
+  }
+});
+
+// handle click events for edit and delete buttons
+table.addEventListener("click", function(event) {
+  event.preventDefault();
+  const target = event.target;
+  if (target.className === "btn-edit") {
+    // handle edit button click
+  } else if (target.className === "btn-delete") {
+    // handle delete button click
+  }
+});
+
+// create pagination
+function createPagination(table, rowsPerPage, paginationControls) {
+  // get total number of rows
+  const rowCount = table.rows.length;
+
+  // calculate number of pages needed
+  const pageCount = Math.ceil(rowCount / rowsPerPage);
+
+  // create pagination links
+  for (let i = 0; i < pageCount; i++) {
+    const btn = document.createElement("a");
+    btn.href = "#";
+    btn.textContent = i + 1;
+    paginationControls.appendChild(btn);
   }
 }
 
-// Show the first page by default
-showPage(currentPage);
-
-prevBtn.addEventListener('click', () => {
-  if (currentPage > 1) {
-    currentPage--;
-    showPage(currentPage);
+// show specified page
+function showPage(table, page, rowsPerPage) {
+  // hide all rows
+  for (let i = 1; i < table.rows.length; i++) {
+    table.rows[i].style.display = "none";
   }
-});
 
-nextBtn.addEventListener('click', () => {
-  if (currentPage < tableRows.length / rowsPerPage) {
-    currentPage++;
-    showPage(currentPage);
+  // show rows for specified page
+  const startRow = (page - 1) * rowsPerPage;
+  const endRow = startRow + rowsPerPage;
+  for (let i = startRow; i < endRow; i++) {
+    table.rows[i].style.display = "table-row";
   }
-});
-
-// CRUD
-
-const tableRows = document.querySelectorAll('tbody tr');
-const editButtons = document.querySelectorAll('.edit-btn');
-const deleteButtons = document.querySelectorAll('.delete-btn');
-
-// Edit button click listener
-editButtons.forEach(button => {
-  button.addEventListener('click', e => {
-    // Get the row data
-    const row = e.target.parentNode.parentNode;
-    const id = row.querySelector('td:first-child').textContent;
-    const name = row.querySelector('td:nth-child(2)').textContent;
-    const age = row.querySelector('td:nth-child(3)').textContent;
-
-    // Show the edit form with the current data
-    showEditForm(id, name, age);
-  });
-});
-
-// Delete button click listener
-deleteButtons.forEach(button => {
-  button.addEventListener('click', e => {
-    // Get the row data
-    const row = e.target.parentNode.parentNode;
-    const id = row.querySelector('td:first-child').textContent;
-
-    // Send a DELETE request to the server to delete the data
-    sendAjaxRequest('DELETE', `/api/data/${id}`, null, () => {
-      // Remove the row from the table
-      row.remove();
-    });
-  });
-});
-
-// Show the edit form
-function showEditForm(id, name, age) {
-  // Create the form elements
-  const form = document.createElement('form');
-  const inputId = document.createElement
-
-  
+}
