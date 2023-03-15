@@ -5,9 +5,12 @@ body {
     
   }
 
-.container{
-  padding: 40px 0px;
-}
+.container {
+    width: 100%; /* Set the width of the container to 100% */
+    margin: 0 auto; /* Center the container horizontally on the page */
+
+  }
+  
 
 .menu_card{
   width: 300px;
@@ -37,7 +40,7 @@ h3{
   color: #FFFFFF;
   font-family: 'Roboto', sans-serif;
   margin-left: 1rem;
-  width: 180px;
+  width: 250px;
   height:12px;
 }
 

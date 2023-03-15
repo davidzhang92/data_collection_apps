@@ -1,19 +1,28 @@
-pagination-card {
-  border-collapse: collapse;
-  width: 100%;
-  height: 100%;
+.pagination-card{
+  width: 78%;
+  height: 155px;
+  background-color: #1E2B32;
+  border-radius: 10px 10px;
+  position: absolute;
+  left: 330px;
+  bottom: 500px;
+  margin-top: -25px;
+  margin-right: 5px;
+  margin-left: 10px;
 }
+  
+th, tr, td{
+  color: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
+  margin-left: 1rem;
+  width: 180px;
+  height:12px;
+  }
 
-th, td {
-  text-align: left;
-  padding: 8px;
-}
 
-tr:nth-child(even) {
-  background-color: #f2f2f25e
-}
-
-button {
+/* for button */
+.ph-button {
+	
   border-style: solid;
   border-width: 0px 0px 3px;
   box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
@@ -30,14 +39,48 @@ button {
   white-space: nowrap;	
   font-family: "Gotham Rounded A","Gotham Rounded B",Helvetica,Arial,sans-serif;
   font-weight: 700;	
-  padding: 5px 39px 6px;
+  padding: 19px 39px 18px;
   font-size: 18px;
+  }
+
+  .pagination-header-span
+   /* { display: block; margin: 0 0 5px; font-size: 1.2em; font-weight: bold; } */
+
+/*Green
+==========================*/
+.ph-btn-green {
+
+  border-color: #3AC162;
+background-color: #5FCF80;
+
+}
+.ph-btn-green:hover, .ph-btn-green:focus, .ph-btn-green:active {
+  background-color: #4BC970;
+  border-color: #3AC162;    
 }
 
-#btn-edit {
-  /* add your styles for the edit button here */
+/*Blue
+==========================*/
+.ph-btn-blue {
+
+  border-color: #326E99;
+  background-color: #3F8ABF;
 }
 
-#btn-delete {
-  /* add your styles for the delete button here */
+.ph-btn-blue:hover, .ph-btn-blue:focus, .ph-btn-blue:active {
+  background-color: #397CAC;
+  border-color: #326E99;   
+}
+
+/*Red
+==========================*/
+.ph-btn-red {
+
+  border-color: #993232;
+  background-color: #bf3f3f;
+}
+
+.ph-btn-red:hover, .ph-btn-red:focus, .ph-btn-red:active {
+  background-color: #ac3939;
+  border-color: #993232;   
 }

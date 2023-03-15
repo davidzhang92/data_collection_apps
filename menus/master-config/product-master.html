@@ -52,32 +52,33 @@
     </div>
       <form>
         <label for="product-name">
-          <span>Product Name</span>
+          <span class="product-field-span">Product Name</span>
           <input type="text" id="pname" placeholder="Enter product name.." />
         </label>
 
         <label for="description">
-          <span>Description</span>
+          <span class="product-field-span">Description</span>
           <input type="text" id="desc" placeholder="Enter description.."/>
         </label>
       </form>
 <!-- button div -->
     <div class="ph-container">
       <div class="ph-search">
-      <a href='#' class='ph-button ph-btn-blue'>Search</a>
+        <a href='#' id='search-product' class='ph-button ph-btn-blue'>Search</a>
+
     </div>
 
     <div class="ph-add-new">
-      <a href='#' class='ph-button ph-btn-green'>Add New Product</a>
+      <a href='#' id='add-product' class='ph-button ph-btn-green'>Add New Product</a>
     </div>  
   </div>    
 
   <div class="ph-clear"></div>   
 <!-- button div -->
-    </div>
+  </div>
     <!-- pagination controls -->
-  <div id="pagination-card">
-    <table id="pagination-table">
+  <div class="pagination-card">
+    <table class="pagination-table">
       <tr>
         <th>Name</th>
         <th>Email</th>
@@ -87,13 +88,11 @@
         <td>John</td>
         <td>john@example.com</td>
         <td>
-          <a href='#'  id='btn-edit'>Edit</a>
-          <button id="btn-delete">Delete</button>
+            <a href='#' id='edit-product' class='ph-button ph-btn-green'>Edit</a>
+            <a href='#' id='delete-product' class='ph-button ph-btn-red'>Delete</a>        
         </td>
       </tr>
       <!-- more rows -->
     </table>
   </div>
-
 </div>
-  
