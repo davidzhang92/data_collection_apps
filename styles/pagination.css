@@ -9,6 +9,8 @@
   margin-top: -25px;
   margin-right: 5px;
   margin-left: 10px;
+  border-collapse: collapse;
+  border: 1px solid black;
 }
   
 th, tr, td{
@@ -17,6 +19,7 @@ th, tr, td{
   margin-left: 1rem;
   width: 180px;
   height:12px;
+  border: 1px solid black;
   }
 
 
@@ -43,8 +46,21 @@ th, tr, td{
   font-size: 18px;
   }
 
-  .pagination-header-span
-   /* { display: block; margin: 0 0 5px; font-size: 1.2em; font-weight: bold; } */
+/*adjusting column width and text alligment*/
+.pagination-table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+.pagination-table td:last-child {
+    text-align: center;
+  }
+
+th:nth-child(3) {
+    width: 20%;
+  }
+  
+
 
 /*Green
 ==========================*/
@@ -78,6 +94,7 @@ background-color: #5FCF80;
 
   border-color: #993232;
   background-color: #bf3f3f;
+  margin-left: 10px;
 }
 
 .ph-btn-red:hover, .ph-btn-red:focus, .ph-btn-red:active {
