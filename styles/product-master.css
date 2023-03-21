@@ -72,12 +72,15 @@ input {
   text-align: center;
   position: absolute;
   left:550px;
+  margin-top: 18px;
 }
 
 .ph-add-new{
   text-align: center;
   position: absolute;
-  left:77%;
+  left:81%;
+  margin-top: 18px;
+  
 }
 
 .ph-clear {
