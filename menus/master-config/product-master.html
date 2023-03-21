@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="../../styles/product-master.css">
 <link rel="stylesheet" href="../../icons/css/all.css">
 <link rel="stylesheet" href="../../styles/form.css">
-<script src="/scripts/pagination.js"></script>
+
 
 <div class="container">
   <div class="menu_card">
@@ -61,28 +61,24 @@
         </label>
       </form>
 <!-- button div -->
-    <div class="ph-container">
       <div class="ph-search">
         <a href='#' id='search-product' class='ph-button ph-btn-blue'>Search</a>
-
     </div>
 
     <div class="ph-add-new">
       <a href='#' id='add-product' class='ph-button ph-btn-green'>Add New Product</a>
-    </div>  
-  </div>    
-
-  <div class="ph-clear"></div>   
-<!-- button div -->
+    </div>    
   </div>
+  <!-- button div -->
     <!-- pagination controls -->
   <div class="pagination-card">
+      <a href='#' id='delete-selected-row' class='ph-button ph-btn-red'>Delete</a>
     <table class="pagination-table">
       <tr>
         <th class="no-border"></th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Actions</th>
+        <th class="header-title">Name</th>
+        <th class="header-title">Email</th>
+        <th class="header-title">Actions</th>
       </tr>
 <!---- dummy data----->
       <tr>
@@ -168,18 +164,8 @@
     </div>
   </td>
 </tr>
-<!---- dummy data----->      <tr>
-        <td class="no-border"><input type="checkbox"></td>
-        <td>John</td>
-        <td>john@example.com</td>
-        <td>
-          <div class="edit-delete">
-            <a href='#' id='edit-product' class='ph-button-action-pagination ph-btn-green'>Edit</a>
-            <a href='#' id='delete-product' class='ph-button-action-pagination ph-btn-red'>Delete</a>   
-          </div>
-        </td>
-      </tr>
-<!---- dummy data----->
+<!---- dummy data----->     
+ 
     </table>
   </div>
 </div>
