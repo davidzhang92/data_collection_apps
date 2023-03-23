@@ -18,14 +18,14 @@
       <ul>
         <li><i class="fas fa-chart-area icon"></i><a href="../dashboard/dashboard.html">Dashboard</a></li>
         <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/result-entry.html">Result Entry</a> </li>
-        <li><i class="fas fa-boxes icon"></i>Master Data Configuration
+        <li><i class="fas fa-boxes icon"></i>Master Data Configuration &raquo
           <ul>
             <li><i class="fas fa-boxes icon"></i><a href="../master-config/product-master.html">Product Master</a></li>
             <li><i class="fas fa-boxes icon"></i><a href="../master-config/defect-master.html"> Defect Master</a></li>
             <li><i class="fas fa-boxes icon"></i><a href="../master-config/station-master.html"> Station Master</a></li>
           </ul>
         </li>
-        <li><i class="fas fa-table icon"></i> User Managements
+        <li><i class="fas fa-table icon"></i> User Managements &raquo
           <ul>
             <li><i class="fas fa-table icon"></i><a href="../user-master/user-master.html">User Master</a></li>
             <li><i class="fas fa-table icon"></i><a href="../user-master/user-access.html">User Access Rights</a></li>
@@ -75,7 +75,19 @@
   <!-- button div -->
     <!-- pagination controls -->
   <div class="pagination-card">
-      <a href='#' id='delete-selected-row' class='ph-button ph-btn-red'>Delete</a>
+    <a href='#' id='delete-selected-row' class='ph-button ph-btn-disabled'>Delete</a>
+    <!-- pagination page number div -->
+    <div class="page-numbers">
+      <a href="#"><i class="fas fa-chevron-circle-left"></i></a>
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">4</a>
+      <a href="#">5</a>
+      <a href="#">6</a>
+      <a href="#"><i class="fas fa-chevron-circle-right"></i></a>
+    </div>
+     <!-- table content -->
     <table class="pagination-table">
       <tr>
         <th class="no-border"></th>
@@ -156,6 +168,18 @@
   </td>
 </tr>
 <!---- dummy data----->
+<tr>
+  <td class="no-border"><input type="checkbox"></td>
+  <td>John</td>
+  <td>john@example.com</td>
+  <td>
+    <div class="edit-delete">
+      <a href='#' id='edit-product' class='ph-button-action-pagination ph-btn-green'>Edit</a>
+      <a href='#' id='delete-product' class='ph-button-action-pagination ph-btn-red'>Delete</a>   
+    </div>
+  </td>
+</tr>
+<!---- dummy data----->     
 <tr>
   <td class="no-border"><input type="checkbox"></td>
   <td>John</td>

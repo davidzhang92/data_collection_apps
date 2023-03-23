@@ -63,6 +63,29 @@ input {
   font-size: 18px;
   }
 
+.ph-button-action-pagination {
+	
+  border-style: solid;
+  border-width: 0px 0px 3px;
+  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+  color: #FFFFFF;	   
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-block;
+  font-style: normal;
+  overflow: hidden;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  transition: all 200ms ease-in-out 0s;
+  white-space: nowrap;	
+  font-family: "Gotham Rounded A","Gotham Rounded B",Helvetica,Arial,sans-serif;
+  font-weight: 700;	
+  padding: 6px 23px;
+  font-size: 18px;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  }
 
 /* .ph-container{
   margin-top: 5px;
@@ -142,34 +165,49 @@ th.no-border, td.no-border {
   width: 5%;
 }
 
-.ph-button-action-pagination {
-	
-  border-style: solid;
-  border-width: 0px 0px 3px;
-  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
-  color: #FFFFFF;	   
-  border-radius: 6px;
-  cursor: pointer;
-  display: inline-block;
-  font-style: normal;
-  overflow: hidden;
-  text-align: center;
-  text-decoration: none;
-  text-overflow: ellipsis;
-  transition: all 200ms ease-in-out 0s;
-  white-space: nowrap;	
-  font-family: "Gotham Rounded A","Gotham Rounded B",Helvetica,Arial,sans-serif;
-  font-weight: 700;	
-  padding: 6px 23px;
-  font-size: 18px;
-  margin-top: 5px;
-  margin-bottom: 2px;
-  }
 .header-title {
   font-size: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+
+.page-numbers {
+  display: inline-block;
+  font-family: 'Roboto';
+  font-size: 21px;
+  font-stretch: narrower;
+  color: #ffffff;
+  position: absolute;
+  left:1080px;
+  top:525px;
+  
+}
+
+.page-numbers a {
+  color: rgb(255, 255, 255);
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.page-numbers a.active {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.page-numbers a:hover:not(.active) {
+  background-color: #9dc29e;
+  border-radius: 5px;
+}
+ 
+
+
+
+
+
+
 
 
 
@@ -203,12 +241,24 @@ background-color: #5FCF80;
 ==========================*/
 .ph-btn-red {
 
-  border-color: #993232;
+  border-color: #791e1e;
   background-color: #bf3f3f;
   margin-left: 10px;
 }
 
 .ph-btn-red:hover, .ph-btn-red:focus, .ph-btn-red:active {
-  background-color: #ac3939;
-  border-color: #993232;   
+  background-color: #bf3f3f;
+  border-color: #791e1e;   
+}
+
+.ph-btn-disabled {
+
+  border-color: #2b2b2b;
+  background-color: #4e4e4e;
+  margin-left: 10px;
+}
+
+.ph-btn-disabled:hover, .ph-btn-disabled:focus, .ph-btn-disabled:active {
+  background-color: #4e4e4e;
+  border-color: #2b2b2b;   
 }
