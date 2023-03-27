@@ -1,5 +1,13 @@
+body,
+.container {
+  height: 100%;
+}
+
+
+
+
 .product-master-card{
-  width: 78%;
+  width: 1500px;
   height: 155px;
   background-color: #1E2B32;
   border-radius: 10px 10px;
@@ -82,11 +90,22 @@ input {
   font-family: "Gotham Rounded A","Gotham Rounded B",Helvetica,Arial,sans-serif;
   font-weight: 700;	
   padding: 6px 23px;
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 5px;
   margin-bottom: 2px;
   }
 
+  .edit-delete {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    
+  }
+  
+  .edit-delete a {
+    flex-grow: 1;
+  }
+  
 /* .ph-container{
   margin-top: 5px;
 } */
@@ -113,23 +132,49 @@ input {
 #delete-selected-row {
   position:absolute;
   
-  margin-top:520px;
+  margin-top:480px;
   margin-left:75px;
+  background-color: #bf3f3f;
+  border-color: #791e1e;   
+}
+/* Disabled state */
+#delete-selected-row.ph-btn-disabled {
+  background-color: #4e4e4e;
+  border-color: #2b2b2b;
+}
+
+/* Hover and active state */
+#delete-selected-row:hover,
+#delete-selected-row:focus,
+#delete-selected-row:active {
+  background-color: #bf3f3f;
+  border-color: #791e1e;
+}
+
+/* Hover and active state for disabled button */
+#delete-selected-row.ph-btn-disabled:hover,
+#delete-selected-row.ph-btn-disabled:focus,
+#delete-selected-row.ph-btn-disabled:active {
+  background-color: #4e4e4e;
+  border-color: #2b2b2b;
 }
 
 /*pagination configuration*/  
 .pagination-card{
-  width: 78%;
-  height: 70%;
+  width: 1500px;
+  height: 580px;
   background-color: #1E2B32;
   border-radius: 10px 10px;
   position: absolute;
   left: 330px;
   margin-top: -375px;
-  margin-right: 5px;
+  /* margin-right: 5px; */
   margin-left: 10px;
   border-collapse: collapse;
-  border: 1px solid black;
+  padding-bottom: 70px;
+  /* padding-right:50px; */
+  overflow-x: scroll; 
+  /* border: 1px solid black; */
 }
 /*adding border to column*/  
 th, td{
@@ -150,20 +195,33 @@ th.no-border, td.no-border {
   width: 97%;
   table-layout: fixed;
   margin-top:25px;
+  overflow-x: auto;
 
 }
 
-.pagination-card td:last-child, th:last-child {
+/* .pagination-card td:last-child, th:last-child {
   text-align: center;
-  width: 15%;
-}
+  width: 60px;
 
-.pagination-card td:nth-child(2), td:nth-child(3) {
-  text-indent: 20px;
-}
+} */
+
 .pagination-card th:nth-child(1) {
   width: 5%;
 }
+
+.pagination-card th:nth-child(2), .pagination-card td:nth-child(2) {
+  text-indent: 20px;
+  width: 200px;
+  
+}
+
+.pagination-card td:nth-child(3), .pagination-card td:nth-child(3) {
+  text-indent: 20px;
+  width: 200px;
+  
+}
+
+
 
 .header-title {
   font-size: 20px;
@@ -171,6 +229,12 @@ th.no-border, td.no-border {
   padding-bottom: 10px;
 }
 
+.pagination-card th:nth-child(4),
+.pagination-card td:nth-child(4) {
+  width: 70px;
+}
+
+/* page number controls */
 
 .page-numbers {
   display: inline-block;
@@ -180,7 +244,7 @@ th.no-border, td.no-border {
   color: #ffffff;
   position: absolute;
   left:1080px;
-  top:525px;
+  top:480px;
   
 }
 
@@ -202,12 +266,6 @@ th.no-border, td.no-border {
   border-radius: 5px;
 }
  
-
-
-
-
-
-
 
 
 
@@ -251,7 +309,10 @@ background-color: #5FCF80;
   border-color: #791e1e;   
 }
 
-.ph-btn-disabled {
+/*Gray
+==========================*/
+
+/* .ph-btn-disabled {
 
   border-color: #2b2b2b;
   background-color: #4e4e4e;
@@ -259,6 +320,17 @@ background-color: #5FCF80;
 }
 
 .ph-btn-disabled:hover, .ph-btn-disabled:focus, .ph-btn-disabled:active {
+  background-color: #4e4e4e;
+  border-color: #2b2b2b;   
+} */
+
+/* Gray when disabled */
+.ph-btn-red:disabled {
+  background-color: #4e4e4e;
+  border-color: #2b2b2b;
+}
+
+.ph-btn-red:disabled:hover, .ph-btn-red:disabled:focus, .ph-btn-red:disabled:active {
   background-color: #4e4e4e;
   border-color: #2b2b2b;   
 }
