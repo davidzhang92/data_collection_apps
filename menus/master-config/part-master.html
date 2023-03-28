@@ -3,15 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Product Master Page</title>
+    <title>Part Master</title>
 
-    <link rel="stylesheet" href="../../styles/style.css">
-    <link rel="stylesheet" href="../../styles/product-master.css">
+    <link rel="stylesheet" href="../../styles/side-menu.css">
+    <link rel="stylesheet" href="../../styles/master-layout.css">
     <link rel="stylesheet" href="../../icons/css/all.css">
-    <link rel="stylesheet" href="../../styles/form.css">
   </head>
 <body>
-  <h3>This is Product master page</h3>
 <div class="container">
   <div class="menu_card">
     <div class="header">
@@ -20,15 +18,22 @@
     <div class="body">
       <ul>
         <li><i class="fas fa-chart-area icon"></i><a href="../dashboard/dashboard.html">Dashboard</a></li>
-        <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/result-entry.html">Result Entry</a> </li>
+        <li><i class="fas fa-pencil-alt icon"></i>Result Entry <i class="fas fa-chevron-circle-right" id="result-entry-indent"></i>
+          <ul>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/programming-result-entry.html">Programming</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/leaktest-result-entry.html">Leaktest</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/endtest-result-entry.html">End Test</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/laser-result-entry.html">Laser</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/oqc-result-entry.html">OQC</a></li>
+          </ul>
+      </li>
         <li><i class="fas fa-boxes icon"></i>Master Data Configuration &nbsp<i class="fas fa-chevron-circle-right"></i>
           <ul>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/product-master.html">Product Master</a></li>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/defect-master.html"> Defect Master</a></li>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/station-master.html"> Station Master</a></li>
+            <li><i class="fas fa-boxes icon"></i><a href="../master-config/part-master.html">Part Master</a></li>
+            <li><i class="fas fa-boxes icon"></i><a href="../master-config/defect-master.html">Defect Master</a></li>
           </ul>
         </li>
-        <li><i class="fas fa-table icon"></i> User Managements &nbsp<i class="fas fa-chevron-circle-right"></i>
+        <li><i class="fas fa-table icon"></i> User Managements <i class="fas fa-chevron-circle-right" id="user-mgmt-indent"></i>
           <ul>
             <li><i class="fas fa-table icon"></i><a href="../user-master/user-master.html">User Master</a></li>
             <li><i class="fas fa-table icon"></i><a href="../user-master/user-access.html">User Access Rights</a></li>
@@ -53,17 +58,17 @@
 
   <div class="product-master-card">
     <div class="header">
-      <h3>Product Master</h3>
+      <h3>Part Master</h3>
     </div>
       <form>
         <label for="product-name">
-          <span class="product-field-span">Product Name</span>
-          <input type="text" id="pname" placeholder="Enter product name.." />
+          <span class="product-field-span">Part No.</span>
+          <input type="text" id="pname" placeholder="Enter Part No." />
         </label>
 
         <label for="description">
-          <span class="product-field-span">Description</span>
-          <input type="text" id="desc" placeholder="Enter description.."/>
+          <span class="product-field-span">Part Description</span>
+          <input type="text" id="desc" placeholder="Enter Part Description.."/>
         </label>
       </form>
 <!-- button div -->
@@ -72,7 +77,7 @@
     </div>
 
     <div class="ph-add-new">
-      <a href='#' id='add-product' class='ph-button ph-btn-green'>Add New Product</a>
+      <a href='#' id='add-product' class='ph-button ph-btn-green'>Add New Part No.</a>
     </div>    
   </div>
   <!-- button div -->
@@ -94,8 +99,8 @@
     <table class="pagination-table">
       <tr>
         <th class="no-border"></th>
-        <th class="header-title">Name</th>
-        <th class="header-title">Email</th>
+        <th class="header-title">Part No. </th>
+        <th class="header-title">Part Description</th>
         <th class="header-title">Actions</th>
       </tr>
 <!---- dummy data----->
@@ -201,3 +206,5 @@
 </div>
 </body>
 </html>
+
+<script src="/scripts/product-master.js"></script> 

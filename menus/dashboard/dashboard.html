@@ -1,6 +1,15 @@
-<h3>This is dashboard page</h3>
-<link rel="stylesheet" href="../../styles/style.css">
-<link rel="stylesheet" href="../../icons/css/all.css">
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+
+    <link rel="stylesheet" href="../../styles/side-menu.css">
+    <link rel="stylesheet" href="../../styles/master-layout.css">
+    <link rel="stylesheet" href="../../icons/css/all.css">
+  </head>
+<body>
 <div class="container">
   <div class="menu_card">
     <div class="header">
@@ -9,15 +18,22 @@
     <div class="body">
       <ul>
         <li><i class="fas fa-chart-area icon"></i><a href="../dashboard/dashboard.html">Dashboard</a></li>
-        <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/result-entry.html">Result Entry</a> </li>
-        <li><i class="fas fa-boxes icon"></i>Master Data Configuration
+        <li><i class="fas fa-pencil-alt icon"></i>Result Entry <i class="fas fa-chevron-circle-right" id="result-entry-indent"></i>
           <ul>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/product-master.html">Product Master</a></li>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/defect-master.html"> Defect Master</a></li>
-            <li><i class="fas fa-boxes icon"></i><a href="../master-config/station-master.html"> Station Master</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/programming-result-entry.html">Programming</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/leaktest-result-entry.html">Leaktest</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/endtest-result-entry.html">End Test</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/laser-result-entry.html">Laser</a></li>
+            <li><i class="fas fa-pencil-alt icon"></i><a href="../result-entry/oqc-result-entry.html">OQC</a></li>
+          </ul>
+      </li>
+        <li><i class="fas fa-boxes icon"></i>Master Data Configuration &nbsp<i class="fas fa-chevron-circle-right"></i>
+          <ul>
+            <li><i class="fas fa-boxes icon"></i><a href="../master-config/part-master.html">Part Master</a></li>
+            <li><i class="fas fa-boxes icon"></i><a href="../master-config/defect-master.html">Defect Master</a></li>
           </ul>
         </li>
-        <li><i class="fas fa-table icon"></i> User Managements
+        <li><i class="fas fa-table icon"></i> User Managements <i class="fas fa-chevron-circle-right" id="user-mgmt-indent"></i>
           <ul>
             <li><i class="fas fa-table icon"></i><a href="../user-master/user-master.html">User Master</a></li>
             <li><i class="fas fa-table icon"></i><a href="../user-master/user-access.html">User Access Rights</a></li>
@@ -27,6 +43,7 @@
       </ul>
     </div>
   </div>
+
   <div class="user_card">
     <div class="header">
       <h3>USERNAME</h3>
@@ -38,4 +55,7 @@
       </ul>
     </div>
   </div>
-   </div>
+
+</div>
+</body>
+</html>

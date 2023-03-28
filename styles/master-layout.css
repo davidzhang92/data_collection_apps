@@ -1,10 +1,9 @@
+* {box-sizing:border-box;}
+
 body,
 .container {
   height: 100%;
 }
-
-
-
 
 .product-master-card{
   width: 1500px;
@@ -131,12 +130,18 @@ input {
 
 #delete-selected-row {
   position:absolute;
-  
   margin-top:480px;
   margin-left:75px;
   background-color: #bf3f3f;
   border-color: #791e1e;   
 }
+
+/* Enabled state */
+#delete-selected-row:not(.ph-btn-disabled) {
+  background-color: #bf3f3f;
+  border-color: #791e1e;
+}
+
 /* Disabled state */
 #delete-selected-row.ph-btn-disabled {
   background-color: #4e4e4e;
@@ -159,6 +164,7 @@ input {
   border-color: #2b2b2b;
 }
 
+
 /*pagination configuration*/  
 .pagination-card{
   width: 1500px;
@@ -167,8 +173,8 @@ input {
   border-radius: 10px 10px;
   position: absolute;
   left: 330px;
-  margin-top: -375px;
-  /* margin-right: 5px; */
+  /* margin-top: -350px; */
+  top:220px;
   margin-left: 10px;
   border-collapse: collapse;
   padding-bottom: 70px;
