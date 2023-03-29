@@ -6,7 +6,7 @@
     <title>Programming Result Entry</title>
 
     <link rel="stylesheet" href="../../styles/side-menu.css">
-    <link rel="stylesheet" href="../../styles/master-layout.css">
+    <link rel="stylesheet" href="../../styles/programming-result-entry.css">
     <link rel="stylesheet" href="../../icons/css/all.css">
   </head>
 <body>
@@ -56,6 +56,26 @@
     </div>
   </div>
 
+  <div class="programming-result-entry-card">
+    <div class="header">
+      <h3>Programming Result Entry</h3>
+    </div>
+    <div class="body">
+      <form>
+        <label for="part-no">
+          <span class="product-field-span">Part No.</span>
+          <input type="text" id="pname" placeholder="Enter Part No." />
+        </label>
+        <label id="label-description" for="description">
+          <span class="product-field-span">Part Description</span>
+          <input type="text" id="desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
+        </label>
+      </form>
+      <a href='#' id='select-button' class='ph-button ph-btn-disabled'>Select</a>
+    </div>
+
 </div>
 </body>
 </html>
+
+<script src="/scripts/programming-result-entry.js"></script> 
