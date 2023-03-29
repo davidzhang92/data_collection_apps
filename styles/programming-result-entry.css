@@ -18,18 +18,18 @@ body,
     margin-right: 5px;
     margin-left:10px;
     }
-      label{
-        color: #FFFFFF;
-        font-family: 'Roboto', sans-serif;
-        margin-left: 1rem;
-        width: 180px;
-        height:12px;
-        }
+  label{
+    color: #FFFFFF;
+    font-family: 'Roboto', sans-serif;
+    margin-left: 1rem;
+    width: 180px;
+    height:12px;
+    }
       
-      label { 
-        width: 300px; 
-        float: left; 
-        margin: 0 -60px 0 20px; 
+  label { 
+    width: 300px; 
+    float: left; 
+    margin: 0 -60px 0 20px; 
         padding-top: 10px; 
       }
 
@@ -85,9 +85,9 @@ body,
     font-size: 18px;
     }
 
-    #select-button {
+  #select-button {
         position:absolute;
-        top:70px;
+        top:79px;
         background-color: #bf3f3f;
         border-color: #791e1e;   
       }
