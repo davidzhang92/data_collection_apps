@@ -62,7 +62,7 @@
     </div>
     <div class="body">
       <form class="input-field">
-        <label for="part-no">
+        <label id ="label-part-no" for="part-no">
           <span class="product-field-span">Part No.</span>
           <input type="text" id="pname" placeholder="Enter Part No." />
         </label>
@@ -73,7 +73,36 @@
       </form>
       <a href='#' id='select-button' class='ph-button ph-btn-disabled'>Select</a>
     </div>
-
+</div>
+<div class="programming-result-entry-sub-card">
+  <form>
+    <label id="label-serial-no" for="serial-no">
+      <span class="product-field-span">Serial No.</span>
+      <input type="text" id="part-no-field" placeholder="Enter Part No."  />
+    </label>
+    <label id="label-result" for="result">
+      <span class="product-field-span">Result</span>
+    </label>
+  </form>
+  <form>
+    <label id="label-fail-status" for="fail-status">
+      <span class="product-field-span">Fail Status</span>
+    </label>
+    <a href='#' id='pass-button' class='ph-button ph-btn-green'>PASS</a>
+    <a href='#' id='fail-button' class='ph-button ph-btn-red'>FAIL</a>
+  </form>
+  <div>
+    <form>
+      <input type="checkbox" id="current-checkbox" name="fail-1" value="Current"/>
+      <label for="current">Current</label><br>
+      <!-- <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+      <label for="vehicle2"> I have a car</label><br>
+      <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
+      <label for="vehicle3"> I have a boat</label><br><br>
+      <input type="submit" value="Submit"> -->
+    </form>
+  </div>
+  
 </div>
 </body>
 </html>

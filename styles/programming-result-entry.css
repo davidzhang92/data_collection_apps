@@ -7,8 +7,8 @@ body,
 
 
 .programming-result-entry-card{
-    width: 1500px;
-    height: 560px;
+    width: 1000px;
+    height: 180px;
     background-color: #1E2B32;
     border-radius: 10px 10px;
     position:absolute;
@@ -18,36 +18,17 @@ body,
     margin-right: 5px;
     margin-left:10px;
     }
-  label{
+  
+  label { 
     color: #FFFFFF;
     font-family: 'Roboto', sans-serif;
     margin-left: 1rem;
-    width: 180px;
-    height:12px;
-    }
-      
-  label { 
     width: 300px; 
+    height:12px;
     float: left; 
     margin: 0 -60px 0 20px; 
-        padding-top: 10px; 
+    padding-top: 10px; 
       }
-
-      #label-description{
-        color: #FFFFFF;
-        font-family: 'Roboto', sans-serif;
-        margin-left: 1rem;
-        width: 180px;
-        height:12px;
-        }
-      
-      #label-description { 
-        width: 400px; 
-        float: left; 
-        margin: 0 -60px 0 20px; 
-        padding-top: 10px; 
-      }
-
       .product-field-span { 
         display: block; 
         margin: 0 0 5px; 
@@ -58,9 +39,68 @@ body,
       input { 
         width: 80%; 
         border: 1px solid #000; 
+        margin-top: 15px;
         padding: 5px; 
+        /* padding-top:5px; */
+        font-size: 18px;
+
       }
 
+      #label-description{
+        width: 400px; 
+        height:12px;
+        padding-top: 10px;  
+        }
+
+.programming-result-entry-sub-card{
+  width: 1000px;
+  height: 360px;
+  background-color: #1E2B32;
+  border-radius: 10px 10px;
+  position:absolute;
+  left: 330px;
+  /* top: 300px; */
+  margin-top: -360px;
+  margin-right: 5px;
+  margin-left:10px;
+  }
+  #label-serial-no{
+    width: 400px;
+    height: 20px;
+    padding-top: 15px;
+    position: absolute;
+    /* top: 0px; */
+    /* margin-left: -600px;
+    margin-top: 50px; */
+  }
+    #label-result{
+    width: 400px;
+    height: 12px;
+    padding-top: 15px;
+    position: absolute;
+    /* top: 0px;
+    margin-top: 50px; */
+    margin-left:660px;
+  }
+  #label-fail-status{
+    width: 400px;
+    height: 12px;
+    padding-top: 15px;
+    position: absolute;
+    top:150px;
+  }
+
+  #current-checkbox {
+    width: 400px;
+    height: 12px;
+    padding-top: 15px;
+    position: absolute;
+    top:150px;
+  }
+      
+.input-field {
+margin-top:10px;
+}
 /* for button */
 
 .ph-button {
@@ -87,7 +127,8 @@ body,
 
   #select-button {
         position:absolute;
-        top:79px;
+        top:95px;
+        margin-left: 20px;
         background-color: #bf3f3f;
         border-color: #791e1e;   
       }
@@ -120,6 +161,22 @@ body,
         border-color: #2b2b2b;
       }
 
-.input-field {
-margin-top:10px;
-}
+  #pass-button {
+    position:absolute;
+    top:60px;
+    left: 490px;
+    padding: 19px 60px 18px;
+    background-color: #5FCF80;
+    border-color: #3AC162; 
+
+  }
+  #fail-button {
+    position:absolute;
+    top:  60px;
+    left: 700px;
+    padding: 19px 60px 18px;
+    margin-left: 20px;
+    background-color: #bf3f3f;
+    border-color: #791e1e; 
+  }
+
