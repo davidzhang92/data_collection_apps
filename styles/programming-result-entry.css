@@ -5,6 +5,10 @@ body,
   height: 100%;
 }
 
+.input-field {
+  margin-top:10px;
+  }
+
 
 .programming-result-entry-card{
     width: 1000px;
@@ -19,38 +23,83 @@ body,
     margin-left:10px;
     }
   
-  label { 
-    color: #FFFFFF;
-    font-family: 'Roboto', sans-serif;
-    margin-left: 1rem;
-    width: 300px; 
-    height:12px;
-    float: left; 
-    margin: 0 -60px 0 20px; 
-    padding-top: 10px; 
+  .label-field { 
+  color: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
+    }
+      #label-part-no{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
       }
-      .product-field-span { 
-        display: block; 
-        margin: 0 0 5px; 
-        font-size: 1.2em; 
-        font-weight: bold; 
+      #label-part-description{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
       }
-      
-      input { 
-        width: 80%; 
-        border: 1px solid #000; 
-        margin-top: 15px;
-        padding: 5px; 
-        /* padding-top:5px; */
-        font-size: 18px;
-
+      #label-serial-no{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
       }
-
-      #label-description{
+      #label-part-description{
         width: 400px; 
         height:12px;
         padding-top: 10px;  
-        }
+      }
+      #label-serial-no{
+        width: 400px;
+        height: 20px;
+        padding-top: 15px;
+        position: absolute;
+        /* top: 0px; */
+        /* margin-left: -600px;
+        margin-top: 50px; */
+      }
+      #label-result{
+        width: 400px;
+        height: 12px;
+        padding-top: 15px;
+        position: absolute;
+        /* top: 0px;
+        margin-top: 50px; */
+        margin-left:660px;
+      }
+      #label-fail-status{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
+      }
+
+  .product-field-span { 
+    display: block; 
+    margin: 0 0 5px; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+  }
+      
+  .input-field { 
+    width: 80%; 
+    border: 1px solid #000; 
+    margin-top: 15px;
+    padding: 5px; 
+    /* padding-top:5px; */
+    font-size: 18px;
+  }
+
+
 
 .programming-result-entry-sub-card{
   width: 1000px;
@@ -64,43 +113,41 @@ body,
   margin-right: 5px;
   margin-left:10px;
   }
-  #label-serial-no{
-    width: 400px;
-    height: 20px;
-    padding-top: 15px;
-    position: absolute;
-    /* top: 0px; */
-    /* margin-left: -600px;
-    margin-top: 50px; */
-  }
-    #label-result{
-    width: 400px;
-    height: 12px;
-    padding-top: 15px;
-    position: absolute;
-    /* top: 0px;
-    margin-top: 50px; */
-    margin-left:660px;
-  }
-  #label-fail-status{
-    width: 400px;
-    height: 12px;
-    padding-top: 15px;
-    position: absolute;
-    top:150px;
-  }
-
-  #current-checkbox {
-    width: 400px;
-    height: 12px;
-    padding-top: 15px;
-    position: absolute;
-    top:150px;
-  }
+  
+    .check-boxes-fail-group{
+      /* background-color: #3e82ff20; */
+      position:absolute;
+      width: 100%;
+      height: 200px;
+      top: 160px;
+      border-top: 1px solid rgb(139, 139, 139);
+    }
+     /* adjusting checkbox position relative to the label */
+    .fail-checkbox {
+      transform: scale(1.35);
+      left: 230px;
+      top:-32px;
+      width: 15px;
+      height: 15px;
+      padding: 0;
+      margin: 0;
+      vertical-align: bottom;
+      position: relative;
       
-.input-field {
-margin-top:10px;
-}
+    }
+      /* adjusting label position*/
+    #fail-1{
+      position: relative;
+      top: 60px;
+      left:-150px;
+      font-size: 22px;
+    }
+    #fail-2{
+      position: relative;
+      top: 60px;
+      left:-150px;
+      font-size: 22px;
+    }
 /* for button */
 
 .ph-button {

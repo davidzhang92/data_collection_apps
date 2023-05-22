@@ -11,6 +11,7 @@
   </head>
 <body>
 <div class="container">
+
   <div class="menu_card">
     <div class="header">
       <h3>Main Menu</h3>
@@ -61,14 +62,14 @@
       <h3>Programming Result Entry</h3>
     </div>
     <div class="body">
-      <form class="input-field">
-        <label id ="label-part-no" for="part-no">
+      <form class="input-field-form">
+        <label class=label-field id ="label-part-no" for="part-no">
           <span class="product-field-span">Part No.</span>
-          <input type="text" id="pname" placeholder="Enter Part No." />
+          <input class = input-field type="text" id="pname" placeholder="Enter Part No." />
         </label>
-        <label id="label-description" for="description">
+        <label class= label-field id="label-part-description" for="part-description">
           <span class="product-field-span">Part Description</span>
-          <input type="text" id="desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
+          <input class = input-field type="text" id="desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
         </label>
       </form>
       <a href='#' id='select-button' class='ph-button ph-btn-disabled'>Select</a>
@@ -76,30 +77,29 @@
 </div>
 <div class="programming-result-entry-sub-card">
   <form>
-    <label id="label-serial-no" for="serial-no">
+    <label class = label-field id="label-serial-no" for="serial-no">
       <span class="product-field-span">Serial No.</span>
-      <input type="text" id="part-no-field" placeholder="Enter Part No."  />
+      <input class = input-field type="text" id="part-no-field" placeholder="Enter Part No."  />
     </label>
-    <label id="label-result" for="result">
+    <label class = label-field id="label-result" for="result">
       <span class="product-field-span">Result</span>
     </label>
   </form>
   <form>
-    <label id="label-fail-status" for="fail-status">
-      <span class="product-field-span">Fail Status</span>
-    </label>
     <a href='#' id='pass-button' class='ph-button ph-btn-green'>PASS</a>
     <a href='#' id='fail-button' class='ph-button ph-btn-red'>FAIL</a>
   </form>
-  <div>
+  <div class="check-boxes-fail-group">
     <form>
-      <input type="checkbox" id="current-checkbox" name="fail-1" value="Current"/>
-      <label for="current">Current</label><br>
-      <!-- <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
-      <label for="vehicle2"> I have a car</label><br>
-      <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-      <label for="vehicle3"> I have a boat</label><br><br>
-      <input type="submit" value="Submit"> -->
+      <label class = "label-field product-field-span" id="label-fail-status" for="fail-status">Fail Status</label>
+      <div class= "label-field" id = "fail-1">
+          <label for="current-checkbox">Current</label><br>
+          <input class= "fail-checkbox" type="checkbox" id="current-checkbox" name="fail-1" value="Current"/>
+      </div>
+      <div class= "label-field" id = "fail-2">
+        <label for="current-checkbox">Current-2</label><br>
+        <input class= "fail-checkbox" type="checkbox" id="current-checkbox" name="fail-2" value="Current-2"/>
+    </div>
     </form>
   </div>
   
