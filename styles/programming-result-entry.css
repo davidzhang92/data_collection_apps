@@ -102,7 +102,7 @@ body,
 
 
 .programming-result-entry-sub-card{
-  width: 1000px;
+  width: 1550px;
   height: 360px;
   background-color: #1E2B32;
   border-radius: 10px 10px;
@@ -117,7 +117,8 @@ body,
     .check-boxes-fail-group{
       /* background-color: #3e82ff20; */
       position:absolute;
-      width: 100%;
+      width: 1550px;
+      height: 360px;
       height: 200px;
       top: 160px;
       border-top: 1px solid rgb(139, 139, 139);
@@ -125,29 +126,66 @@ body,
      /* adjusting checkbox position relative to the label */
     .fail-checkbox {
       transform: scale(1.35);
-      left: 230px;
-      top:-32px;
+      left: -30px;
+      top: 6px;
       width: 15px;
       height: 15px;
       padding: 0;
       margin: 0;
       vertical-align: bottom;
-      position: relative;
-      
+      position: absolute;
+  
     }
       /* adjusting label position*/
     #fail-1{
-      position: relative;
+      position: absolute;
       top: 60px;
-      left:-150px;
+      left:70px;
       font-size: 22px;
+      display: inline-flex;
+      
     }
     #fail-2{
-      position: relative;
+      position: absolute;
+      top: 120px;
+      left:70px;
+      font-size: 22px;
+      display: inline-flex;
+    }
+    #fail-3{
+      position: absolute;
       top: 60px;
-      left:-150px;
+      left:230px;
       font-size: 22px;
     }
+    #fail-4{
+      position: absolute;
+      top: 120px;
+      left:230px;
+      font-size: 22px;
+    }
+    #fail-5{
+      position: absolute;
+      top: 60px;
+      left:420px;
+      font-size: 22px;
+    }
+    #fail-6{
+      position: absolute;
+      top: 120px;
+      left:420px;
+      font-size: 22px;
+    }
+
+
+
+
+
+
+
+
+
+
 /* for button */
 
 .ph-button {
@@ -226,4 +264,17 @@ body,
     background-color: #bf3f3f;
     border-color: #791e1e; 
   }
+  #save-button {
+    position:absolute;
+    top:  215px;
+    left: 700px;
+    padding: 32px 64px 32px ;
+    margin-left: 20px;
+    border-color: #326E99;
+    background-color: #3F8ABF;
+    font-size: 24px;
+    /* font-weight: 400; */
+    text-align: center;
+    z-index: 1;
+}
 
