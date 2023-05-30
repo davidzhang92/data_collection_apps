@@ -11,7 +11,7 @@ body,
 
 
 .programming-result-entry-card{
-    width: 1000px;
+    width: 1100px;
     height: 180px;
     background-color: #1E2B32;
     border-radius: 10px 10px;
@@ -66,13 +66,13 @@ body,
         margin-top: 50px; */
       }
       #label-result{
-        width: 400px;
-        height: 12px;
         padding-top: 15px;
         position: absolute;
+        font-size: 1.2em;
+        font-weight: bold;
         /* top: 0px;
         margin-top: 50px; */
-        margin-left:660px;
+        margin-left:390px;
       }
       #label-fail-status{
         margin-left: 1rem;
@@ -102,7 +102,7 @@ body,
 
 
 .programming-result-entry-sub-card{
-  width: 1550px;
+  width: 1100px;
   height: 360px;
   background-color: #1E2B32;
   border-radius: 10px 10px;
@@ -117,7 +117,7 @@ body,
     .check-boxes-fail-group{
       /* background-color: #3e82ff20; */
       position:absolute;
-      width: 1550px;
+      width: 100%;
       height: 360px;
       height: 200px;
       top: 160px;
@@ -177,15 +177,6 @@ body,
       font-size: 22px;
     }
 
-
-
-
-
-
-
-
-
-
 /* for button */
 
 .ph-button {
@@ -217,7 +208,14 @@ body,
         background-color: #bf3f3f;
         border-color: #791e1e;   
       }
-      
+  #view-button {
+    position:absolute;
+    top:95px;
+    right:50px;
+    margin-left: 20px;
+    background-color: #5FCF80;
+    border-color: #3AC162;  
+  }
       /* Enabled state */
       #select-button:not(.ph-btn-disabled) {
         background-color: #bf3f3f;
@@ -248,8 +246,8 @@ body,
 
   #pass-button {
     position:absolute;
-    top:60px;
-    left: 490px;
+    top:55px;
+    left: 390px;
     padding: 19px 60px 18px;
     background-color: #5FCF80;
     border-color: #3AC162; 
@@ -257,8 +255,8 @@ body,
   }
   #fail-button {
     position:absolute;
-    top:  60px;
-    left: 700px;
+    top:  55px;
+    left: 590px;
     padding: 19px 60px 18px;
     margin-left: 20px;
     background-color: #bf3f3f;
@@ -267,7 +265,7 @@ body,
   #save-button {
     position:absolute;
     top:  215px;
-    left: 700px;
+    left: 820px;
     padding: 32px 64px 32px ;
     margin-left: 20px;
     border-color: #326E99;
