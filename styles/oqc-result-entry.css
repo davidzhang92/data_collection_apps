@@ -87,24 +87,7 @@ body,
         margin: 0 -60px 0 20px; 
         padding-top: 10px; 
       }
-      #label-data-matrix{
-        width: 400px;
-        height: 20px;
-        padding-top: 15px;
-        position: absolute;
-        top: 105px;
-        margin-left: 20px;
-        /* margin-top: 50px; */
-      }
-      #label-label-id{
-        width: 400px;
-        height: 20px;
-        padding-top: 15px;
-        position: absolute;
-        top: 215px;
-        margin-left: 20px;
-        /* margin-top: 50px; */
-      }
+
       #label-defect-code{
         width: 65px;
         height: 20px;
@@ -172,9 +155,10 @@ body,
   }
   #save-button {
     position:absolute;
-    top:  245px;
-    left: 25px;
+    top:  215px;
+    left: 5px;
     padding: 32px 64px 32px ;
+    margin-left: 20px;
     border-color: #326E99;
     background-color: #3F8ABF;
     font-size: 24px;
@@ -183,25 +167,13 @@ body,
     z-index: 1;
   }
 
-  #export-button {
-    position:absolute;
-    top:  155px;
-    left: 25px;
-    padding: 24px 53px 24px ;
-    background-color: #5FCF80;
-    border-color: #3AC162;  
-    font-size: 24px;
-    /* font-weight: 400; */
-    text-align: center;
-    z-index: 1;
-  }
   #input-result {
-    color: #00ff2a; 
+    color: #00ff2a;
     font-family: 'Roboto', sans-serif;
     font-size: 72px;
     font-weight: bold;
-    position:absolute;
-    top:  15px;
+    position: absolute;
+    top: 50px;
     left: 40px;
   }
 
@@ -292,3 +264,17 @@ body,
   }
 
 
+  .ph-btn-red:hover, .ph-btn-red:focus, .ph-btn-red:active {
+    background-color: #bf3f3f;
+    border-color: #791e1e;   
+  }
+
+  .ph-btn-blue:hover, .ph-btn-blue:focus, .ph-btn-blue:active {
+    background-color: #397CAC;
+    border-color: #326E99;   
+  }
+
+  .ph-btn-green:hover, .ph-btn-green:focus, .ph-btn-green:active {
+    background-color: #4BC970;
+    border-color: #3AC162;    
+  }
