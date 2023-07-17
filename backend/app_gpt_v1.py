@@ -1,53 +1,41 @@
-from flask import Flask, jsonify, request
+from flask import Flask, request, jsonify
 import pyodbc
 
 app = Flask(__name__)
 
-# Replace the following values with your database credentials
-db_config = {
-    'Driver': 'SQL Server',
-    'Server': '192.168.100.90',
-    'Database': 'DataCollection',
-    'UID': 'sa',
-    'PWD': 'Cannon45!'
-}
+# Define your MS SQL Server connection details
+server = '192.168.100.90'
+database = 'DataCollection'
+username = 'sa'
+password = 'Cannon45!'
+
+# Establish the connection
+conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
-    connection = None
-    cursor = None
-
-    try:
-        term = request.args.get('term')  # Get the 'term' value from the request query parameters
-
-        connection = pyodbc.connect(**db_config)
-        cursor = connection.cursor()
-        query = "SELECT * FROM product_master WHERE model_part_no LIKE ?"  # Modify the query to filter based on the term
-        cursor.execute(query, ('%' + term + '%',))  # Pass the term value to the query with wildcard characters
-        data = cursor.fetchall()
-
-        # Convert the fetched data to a JSON response
-        response = []
-        for row in data:
-            item = {
-                'model_name': row.model_name,  # Assuming the column names are 'model_name' and 'model_part_no'
-                'model_part_no': row.model_part_no,
-                # Add more columns as needed
-            }
-            response.append(item)
-
-        return jsonify(response)
-
-    except Exception as e:
-        # Handle any exceptions that occur during the database operation
-        return jsonify({'error': str(e)})
-
-    finally:
-        # Close the database connection and cursor
-        if cursor:
-            cursor.close()
-        if connection:
-            connection.close()
+    search_term = request.args.get('term')  # Get the search term from the query parameters
+    
+    if search_term is None:
+        return jsonify({'error': 'Search term not provided'})
+    
+    cursor = conn.cursor()
+    
+    # Construct the SQL query with the search term
+    query = "SELECT model_part_no FROM product_master WHERE model_part_no LIKE ?"
+    params = ('%' + search_term + '%',)
+    
+    cursor.execute(query, params)
+    rows = cursor.fetchall()
+    
+    # Convert the result into a list of dictionaries for JSON serialization
+    results = []
+    columns = [column[0] for column in cursor.description]
+    
+    for row in rows:
+        results.append(dict(zip(columns, row)))
+    
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run()
