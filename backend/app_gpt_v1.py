@@ -37,5 +37,29 @@ def get_data():
     
     return jsonify(results)
 
+@app.route('/api/description', methods=['GET'])
+def get_description():
+    selected_pname = request.args.get('pname')  # Get the selected value from the query parameters
+
+    if selected_pname is None:
+        return jsonify({'error': 'Selected value not provided'})
+
+    cursor = conn.cursor()
+
+    # Construct the SQL query to get the description based on the selected value
+    query = "SELECT model_name FROM product_master WHERE model_part_no = ?"
+    params = (selected_pname,)
+
+    cursor.execute(query, params)
+    description = cursor.fetchone()
+
+    if description:
+        return jsonify({'description': description[0]})
+    else:
+        print(selected_pname)
+        return jsonify({'description': 'Description not found'})
+    
+
 if __name__ == '__main__':
     app.run()
+    
