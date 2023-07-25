@@ -299,4 +299,5 @@ body,
     border-color: #791e1e; 
   }
 
-
+/* jquery result */
+.ui-helper-hidden-accessible { position: absolute; left: -9999px; }
