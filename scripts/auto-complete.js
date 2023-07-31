@@ -29,6 +29,6 @@ $(function () {
     $("#pname").autocomplete({
         source: getData,
         select: selectItem,
-        minLength: 3
+        minLength: 2
     });
 });
