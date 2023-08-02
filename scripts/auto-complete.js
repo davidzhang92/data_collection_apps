@@ -6,7 +6,7 @@ $(function () {
             function (data) {
                 var items = []; // Array to store the autocomplete suggestions
                 $.each(data, function (index, item) {
-                    items.push(item.model_part_no); // Extract the relevant field from the response
+                    items.push(item.part_no); // Extract the relevant field from the response
                 });
                 response(items);
             }

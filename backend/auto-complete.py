@@ -22,7 +22,7 @@ def get_data():
     cursor = conn.cursor()
     
     # Construct the SQL query with the search term
-    query = "SELECT model_part_no FROM part_master WHERE model_part_no LIKE ?"
+    query = "SELECT part_no FROM part_master WHERE part_no LIKE ?"
     params = ('%' + search_term + '%',)
     
     cursor.execute(query, params)
@@ -47,7 +47,7 @@ def get_description():
     cursor = conn.cursor()
 
     # Construct the SQL query to get the description based on the selected value
-    query = "SELECT model_name FROM part_master WHERE model_part_no = ?"
+    query = "SELECT part_description FROM part_master WHERE part_no = ?"
     params = (selected_pname,)
 
     cursor.execute(query, params)
