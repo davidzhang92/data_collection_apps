@@ -2,7 +2,7 @@
 .body-background {
     background-color: hsl(202, 33%, 23%);
     background-size: contain;
-    line-height: 1.26;
+    line-height: 1.15;
   }
 
 .a-side-menu {
@@ -24,11 +24,12 @@
 .h3-side-menu {
     color: #FFFFFF;
     font-family: 'Roboto', sans-serif;
-    margin-left: 1rem;
     width: 250px;
     height: 12px;
-    font-size: 18px;
+    font-size: 19px;
     font-weight: bold; 
+    margin-bottom: 17px;
+    margin-left: 1.7rem;
   }
 
 .ul-side-menu {

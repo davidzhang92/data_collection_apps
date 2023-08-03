@@ -22,7 +22,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="/templates/bootstrap-crud-pagination-datatable/script.js"></script>
+    <script src="/scripts/part-master.js"></script>
     <!-- from template -->
     
   </head>
@@ -85,8 +85,8 @@
       <h2> <b>Part Master</b></h2>
     </div>
     <div class="col-sm-6">
-      <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Part</span></a>
-      <a href="#deleteEmployeeModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
+      <a href="#addPartModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Part</span></a>
+      <a href="#deletePartModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
     </div>
           </div>
       </div>
@@ -118,151 +118,11 @@
                   <td>thomashardy@mail.com</td>
                   <td>(313) 555-5735</td>
                   <td>
-                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                      <a href="#editPartModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                      <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                   </td>
               </tr>
-              <tr>
-      <td>
-        <span class="custom-checkbox">
-          <input type="checkbox" id="checkbox2" name="options[]" value="1">
-          <label for="checkbox2"></label>
-        </span>
-      </td>
-                  <td>Dominique Perrier</td>
-                  <td>dominiqueperrier@mail.com</td>
-                  <td>(313) 555-5735</td>
-                  <td>
-                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                  </td>
-              </tr>
-    <tr>
-      <td>
-        <span class="custom-checkbox">
-          <input type="checkbox" id="checkbox3" name="options[]" value="1">
-          <label for="checkbox3"></label>
-        </span>
-      </td>
-                  <td>Maria Anders</td>
-                  <td>mariaanders@mail.com</td>
-                  <td>(503) 555-9931</td>
-                  <td>
-                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                  </td>
-              </tr>
-              <tr>
-      <td>
-        <span class="custom-checkbox">
-          <input type="checkbox" id="checkbox4" name="options[]" value="1">
-          <label for="checkbox4"></label>
-        </span>
-      </td>
-                  <td>Fran Wilson</td>
-                  <td>franwilson@mail.com</td>
-                  <td>(204) 619-5731</td>
-                  <td>
-                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                  </td>
-              </tr>					
-               <tr>
-      <td>
-        <span class="custom-checkbox">
-          <input type="checkbox" id="checkbox5" name="options[]" value="1">
-          <label for="checkbox5"></label>
-        </span>
-      </td>
-                  <td>Martin Blank</td>
-                  <td>martinblank@mail.com</td>
-      
-                  <td>(480) 631-2097</td>
-                  <td>
-                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                  </td>
-              </tr> 
-              <tr>
-      <td>
-        <span class="custom-checkbox">
-          <input type="checkbox" id="checkbox5" name="options[]" value="1">
-          <label for="checkbox5"></label>
-        </span>
-      </td>
-                  <td>Martin Blank</td>
-                  <td>martinblank@mail.com</td>
-      
-                  <td>(480) 631-2097</td>
-                  <td>
-                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                  </td>
-              </tr> 
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input type="checkbox" id="checkbox5" name="options[]" value="1">
-                    <label for="checkbox5"></label>
-                  </span>
-                </td>
-                            <td>Martin Blank</td>
-                            <td>martinblank@mail.com</td>
-                
-                            <td>(480) 631-2097</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-              </tr> 
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input type="checkbox" id="checkbox5" name="options[]" value="1">
-                    <label for="checkbox5"></label>
-                  </span>
-                </td>
-                            <td>Martin Blank</td>
-                            <td>martinblank@mail.com</td>
-                
-                            <td>(480) 631-2097</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-              </tr> 
-              <tr>
-                <td>
-                  <span class="custom-checkbox">
-                    <input type="checkbox" id="checkbox5" name="options[]" value="1">
-                    <label for="checkbox5"></label>
-                  </span>
-                </td>
-                            <td>Martin Blank</td>
-                            <td>martinblank@mail.com</td>
-                
-                            <td>(480) 631-2097</td>
-                            <td>
-                                <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                            </td>
-              </tr> 
-                              <tr>
-      <td>
-        <span class="custom-checkbox">
-          <input type="checkbox" id="checkbox5" name="options[]" value="1">
-          <label for="checkbox5"></label>
-        </span>
-      </td>
-                  <td>Martin Blank</td>
-                  <td>martinblank@mail.com</td>
-      
-                  <td>(480) 631-2097</td>
-                  <td>
-                      <a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                      <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-                  </td>
-              </tr> 
+
           </tbody>
       </table>
 <div class="clearfix">
@@ -280,7 +140,7 @@
   </div>
 </div>
 <!-- Edit Modal HTML -->
-<div id="addEmployeeModal" class="modal fade">
+<div id="addPartModal" class="modal fade">
 <div class="modal-dialog">
 <div class="modal-content">
   <form>
@@ -315,12 +175,12 @@
 </div>
 </div>
 <!-- Edit Modal HTML -->
-<div id="editEmployeeModal" class="modal fade">
+<div id="editPartModal" class="modal fade">
 <div class="modal-dialog">
 <div class="modal-content">
   <form>
     <div class="modal-header">						
-      <h4 class="modal-title">Edit Employee</h4>
+      <h4 class="modal-title">Edit Record</h4>
       <button type="button" class="close-white" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
     <div class="modal-body">					
@@ -350,7 +210,7 @@
 </div>
 </div>
 <!-- Delete Modal HTML -->
-<div id="deleteEmployeeModal" class="modal fade">
+<div id="deletePartModal" class="modal fade">
 <div class="modal-dialog">
 <div class="modal-content">
   <form>
@@ -376,4 +236,4 @@
 </body>
 </html>
 
-<script src="/scripts/product-master.js"></script> 
+<!-- <script src="/scripts/product-master.js"></script>  -->
