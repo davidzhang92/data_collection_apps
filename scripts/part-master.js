@@ -2,29 +2,34 @@ $(document).ready(function () {
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
   
+	// Function to update the "Select All" checkbox state
+function updateSelectAllCheckbox() {
+	var allCheckboxes = $('table tbody input[type="checkbox"]');
+	var checkedCount = allCheckboxes.filter(':checked').length;
+	var selectAllCheckbox = $("#selectAll");
+  
+	if (checkedCount === allCheckboxes.length) {
+	  selectAllCheckbox.prop("checked", true);
+	} else {
+	  selectAllCheckbox.prop("checked", false);
+	}
+  }
 	// Select/Deselect checkboxes
-	var checkbox = $('table tbody input[type="checkbox"]');
 	$("#selectAll").click(function () {
-	  if (this.checked) {
-		checkbox.each(function () {
-		  this.checked = true;
+		var isChecked = this.checked;
+		$('table tbody input[type="checkbox"]').each(function () {
+		  this.checked = isChecked;
 		});
-	  } else {
-		checkbox.each(function () {
-		  this.checked = false;
-		});
-	  }
-	});
-	checkbox.click(function () {
-	  if (!this.checked) {
-		$("#selectAll").prop("checked", false);
-	  }
-	});
+	  });
+	  
+	  $('table').on('click', 'tbody input[type="checkbox"]', function() {
+		updateSelectAllCheckbox();
+	  });
   
 	// Function to fetch data from the backend API
 	function fetchData() {
 	  $.ajax({
-		url: 'http://localhost:5000/api/get-data', // Replace with the actual API endpoint
+		url: 'http://localhost:5000/api/get_data_api', // Replace with the actual API endpoint
 		type: 'GET',
 		success: function (data) {
 		  renderData(data); // Call the function to render the data in the table
@@ -68,7 +73,7 @@ function renderData(data) {
 	  var row = `<tr>
 		<td>
 		  <span class="custom-checkbox">
-			<input type="checkbox" id="checkbox-${part.part_no}" name="options[]" value="${part.part_no}">
+			<input type="checkbox"  id="checkbox-${part.part_no}" name="part_no" value="${part.part_no}">
 			<label for="checkbox-${part.part_no}"></label>
 		  </span>
 		</td>
