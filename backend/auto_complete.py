@@ -22,7 +22,7 @@ def get_auto_complete_part_no():
     cursor = conn.cursor()
     
     # Construct the SQL query with the search term
-    query = "SELECT part_no FROM part_master WHERE part_no LIKE ?"
+    query = "SELECT id, part_no FROM part_master WHERE is_deleted = 0 and part_no LIKE ?"
     params = ('%' + search_term + '%',)
     
     cursor.execute(query, params)

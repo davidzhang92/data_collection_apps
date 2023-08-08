@@ -70,11 +70,12 @@ function renderData(data) {
 		return;
 	  }
   
-	  var row = `<tr>
+	//   var row = `<tr>
+var row = `<tr data-id="${part.id}">
 		<td>
 		  <span class="custom-checkbox">
-			<input type="checkbox"  id="checkbox-${part.part_no}" name="part_no" value="${part.part_no}">
-			<label for="checkbox-${part.part_no}"></label>
+			<input type="checkbox"  id="checkbox-${part.id}" name="part_no" value="${part.part_no}">
+			<label for="checkbox-${part.id}"></label>
 		  </span>
 		</td>
 		<td>${part.part_no}</td>
@@ -85,6 +86,7 @@ function renderData(data) {
 		  <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 		</td>
 	  </tr>`;
+
 	  tableBody.append(row);
 	});
   
@@ -136,5 +138,12 @@ function renderData(data) {
   
 	// Fetch data for the first page when the document is ready
 	fetchData();
+ 
+
+
+	// Function to handle submitting the form
+
+	
   });
+  
   
