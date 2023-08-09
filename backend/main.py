@@ -2,8 +2,11 @@ from flask import Flask
 from auto_complete import get_auto_complete_part_no, get_auto_complete_part_name
 from get_crud import get_data
 from update_crud import update_data
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
 
 # API endpoint using the get_data function
 @app.route('/api/get_data_api', methods=['GET'])

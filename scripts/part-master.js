@@ -42,7 +42,7 @@ function updateSelectAllCheckbox() {
 	}
   
 	// Function to render data in the table
-// Function to render data in the table
+
 function renderData(data) {
 	var tableBody = $('table tbody');
 	tableBody.empty(); // Clear the existing table data
@@ -139,11 +139,39 @@ var row = `<tr data-id="${part.id}">
 	// Fetch data for the first page when the document is ready
 	fetchData();
  
+	// handing PATCH request
+	var currentId;
 
-
-	// Function to handle submitting the form
-
+	$('#editPartModal').on('click', function() {
+		currentId = $(this).closest('tr').attr('data-id');
+	});
 	
+	$('#submit-data').on('click', function(event) {
+		event.preventDefault();
+	
+		var partNumber = $('#edit-part-number').val();
+		var partDescription = $('#edit-part-description').val();
+	
+		$.ajax({
+			url: 'http://localhost:5000/api/update_data_api',
+			type: 'PATCH',
+			data: JSON.stringify({
+				id: currentId,
+				part_no: partNumber,
+				part_description: partDescription
+			}),
+			contentType: 'application/json',
+			success: function(response) {
+				// handle successful response
+				console.log(response);
+			},
+			error: function(xhr, status, error) {
+				// handle error response
+				console.error(error);
+			}
+		});
+	});
+
   });
   
   
