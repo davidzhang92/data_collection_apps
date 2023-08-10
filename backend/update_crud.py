@@ -26,7 +26,7 @@ def update_data():
         cursor = conn.cursor()
 
         # Construct the SQL query to update the part_no and part_description for the given id
-        query = "UPDATE part_master SET part_no = ?, part_description = ? WHERE id = ? AND is_deleted = 0"
+        query = "UPDATE part_master SET part_no = ?, part_description = ?, modified_date = GETDATE() WHERE id = ? AND is_deleted = 0"
 
         # Execute the SQL query
         cursor.execute(query, (new_part_no, new_part_description, id))

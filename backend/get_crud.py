@@ -17,7 +17,7 @@ def get_data():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the part_master table
-    query = "select id, part_no, part_description, created_date from part_master where is_deleted = 0"
+    query = "select id, part_no, part_description, modified_date from part_master where is_deleted = 0"
     
     cursor.execute(query)
     rows = cursor.fetchall()

@@ -58,29 +58,31 @@ function renderData(data) {
 	}
   
 	data.forEach(function (part) {
-	  if (
-		typeof part.part_no !== 'string' ||
-		typeof part.part_description !== 'string' ||
-		typeof part.created_date !== 'string'
-	  ) {
-		console.error('Invalid data format for part:', part);
-		console.log('part_no:', part.part_no);
-		console.log('part_description:', part.part_description);
-		console.log('created_date:', part.created_date);
-		return;
-	  }
+
+// Validation data type 
+	//   if (
+	// 	typeof part.part_no !== 'string' ||
+	// 	typeof part.part_description !== 'string' ||
+	// 	typeof part.modified_date !== 'string'
+	//   ) {
+	// 	console.error('Invalid data format for part:', part);
+	// 	console.log('part_no:', part.part_no);
+	// 	console.log('part_description:', part.part_description);
+	// 	console.log('modified_date:', part.modified_date);
+	// 	return;
+	//   }
   
-	//   var row = `<tr>
-var row = `<tr data-id="${part.id}">
+
+var row = `<tr data-id="${part.id}" class="part-row">
 		<td>
 		  <span class="custom-checkbox">
-			<input type="checkbox"  id="checkbox-${part.id}" name="part_no" value="${part.part_no}">
+			<input type="checkbox"  id="checkbox-${part.id}" >
 			<label for="checkbox-${part.id}"></label>
 		  </span>
 		</td>
 		<td>${part.part_no}</td>
 		<td>${part.part_description}</td>
-		<td>${part.created_date}</td>
+		<td>${part.modified_date}</td>
 		<td>
 		  <a href="#editPartModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 		  <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -139,19 +141,42 @@ var row = `<tr data-id="${part.id}">
 	// Fetch data for the first page when the document is ready
 	fetchData();
  
-	// handing PATCH request
-	var currentId;
 
-	$('#editPartModal').on('click', function() {
-		currentId = $(this).closest('tr').attr('data-id');
+	// Handle click event for edit button
+	$(document).on('click', '.edit', function() {
+		// Get the row associated with the clicked button
+		var row = $(this).closest('tr');
+
+		// Get the data-id attribute of the row
+		var currentId = row.data('id');
+
+		// Get the part number and part description from the row
+		var partNumber = row.find('td').eq(1).text();
+		var partDescription = row.find('td').eq(2).text();
+
+		// Set the value of the part number and part description fields in the edit dialog
+		$('#edit-part-number').val(partNumber);
+		$('#edit-part-description').val(partDescription);
+
+		// Set the data-id attribute of the submit button to the current id
+		$('#submit-data').data('id', currentId);
 	});
-	
+
+
+
+	// handing PATCH request
+
 	$('#submit-data').on('click', function(event) {
 		event.preventDefault();
-	
+
 		var partNumber = $('#edit-part-number').val();
 		var partDescription = $('#edit-part-description').val();
-	
+
+		// Get the data-id attribute of the row associated with the clicked button
+
+		var currentId = $(this).data('id');
+
+
 		$.ajax({
 			url: 'http://localhost:5000/api/update_data_api',
 			type: 'PATCH',
@@ -164,6 +189,12 @@ var row = `<tr data-id="${part.id}">
 			success: function(response) {
 				// handle successful response
 				console.log(response);
+
+				// Close the edit dialog box
+				$('#editPartModal').modal('hide');
+
+				// Refresh the page
+				location.reload();
 			},
 			error: function(xhr, status, error) {
 				// handle error response
@@ -172,6 +203,47 @@ var row = `<tr data-id="${part.id}">
 		});
 	});
 
-  });
+	// handing PATCH request
+
+	// $('#submit-data').on('click', function(event) {
+	// 	event.preventDefault();
+
+	// 	var partNumber = $('#edit-part-number').val();
+	// 	var partDescription = $('#edit-part-description').val();
+
+	// 	// Get the data-id attribute of the row associated with the clicked button
+
+	// 	var currentId = $(this).data('id');
+
+
+	// 	$.ajax({
+	// 		url: 'http://localhost:5000/api/update_data_api',
+	// 		type: 'PATCH',
+	// 		data: JSON.stringify({
+	// 			id: currentId,
+	// 			part_no: partNumber,
+	// 			part_description: partDescription
+	// 		}),
+	// 		contentType: 'application/json',
+	// 		success: function(response) {
+	// 			// handle successful response
+	// 			console.log(response);
+
+	// 			// Close the edit dialog box
+	// 			$('#editPartModal').modal('hide');
+
+	// 			// Refresh the page
+	// 			location.reload();
+	// 		},
+	// 		error: function(xhr, status, error) {
+	// 			// handle error response
+	// 			console.error(error);
+	// 		}
+	// 	});
+	// });
+
+
+
+});
   
   
