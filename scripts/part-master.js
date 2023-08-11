@@ -73,7 +73,7 @@ function renderData(data) {
 	//   }
   
 
-var row = `<tr data-id="${part.id}" class="part-row">
+var row = `<tr data-id="${part.id}">
 		<td>
 		  <span class="custom-checkbox">
 			<input type="checkbox"  id="checkbox-${part.id}" >
@@ -82,7 +82,7 @@ var row = `<tr data-id="${part.id}" class="part-row">
 		</td>
 		<td>${part.part_no}</td>
 		<td>${part.part_description}</td>
-		<td>${part.modified_date}</td>
+		<td>${part.latest_date}</td>
 		<td>
 		  <a href="#editPartModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 		  <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -142,48 +142,50 @@ var row = `<tr data-id="${part.id}" class="part-row">
 	fetchData();
  
 
+// Handle edit and PATCH request
+
 	// Handle click event for edit button
 	$(document).on('click', '.edit', function() {
 		// Get the row associated with the clicked button
 		var row = $(this).closest('tr');
 
 		// Get the data-id attribute of the row
-		var currentId = row.data('id');
+		var addCurrentId = row.data('id');
 
 		// Get the part number and part description from the row
-		var partNumber = row.find('td').eq(1).text();
-		var partDescription = row.find('td').eq(2).text();
+		var editPartNumber = row.find('td').eq(1).text();
+		var editPartDescription = row.find('td').eq(2).text();
 
 		// Set the value of the part number and part description fields in the edit dialog
-		$('#edit-part-number').val(partNumber);
-		$('#edit-part-description').val(partDescription);
+		$('#edit-part-number').val(editPartNumber);
+		$('#edit-part-description').val(editPartDescription);
 
 		// Set the data-id attribute of the submit button to the current id
-		$('#submit-data').data('id', currentId);
+		$('#submit-data-edit').data('id', addCurrentId);
 	});
 
 
 
 	// handing PATCH request
 
-	$('#submit-data').on('click', function(event) {
+	$('#submit-data-edit').on('click', function(event) {
 		event.preventDefault();
 
-		var partNumber = $('#edit-part-number').val();
-		var partDescription = $('#edit-part-description').val();
+		var editPartNumber = $('#edit-part-number').val();
+		var editPartDescription = $('#edit-part-description').val();
 
 		// Get the data-id attribute of the row associated with the clicked button
+		var addCurrentId = $(this).data('id');
 
-		var currentId = $(this).data('id');
 
 
 		$.ajax({
 			url: 'http://localhost:5000/api/update_data_api',
 			type: 'PATCH',
 			data: JSON.stringify({
-				id: currentId,
-				part_no: partNumber,
-				part_description: partDescription
+				id: addCurrentId,
+				part_no: editPartNumber,
+				part_description: editPartDescription
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -203,44 +205,101 @@ var row = `<tr data-id="${part.id}" class="part-row">
 		});
 	});
 
-	// handing PATCH request
 
-	// $('#submit-data').on('click', function(event) {
-	// 	event.preventDefault();
+	// handing POST request
 
-	// 	var partNumber = $('#edit-part-number').val();
-	// 	var partDescription = $('#edit-part-description').val();
+	$('#submit-data-add').on('click', function(event) {
+		event.preventDefault();
 
-	// 	// Get the data-id attribute of the row associated with the clicked button
+		var addPartNumber = $('#add-part-number').val();
+		var addPartDescription = $('#add-part-description').val();
 
-	// 	var currentId = $(this).data('id');
+		// Get the data-id attribute of the row associated with the clicked button
+
+		// var currentId = $(this).data('id');
 
 
-	// 	$.ajax({
-	// 		url: 'http://localhost:5000/api/update_data_api',
-	// 		type: 'PATCH',
-	// 		data: JSON.stringify({
-	// 			id: currentId,
-	// 			part_no: partNumber,
-	// 			part_description: partDescription
-	// 		}),
-	// 		contentType: 'application/json',
-	// 		success: function(response) {
-	// 			// handle successful response
-	// 			console.log(response);
+		$.ajax({
+			url: 'http://localhost:5000/api/post_data_api',
+			type: 'POST',
+			data: JSON.stringify({
+				part_no: addPartNumber,
+				part_description: addPartDescription
+			}),
+			contentType: 'application/json',
+			success: function(response) {
+				// handle successful response
+				console.log(response);
 
-	// 			// Close the edit dialog box
-	// 			$('#editPartModal').modal('hide');
+				// Close the edit dialog box
+				$('#addPartModal').modal('hide');
 
-	// 			// Refresh the page
-	// 			location.reload();
-	// 		},
-	// 		error: function(xhr, status, error) {
-	// 			// handle error response
-	// 			console.error(error);
-	// 		}
-	// 	});
-	// });
+				 // Clear input fields
+				 $('#add-part-number').val('');
+				 $('#add-part-description').val('');
+
+				// Refresh the page
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				// handle error response
+				console.error(error);
+			}
+		});
+	});
+
+
+
+
+// Handle delete and DELETE request
+
+	// Handle click event for delete button
+	$(document).on('click', '.delete', function() {
+		// Get the row associated with the clicked button
+		var row = $(this).closest('tr');
+
+		// Get the data-id attribute of the row
+		var deleteCurrentId = row.data('id');
+
+		// Set the data-id attribute of the submit button to the current id
+		$('#submit-data-delete').data('id', deleteCurrentId);
+	});
+
+
+
+	// handing DELETE request
+
+	$('#submit-data-delete').on('click', function(event) {
+		event.preventDefault();
+
+		// Get the data-id attribute of the row associated with the clicked button
+		var deleteCurrentId = $(this).data('id');
+
+
+
+		$.ajax({
+			url: 'http://localhost:5000/api/delete_data_api',
+			type: 'DELETE',
+			data: JSON.stringify({
+				id: deleteCurrentId,
+			}),
+			contentType: 'application/json',
+			success: function(response) {
+				// handle successful response
+				console.log(response);
+
+				// Close the edit dialog box
+				$('#deletePartModal').modal('hide');
+
+				// Refresh the page
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				// handle error response
+				console.error(error);
+			}
+		});
+	});
 
 
 

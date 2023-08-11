@@ -17,7 +17,7 @@ def get_data():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the part_master table
-    query = "select id, part_no, part_description, modified_date from part_master where is_deleted = 0"
+    query = "SELECT id, part_no, part_description, CASE WHEN modified_date >= created_date THEN modified_date ELSE created_date END AS latest_date FROM part_master WHERE is_deleted = 0;"
     
     cursor.execute(query)
     rows = cursor.fetchall()
