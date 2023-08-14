@@ -301,8 +301,85 @@ var row = `<tr data-id="${part.id}">
 		});
 	});
 
+//handling auto-complete for Part Number/Description
 
+// auto-complete for Part Number, populate Part Description
+
+$(function () {
+    var getData = function (request, response) {
+        $.getJSON(
+            "http://localhost:5000/api/auto_complete_filter_part_no_api",
+            { term: request.term }, // Pass the term as a query parameter
+            function (data) {
+                var items = []; // Array to store the autocomplete suggestions
+                $.each(data, function (index, item) {
+                    items.push(item.part_no); // Extract the relevant field from the response
+                });
+                response(items);
+            }
+        );
+    };
+
+    var selectItem = function (event, ui) {
+        $("#part-number-field").val(ui.item.value);
+
+        // Make an additional AJAX request to retrieve the description based on the selected value
+        $.getJSON(
+            "http://localhost:5000/api/auto_complete_filter_part_name_api",
+            { pname: ui.item.value }, // Pass the selected value as a query parameter
+            function (data) {
+                $("#part-description-field").val(data.description);
+            }
+        );
+    };
+
+    $("#part-number-field").autocomplete({
+        source: getData,
+        select: selectItem,
+        minLength: 3
+		});
+	});
+
+// auto-complete for  Part Description, populate Part Number
+// $(function () {
+//     var getData = function (request, response) {
+//         $.getJSON(
+//             "http://localhost:5000/api/auto_complete_part_name_api",
+//             { term: request.term }, // Pass the term as a query parameter
+//             function (data) {
+//                 var items = []; // Array to store the autocomplete suggestions
+//                 $.each(data, function (index, item) {
+//                     items.push(item.description); // Extract the relevant field from the response
+//                 });
+//                 response(items);
+//             }
+//         );
+//     };
+
+//     var selectItem = function (event, ui) {
+//         $("#part-description-field").val(ui.item.value);
+
+//         // Make an additional AJAX request to retrieve the description based on the selected value
+//         $.getJSON(
+//             "http://localhost:5000/api/auto_complete_part_no_api",
+//             { pname: ui.item.value }, // Pass the selected value as a query parameter
+//             function (data) {
+//                 $("#part-number-field").val(data.part_no);
+//             }
+//         );
+//     };
+
+//     $("#part-description-field").autocomplete({
+//         source: getData,
+//         select: selectItem,
+//         minLength: 3
+// 		});
+// 	});
 
 });
   
-  
+
+
+
+
+

@@ -12,8 +12,8 @@ password = 'Cannon45!'
 # Establish the connection
 conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 
-@app.route('/api/auto_complete_part_no', methods=['GET'])
-def get_auto_complete_part_no():
+@app.route('/api/auto_complete_filter_part_no', methods=['GET'])
+def get_auto_complete_filter_part_no():
     search_term = request.args.get('term')  # Get the search term from the query parameters
     
     if search_term is None:
@@ -37,8 +37,8 @@ def get_auto_complete_part_no():
     
     return jsonify(results)
 
-@app.route('/api/auto_complete_part_name', methods=['GET'])
-def get_auto_complete_part_name():
+@app.route('/api/auto_complete_filter_part_name', methods=['GET'])
+def get_auto_complete_filter_part_name():
     selected_pname = request.args.get('pname')  # Get the selected value from the query parameters
 
     if selected_pname is None:

@@ -1,5 +1,6 @@
 from flask import Flask
 from auto_complete import get_auto_complete_part_no, get_auto_complete_part_name
+from auto_complete_filter import get_auto_complete_filter_part_no, get_auto_complete_filter_part_name
 from get_crud import get_data
 from update_crud import update_data
 from post_crud import post_data
@@ -41,6 +42,16 @@ def get_auto_complete_part_no_api():
 def get_auto_complete_part_name_api():
     return get_auto_complete_part_name()
 
+
+# API endpoint using the get_auto_complete_filter_part_no function
+@app.route('/api/auto_complete_filter_part_no_api', methods=['GET'])
+def get_auto_complete_filter_part_no_api():
+    return get_auto_complete_filter_part_no()
+
+# API endpoint using the get_auto_complete_filter_part_name function
+@app.route('/api/auto_complete_filter_part_name_api', methods=['GET'])
+def get_auto_complete_filter_part_name_api():
+    return get_auto_complete_filter_part_name()
 
 
 

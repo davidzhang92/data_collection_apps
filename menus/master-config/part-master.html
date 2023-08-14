@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/datatable-pagination-crud.css">
+    <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
 
     <link rel="stylesheet" href="../../styles/part-master.css">
     <link rel="stylesheet" href="../../styles/side-menu.css">
@@ -21,9 +22,11 @@
 
 
     <script src="/scripts/jquery/jquery.js"></script>
+    <script src="/scripts/jquery/jquery-ui.min.js"></script> 
     <script src="/scripts/bootstrap.min.js"></script>
     <script src="/scripts/part-master.js"></script>
-    <!-- <script src="/scripts/patch-request.js"></script> -->
+  
+ 
     <!-- from template -->
     
   </head>
@@ -80,43 +83,62 @@
    <!-- from template -->
 <div class="container">
   <div class="table-wrapper">
-      <div class="table-title">
-          <div class="row">
-              <div class="col-sm-6">
-      <h2> <b>Part Master</b></h2>
+    <div class="table-title">
+        <div class="row">
+            <div class="col-sm-6">
+    <h2> <b>Part Master</b></h2>
+  </div>
+  <!-- <div class="col-sm-6">
+    <a href="#addPartModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Part</span></a>
+    <a href="#deletePartModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
+  </div> -->
+        </div>
     </div>
-    <div class="col-sm-6">
-      <a href="#addPartModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Part</span></a>
-      <a href="#deletePartModal" class="btn btn-danger" data-toggle="modal"><i class="material-icons">&#xE15C;</i> <span>Delete</span></a>						
+
+    <!-- part field -->
+    <div class='part-search'>
+      <label id="part-number-label" for="part-number-field">
+        <span class="product-field-span">Part Number</span>
+        <input type="text" id="part-number-field" placeholder="Enter Part Number" />
+      </label>
+
+      <label id="part-description-label" for="part-description-field">
+        <span class="product-field-span">Part Description</span>
+        <input type="text" id="part-description-field" placeholder="Enter Part Description"/>
+      </label>
     </div>
-          </div>
-      </div>
-      <table class="table table-striped table-hover">
-          <thead>
-              <tr>
-      <th>
-        <span class="custom-checkbox">
-          <input type="checkbox" id="selectAll">
-          <label for="selectAll"></label>
-        </span>
-      </th>
-                  <th>Part No.</th>
-                  <th>Part Description</th>
-      <!-- <th>Address</th> -->
-                  <th>Last Modified Date</th>
-                  <th>Actions</th>
-              </tr>
-          </thead>
-          <tbody>
+    <div class="col-sm-6" id="add-delete-action-combo">
+      <a href="#addPartModal" class="btn btn-success" id="add-new-part" data-toggle="modal"><i class="material-icons" id="add-part-button">&#xE147;</i> <span>Add New Part</span></a>
+      <a href="#deletePartModal" class="btn btn-danger" id="delete-part" data-toggle="modal"><i class="material-icons"id="delete-part-button">&#xE15C;</i> <span>Delete</span></a>						
+    </div>
+      <!-- part field -->
+
+    <table class="table table-striped table-hover" id="table-pagination-part-master">
+        <thead>
+            <tr>
+    <th>
+      <span class="custom-checkbox">
+        <input type="checkbox" id="selectAll">
+        <label for="selectAll"></label>
+      </span>
+    </th>
+                <th>Part No.</th>
+                <th>Part Description</th>
+    <!-- <th>Address</th> -->
+                <th>Last Modified Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
   <!-- dynamically updated -->
-          </tbody>
-      </table>
-<div class="clearfix">
-          <div class="hint-text">Showing <b>0</b> out of <b>0</b> entries</div>
-          <ul class="pagination">
- <!-- dynamically updated -->
-          </ul>
-      </div>
+        </tbody>
+    </table>
+    <div class="clearfix">
+        <div class="hint-text">Showing <b>0</b> out of <b>0</b> entries</div>
+        <ul class="pagination">
+<!-- dynamically updated -->
+        </ul>
+    </div>
   </div>
 </div>
 <!-- Add Modal HTML -->
