@@ -3,28 +3,28 @@ $(document).ready(function () {
 	$('[data-toggle="tooltip"]').tooltip();
   
 	// Function to update the "Select All" checkbox state
-function updateSelectAllCheckbox() {
-	var allCheckboxes = $('table tbody input[type="checkbox"]');
-	var checkedCount = allCheckboxes.filter(':checked').length;
-	var selectAllCheckbox = $("#selectAll");
-  
-	if (checkedCount === allCheckboxes.length) {
-	  selectAllCheckbox.prop("checked", true);
-	} else {
-	  selectAllCheckbox.prop("checked", false);
+	function updateSelectAllCheckbox() {
+		var allCheckboxes = $('table tbody input[type="checkbox"]');
+		var checkedCount = allCheckboxes.filter(':checked').length;
+		var selectAllCheckbox = $("#selectAll");
+	
+		if (checkedCount === allCheckboxes.length) {
+		selectAllCheckbox.prop("checked", true);
+		} else {
+		selectAllCheckbox.prop("checked", false);
+		}
 	}
-  }
-	// Select/Deselect checkboxes
-	$("#selectAll").click(function () {
-		var isChecked = this.checked;
-		$('table tbody input[type="checkbox"]').each(function () {
-		  this.checked = isChecked;
+		// Select/Deselect checkboxes
+		$("#selectAll").click(function () {
+			var isChecked = this.checked;
+			$('table tbody input[type="checkbox"]').each(function () {
+			this.checked = isChecked;
+			});
 		});
-	  });
-	  
-	  $('table').on('click', 'tbody input[type="checkbox"]', function() {
-		updateSelectAllCheckbox();
-	  });
+		
+		$('table').on('click', 'tbody input[type="checkbox"]', function() {
+			updateSelectAllCheckbox();
+		});
   
 	// Function to fetch data from the backend API
 	function fetchData() {
@@ -305,76 +305,79 @@ var row = `<tr data-id="${part.id}">
 
 // auto-complete for Part Number, populate Part Description
 
-$(function () {
-    var getData = function (request, response) {
-        $.getJSON(
-            "http://localhost:5000/api/auto_complete_filter_part_no_api",
-            { term: request.term }, // Pass the term as a query parameter
-            function (data) {
-                var items = []; // Array to store the autocomplete suggestions
-                $.each(data, function (index, item) {
-                    items.push(item.part_no); // Extract the relevant field from the response
-                });
-                response(items);
-            }
-        );
-    };
+	$(function () {
+		var getData = function (request, response) {
+			$.getJSON(
+				"http://localhost:5000/api/auto_complete_filter_part_no_api",
+				// { term: request.term }, // Pass the term as a query parameter
+				{ search_part_no: request.term }, // Pass the term as a query parameter
+				function (data) {
+					var items = []; // Array to store the autocomplete suggestions
+					$.each(data, function (index, item) {
+						items.push(item.part_no); // Extract the relevant field from the response
+					});
+					response(items);
+				}
+			);
+		};
 
-    var selectItem = function (event, ui) {
-        $("#part-number-field").val(ui.item.value);
+		var selectItem = function (event, ui) {
+			$("#part-number-field").val(ui.item.value);
 
-        // Make an additional AJAX request to retrieve the description based on the selected value
-        $.getJSON(
-            "http://localhost:5000/api/auto_complete_filter_part_name_api",
-            { pname: ui.item.value }, // Pass the selected value as a query parameter
-            function (data) {
-                $("#part-description-field").val(data.description);
-            }
-        );
-    };
+			// Make an additional AJAX request to retrieve the description based on the selected value
+			$.getJSON(
+				"http://localhost:5000/api/auto_complete_filter_part_name_for_part_no_api",
+				{ search_part_description: ui.item.value }, // Pass the selected value as a query parameter
+				function (data) {
+					$("#part-description-field").val(data.part_description);
+				}
+			);
+		};
 
-    $("#part-number-field").autocomplete({
-        source: getData,
-        select: selectItem,
-        minLength: 3
+		$("#part-number-field").autocomplete({
+			source: getData,
+			select: selectItem,
+			minLength: 3
+			});
 		});
-	});
 
-// auto-complete for  Part Description, populate Part Number
-// $(function () {
-//     var getData = function (request, response) {
-//         $.getJSON(
-//             "http://localhost:5000/api/auto_complete_part_name_api",
-//             { term: request.term }, // Pass the term as a query parameter
-//             function (data) {
-//                 var items = []; // Array to store the autocomplete suggestions
-//                 $.each(data, function (index, item) {
-//                     items.push(item.description); // Extract the relevant field from the response
-//                 });
-//                 response(items);
-//             }
-//         );
-//     };
+	// auto-complete for  Part Description, populate Part Number
 
-//     var selectItem = function (event, ui) {
-//         $("#part-description-field").val(ui.item.value);
+	$(function () {
+		var getData = function (request, response) {
+			$.getJSON(
+				"http://localhost:5000/api/auto_complete_filter_part_name_api",
+				{ search_part_description: request.term }, // Pass the term as a query parameter
+				function (data) {
+					var items = []; // Array to store the autocomplete suggestions
+					$.each(data, function (index, item) {
+						items.push(item.part_description); // Extract the relevant field from the response
+					});
+					response(items);
+				}
+			);
+		};
 
-//         // Make an additional AJAX request to retrieve the description based on the selected value
-//         $.getJSON(
-//             "http://localhost:5000/api/auto_complete_part_no_api",
-//             { pname: ui.item.value }, // Pass the selected value as a query parameter
-//             function (data) {
-//                 $("#part-number-field").val(data.part_no);
-//             }
-//         );
-//     };
+		var selectItem = function (event, ui) {
+			$("#part-description-field").val(ui.item.value);
 
-//     $("#part-description-field").autocomplete({
-//         source: getData,
-//         select: selectItem,
-//         minLength: 3
-// 		});
-// 	});
+			// Make an additional AJAX request to retrieve the part no based on the selected value
+			$.getJSON(
+				"http://localhost:5000/api/auto_complete_filter_part_no_for_part_name_api",
+				{ search_part_no: ui.item.value }, // Pass the selected value as a query parameter
+				function (data) {
+					$("#part-number-field").val(data.part_no);
+				}
+			);
+		};
+
+		$("#part-description-field").autocomplete({
+			source: getData,
+			select: selectItem,
+			minLength: 3
+			});
+		});
+
 
 });
   

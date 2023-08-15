@@ -294,6 +294,24 @@ button.close-white{
         border: 1px solid #000;
     }
 
+    #search-part-button {
+
+        text-align: center;
+        font-size: 28px;
+        cursor: pointer;
+        vertical-align: middle;
+        }
+    
+    #search-part {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+    
+        }
+        
 #add-delete-action-combo{ 
     position:relative;
     width: 330px; 
@@ -302,10 +320,12 @@ button.close-white{
     line-height: inherit;
     font-family: inherit;
     color: #000;
-    left:330px;
-    top: 20px;
+    left: 210px;
+    top: 25px;
     cursor: pointer;
     }
+
+
 
 
     #add-part-button {
@@ -324,7 +344,8 @@ button.close-white{
         vertical-align: middle;
         }
 
-    #add-new-part {
+
+    #add-part {
         font-size: 18px;
         font-weight: 400;
         line-height: 1.42857143;
