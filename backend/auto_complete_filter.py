@@ -123,14 +123,27 @@ def get_auto_complete_filter_part_no_for_part_name():
 # API endpoint filtering after clicking Search button
 # --------------------
 
-@app.route('/api/get-data', methods=['GET'])
-def get_data():
+@app.route('/api/filter_search_part_master', methods=['GET'])
+def get_filter_search_part_master():
+    selected_part_no = request.args.get('search_part_no')  # Get the selected value from the query parameters
+    selected_part_description = request.args.get('search_part_description')  # Get the selected value for part description
+
+
+    if selected_part_no is None and selected_part_description is None:
+        return jsonify({'error': 'Search parameters not provided'})
+    
+  
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the part_master table
-    query = "SELECT top 10 id, part_no, part_description, CASE WHEN modified_date >= created_date THEN modified_date ELSE created_date END AS latest_date FROM part_master WHERE is_deleted = 0;"
+    query = "SELECT  id, part_no, part_description, CASE WHEN modified_date >= created_date THEN modified_date ELSE created_date END AS latest_date FROM part_master WHERE  part_no LIKE ? and part_description LIKE ? and is_deleted = 0;"
+
+    # Construct the parameter values with wildcards
+    part_no_param = f"%{selected_part_no}%"
+    part_description_param = f"%{selected_part_description}%"
+
     
-    cursor.execute(query)
+    cursor.execute(query, (part_no_param, part_description_param))
     rows = cursor.fetchall()
     
     # Convert the result into a list of dictionaries for JSON serialization
