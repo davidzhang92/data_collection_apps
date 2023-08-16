@@ -311,6 +311,11 @@ button.close-white{
         cursor: pointer;
     
         }
+    .btn-info {
+        color: #fff;
+        background-color: #2fb5dd;
+        border-color: #1aa4ce;
+    }
         
 #add-delete-action-combo{ 
     position:relative;
@@ -343,7 +348,14 @@ button.close-white{
         cursor: pointer;
         vertical-align: middle;
         }
+    
+    #batch-delete-part-button {
 
+        text-align: center;
+        font-size: 28px;
+        cursor: pointer;
+        vertical-align: middle;
+        }
 
     #add-part {
         font-size: 18px;
@@ -355,6 +367,15 @@ button.close-white{
 
     }
     #delete-part {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+
+    }
+    #batch-delete-part {
         font-size: 18px;
         font-weight: 400;
         line-height: 1.42857143;

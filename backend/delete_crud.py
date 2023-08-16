@@ -19,20 +19,29 @@ def delete_data():
         data = request.get_json()
 
         # Extract required fields from the payload
-        id = data['id']
+        ids = data.get('ids')  # Get the list of IDs if present, otherwise None
+        id_single = data.get('id')  # Get the single ID if present, otherwise None
+
+        if ids is None and id_single is None:
+            return jsonify({'message': 'No IDs provided for deletion.'}), 400
 
         cursor = conn.cursor()
 
-        # Construct the SQL query to update the part_no and part_description for the given id
-        query = "UPDATE part_master SET deleted_date = getdate(), is_deleted = 1 WHERE id = ?"
+        if ids:
+            # Batch delete using the IN clause
+            placeholders = ', '.join(['?'] * len(ids))
+            query = f"UPDATE part_master SET deleted_date = getdate(), is_deleted = 1 WHERE id IN ({placeholders})"
+            cursor.execute(query, tuple(ids))
+        elif id_single:
+            # Single record delete
+            query = "UPDATE part_master SET deleted_date = getdate(), is_deleted = 1 WHERE id = ?"
+            cursor.execute(query, (id_single,))
 
-        # Execute the SQL query
-        cursor.execute(query, (id))
         conn.commit()
 
         # Check if any rows were affected by the update operation
         if cursor.rowcount == 0:
-            return jsonify({'message': 'No data found for the given id.'}), 404
+            return jsonify({'message': 'No data found for the given id(s).'}), 404
 
         return jsonify({'message': 'Data updated successfully.'}), 200
 

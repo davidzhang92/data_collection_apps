@@ -1,36 +1,37 @@
 $(document).ready(function () {
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
-  
-	// Function to update the "Select All" checkbox state
-	function updateSelectAllCheckbox() {
-		var allCheckboxes = $('table tbody input[type="checkbox"]');
-		var checkedCount = allCheckboxes.filter(':checked').length;
-		var selectAllCheckbox = $("#selectAll");
 	
-		if (checkedCount === allCheckboxes.length) {
-		selectAllCheckbox.prop("checked", true);
-		} else {
-		selectAllCheckbox.prop("checked", false);
-		}
-	}
-		// Select/Deselect checkboxes
-		$("#selectAll").click(function () {
-			var isChecked = this.checked;
-			$('table tbody input[type="checkbox"]').each(function () {
-			this.checked = isChecked;
-			});
-		});
+	
+  
+	// // Function to update the "Select All" checkbox state
+	// function updateSelectAllCheckbox() {
+	// 	var allCheckboxes = $('table tbody input[type="checkbox"]');
+	// 	var checkedCount = allCheckboxes.filter(':checked').length;
+	// 	var selectAllCheckbox = $("#selectAll");
+	
+	// 	if (checkedCount === allCheckboxes.length) {
+	// 	selectAllCheckbox.prop("checked", true);
+	// 	} else {
+	// 	selectAllCheckbox.prop("checked", false);
+	// 	}
+	// }
+	// 	// Select/Deselect checkboxes
+	// 	$("#selectAll").click(function () {
+	// 		var isChecked = this.checked;
+	// 		$('table tbody input[type="checkbox"]').each(function () {
+	// 		this.checked = isChecked;
+	// 		});
+	// 	});
 		
-		$('table').on('click', 'tbody input[type="checkbox"]', function() {
-			updateSelectAllCheckbox();
-		});
+	// 	$('table').on('click', 'tbody input[type="checkbox"]', function() {
+	// 		updateSelectAllCheckbox();
+	// 	});
   
 
-	// Add a global variable to store the filtered data
-	let filteredData = [];
 
 	// Function to fetch data from the backend API
+	let filteredData = [];
 	function fetchData() {
 	// Use filteredData if it's not empty, otherwise fetch all data
 	const apiEndpoint = filteredData.length > 0 ? 'http://localhost:5000/api/filter_search_part_master_api' : 'http://localhost:5000/api/get_data_api';
@@ -56,27 +57,27 @@ $(document).ready(function () {
 		const partNumber = $('#part-number-field').val().trim();
 		const partDescription = $('#part-description-field').val().trim();
 	
-		if (partNumber && partDescription) {
+		if (partNumber || partDescription) {
 		// Fetch data using the filter API
 		$.ajax({
 			url: 'http://localhost:5000/api/filter_search_part_master_api',
 			type: 'GET',
 			data: {
-			search_part_no:partNumber,
-			search_part_description: partDescription
+				search_part_no:partNumber,
+				search_part_description: partDescription
 			},
 			success: function (data) {
-			filteredData = data; // Store the filtered data
-			renderData(filteredData); // Render the filtered data
+				filteredData = data; // Store the filtered data
+				renderData(filteredData); // Render the filtered data
 			},
 			error: function (error) {
-			console.error('Error fetching filtered data:', error);
+				console.error('Error fetching filtered data:', error);
 			},
 		});
 		} else {
 		// If both search fields are empty, reset filtering
-		filteredData = [];
-		fetchData(); // Fetch all data
+			filteredData = [];
+			fetchData(); // Fetch all data
 		}
 	});  
 	// Function to render data in the table
@@ -114,8 +115,8 @@ function renderData(data) {
 var row = `<tr data-id="${part.id}">
 		<td>
 		  <span class="custom-checkbox">
-			<input type="checkbox"  id="checkbox-${part.id}" >
-			<label for="checkbox-${part.id}"></label>
+			<input type="checkbox"  id="${part.id}">
+			<label for="${part.id}"></label>
 		  </span>
 		</td>
 		<td>${part.part_no}</td>
@@ -135,50 +136,6 @@ var row = `<tr data-id="${part.id}">
   }
   
   
-	// // Handle pagination clicks
-	// $('.pagination .page-link').click(function (e) {
-	//   e.preventDefault();
-	//   var pageNumber = $(this).text();
-	//   fetchPageData(pageNumber);
-	// });
-  
-	// // Function to fetch data for a specific page number
-	// function fetchPageData(pageNumber) {
-	//   $.ajax({
-	// 	url: 'your_api_endpoint_here?page=' + pageNumber, // Replace with the actual API endpoint
-	// 	type: 'GET',
-	// 	success: function (data) {
-	// 	  renderData(data); // Call the function to render the data in the table
-	// 	  updateHintText(data.length); // Update the hint-text with the total entries
-	// 	},
-	// 	error: function (error) {
-	// 	  console.error('Error fetching data:', error);
-	// 	},
-	//   });
-	// }
-  
-	// // Function to update the hint-text showing the number of entries
-	// function updateHintText(totalEntries) {
-	// 	var entriesPerPage = 10; // Assuming you display 5 entries per page
-	// 	var currentPage = $('.pagination .active').text();
-	// 	var startEntry = (currentPage - 1) * entriesPerPage + 1;
-	// 	var endEntry = Math.min(currentPage * entriesPerPage, totalEntries);
-	
-	// 	// Handle cases when the API request fails or no data is received
-	// 	if (isNaN(totalEntries)) {
-	// 	  totalEntries = 0;
-	// 	}
-	// 	if (isNaN(startEntry) || isNaN(endEntry)) {
-	// 	  startEntry = 0;
-	// 	  endEntry = 0;
-	// 	}
-	
-	// 	$('.hint-text').html(`Showing <b>${startEntry}</b> out of <b>${endEntry}</b> entries`);
-	//   }
-  
-	// // Fetch data for the first page when the document is ready
-	// fetchData();
- 
 
 // Handle edit and PATCH request
 
@@ -339,6 +296,9 @@ var row = `<tr data-id="${part.id}">
 		});
 	});
 
+// Handle batch delete and DELETE request
+
+
 //handling auto-complete for Part Number/Description
 
 // auto-complete for Part Number, populate Part Description
@@ -416,7 +376,12 @@ var row = `<tr data-id="${part.id}">
 			});
 		});
 
-
+	// Fetch data on page load if both search fields are empty
+    const initialPartNumber = $('#part-number-field').val().trim();
+    const initialPartDescription = $('#part-description-field').val().trim();
+    if (!initialPartNumber && !initialPartDescription) {
+        fetchData();
+    }	
 });
   
 
