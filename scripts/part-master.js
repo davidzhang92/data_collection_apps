@@ -2,32 +2,31 @@ $(document).ready(function () {
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
 	
-	
-  
-	// // Function to update the "Select All" checkbox state
-	// function updateSelectAllCheckbox() {
-	// 	var allCheckboxes = $('table tbody input[type="checkbox"]');
-	// 	var checkedCount = allCheckboxes.filter(':checked').length;
-	// 	var selectAllCheckbox = $("#selectAll");
-	
-	// 	if (checkedCount === allCheckboxes.length) {
-	// 	selectAllCheckbox.prop("checked", true);
-	// 	} else {
-	// 	selectAllCheckbox.prop("checked", false);
-	// 	}
-	// }
-	// 	// Select/Deselect checkboxes
-	// 	$("#selectAll").click(function () {
-	// 		var isChecked = this.checked;
-	// 		$('table tbody input[type="checkbox"]').each(function () {
-	// 		this.checked = isChecked;
-	// 		});
-	// 	});
+		// Function to update the "Select All" checkbox state
+		function updateSelectAllCheckbox() {
+			var allCheckboxes = $('table tbody input[type="checkbox"]');
+			var checkedCount = allCheckboxes.filter(':checked').length;
+			var selectAllCheckbox = $("#selectAll");
 		
-	// 	$('table').on('click', 'tbody input[type="checkbox"]', function() {
-	// 		updateSelectAllCheckbox();
-	// 	});
+			if (checkedCount === allCheckboxes.length) {
+			selectAllCheckbox.prop("checked", true);
+			} else {
+			selectAllCheckbox.prop("checked", false);
+			}
+		}
+			// Select/Deselect checkboxes
+			$("#selectAll").click(function () {
+				var isChecked = this.checked;
+				$('table tbody input[type="checkbox"]').each(function () {
+				this.checked = isChecked;
+				});
+			});
+			
+			$('table').on('click', 'tbody input[type="checkbox"]', function() {
+				updateSelectAllCheckbox();
+			});
   
+
 
 
 	// Function to fetch data from the backend API
@@ -45,7 +44,6 @@ $(document).ready(function () {
 		} else {
 			renderData(data); // Render all data
 		}
-		updateHintText(data.length);
 		},
 		error: function (error) {
 		console.error('Error fetching data:', error);
@@ -115,7 +113,7 @@ function renderData(data) {
 var row = `<tr data-id="${part.id}">
 		<td>
 		  <span class="custom-checkbox">
-			<input type="checkbox"  id="${part.id}">
+			<input type="checkbox" class="row-checkbox" id="${part.id}">
 			<label for="${part.id}"></label>
 		  </span>
 		</td>
@@ -132,7 +130,7 @@ var row = `<tr data-id="${part.id}">
 	});
   
 	// Update the hint-text with the total entries
-	updateHintText(data.length);
+	// todo 
   }
   
   
@@ -284,7 +282,7 @@ var row = `<tr data-id="${part.id}">
 				console.log(response);
 
 				// Close the edit dialog box
-				$('#deletePartModal').modal('hide');
+				$('#batchDeletePartModal').modal('hide');
 
 				// Refresh the page
 				location.reload();
@@ -298,6 +296,54 @@ var row = `<tr data-id="${part.id}">
 
 // Handle batch delete and DELETE request
 
+// Get all checked checkboxes
+var checkedCheckboxes = $('input.row-checkbox:checked');
+
+// Create an array to store the IDs of the rows to be deleted
+var idsToDelete = [];
+
+// Loop through each checked checkbox and add its ID to the array
+checkedCheckboxes.each(function() {
+    idsToDelete.push($(this).attr('id'));
+});
+
+// console.log(idsToDelete);
+
+// Send the AJAX request to delete the rows
+$('#submit-batch-data-delete').on('click', function(event) {
+	event.preventDefault();
+	// Get all checked checkboxes
+	var checkedCheckboxes = $('input.row-checkbox:checked');
+
+	// Create an array to store the IDs of the rows to be deleted
+	var idsToDelete = [];
+
+	// Loop through each checked checkbox and add its ID to the array
+	checkedCheckboxes.each(function() {
+		idsToDelete.push($(this).attr('id'));
+	});
+
+	// console.log(idsToDelete);
+	// Get the data-id attribute of the row associated with the clicked button
+	$.ajax({
+		url: 'http://localhost:5000/api/delete_data_api',
+		type: 'DELETE',
+		data: JSON.stringify({ ids: idsToDelete }),
+		contentType: 'application/json',
+		success: function(response) {
+			// Handle successful deletion here
+			console.log(response);
+					// Refresh the page
+			location.reload();
+		},
+		error: function(xhr, status, error) {
+			// Handle error here
+			console.error(error);
+		// Refresh the page
+		location.reload();
+		}
+	});
+});
 
 //handling auto-complete for Part Number/Description
 
