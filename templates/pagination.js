@@ -1,62 +1,62 @@
-// get reference to table and pagination controls
-const table = document.getElementById("myTable");
-const paginationControls = document.getElementById("paginationControls");
+// source : https://codepen.io/dipsichawan/pen/poyxxVY
 
-// number of rows to display per page
-const rowsPerPage = 5;
+var total_records = 100;
+var perpage = 10;
+var total_pages = total_records / perpage;
 
-// create pagination
-createPagination(table, rowsPerPage, paginationControls);
-
-// handle click events for pagination controls
-paginationControls.addEventListener("click", function(event) {
-  event.preventDefault();
-  const target = event.target;
-  if (target.tagName === "A") {
-    const page = target.textContent;
-    showPage(table, page, rowsPerPage);
-  }
+$(document).ready(function(){
+	var pagenum = 1;
+    createpagination(pagenum);
+	fetch_data(perpage,pagenum);
 });
 
-// handle click events for edit and delete buttons
-table.addEventListener("click", function(event) {
-  event.preventDefault();
-  const target = event.target;
-  if (target.className === "btn-edit") {
-    // handle edit button click
-  } else if (target.className === "btn-delete") {
-    // handle delete button click
-  }
-});
 
-// create pagination
-function createPagination(table, rowsPerPage, paginationControls) {
-  // get total number of rows
-  const rowCount = table.rows.length;
-
-  // calculate number of pages needed
-  const pageCount = Math.ceil(rowCount / rowsPerPage);
-
-  // create pagination links
-  for (let i = 0; i < pageCount; i++) {
-    const btn = document.createElement("a");
-    btn.href = "#";
-    btn.textContent = i + 1;
-    paginationControls.appendChild(btn);
-  }
+function createpagination(pagenum){
+		$("#page_container").html("");
+		
+		if(pagenum == 1){
+			$("#page_container").append("<li class='page-item disabled previous'><a href='javascript:void(0)' class='page-link'><</a></li>");
+		}else{
+			$("#page_container").append("<li class='page-item' onclick='makecall("+(pagenum-1)+")'><a href='javascript:void(0)' class='page-link'><</a></li>");
+		}
+		
+		var i=0;
+		for(i=0; i <= 2; i++){
+			if(pagenum == (pagenum+i)){
+				$("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>"+(pagenum+i)+"</a></li>");
+			}else{
+				if((pagenum+i)<=total_pages){
+                    $("#page_container").append("<li class='page-item' onclick='makecall("+(pagenum+i)+")'><a href='javascript:void(0)' class='page-link'>"+(pagenum+i)+"</a></li>");					
+				}
+			}
+		}
+		
+		if(pagenum == total_pages){
+			$("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>></a></li>");
+		}else{
+			$("#page_container").append("<li class='page-item next' onclick='makecall("+(pagenum+1)+")'><a href='javascript:void(0)' class='page-link'>></a></li>");
+		}
 }
 
-// show specified page
-function showPage(table, page, rowsPerPage) {
-  // hide all rows
-  for (let i = 1; i < table.rows.length; i++) {
-    table.rows[i].style.display = "none";
-  }
+function fetch_data(perpage, pagenum){
+	
+    $.ajax({
+        type:'get',
+        url:'https://api.wordpress.org/plugins/info/1.2/?action=query_plugins&request[per_page]=10&request[page]='+pagenum,
+        dataType:'json',
+        success:function(data){
+			$(".100_list_container").html("");
+            $.each( data.plugins, function( key, value ) {
+                $(".100_list_container").append("<li class='list-group-item list-item-contains'><div><h5>"+value.name+"</h5>"+value.version+"</div></li>");
+            });
+        },
+        error:function(){
+            $(".100_list_container").html("error");
+        }
+    });
+}
 
-  // show rows for specified page
-  const startRow = (page - 1) * rowsPerPage;
-  const endRow = startRow + rowsPerPage;
-  for (let i = startRow; i < endRow; i++) {
-    table.rows[i].style.display = "table-row";
-  }
+function makecall(pagenum){
+	createpagination(pagenum);
+	fetch_data(perpage,pagenum);
 }

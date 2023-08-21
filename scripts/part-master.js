@@ -26,8 +26,8 @@ $(document).ready(function () {
 				updateSelectAllCheckbox();
 			});
   
-
-
+//pagination and hint text
+//todo
 
 	// Function to fetch data from the backend API
 	let filteredData = [];
@@ -129,8 +129,7 @@ var row = `<tr data-id="${part.id}">
 	  tableBody.append(row);
 	});
   
-	// Update the hint-text with the total entries
-	// todo 
+
   }
   
   
