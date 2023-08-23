@@ -1,154 +1,76 @@
-$(document).ready(function() {
-  let currentPage = 1;
-  const totalEntries = 25; // Replace with your actual total entry count
+// source : https://codepen.io/dipsichawan/pen/poyxxVY
 
-  function updatePagination() {
-    $('#prev-page').toggleClass('disabled', currentPage === 1);
-    const totalPages = Math.ceil(parseInt($('#total-entries').text()) / 10);
+var entriesPerPage = 10;
+var currentPage = 1;
+var totalEntries = 0; // Initialize with 0 initially
+var totalPages = 0;
 
-    const paginationContainer = $('#dynamic-pagination');
-    paginationContainer.empty();
-
-    paginationContainer.append('<li class="page-item disabled"><a href="#">Previous</a></li>');
-
-    for (let i = Math.max(currentPage - 2, 1); i <= Math.min(currentPage + 2, totalPages); i++) {
-      const isActive = i === currentPage ? ' active' : '';
-      paginationContainer.append(`<li class="page-item${isActive}"><a href="#" class="page-link">${i}</a></li>`);
-    }
-
-    paginationContainer.append('<li class="page-item"><a href="#" class="page-link">Next</a></li>');
-  }
-
-  updatePagination();
-
-  $('.pagination').on('click', '.page-link', function() {
-    const pageNumber = parseInt($(this).text());
-    
-    if (!isNaN(pageNumber) && pageNumber !== currentPage) {
-      currentPage = pageNumber;
-      updatePagination();
-
-      // Perform AJAX call based on the page clicked
-      if (pageNumber === currentPage - 1) {
-        $.ajax({
-          url: 'http://localhost:5000/api/previous_10_records_api',
-          type: 'GET',
-          data: {
-            currentPage: currentPage
-          },
-          success: function (data) {
-            filteredData = data;
-            renderData(filteredData);
-          },
-          error: function (error) {
-            console.error('Error fetching previous 10 records:', error);
-          },
-        });
-      } else if (pageNumber === currentPage - 2) {
-        $.ajax({
-          url: 'http://localhost:5000/api/previous_20_records_api',
-          type: 'GET',
-          data: {
-            currentPage: currentPage
-          },
-          success: function (data) {
-            filteredData = data;
-            renderData(filteredData);
-          },
-          error: function (error) {
-            console.error('Error fetching previous 20 records:', error);
-          },
-        });
-      } else if (pageNumber === currentPage + 1) {
-        $.ajax({
-          url: 'http://localhost:5000/api/next_10_records_api',
-          type: 'GET',
-          data: {
-            currentPage: currentPage
-          },
-          success: function (data) {
-            filteredData = data;
-            renderData(filteredData);
-          },
-          error: function (error) {
-            console.error('Error fetching next 10 records:', error);
-          },
-        });
-      } else if (pageNumber === currentPage + 2) {
-        $.ajax({
-          url: 'http://localhost:5000/api/next_20_records_api',
-          type: 'GET',
-          data: {
-            currentPage: currentPage
-          },
-          success: function (data) {
-            filteredData = data;
-            renderData(filteredData);
-          },
-          error: function (error) {
-            console.error('Error fetching next 20 records:', error);
-          },
-        });
-      } else {
-        $.ajax({
-          url: 'http://localhost:5000/api/filter_search_part_master_api',
-          type: 'GET',
-          data: {
-            search_part_no: partNumber,
-            search_part_description: partDescription
-          },
-          success: function (data) {
-            filteredData = data;
-            renderData(filteredData);
-          },
-          error: function (error) {
-            console.error('Error fetching filtered data:', error);
-          },
-        });
-      }
-    }
-  });
-
-  $('#prev-page').on('click', function() {
-    if (currentPage > 1) {
-      currentPage--;
-      updatePagination();
-      $.ajax({
-        url: 'http://localhost:5000/api/previous_10_records_api',
-        type: 'GET',
-        data: {
-          currentPage: currentPage
-        },
-        success: function (data) {
-          filteredData = data;
-          renderData(filteredData);
-        },
-        error: function (error) {
-          console.error('Error fetching previous 10 records:', error);
-        },
-      });
-    }
-  });
-
-  $('#next-page').on('click', function() {
-    const totalPages = Math.ceil(parseInt($('#total-entries').text()) / 10);
-    if (currentPage < totalPages) {
-      currentPage++;
-      updatePagination();
-      $.ajax({
-        url: 'http://localhost:5000/api/next_10_records_api',
-        type: 'GET',
-        data: {
-          currentPage: currentPage
-        },
-        success: function (data) {
-          filteredData = data;
-          renderData(filteredData);
-        },
-        error: function (error) {
-          console.error('Error fetching next 10 records:', error);
-        },
-      });
-    }
-  });
+$(document).ready(function(){
+    fetchData();
 });
+
+function fetchData(){
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:5000/api/pagination_entries_api',
+        dataType: 'json',
+        success: function(response){
+            totalEntries = response[0].count; // Update the global variable with the API response value
+            totalPages = Math.ceil(totalEntries / entriesPerPage); // Calculate total pages
+            
+            createPagination(currentPage);
+        }
+    });
+}
+
+
+function createPagination(currentPage){
+    $("#page_container").html("");
+
+    // Add the "<<" button to jump to the first page
+    if(currentPage == 1) {
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>&laquo;&laquo;</a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item' onclick='makeCall(1)'><a href='javascript:void(0)' class='page-link'>&laquo;&laquo;</a></li>");
+    }
+    
+    if(currentPage == 1){
+        $("#page_container").append("<li class='page-item disabled previous'><a href='javascript:void(0)' class='page-link'><</a></li>");
+    }else{
+        $("#page_container").append("<li class='page-item' onclick='makeCall(" + (currentPage-1) + ")'><a href='javascript:void(0)' class='page-link'><</a></li>");
+    }
+    
+    var startPage = Math.max(1, currentPage - 2);
+    var endPage = Math.min(totalPages, startPage + 4);
+
+    if (currentPage > totalPages - 3) {
+        endPage = totalPages;
+        startPage = Math.max(1, endPage - 4);
+    }
+
+    for (var page = startPage; page <= endPage; page++) {
+        if (currentPage == page) {
+            $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>" + page + "</a></li>");
+        } else {
+            $("#page_container").append("<li class='page-item' onclick='makeCall(" + page + ")'><a href='javascript:void(0)' class='page-link'>" + page + "</a></li>");
+        }
+    }
+    
+    if (currentPage == totalPages){
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>></a></li>");
+    }else{
+        $("#page_container").append("<li class='page-item next' onclick='makeCall(" + (currentPage+1) + ")'><a href='javascript:void(0)' class='page-link'>></a></li>");
+    }
+
+    // Add the ">>" button to jump to the last page
+    if(currentPage == totalPages) {
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>&raquo;&raquo;</a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item' onclick='makeCall(" + totalPages + ")'><a href='javascript:void(0)' class='page-link'>&raquo;&raquo;</a></li>");
+    }
+}
+
+function makeCall(newPage){
+    currentPage = newPage;
+    createPagination(currentPage);
+}

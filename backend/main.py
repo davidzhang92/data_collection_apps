@@ -5,6 +5,7 @@ from get_crud import get_data
 from update_crud import update_data
 from post_crud import post_data
 from delete_crud import delete_data
+from get_pagination import get_pagination_entries
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -68,8 +69,14 @@ def get_auto_complete_filter_part_no_for_part_name_api():
 def get_filter_search_part_master_api():
     return get_filter_search_part_master()
 
+# --------------------------------
+# pagination section
+# --------------------------------
 
-
+#API endpoint to retrieve number of entries on part master
+@app.route('/api/pagination_entries_api', methods=['GET'])
+def get_pagination_entries_api():
+    return get_pagination_entries()
 
 
 if __name__ == "__main__":

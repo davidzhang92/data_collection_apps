@@ -25,11 +25,9 @@ $(document).ready(function () {
 			$('table').on('click', 'tbody input[type="checkbox"]', function() {
 				updateSelectAllCheckbox();
 			});
-  
-//pagination and hint text
-//todo
 
-	// Function to fetch data from the backend API
+
+	// Function to GET data from the backend API
 	let filteredData = [];
 	function fetchData() {
 	// Use filteredData if it's not empty, otherwise fetch all data
