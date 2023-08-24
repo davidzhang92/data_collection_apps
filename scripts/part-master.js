@@ -1,6 +1,59 @@
 $(document).ready(function () {
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
+
+	// renderData function
+	function renderData(data) {
+		var tableBody = $('table tbody');
+		tableBody.empty(); // Clear the existing table data
+	  
+		if (!Array.isArray(data)) {
+		  console.error('Invalid data format. Expecting an array.');
+		  return;
+		}
+	  
+		if (data.length === 0) {
+		  console.log('No data received from the API.');
+		  return;
+		}
+	  
+		data.forEach(function (part) {
+	
+	// Validation data type 
+		//   if (
+		// 	typeof part.part_no !== 'string' ||
+		// 	typeof part.part_description !== 'string' ||
+		// 	typeof part.modified_date !== 'string'
+		//   ) {
+		// 	console.error('Invalid data format for part:', part);
+		// 	console.log('part_no:', part.part_no);
+		// 	console.log('part_description:', part.part_description);
+		// 	console.log('modified_date:', part.modified_date);
+		// 	return;
+		//   }
+	  
+	
+	var row = `<tr data-id="${part.id}">
+			<td>
+			  <span class="custom-checkbox">
+				<input type="checkbox" class="row-checkbox" id="${part.id}">
+				<label for="${part.id}"></label>
+			  </span>
+			</td>
+			<td>${part.part_no}</td>
+			<td>${part.part_description}</td>
+			<td>${part.latest_date}</td>
+			<td>
+			  <a href="#editPartModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+			  <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+			</td>
+		  </tr>`;
+	
+		  tableBody.append(row);
+		});
+	  
+	
+	  }
 	
 		// Function to update the "Select All" checkbox state
 		function updateSelectAllCheckbox() {
@@ -78,57 +131,7 @@ $(document).ready(function () {
 	});  
 	// Function to render data in the table
 
-function renderData(data) {
-	var tableBody = $('table tbody');
-	tableBody.empty(); // Clear the existing table data
-  
-	if (!Array.isArray(data)) {
-	  console.error('Invalid data format. Expecting an array.');
-	  return;
-	}
-  
-	if (data.length === 0) {
-	  console.log('No data received from the API.');
-	  return;
-	}
-  
-	data.forEach(function (part) {
 
-// Validation data type 
-	//   if (
-	// 	typeof part.part_no !== 'string' ||
-	// 	typeof part.part_description !== 'string' ||
-	// 	typeof part.modified_date !== 'string'
-	//   ) {
-	// 	console.error('Invalid data format for part:', part);
-	// 	console.log('part_no:', part.part_no);
-	// 	console.log('part_description:', part.part_description);
-	// 	console.log('modified_date:', part.modified_date);
-	// 	return;
-	//   }
-  
-
-var row = `<tr data-id="${part.id}">
-		<td>
-		  <span class="custom-checkbox">
-			<input type="checkbox" class="row-checkbox" id="${part.id}">
-			<label for="${part.id}"></label>
-		  </span>
-		</td>
-		<td>${part.part_no}</td>
-		<td>${part.part_description}</td>
-		<td>${part.latest_date}</td>
-		<td>
-		  <a href="#editPartModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-		  <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-		</td>
-	  </tr>`;
-
-	  tableBody.append(row);
-	});
-  
-
-  }
   
   
 
@@ -187,6 +190,7 @@ var row = `<tr data-id="${part.id}">
 
 				// Refresh the page
 				location.reload();
+				// renderData(response.data);
 			},
 			error: function(xhr, status, error) {
 				// handle error response
