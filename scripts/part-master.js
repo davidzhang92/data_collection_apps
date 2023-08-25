@@ -81,26 +81,44 @@ $(document).ready(function () {
 
 
 	// Function to GET data from the backend API
-	let filteredData = [];
-	function fetchData() {
-	// Use filteredData if it's not empty, otherwise fetch all data
-	const apiEndpoint = filteredData.length > 0 ? 'http://localhost:5000/api/filter_search_part_master_api' : 'http://localhost:5000/api/get_data_api';
-
-	$.ajax({
-		url: apiEndpoint,
-		type: 'GET',
-		success: function (data) {
-		if (filteredData.length > 0) {
-			renderData(filteredData); // Render the filtered data
-		} else {
-			renderData(data); // Render all data
-		}
-		},
-		error: function (error) {
-		console.error('Error fetching data:', error);
-		},
+	    // Function to handle the click event on page number links
+		$('.page-number').click(function () {
+			const pageId = $(this).attr('page-id'); // Get the page-id value from the clicked link
+			fetchData(pageId); // Fetch data with the specified page-id
 		});
-	}
+		
+		let filteredData = [];
+		
+		function fetchData(pageId) {
+			const apiEndpoint = filteredData.length > 0 ?
+				'http://localhost:5000/api/filter_search_part_master_api' :
+				'http://localhost:5000/api/get_data_api';
+		
+			const requestData = {
+				page: pageId, // Change the parameter name to 'page'
+			};
+		
+			$.ajax({
+				url: apiEndpoint,
+				type: 'GET',
+				data: requestData, // Send the data object directly
+				contentType: 'application/json',
+				success: function (data) {
+					// Handle success
+					renderData(data);
+				},
+				error: function (error) {
+					console.error('Error fetching data:', error);
+				},
+			});
+		}
+	// Fetch data on page load if both search fields are empty
+    const initialPartNumber = $('#part-number-field').val().trim();
+    const initialPartDescription = $('#part-description-field').val().trim();
+    if (!initialPartNumber && !initialPartDescription) {
+        fetchData();
+    }	
+
 	// Function to handle the search button click
 	$('#search-part').click(function () {
 		const partNumber = $('#part-number-field').val().trim();
@@ -128,10 +146,7 @@ $(document).ready(function () {
 			filteredData = [];
 			fetchData(); // Fetch all data
 		}
-	});  
-	// Function to render data in the table
-
-
+	}); 
   
   
 
@@ -189,8 +204,22 @@ $(document).ready(function () {
 				$('#editPartModal').modal('hide');
 
 				// Refresh the page
-				location.reload();
-				// renderData(response.data);
+				// location.reload();
+
+			//update the row
+			function updateTableRow(response) {
+				// Find the table row with the corresponding data-id
+				var rowToUpdate = $('table tbody').find(`tr[data-id="${response.id}"]`);
+			
+				// Update the row with the new data
+				rowToUpdate.find('td').eq(1).text(response.part_no);
+				rowToUpdate.find('td').eq(2).text(response.part_description);
+				rowToUpdate.find('td').eq(3).text(response.latest_date);
+			}
+
+			updateTableRow(response);
+
+
 			},
 			error: function(xhr, status, error) {
 				// handle error response
@@ -198,6 +227,7 @@ $(document).ready(function () {
 			}
 		});
 	});
+
 
 
 	// handing POST request
@@ -423,16 +453,100 @@ $('#submit-batch-data-delete').on('click', function(event) {
 			});
 		});
 
-	// Fetch data on page load if both search fields are empty
-    const initialPartNumber = $('#part-number-field').val().trim();
-    const initialPartDescription = $('#part-description-field').val().trim();
-    if (!initialPartNumber && !initialPartDescription) {
-        fetchData();
-    }	
+	
+
+
+
+// ==========================================================
+// ***pagination section***
+// ==========================================================
+
+// source : https://codepen.io/dipsichawan/pen/poyxxVY
+
+var entriesPerPage = 10;
+var currentPage = 1;
+var totalEntries = 0; // Initialize with 0 initially
+var totalPages = 0;
+
+fetchPaginationEntriesCount();
+
+function fetchPaginationEntriesCount() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:5000/api/pagination_entries_api',
+        dataType: 'json',
+        success: function(response) {
+            totalEntries = response[0].count;
+            totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+            createPagination(currentPage); // Call createPagination here
+        }
+    });
+}
+
+function createPagination(currentPage) {
+    $("#page_container").html("");
+
+    var startPage = Math.max(1, currentPage - 2);
+    var endPage = Math.min(totalPages, startPage + 4);
+
+    if (currentPage > totalPages - 3) {
+        endPage = totalPages;
+        startPage = Math.max(1, endPage - 4);
+    }
+
+    if (currentPage == 1) {
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>&laquo;&laquo;</a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item' onclick='makeCall(1)'><a href='javascript:void(0)' class='page-link'>&laquo;&laquo;</a></li>");
+    }
+
+    if (currentPage == 1) {
+        $("#page_container").append("<li class='page-item disabled previous'><a href='javascript:void(0)' class='page-link'><</a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item' onclick='makeCall(" + (currentPage - 1) + ")'><a href='javascript:void(0)' class='page-link'><</a></li>");
+    }
+
+    for (var page = startPage; page <= endPage; page++) {
+        if (currentPage == page) {
+            $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' page-id='" + page + "' class='page-link'>" + page + "</a></li>");
+        } else {
+            $("#page_container").append("<li class='page-item'><a href='javascript:void(0)' class='page-link page-number' page-id='" + page + "'>" + page + "</a></li>");
+        }
+    }
+
+    if (currentPage == totalPages) {
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>></a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item next' onclick='makeCall(" + (currentPage + 1) + ")'><a href='javascript:void(0)' class='page-link'>></a></li>");
+    }
+
+    if (currentPage == totalPages) {
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>&raquo;&raquo;</a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item' onclick='makeCall(" + totalPages + ")'><a href='javascript:void(0)' class='page-link'>&raquo;&raquo;</a></li>");
+    }
+}
+
+
+
+function makeCall(newPage) {
+    currentPage = newPage;
+    fetchData(currentPage); // Call fetchData() with the new page number
+}
+
+
+
+
+
+// Attach the click event handler to the page number buttons
+$("#page_container").on("click", ".page-number", function() {
+    var newPage = parseInt($(this).attr("page-id"));
+    fetchData(newPage); // Call fetchData() when a page number is clicked
+});
+
+// Call createPagination initially with the desired starting page
+createPagination(currentPage);
+
 });
   
-
-
-
-
-

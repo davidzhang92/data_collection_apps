@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import pyodbc
+from get_crud import get_data
 
 app = Flask(__name__)
 
