@@ -1,5 +1,4 @@
 $(document).ready(function () {
-	
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
 
@@ -461,68 +460,103 @@ $('#submit-batch-data-delete').on('click', function(event) {
 // ==========================================================
 // ***pagination section***
 // ==========================================================
-function updatePaginationButtons(currentPage) {
-	$('.page-number').removeClass('active');
-	$('.page-number').eq(currentPage - 1).addClass('active');
-  
-	$('#prevPage').toggleClass('disabled', currentPage === 1);
-	$('#nextPage').toggleClass('disabled', currentPage === totalPages);
-	$('#firstPage').toggleClass('disabled', currentPage === 1);
-	$('#lastPage').toggleClass('disabled', currentPage === totalPages);
-  }
-  
-  const totalEntries = 100;
-  const entriesPerPage = 10;
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
-  let currentPage = 1;
-  
-  // Initial update of pagination buttons
-  updatePaginationButtons(currentPage);
-  
-  // Event handler for clicking a page number
-  $('.page-number').click(function () {
-	currentPage = parseInt($(this).text());
-	updatePaginationButtons(currentPage);
-	fetchData(currentPage); // Call your data fetching function here
-  });
-  
-  // Event handler for clicking the "Previous" button
-  $('#prevPage').click(function () {
-	if (currentPage > 1) {
-	  currentPage--;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
-  // Event handler for clicking the "Next" button
-  $('#nextPage').click(function () {
-	if (currentPage < totalPages) {
-	  currentPage++;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
-  // Event handler for clicking the "First" button
-  $('#firstPage').click(function () {
-	if (currentPage !== 1) {
-	  currentPage = 1;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
-  // Event handler for clicking the "Last" button
-  $('#lastPage').click(function () {
-	if (currentPage !== totalPages) {
-	  currentPage = totalPages;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
+
+// source : https://codepen.io/dipsichawan/pen/poyxxVY
+
+var entriesPerPage = 10;
+var currentPage = 1;
+var totalEntries = 0; // Initialize with 0 initially
+var totalPages = 0;
+
+$(document).ready(function() {
+    fetchPaginationEntriesCount();
+});
 
 
+
+function fetchPaginationEntriesCount() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:5000/api/pagination_entries_api',
+        dataType: 'json',
+        success: function(response) {
+            totalEntries = response[0].count;
+            totalPages = Math.ceil(totalEntries / entriesPerPage);
+            createPagination(currentPage);
+        },
+        error: function(xhr, status, error) {
+            console.log("API request failed:", error);
+        }
+    });
+}
+
+
+function createPagination(currentPage) {
+	
+    $("#page_container").html("");
+
+    var startPage = Math.max(1, currentPage - 2);
+    var endPage = Math.min(totalPages, startPage + 4);
+
+    if (currentPage > totalPages - 3) {
+        endPage = totalPages;
+        startPage = Math.max(1, endPage - 4);
+    }
+
+    // if (currentPage == 1) {
+    //     $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>&laquo;&laquo;</a></li>");
+    // } else {
+    //     $("#page_container").append("<li class='page-item' onclick='makeCall(1)'><a href='javascript:void(0)' class='page-link'>&laquo;&laquo;</a></li>");
+    // }
+
+    if (currentPage == 1) {
+        $("#page_container").append("<li class='page-item disabled previous'><a href='javascript:void(0)' class='page-link'><</a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item' onclick='makeCall(" + (currentPage - 1) + ")'><a href='javascript:void(0)' class='page-link'><</a></li>");
+    }
+
+    for (var page = startPage; page <= endPage; page++) {
+        if (currentPage == page) {
+            $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' page-id='" + page + "' class='page-link'>" + page + "</a></li>");
+        } else {
+            $("#page_container").append("<li class='page-item'><a href='javascript:void(0)' class='page-link page-number' page-id='" + page + "'>" + page + "</a></li>");
+        }
+    }
+    if (currentPage == totalPages) {
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>></a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item next' onclick='makeCall(" + (currentPage + 1) + ")'><a href='javascript:void(0)' class='page-link'>></a></li>");
+    }
+
+    if (currentPage == totalPages) {
+        $("#page_container").append("<li class='page-item disabled'><a href='javascript:void(0)' class='page-link'>&raquo;&raquo;</a></li>");
+    } else {
+        $("#page_container").append("<li class='page-item' onclick='makeCall(" + totalPages + ")'><a href='javascript:void(0)' class='page-link'>&raquo;&raquo;</a></li>");
+    }
+	
+	
+}
+
+function makeCall(newPage) {
+    currentPage = newPage;
+    fetchData(currentPage); // Call fetchData() with the new page number
+}
+
+
+
+
+
+
+
+// Attach the click event handler to the page number buttons
+$("#page_container").on("click", ".page-number", function() {
+    var newPage = parseInt($(this).attr("page-id"));
+    fetchData(newPage);
+});
+
+
+// // // Call createPagination initially with the desired starting page
+// createPagination(currentPage);
 
 });
+  

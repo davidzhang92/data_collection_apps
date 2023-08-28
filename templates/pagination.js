@@ -1,5 +1,3 @@
-// source : https://codepen.io/dipsichawan/pen/poyxxVY
-
 var total_records = 100;
 var perpage = 10;
 var total_pages = total_records / perpage;
