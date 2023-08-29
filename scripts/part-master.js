@@ -471,58 +471,113 @@ function updatePaginationButtons(currentPage) {
 	$('#lastPage').toggleClass('disabled', currentPage === totalPages);
   }
   
-  const totalEntries = 100;
+  let totalEntries = 0;
   const entriesPerPage = 10;
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+  let totalPages = 0;
   let currentPage = 1;
   
-  // Initial update of pagination buttons
-  updatePaginationButtons(currentPage);
-  
-  // Event handler for clicking a page number
-  $('.page-number').click(function () {
-	currentPage = parseInt($(this).text());
-	updatePaginationButtons(currentPage);
-	fetchData(currentPage); // Call your data fetching function here
-  });
-  
-  // Event handler for clicking the "Previous" button
-  $('#prevPage').click(function () {
-	if (currentPage > 1) {
-	  currentPage--;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
-  // Event handler for clicking the "Next" button
-  $('#nextPage').click(function () {
-	if (currentPage < totalPages) {
-	  currentPage++;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
-  // Event handler for clicking the "First" button
-  $('#firstPage').click(function () {
-	if (currentPage !== 1) {
-	  currentPage = 1;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
-  // Event handler for clicking the "Last" button
-  $('#lastPage').click(function () {
-	if (currentPage !== totalPages) {
-	  currentPage = totalPages;
-	  updatePaginationButtons(currentPage);
-	  fetchData(currentPage); // Call your data fetching function here
-	}
-  });
-  
 
+  
+	// Initial fetch of pagination entries count and creation of pagination
+	fetchPaginationEntriesCount();
+
+	
+    // Function to fetch the total entries count from the API
+    function fetchPaginationEntriesCount() {
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:5000/api/pagination_entries_api',
+            dataType: 'json',
+            success: function(response) {
+                totalEntries = response[0].count;
+                totalPages = Math.ceil(totalEntries / entriesPerPage);
+                createPagination(currentPage);
+            },
+            error: function(xhr, status, error) {
+                console.log("API request failed:", error);
+            }
+        });
+    }
+	
+	// Function to create pagination buttons
+	function createPagination(currentPage) {
+		// Calculate the range of page numbers to display
+		let startPage = Math.max(1, currentPage - 2);
+		let endPage = Math.min(totalPages, currentPage + 2);
+
+		// Create the pagination buttons HTML
+		let paginationHTML = '';
+
+		paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">&laquo;&laquo;</a></li>`;
+		paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">&laquo;</a></li>`;
+
+		for (let i = startPage; i <= endPage; i++) {
+			if (i === currentPage) {
+				paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
+			} else {
+				paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
+			}
+		}
+
+		paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">&raquo;</a></li>`;
+		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">&raquo;&raquo;</a></li>`;
+
+		// Update the HTML of the page container with the generated pagination buttons
+		$('#page_container').html(paginationHTML);
+	}
+
+			// Event handler for clicking a page number
+		$(document).on('click', '.page-number', function () {
+			currentPage = parseInt($(this).text());
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		});
+		
+		// Event handler for clicking the "Previous" button
+		$(document).on('click', '#prevPage', function () {
+			if (currentPage > 1) {
+				currentPage--;
+				updatePaginationButtons(currentPage);
+				fetchData(currentPage);
+			}
+		});
+
+		// Event handler for clicking the "Next" button
+		$(document).on('click', '#nextPage', function () {
+			if (currentPage < totalPages) {
+				currentPage++;
+				updatePaginationButtons(currentPage);
+				fetchData(currentPage);
+			}
+		});
+
+		// Event handler for clicking the "First" button
+		$(document).on('click', '#firstPage', function () {
+			if (currentPage !== 1) {
+				currentPage = 1;
+				updatePaginationButtons(currentPage);
+				fetchData(currentPage);
+			}
+		});
+
+		// Event handler for clicking the "Last" button
+		$(document).on('click', '#lastPage', function () {
+			if (currentPage !== totalPages) {
+				currentPage = totalPages;
+				updatePaginationButtons(currentPage);
+				fetchData(currentPage);
+			}
+		});
+		// Create the "Next" button
+		paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">&raquo;</a></li>`;
+	
+		// Create the "Last" button
+		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">&raquo;&raquo;</a></li>`;
+	
+		// Append the generated HTML to the page container
+		$('#page_container').html(paginationHTML);
 
 
 });
+
+
