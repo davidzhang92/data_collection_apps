@@ -81,6 +81,7 @@ $(document).ready(function () {
 			});
 
 
+
 	// Function to GET data from the backend API
 	    // Function to handle the click event on page number links
 		$('.page-number').click(function () {
@@ -316,8 +317,12 @@ $(document).ready(function () {
 				// Close the edit dialog box
 				$('#batchDeletePartModal').modal('hide');
 
+				// Store the state of the "select all" checkbox
+				localStorage.setItem('selectAllState', 'unchecked');
+
 				// Refresh the page
 				location.reload();
+
 			},
 			error: function(xhr, status, error) {
 				// handle error response
@@ -462,122 +467,158 @@ $('#submit-batch-data-delete').on('click', function(event) {
 // ***pagination section***
 // ==========================================================
 function updatePaginationButtons(currentPage) {
-	$('.page-number').removeClass('active');
-	$('.page-number').eq(currentPage - 1).addClass('active');
-  
-	$('#prevPage').toggleClass('disabled', currentPage === 1);
-	$('#nextPage').toggleClass('disabled', currentPage === totalPages);
-	$('#firstPage').toggleClass('disabled', currentPage === 1);
-	$('#lastPage').toggleClass('disabled', currentPage === totalPages);
-  }
-  
-  let totalEntries = 0;
-  const entriesPerPage = 10;
-  let totalPages = 0;
-  let currentPage = 1;
-  
+    $('.page-number').removeClass('active');
+    $('.page-number').eq(currentPage - 1).addClass('active');
 
-  
-	// Initial fetch of pagination entries count and creation of pagination
-	fetchPaginationEntriesCount();
+    $('#prevPage').toggleClass('disabled', currentPage === 1);
+    $('#nextPage').toggleClass('disabled', currentPage === totalPages);
+    $('#firstPage').toggleClass('disabled', currentPage === 1);
+    $('#lastPage').toggleClass('disabled', currentPage === totalPages);
+}
 
-	
-    // Function to fetch the total entries count from the API
-    function fetchPaginationEntriesCount() {
-        $.ajax({
-            type: 'GET',
-            url: 'http://localhost:5000/api/pagination_entries_api',
-            dataType: 'json',
-            success: function(response) {
-                totalEntries = response[0].count;
-                totalPages = Math.ceil(totalEntries / entriesPerPage);
-                createPagination(currentPage);
-            },
-            error: function(xhr, status, error) {
-                console.log("API request failed:", error);
-            }
-        });
+let totalEntries = 0;
+const entriesPerPage = 10;
+let totalPages = 0;
+let currentPage = 1;
+
+// Initial fetch of pagination entries count and creation of pagination
+fetchPaginationEntriesCount();
+
+// Function to fetch the total entries count from the API
+function fetchPaginationEntriesCount() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:5000/api/pagination_entries_api',
+        dataType: 'json',
+        success: function (response) {
+            totalEntries = response[0].count;
+            totalPages = Math.ceil(totalEntries / entriesPerPage);
+            createPagination(currentPage);
+        },
+        error: function (xhr, status, error) {
+            console.log("API request failed:", error);
+        }
+    });
+}
+
+// Function to create pagination buttons
+function createPagination(currentPage) {
+    // Calculate the range of page numbers to display
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+
+    // Create the pagination buttons HTML
+    let paginationHTML = '';
+
+    paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">First</a></li>`;
+    paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">Previous</a></li>`;
+
+    for (let i = startPage; i <= endPage; i++) {
+        if (i === currentPage) {
+            paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
+        } else {
+            paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
+        }
     }
+
+    paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">Next</a></li>`;
+    paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
+
+    // Update the HTML of the page container with the generated pagination buttons
+    $('#page_container').html(paginationHTML);
+}
+
+// Event handler for clicking a page number
+$(document).on('click', '.page-number', function () {
+    currentPage = parseInt($(this).text());
+    createPagination(currentPage); // Update the pagination buttons
+    updatePaginationButtons(currentPage); // Update the active page highlight
+    fetchData(currentPage);
+});
+
+// Event handler for clicking the "Previous" button
+$(document).on('click', '#prevPage', function () {
+    if (currentPage > 1) {
+        currentPage--;
+        createPagination(currentPage);
+        updatePaginationButtons(currentPage);
+        fetchData(currentPage);
+    }
+});
+
+// Event handler for clicking the "Next" button
+$(document).on('click', '#nextPage', function () {
+    if (currentPage < totalPages) {
+        currentPage++;
+        createPagination(currentPage);
+        updatePaginationButtons(currentPage);
+        fetchData(currentPage);
+    }
+});
+
+// Event handler for clicking the "First" button
+$(document).on('click', '#firstPage', function () {
+    if (currentPage !== 1) {
+        currentPage = 1;
+        createPagination(currentPage);
+        updatePaginationButtons(currentPage);
+        fetchData(currentPage);
+    }
+});
+
+// Event handler for clicking the "Last" button
+$(document).on('click', '#lastPage', function () {
+    if (currentPage !== totalPages) {
+        currentPage = totalPages;
+        createPagination(currentPage);
+        updatePaginationButtons(currentPage);
+        fetchData(currentPage);
+    }
+});
+
+	// Check the stored state of the "select all" checkbox and update it
+	var selectAllState = localStorage.getItem('selectAllState');
+	if (selectAllState === 'checked') {
+		$("#selectAll").prop("checked", true);
+	} else {
+		$("#selectAll").prop("checked", false);
+	}  
+
+// Function to handle the search button click
+$('#search-part').click(function () {
+    const partNumber = $('#part-number-field').val().trim();
+    const partDescription = $('#part-description-field').val().trim();
+
+    if (partNumber || partDescription) {
+        // Hide the pagination container
+        $('#page_container').hide();
+
+        // Fetch data using the filter API
+        $.ajax({
+            url: 'http://localhost:5000/api/filter_search_part_master_api',
+            type: 'GET',
+            data: {
+                search_part_no: partNumber,
+                search_part_description: partDescription
+            },
+            success: function (data) {
+                filteredData = data; // Store the filtered data
+                renderData(filteredData); // Render the filtered data
+            },
+            error: function (error) {
+                console.error('Error fetching filtered data:', error);
+            },
+        });
+    } else {
+        // If both search fields are empty, reset filtering
+        filteredData = [];
+        fetchData(); // Fetch all data
+
+        // Show the pagination container
+        $('#page_container').show();
+    }
+});
 	
-	// Function to create pagination buttons
-	function createPagination(currentPage) {
-		// Calculate the range of page numbers to display
-		let startPage = Math.max(1, currentPage - 2);
-		let endPage = Math.min(totalPages, currentPage + 2);
-
-		// Create the pagination buttons HTML
-		let paginationHTML = '';
-
-		paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">&laquo;&laquo;</a></li>`;
-		paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">&laquo;</a></li>`;
-
-		for (let i = startPage; i <= endPage; i++) {
-			if (i === currentPage) {
-				paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
-			} else {
-				paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
-			}
-		}
-
-		paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">&raquo;</a></li>`;
-		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">&raquo;&raquo;</a></li>`;
-
-		// Update the HTML of the page container with the generated pagination buttons
-		$('#page_container').html(paginationHTML);
-	}
-
-			// Event handler for clicking a page number
-		$(document).on('click', '.page-number', function () {
-			currentPage = parseInt($(this).text());
-			updatePaginationButtons(currentPage);
-			fetchData(currentPage);
-		});
-		
-		// Event handler for clicking the "Previous" button
-		$(document).on('click', '#prevPage', function () {
-			if (currentPage > 1) {
-				currentPage--;
-				updatePaginationButtons(currentPage);
-				fetchData(currentPage);
-			}
-		});
-
-		// Event handler for clicking the "Next" button
-		$(document).on('click', '#nextPage', function () {
-			if (currentPage < totalPages) {
-				currentPage++;
-				updatePaginationButtons(currentPage);
-				fetchData(currentPage);
-			}
-		});
-
-		// Event handler for clicking the "First" button
-		$(document).on('click', '#firstPage', function () {
-			if (currentPage !== 1) {
-				currentPage = 1;
-				updatePaginationButtons(currentPage);
-				fetchData(currentPage);
-			}
-		});
-
-		// Event handler for clicking the "Last" button
-		$(document).on('click', '#lastPage', function () {
-			if (currentPage !== totalPages) {
-				currentPage = totalPages;
-				updatePaginationButtons(currentPage);
-				fetchData(currentPage);
-			}
-		});
-		// Create the "Next" button
-		paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">&raquo;</a></li>`;
-	
-		// Create the "Last" button
-		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">&raquo;&raquo;</a></li>`;
-	
-		// Append the generated HTML to the page container
-		$('#page_container').html(paginationHTML);
-
-
 });
 
 
