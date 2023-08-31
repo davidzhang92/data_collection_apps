@@ -127,11 +127,6 @@ $(document).ready(function () {
 		const partDescription = $('#part-description-field').val().trim();
 	
 		if (partNumber || partDescription) {
-			// Hide the pagination container
-			$('#page_container').hide();
-		}
-
-		if (partNumber || partDescription) {
 		// Fetch data using the filter API
 		$.ajax({
 			url: 'http://localhost:5000/api/filter_search_part_master_api',
@@ -590,40 +585,40 @@ $(document).on('click', '#lastPage', function () {
 		$("#selectAll").prop("checked", false);
 	}  
 
-// // Function to handle the search button click
-// $('#search-part').click(function () {
-//     const partNumber = $('#part-number-field').val().trim();
-//     const partDescription = $('#part-description-field').val().trim();
+// Function to handle the search button click
+$('#search-part').click(function () {
+    const partNumber = $('#part-number-field').val().trim();
+    const partDescription = $('#part-description-field').val().trim();
 
-//     if (partNumber || partDescription) {
-//         // Hide the pagination container
-//         $('#page_container').hide();
+    if (partNumber || partDescription) {
+        // Hide the pagination container
+        $('#page_container').hide();
 
-//         // Fetch data using the filter API
-//         $.ajax({
-//             url: 'http://localhost:5000/api/filter_search_part_master_api',
-//             type: 'GET',
-//             data: {
-//                 search_part_no: partNumber,
-//                 search_part_description: partDescription
-//             },
-//             success: function (data) {
-//                 filteredData = data; // Store the filtered data
-//                 renderData(filteredData); // Render the filtered data
-//             },
-//             error: function (error) {
-//                 console.error('Error fetching filtered data:', error);
-//             },
-//         });
-//     } else {
-//         // If both search fields are empty, reset filtering
-//         filteredData = [];
-//         fetchData(); // Fetch all data
+        // Fetch data using the filter API
+        $.ajax({
+            url: 'http://localhost:5000/api/filter_search_part_master_api',
+            type: 'GET',
+            data: {
+                search_part_no: partNumber,
+                search_part_description: partDescription
+            },
+            success: function (data) {
+                filteredData = data; // Store the filtered data
+                renderData(filteredData); // Render the filtered data
+            },
+            error: function (error) {
+                console.error('Error fetching filtered data:', error);
+            },
+        });
+    } else {
+        // If both search fields are empty, reset filtering
+        filteredData = [];
+        fetchData(); // Fetch all data
 
-//         // Show the pagination container
-//         $('#page_container').show();
-//     }
-// });
+        // Show the pagination container
+        $('#page_container').show();
+    }
+});
 	
 });
 
