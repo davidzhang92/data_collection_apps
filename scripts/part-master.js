@@ -178,14 +178,14 @@ $(document).ready(function () {
 
 	// handing PATCH request
 
-	$('#submit-data-edit').on('click', function(event) {
+	$('.edit-form').on('submit', function(event) {
 		event.preventDefault();
 
 		var editPartNumber = $('#edit-part-number').val();
 		var editPartDescription = $('#edit-part-description').val();
 
 		// Get the data-id attribute of the row associated with the clicked button
-		var addCurrentId = $(this).data('id');
+		var addCurrentId = $('[data-id]').data('id');
 
 
 
@@ -233,8 +233,9 @@ $(document).ready(function () {
 
 
 	// handing POST request
+	
 
-	$('#submit-data-add').on('click', function(event) {
+	$('.submit-form').on('submit', function(event) {
 		event.preventDefault();
 
 		var addPartNumber = $('#add-part-number').val();
