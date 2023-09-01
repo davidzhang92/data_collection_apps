@@ -18,7 +18,7 @@ $(document).ready(function () {
 		  return;
 		}
 	  
-		data.forEach(function (part) {
+		data.forEach(function (defect) {
 	
 	// Validation data type 
 		//   if (
@@ -34,19 +34,19 @@ $(document).ready(function () {
 		//   }
 	  
 	
-	var row = `<tr data-id="${part.id}">
+	var row = `<tr data-id="${defect.id}">
 			<td>
 			  <span class="custom-checkbox">
-				<input type="checkbox" class="row-checkbox" id="${part.id}">
-				<label for="${part.id}"></label>
+				<input type="checkbox" class="row-checkbox" id="${defect.id}">
+				<label for="${defect.id}"></label>
 			  </span>
 			</td>
-			<td>${part.part_no}</td>
-			<td>${part.part_description}</td>
-			<td>${part.latest_date}</td>
+			<td>${defect.defect_no}</td>
+			<td>${defect.defect_description}</td>
+			<td>${defect.latest_date}</td>
 			<td>
-			  <a href="#editPartModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-			  <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+			  <a href="#editDefectModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+			  <a href="#deleteDefectModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 			</td>
 		  </tr>`;
 	
@@ -56,29 +56,29 @@ $(document).ready(function () {
 	
 	  }
 	
-		// Function to update the "Select All" checkbox state
-		function updateSelectAllCheckbox() {
-			var allCheckboxes = $('table tbody input[type="checkbox"]');
-			var checkedCount = allCheckboxes.filter(':checked').length;
-			var selectAllCheckbox = $("#selectAll");
-		
-			if (checkedCount === allCheckboxes.length) {
-			selectAllCheckbox.prop("checked", true);
-			} else {
-			selectAllCheckbox.prop("checked", false);
-			}
+	// Function to update the "Select All" checkbox state
+	function updateSelectAllCheckbox() {
+		var allCheckboxes = $('table tbody input[type="checkbox"]');
+		var checkedCount = allCheckboxes.filter(':checked').length;
+		var selectAllCheckbox = $("#selectAll");
+	
+		if (checkedCount === allCheckboxes.length) {
+		selectAllCheckbox.prop("checked", true);
+		} else {
+		selectAllCheckbox.prop("checked", false);
 		}
-			// Select/Deselect checkboxes
-			$("#selectAll").click(function () {
-				var isChecked = this.checked;
-				$('table tbody input[type="checkbox"]').each(function () {
-				this.checked = isChecked;
-				});
+	}
+		// Select/Deselect checkboxes
+		$("#selectAll").click(function () {
+			var isChecked = this.checked;
+			$('table tbody input[type="checkbox"]').each(function () {
+			this.checked = isChecked;
 			});
-			
-			$('table').on('click', 'tbody input[type="checkbox"]', function() {
-				updateSelectAllCheckbox();
-			});
+		});
+		
+		$('table').on('click', 'tbody input[type="checkbox"]', function() {
+			updateSelectAllCheckbox();
+		});
 
 
 
@@ -93,8 +93,8 @@ $(document).ready(function () {
 		
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
-				'http://localhost:5000/api/filter_search_part_master_api' :
-				'http://localhost:5000/api/get_data_api';
+				'http://localhost:5000/api/get_filter_search_defect_master_api' :
+				'http://localhost:5000/api/get_defect_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -115,25 +115,30 @@ $(document).ready(function () {
 			});
 		}
 	// Fetch data on page load if both search fields are empty
-    const initialPartNumber = $('#part-number-field').val().trim();
-    const initialPartDescription = $('#part-description-field').val().trim();
-    if (!initialPartNumber && !initialPartDescription) {
+    const initialDefectNumber = $('#defect-number-field').val().trim();
+    const initialDefectDescription = $('#defect-description-field').val().trim();
+    if (!initialDefectNumber && !initialDefectDescription) {
         fetchData();
     }	
 
 	// Function to handle the search button click
-	$('#search-part').click(function () {
-		const partNumber = $('#part-number-field').val().trim();
-		const partDescription = $('#part-description-field').val().trim();
+	$('#search-Defect').click(function () {
+		const defectNumber = $('#defect-number-field').val().trim();
+		const defectDescription = $('#defect-description-field').val().trim();
 	
-		if (partNumber || partDescription) {
+		if (defectNumber || defectDescription) {
+			// Hide the pagination container
+			$('#page_container').hide();
+		}
+
+		if (defectNumber || defectDescription) {
 		// Fetch data using the filter API
 		$.ajax({
-			url: 'http://localhost:5000/api/filter_search_part_master_api',
+			url: 'http://localhost:5000/api/filter_search_defect_master_api',
 			type: 'GET',
 			data: {
-				search_part_no:partNumber,
-				search_part_description: partDescription
+				search_defect_no:defectNumber,
+				search_defect_description: defectDescription
 			},
 			success: function (data) {
 				filteredData = data; // Store the filtered data
@@ -163,12 +168,12 @@ $(document).ready(function () {
 		var addCurrentId = row.data('id');
 
 		// Get the part number and part description from the row
-		var editPartNumber = row.find('td').eq(1).text();
-		var editPartDescription = row.find('td').eq(2).text();
+		var editDefectNumber = row.find('td').eq(1).text();
+		var editDefectDescription = row.find('td').eq(2).text();
 
 		// Set the value of the part number and part description fields in the edit dialog
-		$('#edit-part-number').val(editPartNumber);
-		$('#edit-part-description').val(editPartDescription);
+		$('#edit-defect-number').val(editDefectNumber);
+		$('#edit-defect-description').val(editDefectDescription);
 
 		// Set the data-id attribute of the submit button to the current id
 		$('#submit-data-edit').data('id', addCurrentId);
@@ -181,8 +186,8 @@ $(document).ready(function () {
 	$('.edit-form').on('submit', function(event) {
 		event.preventDefault();
 
-		var editPartNumber = $('#edit-part-number').val();
-		var editPartDescription = $('#edit-part-description').val();
+		var editDefectNumber = $('#edit-defect-number').val();
+		var editDefectDescription = $('#edit-defect-description').val();
 
 		// Get the data-id attribute of the row associated with the clicked button
 		var addCurrentId = $('[data-id]').data('id');
@@ -190,12 +195,12 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:5000/api/update_data_api',
+			url: 'http://localhost:5000/api/update_defect_api',
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
-				part_no: editPartNumber,
-				part_description: editPartDescription
+				defect_no: editDefectNumber,
+				defect_description: editDefectDescription
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -203,7 +208,7 @@ $(document).ready(function () {
 				console.log(response);
 
 				// Close the edit dialog box
-				$('#editPartModal').modal('hide');
+				$('#editDefectModal').modal('hide');
 
 				// Refresh the page
 				// location.reload();
@@ -214,8 +219,8 @@ $(document).ready(function () {
 				var rowToUpdate = $('table tbody').find(`tr[data-id="${response.id}"]`);
 			
 				// Update the row with the new data
-				rowToUpdate.find('td').eq(1).text(response.part_no);
-				rowToUpdate.find('td').eq(2).text(response.part_description);
+				rowToUpdate.find('td').eq(1).text(response.defect_no);
+				rowToUpdate.find('td').eq(2).text(response.defect_description);
 				rowToUpdate.find('td').eq(3).text(response.latest_date);
 			}
 
@@ -238,8 +243,8 @@ $(document).ready(function () {
 	$('.submit-form').on('submit', function(event) {
 		event.preventDefault();
 
-		var addPartNumber = $('#add-part-number').val();
-		var addPartDescription = $('#add-part-description').val();
+		var addDefectNumber = $('#add-defect-number').val();
+		var addDefectDescription = $('#add-defect-description').val();
 
 		// Get the data-id attribute of the row associated with the clicked button
 
@@ -247,11 +252,11 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:5000/api/post_data_api',
+			url: 'http://localhost:5000/api/post_defect_api',
 			type: 'POST',
 			data: JSON.stringify({
-				part_no: addPartNumber,
-				part_description: addPartDescription
+				defect_no: addDefectNumber,
+				defect_description: addDefectDescription
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -259,11 +264,11 @@ $(document).ready(function () {
 				console.log(response);
 
 				// Close the edit dialog box
-				$('#addPartModal').modal('hide');
+				$('#addDefectModal').modal('hide');
 
 				 // Clear input fields
-				 $('#add-part-number').val('');
-				 $('#add-part-description').val('');
+				 $('#add-defect-number').val('');
+				 $('#add-defect-description').val('');
 
 				// Refresh the page
 				location.reload();
@@ -305,7 +310,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:5000/api/delete_data_api',
+			url: 'http://localhost:5000/api/delete_defect_api',
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
@@ -316,7 +321,7 @@ $(document).ready(function () {
 				console.log(response);
 
 				// Close the edit dialog box
-				$('#batchDeletePartModal').modal('hide');
+				$('#batchDeleteDefectModal').modal('hide');
 
 				// Store the state of the "select all" checkbox
 				localStorage.setItem('selectAllState', 'unchecked');
@@ -364,7 +369,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	// console.log(idsToDelete);
 	// Get the data-id attribute of the row associated with the clicked button
 	$.ajax({
-		url: 'http://localhost:5000/api/delete_data_api',
+		url: 'http://localhost:5000/api/delete_defect_api',
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',
@@ -390,13 +395,13 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_no_api",
+				"http://localhost:5000/api/auto_complete_filter_defect_no_api",
 				// { term: request.term }, // Pass the term as a query parameter
-				{ search_part_no: request.term }, // Pass the term as a query parameter
+				{ search_defect_no: request.term }, // Pass the term as a query parameter
 				function (data) {
 					var items = []; // Array to store the autocomplete suggestions
 					$.each(data, function (index, item) {
-						items.push(item.part_no); // Extract the relevant field from the response
+						items.push(item.defect_no); // Extract the relevant field from the response
 					});
 					response(items);
 				}
@@ -404,19 +409,19 @@ $('#submit-batch-data-delete').on('click', function(event) {
 		};
 
 		var selectItem = function (event, ui) {
-			$("#part-number-field").val(ui.item.value);
+			$("#defect-number-field").val(ui.item.value);
 
 			// Make an additional AJAX request to retrieve the description based on the selected value
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_name_for_part_no_api",
-				{ search_part_description: ui.item.value }, // Pass the selected value as a query parameter
+				"http://localhost:5000/api/auto_complete_filter_defect_name_for_defect_no_api",
+				{ search_delete_description: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
-					$("#part-description-field").val(data.part_description);
+					$("#defect-description-field").val(data.delete_description);
 				}
 			);
 		};
 
-		$("#part-number-field").autocomplete({
+		$("#defect-number-field").autocomplete({
 			source: getData,
 			select: selectItem,
 			minLength: 3
@@ -428,12 +433,12 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_name_api",
-				{ search_part_description: request.term }, // Pass the term as a query parameter
+				"http://localhost:5000/api/auto_complete_filter_defect_name_api",
+				{ search_defect_description: request.term }, // Pass the term as a query parameter
 				function (data) {
 					var items = []; // Array to store the autocomplete suggestions
 					$.each(data, function (index, item) {
-						items.push(item.part_description); // Extract the relevant field from the response
+						items.push(item.defectt_description); // Extract the relevant field from the response
 					});
 					response(items);
 				}
@@ -441,19 +446,19 @@ $('#submit-batch-data-delete').on('click', function(event) {
 		};
 
 		var selectItem = function (event, ui) {
-			$("#part-description-field").val(ui.item.value);
+			$("#defect-description-field").val(ui.item.value);
 
 			// Make an additional AJAX request to retrieve the part no based on the selected value
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_no_for_part_name_api",
+				"http://localhost:5000/api/auto_complete_filter_defect_no_for_defect_name_api",
 				{ search_part_no: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
-					$("#part-number-field").val(data.part_no);
+					$("#delete-number-field").val(data.delete_no);
 				}
 			);
 		};
 
-		$("#part-description-field").autocomplete({
+		$("#delete-description-field").autocomplete({
 			source: getData,
 			select: selectItem,
 			minLength: 3
@@ -489,7 +494,7 @@ fetchPaginationEntriesCount();
 function fetchPaginationEntriesCount() {
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:5000/api/pagination_entries_api',
+        url: 'http://localhost:5000/api/pagination_defect_entries_api',
         dataType: 'json',
         success: function (response) {
             totalEntries = response[0].count;
@@ -585,40 +590,40 @@ $(document).on('click', '#lastPage', function () {
 		$("#selectAll").prop("checked", false);
 	}  
 
-// Function to handle the search button click
-$('#search-part').click(function () {
-    const partNumber = $('#part-number-field').val().trim();
-    const partDescription = $('#part-description-field').val().trim();
+// // Function to handle the search button click
+// $('#search-part').click(function () {
+//     const partNumber = $('#part-number-field').val().trim();
+//     const partDescription = $('#part-description-field').val().trim();
 
-    if (partNumber || partDescription) {
-        // Hide the pagination container
-        $('#page_container').hide();
+//     if (partNumber || partDescription) {
+//         // Hide the pagination container
+//         $('#page_container').hide();
 
-        // Fetch data using the filter API
-        $.ajax({
-            url: 'http://localhost:5000/api/filter_search_part_master_api',
-            type: 'GET',
-            data: {
-                search_part_no: partNumber,
-                search_part_description: partDescription
-            },
-            success: function (data) {
-                filteredData = data; // Store the filtered data
-                renderData(filteredData); // Render the filtered data
-            },
-            error: function (error) {
-                console.error('Error fetching filtered data:', error);
-            },
-        });
-    } else {
-        // If both search fields are empty, reset filtering
-        filteredData = [];
-        fetchData(); // Fetch all data
+//         // Fetch data using the filter API
+//         $.ajax({
+//             url: 'http://localhost:5000/api/filter_search_part_master_api',
+//             type: 'GET',
+//             data: {
+//                 search_part_no: partNumber,
+//                 search_part_description: partDescription
+//             },
+//             success: function (data) {
+//                 filteredData = data; // Store the filtered data
+//                 renderData(filteredData); // Render the filtered data
+//             },
+//             error: function (error) {
+//                 console.error('Error fetching filtered data:', error);
+//             },
+//         });
+//     } else {
+//         // If both search fields are empty, reset filtering
+//         filteredData = [];
+//         fetchData(); // Fetch all data
 
-        // Show the pagination container
-        $('#page_container').show();
-    }
-});
+//         // Show the pagination container
+//         $('#page_container').show();
+//     }
+// });
 	
 });
 

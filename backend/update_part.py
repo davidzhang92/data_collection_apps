@@ -12,8 +12,8 @@ password = 'Cannon45!'
 # Establish the connection
 conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 
-@app.route('/api/update-data', methods=['PATCH'])
-def update_data():
+@app.route('/api/update-part', methods=['PATCH'])
+def update_part():
     try:
         # Get data from the request payload
         data = request.get_json()

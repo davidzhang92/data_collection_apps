@@ -1,7 +1,5 @@
 from flask import Flask, request, jsonify
 import pyodbc
-from get_crud import get_data
-
 app = Flask(__name__)
 
 # Define your MS SQL Server connection details
@@ -13,8 +11,8 @@ password = 'Cannon45!'
 # Establish the connection
 conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 
-@app.route('/api/delete-data', methods=['DELETE'])
-def delete_data():
+@app.route('/api/delete-part', methods=['DELETE'])
+def delete_part():
     try:
         # Get data from the request payload
         data = request.get_json()

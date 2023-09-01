@@ -94,7 +94,7 @@ $(document).ready(function () {
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
 				'http://localhost:5000/api/filter_search_part_master_api' :
-				'http://localhost:5000/api/get_data_api';
+				'http://localhost:5000/api/get_part_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -195,7 +195,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:5000/api/update_data_api',
+			url: 'http://localhost:5000/api/update_part_api',
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
@@ -252,7 +252,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:5000/api/post_data_api',
+			url: 'http://localhost:5000/api/post_part_api',
 			type: 'POST',
 			data: JSON.stringify({
 				part_no: addPartNumber,
@@ -310,7 +310,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:5000/api/delete_data_api',
+			url: 'http://localhost:5000/api/delete_part_api',
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
@@ -494,7 +494,7 @@ fetchPaginationEntriesCount();
 function fetchPaginationEntriesCount() {
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:5000/api/pagination_entries_api',
+        url: 'http://localhost:5000/api/pagination_part_entries_api',
         dataType: 'json',
         success: function (response) {
             totalEntries = response[0].count;

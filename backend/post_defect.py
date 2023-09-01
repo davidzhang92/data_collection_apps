@@ -12,24 +12,24 @@ password = 'Cannon45!'
 # Establish the connection
 conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 
-@app.route('/api/post-data', methods=['POST'])
-def post_data():
+@app.route('/api/post-defect', methods=['POST'])
+def post_defect():
     try:
         # Get data from the request payload
         data = request.get_json()
 
         # Extract required fields from the payload
-        new_part_no = data['part_no']
-        new_part_description = data['part_description']
+        new_defect_no = data['defect_no']
+        new_defect_description = data['defect_description']
 
         cursor = conn.cursor()
 
-        # Construct the SQL query to update the part_no and part_description for the given id
-        query = "insert into part_master  (id, part_no, part_description, created_date, is_deleted) values (newid(), ?, ?, getdate(), 0)"
+        # Construct the SQL query to update the defect_no and defect_description for the given id
+        query = "insert into defect_master  (id, defect_no, defect_description, created_date, is_deleted) values (newid(), ?, ?, getdate(), 0)"
 
 
         # Execute the SQL query
-        cursor.execute(query, (new_part_no, new_part_description))
+        cursor.execute(query, (new_defect_no, new_defect_description))
         conn.commit()
 
         # Check if any rows were affected by the update operation

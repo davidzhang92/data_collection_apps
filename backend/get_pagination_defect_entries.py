@@ -13,12 +13,12 @@ password = 'Cannon45!'
 conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
 
 # retrieve number of data in the table
-@app.route('/api/get_pagination_entries', methods=['GET'])
-def get_pagination_entries():
+@app.route('/api/get_pagination_defect_entries', methods=['GET'])
+def get_pagination_defect_entries():
     cursor = conn.cursor()
     
-    # Construct the SQL query to select all data from the part_master table
-    query = "select count(id) from part_master where is_deleted = 0"
+    # Construct the SQL query to select all data from the defect_master table
+    query = "select count(id) from defect_master where is_deleted = 0"
     
     cursor.execute(query)
     rows = cursor.fetchall()
