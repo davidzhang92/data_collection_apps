@@ -122,15 +122,20 @@ $(document).ready(function () {
     }	
 
 	// Function to handle the search button click
-	$('#search-Defect').click(function () {
+	$('#search-defect').click(function () {
 		const defectNumber = $('#defect-number-field').val().trim();
 		const defectDescription = $('#defect-description-field').val().trim();
 	
 		if (defectNumber || defectDescription) {
 			// Hide the pagination container
 			$('#page_container').hide();
+		} else {
+			// If both search fields are empty, reset filtering and show the pagination container
+			filteredData = [];
+			fetchData(); // Fetch all data
+			$('#page_container').show(); // Show the pagination container
 		}
-
+		
 		if (defectNumber || defectDescription) {
 		// Fetch data using the filter API
 		$.ajax({
@@ -414,9 +419,9 @@ $('#submit-batch-data-delete').on('click', function(event) {
 			// Make an additional AJAX request to retrieve the description based on the selected value
 			$.getJSON(
 				"http://localhost:5000/api/auto_complete_filter_defect_name_for_defect_no_api",
-				{ search_delete_description: ui.item.value }, // Pass the selected value as a query parameter
+				{ search_defect_description: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
-					$("#defect-description-field").val(data.delete_description);
+					$("#defect-description-field").val(data.defect_description);
 				}
 			);
 		};
@@ -424,7 +429,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 		$("#defect-number-field").autocomplete({
 			source: getData,
 			select: selectItem,
-			minLength: 3
+			minLength: 2
 			});
 		});
 
@@ -438,7 +443,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 				function (data) {
 					var items = []; // Array to store the autocomplete suggestions
 					$.each(data, function (index, item) {
-						items.push(item.defectt_description); // Extract the relevant field from the response
+						items.push(item.defect_description); // Extract the relevant field from the response
 					});
 					response(items);
 				}
@@ -453,15 +458,15 @@ $('#submit-batch-data-delete').on('click', function(event) {
 				"http://localhost:5000/api/auto_complete_filter_defect_no_for_defect_name_api",
 				{ search_part_no: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
-					$("#delete-number-field").val(data.delete_no);
+					$("#defect-number-field").val(data.delete_no);
 				}
 			);
 		};
 
-		$("#delete-description-field").autocomplete({
+		$("#defect-description-field").autocomplete({
 			source: getData,
 			select: selectItem,
-			minLength: 3
+			minLength: 2
 			});
 		});
 

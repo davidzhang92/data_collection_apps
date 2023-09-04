@@ -129,7 +129,13 @@ $(document).ready(function () {
 		if (partNumber || partDescription) {
 			// Hide the pagination container
 			$('#page_container').hide();
+		} else {
+			// If both search fields are empty, reset filtering and show the pagination container
+			filteredData = [];
+			fetchData(); // Fetch all data
+			$('#page_container').show(); // Show the pagination container
 		}
+	
 
 		if (partNumber || partDescription) {
 		// Fetch data using the filter API

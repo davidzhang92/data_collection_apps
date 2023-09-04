@@ -1,34 +1,90 @@
-$(function () {
-    var getData = function (request, response) {
-        $.getJSON(
-            "http://localhost:5000/api/auto_complete_part_no_api",
-            { term: request.term }, // Pass the term as a query parameter
-            function (data) {
-                var items = []; // Array to store the autocomplete suggestions
-                $.each(data, function (index, item) {
-                    items.push(item.model_part_no); // Extract the relevant field from the response
-                });
-                response(items);
-            }
-        );
-    };
+$(document).ready(function (){
 
-    var selectItem = function (event, ui) {
-        $("#pname").val(ui.item.value);
+    // fail/pass button function
+    const deleteBtn = $('#select-button');
+  if (deleteBtn.hasClass('ph-btn-disabled')) {
+    deleteBtn.removeAttr('href');
+    deleteBtn.attr('disabled', true);
+  }
 
-        // Make an additional AJAX request to retrieve the description based on the selected value
-        $.getJSON(
-            "http://localhost:5000/api/auto_complete_part_name_api",
-            { pname: ui.item.value }, // Pass the selected value as a query parameter
-            function (data) {
-                $("#pdesc").val(data.description);
-            }
-        );
-    };
+  var passButton = $('#pass-button');
+  var failButton = $('#fail-button');
+  var inputResult = $('#input-result');
 
-    $("#pname").autocomplete({
-        source: getData,
-        select: selectItem,
-        minLength: 3
+  passButton.click(function(e) {
+    e.preventDefault();
+    inputResult.text('PASS');
+    inputResult.css('color', '#00ff2a');
+  });
+
+  failButton.click(function(e) {
+    e.preventDefault();
+    inputResult.text('FAIL');
+    inputResult.css('color', '#ff0000');
+  });
+
+    // handing POST request
+
+    var addPartId='';
+    var serialPartNumber='';
+    var result='';
+    var partId='';
+
+
+    $('#select-button').click(function () {
+        var partId = $('#pname').attr('part-id'); // Get the page-number value from the clicked link
+       
+        
     });
+
+    // Event listener for the input field
+    $("#label-serial-no").on("keyup", function(event) {
+        // Check if the Enter key (keycode 13) was pressed
+        if (event.keyCode === 13) {
+            // Get the value of the input field
+            var serialPartNumber = $(this).val();
+
+        }
+    });
+
+
+    $('#save-button').on('submit', function(event) {
+        event.preventDefault();
+
+        var failOther = $('#other-checkbox').prop('checked')
+
+  
+
+
+        $.ajax({
+            url: 'http://localhost:5000/api/post_part_api',
+            type: 'POST',
+            data: JSON.stringify({
+                partId: addPartNumber,
+                part_description: addPartDescription
+            }),
+            contentType: 'application/json',
+            success: function(response) {
+                // handle successful response
+                console.log(response);
+
+                // Close the edit dialog box
+                $('#addPartModal').modal('hide');
+
+                // Clear input fields
+                $('#add-part-number').val('');
+                $('#add-part-description').val('');
+
+                // Refresh the page
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                // handle error response
+                console.error(error);
+            }
+        });
+    });
+
+
 });
+

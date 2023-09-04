@@ -47,17 +47,19 @@ def get_auto_complete_part_name():
     cursor = conn.cursor()
 
     # Construct the SQL query to get the description based on the selected value
-    query = "SELECT part_description FROM part_master WHERE part_no = ?"
+    query = "SELECT id, part_description FROM part_master WHERE part_no = ?"
     params = (selected_pname,)
-
     cursor.execute(query, params)
-    description = cursor.fetchone()
-
-    if description:
-        return jsonify({'description': description[0]})
-    else:
-        print(selected_pname)
-        return jsonify({'description': 'Description not found'})
+    rows = cursor.fetchall()
+    
+    # Convert the result into a list of dictionaries for JSON serialization
+    results = []
+    columns = [column[0] for column in cursor.description]
+    
+    for row in rows:
+        results.append(dict(zip(columns, row)))
+    
+    return jsonify(results)
     
 
 if __name__ == '__main__':

@@ -66,7 +66,7 @@
       <form class="input-field-form">
         <label class=label-field id ="label-part-no" for="part-no">
           <span class="product-field-span">Part No.</span>
-          <input class = input-field type="text" id="pname" placeholder="Enter Part No." />
+          <input class = input-field type="text" id="pname" part-id="" placeholder="Enter Part No." />
         </label>
         <label class= label-field id="label-part-description" for="part-description">
           <span class="product-field-span">Part Description</span>
@@ -93,32 +93,34 @@
         <label class = "label-field product-field-span" id="label-fail-status" for="fail-status">Fail Status</label>
         <div class= "label-field" id = "fail-1">
             <label for="current-checkbox">Current</label>
-            <input class= "fail-checkbox" type="checkbox" id="current-checkbox" name="fail-1" value="Current"/>
+            <input class= "fail-checkbox" type="checkbox" id="current-checkbox" name="fail-1" value="fail_current"/>
         </div>
         <div class= "label-field" id = "fail-2">
           <label for="hr-checkbox">HR</label>
-          <input class= "fail-checkbox" type="checkbox" id="hr-checkbox" name="fail-2" value="HR"/>
+          <input class= "fail-checkbox" type="checkbox" id="hr-checkbox" name="fail-2" value="fail_hr"/>
         </div>
         <div class= "label-field" id = "fail-3">
           <label for="pairing-checkbox">Pairing</label>
-          <input class= "fail-checkbox" type="checkbox" id="pairing-checkbox" name="fail-3" value="Pairing"/>
+          <input class= "fail-checkbox" type="checkbox" id="pairing-checkbox" name="fail-3" value="fail_pairing"/>
         </div>
         <div class= "label-field" id = "fail-4">
           <label for="bluetooth-checkbox">Bluetooth</label>
-          <input class= "fail-checkbox" type="checkbox" id="bluetooth-checkbox" name="fail-4" value="Bluetooth"/>
+          <input class= "fail-checkbox" type="checkbox" id="bluetooth-checkbox" name="fail-4" value="fail_bluetooth"/>
         </div>
         <div class= "label-field" id = "fail-5">
           <label for="sleep-mode-checkbox">Sleep Mode</label>
-          <input class= "fail-checkbox" type="checkbox" id="sleep-mode-checkbox" name="fail-5" value="Sleep Mode"/>
+          <input class= "fail-checkbox" type="checkbox" id="sleep-mode-checkbox" name="fail-5" value="fail_sleep_mode"/>
         </div>
         <div class= "label-field" id = "fail-6">
           <label for="other-checkbox">Other</label>
-          <input class= "fail-checkbox" type="checkbox" id="other-checkbox" name="fail-6" value="Other"/>
+          <input class= "fail-checkbox" type="checkbox" id="other-checkbox" name="fail-6" value="fail_other"/>
         </div>
     </div>
   </div>
   <div class="programming-result-entry-sub-card-2">
-    <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
+    <form>
+      <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
+    </form>
     <a id='input-result'>PASS</a>
   </div>
 </div>
@@ -128,3 +130,4 @@
 <script src="/scripts/jquery/jquery.js"></script> 
 <script src="/scripts/jquery/jquery-ui.min.js"></script> 
 <script src="/scripts/auto-complete-part.js"></script> 
+<script src="/scripts/programming-result-entry.js"></script> 
