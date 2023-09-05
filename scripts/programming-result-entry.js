@@ -1,11 +1,6 @@
 $(document).ready(function (){
 
     // fail/pass button function
-    const deleteBtn = $('#select-button');
-  if (deleteBtn.hasClass('ph-btn-disabled')) {
-    deleteBtn.removeAttr('href');
-    deleteBtn.attr('disabled', true);
-  }
 
   var passButton = $('#pass-button');
   var failButton = $('#fail-button');
@@ -24,59 +19,67 @@ $(document).ready(function (){
   });
 
     // handing POST request
+    // Initialize partId and result variables
+    var partId = localStorage.getItem('partId') || '';
+    var result = '';
 
-    var addPartId='';
-    var serialPartNumber='';
-    var result='';
-    var partId='';
-
-
+    // Handling the button clicks
     $('#select-button').click(function () {
-        var partId = $('#pname').attr('part-id'); // Get the page-number value from the clicked link
-       
-        
+        partId = $('#pname').attr('part-id');
+    // Store the partId in localStorage
+        localStorage.setItem('partId', partId);
     });
 
-    // Event listener for the input field
-    $("#label-serial-no").on("keyup", function(event) {
-        // Check if the Enter key (keycode 13) was pressed
-        if (event.keyCode === 13) {
-            // Get the value of the input field
-            var serialPartNumber = $(this).val();
-
-        }
+    $('#pass-button').click(function () {
+        result = $('#input-result').text();
     });
 
+    $('#fail-button').click(function () {
+        result = $('#input-result').text();
+    });
+    // Update the partId during page load if it's stored in localStorage
+    var storedPartId = localStorage.getItem('partId');
+    if (storedPartId) {
+        $('#pname').attr('part-id', storedPartId);
+    }
+    var serialPartNumber=$('#serial-no-field').val();
+    // Add an event listener to the input field to update serialPartNumber on input changes
+    $('#serial-no-field').on('input', function () {
+        serialPartNumber = $(this).val();
+    });
+    var failCurrent = $('#current-checkbox').prop('checked')
+    var failHr = $('#hr-checkbox').prop('checked')
+    var failPairing = $('#pairing-checkbox').prop('checked')
+    var failBluetooth = $('#bluetooth-checkbox').prop('checked')    
+    var failSleepMode = $('#sleep-mode-checkbox').prop('checked')
+    var failOther = $('#other-checkbox').prop('checked')
 
-    $('#save-button').on('submit', function(event) {
+
+
+
+    $('#save-form').on('submit', function(event) {
         event.preventDefault();
-
-        var failOther = $('#other-checkbox').prop('checked')
-
-  
-
-
         $.ajax({
-            url: 'http://localhost:5000/api/post_part_api',
+            url: 'http://localhost:5000/api/post-programming-result-entry-api',
             type: 'POST',
             data: JSON.stringify({
-                partId: addPartNumber,
-                part_description: addPartDescription
+                part_id: partId,
+                serial_no: serialPartNumber,
+                result: result,
+                fail_current: failCurrent,
+                fail_hr: failHr,
+                fail_pairing: failPairing,
+                fail_bluetooth: failBluetooth,
+                fail_sleep_mode: failSleepMode,
+                fail_other: failOther,
             }),
             contentType: 'application/json',
             success: function(response) {
                 // handle successful response
                 console.log(response);
-
-                // Close the edit dialog box
-                $('#addPartModal').modal('hide');
-
-                // Clear input fields
-                $('#add-part-number').val('');
-                $('#add-part-description').val('');
-
+    
                 // Refresh the page
-                location.reload();
+                // location.reload();
             },
             error: function(xhr, status, error) {
                 // handle error response
@@ -85,6 +88,9 @@ $(document).ready(function (){
         });
     });
 
-
+    // Trigger the form submission when the anchor is clicked
+    $('#save-button').click(function() {
+        $('#save-form').submit();
+    });
 });
 

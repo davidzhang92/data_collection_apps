@@ -13,6 +13,7 @@ from delete_defect import delete_defect
 from auto_complete_filter_defect import get_auto_complete_filter_defect_no, get_auto_complete_filter_defect_name_for_defect_no, get_auto_complete_filter_defect_name, get_auto_complete_filter_defect_no_for_defect_name, get_filter_search_defect_master
 from get_pagination_defect_entries import get_pagination_defect_entries
 from auto_complete_defect import get_auto_complete_defect_no, get_auto_complete_defect_name
+from post_programming_result_entry import post_programming_result_entry
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -173,6 +174,15 @@ def get_filter_search_defect_master_api():
 def get_pagination_defect_entries_api():
     return get_pagination_defect_entries()
 
+
+###############################
+#####programming-result-entry-post#######
+###############################
+
+# # API endpoint using the post_data function
+@app.route('/api/post-programming-result-entry-api', methods=['POST'])
+def post_programming_result_entry_api():
+    return post_programming_result_entry()
 
 
 if __name__ == "__main__":
