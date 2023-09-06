@@ -9,7 +9,9 @@ body,
   margin-top:10px;
   }
 
-
+.input-field:read-only {
+  background-color: rgb(214, 254, 255);
+}
 .programming-result-entry-card{
     width: 1100px;
     height: 180px;
@@ -254,8 +256,8 @@ body,
   }
       /* Enabled state */
       #select-button:not(.ph-btn-disabled) {
-        background-color: #bf3f3f;
-        border-color: #791e1e;
+        background-color: #3F8ABF;
+        border-color: #387dad;
       }
       
       /* Disabled state */
@@ -268,8 +270,8 @@ body,
       #select-button:hover,
       #select-button:focus,
       #select-button:active {
-        background-color: #bf3f3f;
-        border-color: #791e1e;
+        background-color: #3376a7;
+        border-color: #2d6c99;
       }
       
       /* Hover and active state for disabled button */
@@ -301,3 +303,4 @@ body,
 
 /* jquery result */
 .ui-helper-hidden-accessible { position: absolute; left: -9999px; }
+

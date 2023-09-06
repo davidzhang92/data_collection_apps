@@ -1,6 +1,91 @@
+// initialization state of page 
+$('.programming-result-entry-sub-card').hide();
+$('.programming-result-entry-sub-card-2').hide();
+
 $(document).ready(function (){
 
-    // fail/pass button function
+    $('#select-button').click(function(event) {
+        // Prevent the default behavior of the anchor element
+        event.preventDefault();
+    
+        // Check if the input with id 'pdesc' is empty
+        if ($('#pdesc').val() === '') {
+          // Display an alert if it's empty
+          alert('Part Number is invalid or empty, please try.');
+        } else {
+          // Perform your desired action if pdesc is not empty
+          // For example, you can submit a form or trigger another function.
+        }
+      });
+ 
+// select button logic    
+
+    // Define variables for text and color changes
+    var originalText = 'Select';
+    var selectedText = 'Selected';
+    // var emptyColor = '#4e4e4e'; // Color when #pdesc is empty
+    var notEmptyColor = '#3F8ABF'; // Color when #pdesc has a value
+    var selectedColor = '#28a745'; // Color when selected
+
+    // Initialize the selected state as false
+    var isSelected = false;
+
+    // Function to update the button color based on #pdesc value
+    function updateButtonColor() {
+        var pdescIsEmpty = $('#pdesc').val().trim() === '';
+
+        if (pdescIsEmpty) {
+            $('#select-button').css('background-color', notEmptyColor);
+        } else if (isSelected) {
+            $('#select-button').css('background-color', selectedColor);
+        } else {
+            $('#select-button').css('background-color', notEmptyColor);
+        }
+    }
+
+    // Initial button color setup
+    updateButtonColor();
+    // Attach the function to the window object so it can be accessed globally
+    window.updateButtonColor = updateButtonColor;
+
+
+    // Bind an input event handler to #pdesc to update the button color immediately
+    $('#pdesc').on('input', function() {
+        updateButtonColor(); // Call the function to update the button color
+    });
+
+    // Click event handler for the button
+    $('#select-button').click(function () {
+        // Check if #pdesc is empty
+        var pdescIsEmpty = $('#pdesc').val().trim() === '';
+
+        // Toggle the selected state only if #pdesc is not empty
+        if (!pdescIsEmpty) {
+            // Toggle the selected state
+            isSelected = !isSelected;
+
+            // Change text based on the selected state
+            if (isSelected) {
+                // When selected
+                $(this).text(selectedText);
+                $('#select-button').css('background-color', selectedColor);
+            } else {
+                // When not selected
+                $(this).text(originalText);
+                updateButtonColor(); // Update the button color when not selected
+            }
+
+            // Enable or disable the input field based on the selected state
+            $('#pname').prop('readonly', isSelected);
+
+            // Toggle the visibility of the elements with class programming-result-entry-sub-card
+            $('.programming-result-entry-sub-card').toggle(isSelected);
+            $('.programming-result-entry-sub-card-2').toggle(isSelected);
+        }
+    });
+
+
+// fail/pass button function
 
   var passButton = $('#pass-button');
   var failButton = $('#fail-button');
@@ -18,7 +103,7 @@ $(document).ready(function (){
     inputResult.css('color', '#ff0000');
   });
 
-    // handing POST request
+// ---handing POST request---
     // Initialize partId and result variables
     var partId = localStorage.getItem('partId') || '';
     var result = '';
@@ -47,14 +132,36 @@ $(document).ready(function (){
     $('#serial-no-field').on('input', function () {
         serialPartNumber = $(this).val();
     });
+    // checkbox state capture
     var failCurrent = $('#current-checkbox').prop('checked')
+    $('#current-checkbox').click(function () {
+        failCurrent = $('#current-checkbox').prop('checked');
+    });
+    
     var failHr = $('#hr-checkbox').prop('checked')
+    $('#hr-checkbox').click(function () {
+        failHr = $('#hr-checkbox').prop('checked');
+    });
+
     var failPairing = $('#pairing-checkbox').prop('checked')
-    var failBluetooth = $('#bluetooth-checkbox').prop('checked')    
+    $('#pairing-checkbox').click(function () {
+        failPairing = $('#pairing-checkbox').prop('checked');
+    });
+
+    var failBluetooth = $('#bluetooth-checkbox').prop('checked')
+    $('#bluetooth-checkbox').click(function () {
+        failBluetooth = $('#bluetooth-checkbox').prop('checked');
+    });
+
     var failSleepMode = $('#sleep-mode-checkbox').prop('checked')
+    $('#sleep-mode-checkbox').click(function () {
+        failSleepMode = $('#sleep-mode-checkbox').prop('checked');
+    });
+
     var failOther = $('#other-checkbox').prop('checked')
-
-
+    $('#other-checkbox').click(function () {
+        failOther = $('#other-checkbox').prop('checked');
+    });
 
 
     $('#save-form').on('submit', function(event) {

@@ -1,4 +1,7 @@
 $(function () {
+
+
+
     var getData = function (request, response) {
         $.getJSON(
             "http://localhost:5000/api/auto_complete_part_no_api",
@@ -34,12 +37,25 @@ $(function () {
                     // Handle the case where no data is returned or the data format is unexpected
                     $("#pdesc").val("No description available");
                     $("#pname").attr("part-id", ""); // Clear the "part-id" attribute
+
+                    
                 }
             }
         );
     };
     
+    // Add an event listener to #pname input field to detect changes
+    $("#pname").on("input", function () {
+        var pnameValue = $(this).val();
+        if (!pnameValue) {
+            // If pnameValue is empty, clear #pdesc and part-id attribute in pname
+            $("#pdesc").val("");
+            $("#pname").attr("part-id","");
+        }
+    });
 
+   
+    
     $("#pname").autocomplete({
         source: getData,
         select: selectItem,
