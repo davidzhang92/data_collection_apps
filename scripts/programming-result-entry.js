@@ -11,7 +11,7 @@ $(document).ready(function (){
         // Check if the input with id 'pdesc' is empty
         if ($('#pdesc').val() === '') {
           // Display an alert if it's empty
-          alert('Part Number is invalid or empty, please try.');
+          alert('Error. Part No. is invalid or empty, please try again.');
         } else {
           // Perform your desired action if pdesc is not empty
           // For example, you can submit a form or trigger another function.
@@ -56,6 +56,11 @@ $(document).ready(function (){
 
     // Click event handler for the button
     $('#select-button').click(function () {
+        // Clear input fields inside the div with class "programming-result-entry-sub-card"
+        $('.programming-result-entry-sub-card input[type="text"]').val('');
+        // Clear all checkboxes inside the div with class "check-boxes-fail-group"
+        $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
+
         // Check if #pdesc is empty
         var pdescIsEmpty = $('#pdesc').val().trim() === '';
 
@@ -69,6 +74,7 @@ $(document).ready(function (){
                 // When selected
                 $(this).text(selectedText);
                 $('#select-button').css('background-color', selectedColor);
+
             } else {
                 // When not selected
                 $(this).text(originalText);
@@ -87,21 +93,34 @@ $(document).ready(function (){
 
 // fail/pass button function
 
-  var passButton = $('#pass-button');
-  var failButton = $('#fail-button');
   var inputResult = $('#input-result');
 
-  passButton.click(function(e) {
+// Click event handler for the "PASS" button
+$('#pass-button').click(function (e) {
     e.preventDefault();
+    
+    // Disable the entire div and its child elements
+    $('.check-boxes-fail-group').addClass('disabled');
+    $('.check-boxes-fail-group input').prop('disabled', true);
+// Clear all checkboxes inside the div with class "check-boxes-fail-group"
+$('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
+    // Set the result text and color
     inputResult.text('PASS');
     inputResult.css('color', '#00ff2a');
-  });
+});
 
-  failButton.click(function(e) {
+// Click event handler for the "FAIL" button
+$('#fail-button').click(function (e) {
     e.preventDefault();
+    
+    // Enable the entire div and its child elements
+    $('.check-boxes-fail-group').addClass('disabled');
+    $('.check-boxes-fail-group input').prop('disabled', false);
+    
+    // Set the result text and color
     inputResult.text('FAIL');
     inputResult.css('color', '#ff0000');
-  });
+});
 
 // ---handing POST request---
     // Initialize partId and result variables
@@ -184,9 +203,22 @@ $(document).ready(function (){
             success: function(response) {
                 // handle successful response
                 console.log(response);
-    
-                // Refresh the page
-                // location.reload();
+                // Clear input fields inside the div with class "programming-result-entry-sub-card"
+                $('.programming-result-entry-sub-card input[type="text"]').val('');
+                // Clear all checkboxes inside the div with class "check-boxes-fail-group"
+                $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
+                
+                $('#input-result').text('');
+                // Reset other variables
+                result = ''; // Reset result
+                failCurrent = false; // Reset failCurrent
+                failHr = false; // Reset failHr
+                failPairing = false; // Reset failPairing
+                failBluetooth = false; // Reset failBluetooth
+                failSleepMode = false; // Reset failSleepMode
+                failOther = false; // Reset failOther
+                serialPartNumber = ''; // Reset serialPartNumber
+                alert('Result submitted successfully.');
             },
             error: function(xhr, status, error) {
                 // handle error response
@@ -197,6 +229,38 @@ $(document).ready(function (){
 
     // Trigger the form submission when the anchor is clicked
     $('#save-button').click(function() {
+        // Get the values of serial number and result
+        var serialNumber = $('#serial-no-field').val();
+        var resultValue = $('#input-result').text();
+
+        // Check if serial number is empty
+        if (serialNumber.trim() === '') {
+            alert('Serial number cannot be empty.');
+            return; // Prevent further processing if serial number is empty
+        }
+
+        // Check if result is empty
+        if (resultValue.trim() === '') {
+            alert('Result cannot be empty.');
+            return; // Prevent further processing if result is empty
+        }
+
+        // If the result is FAIL, check if at least one fail condition is true
+        if (resultValue === 'FAIL') {
+            if (
+                !failCurrent &&
+                !failHr &&
+                !failPairing &&
+                !failBluetooth &&
+                !failSleepMode &&
+                !failOther
+            ) {
+                alert('At least one fail condition must be true for a FAIL result.');
+                return; // Prevent further processing if no fail conditions are true
+            }
+        }
+
+        // If all checks pass, proceed with the form submission
         $('#save-form').submit();
     });
 });
