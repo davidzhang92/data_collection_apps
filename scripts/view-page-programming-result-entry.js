@@ -1,13 +1,21 @@
 $(document).ready(function () {
-    //initialization
-    $( function() {
-        $("#date-from-field").datetimepicker();
-    } );
 
-    $( function() {
-        $( "#date-to-field" ).datetimepicker();
-    } );
-	
+    // datepicker function for date to and date from
+    $(function() {
+        $("#date-from-field").datetimepicker({
+            timeFormat: "HH:mm",
+            dateFormat: "dd-mm-yy"
+        });
+    });
+
+    $(function() {
+        $("#date-to-field").datetimepicker({
+            timeFormat: "HH:mm",
+            dateFormat: "dd-mm-yy"
+            
+        });
+    });
+
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
 
