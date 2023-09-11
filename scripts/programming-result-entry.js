@@ -151,6 +151,12 @@ $('#fail-button').click(function (e) {
     $('#serial-no-field').on('input', function () {
         serialPartNumber = $(this).val();
     });
+    $('#serial-no-field').on('keydown', function(event) {
+        if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+            event.preventDefault(); // Prevent the default behavior of the Enter key
+        }
+    });
+    
     // checkbox state capture
     var failCurrent = $('#current-checkbox').prop('checked')
     $('#current-checkbox').click(function () {
