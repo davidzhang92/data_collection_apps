@@ -44,73 +44,65 @@ def get_programming_result_entry_view():
 
     except Exception as e:
         return jsonify({'message': 'Error occurred while fetching data.', 'error': str(e)}), 500
+    
 # --------------------
 # API endpoint filtering after clicking Search button
 # --------------------
 
-@app.route('/api/get_filter_search_programming_result_entry', methods=['GET'])
-# def get_filter_search_programming_result_entry():
-#     search_part_no = request.args.get('search_part_no')  # Get the selected value from the query parameters
-#     search_date_from = request.args.get('search_date_from')  # Get the selected value for date_from
-#     search_date_to = request.args.get('search_date_to')  # Get the selected value for date_to
-
-#     if not search_part_no:
-#         return jsonify({'error': 'Part number not provided'})
-
-#     cursor = conn.cursor()
-    # query = "SELECT a.id AS part_id, b.part_no, serial_no, result, a.fail_current, a.fail_hr, a.fail_pairing, a.fail_bluetooth, a.fail_sleep_mode, a.fail_other, a.created_date FROM programming_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE b.part_no=?"
-#     parameters = [f"%{search_part_no}%"]
-
-#     if search_date_from:
-#         query += " AND a.created_date >= ?"
-#         parameters.append(datetime.datetime.strptime(search_date_from, '%Y-%m-%d').strftime('%Y-%m-%d'))
-
-#     if search_date_to:
-#         query += " AND a.created_date <= ?"
-#         parameters.append(datetime.datetime.strptime(search_date_to, '%Y-%m-%d').strftime('%Y-%m-%d'))
-
-#     query += " ORDER BY a.created_date DESC;"
-
-#     cursor.execute(query, parameters)
-#     rows = cursor.fetchall()
-
-#     # Convert the result into a list of dictionaries for JSON serialization
-#     results = []
-#     columns = [column[0] for column in cursor.description]
-
-#     for row in rows:
-#         results.append(dict(zip(columns, row)))
-
+@app.route('/api/get_filter_search_programming_result_entry_view', methods=['GET'])
 def get_filter_search_programming_result_entry_view():
+        
     selected_part_no = request.args.get('search_part_no')  # Get the selected value from the query parameters
+    selected_date_from = request.args.get('search_date_from')  # Get the selected value from the query parameters
+    selected_date_to = request.args.get('search_date_to')  # Get the selected value from the query parameters
 
-
-
-    if selected_part_no is None :
-        return jsonify({'error': 'Search parameters not provided'})
+    # if selected_part_no is None:
+    #     return jsonify({'error': 'Search parameters not provided'})
     
-  
+
     cursor = conn.cursor()
     
-    # Construct the SQL query to select all data from the part_master table
-    query = "SELECT a.id AS part_id, b.part_no, serial_no, result, a.fail_current, a.fail_hr, a.fail_pairing, a.fail_bluetooth, a.fail_sleep_mode, a.fail_other, a.created_date FROM programming_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE b.part_no=?;"
+    # Construct the SQL query to select all data from the programming result entry table
+    query = "SELECT a.id AS part_id, b.part_no, serial_no, result, a.fail_current, a.fail_hr, a.fail_pairing, a.fail_bluetooth, a.fail_sleep_mode, a.fail_other, a.created_date FROM programming_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE 1=1"
+
+    parameters = []
+
+    if selected_part_no:
+        query += " AND b.part_no LIKE ?"
+        parameters.append(f"%{selected_part_no}%")
+
+    if selected_date_from:
+        # Append the time '00:00:00' to the date
+        date_from_with_time = f"{selected_date_from} 00:00:00"
+        query += " AND a.created_date >= ?"
+        parameters.append(datetime.datetime.strptime(date_from_with_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'))
+
+
+    if selected_date_to:
+        # Append the time '23:59:59' to the date
+        date_to_with_time = f"{selected_date_to} 23:59:59"
+        query += " AND a.created_date <= ?"
+        parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'))
+
+
+    query += " ORDER BY a.created_date DESC;"
 
     # Construct the parameter values with wildcards
-    part_no_param = f"%{selected_part_no}%"
-
-    
-    cursor.execute(query, (part_no_param,))
+    cursor.execute(query, parameters)
     rows = cursor.fetchall()
-    
+    print(selected_date_from)
+    print(selected_date_to)
     # Convert the result into a list of dictionaries for JSON serialization
     results = []
     columns = [column[0] for column in cursor.description]
     
     for row in rows:
         results.append(dict(zip(columns, row)))
-
+    
     return jsonify(results)
 
+
+    
 if __name__ == '__main__':
     app.run()
     

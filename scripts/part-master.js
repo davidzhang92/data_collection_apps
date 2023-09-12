@@ -82,7 +82,7 @@ $(document).ready(function () {
 
 
 
-	// Function to GET data from the backend API
+	// Function to GET data from the backend API for pagination
 	    // Function to handle the click event on page number links
 		$('.page-number').click(function () {
 			const pageId = $(this).attr('page-id'); // Get the page-id value from the clicked link
@@ -93,7 +93,7 @@ $(document).ready(function () {
 		
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
-				'http://localhost:5000/api/filter_search_part_master_api' :
+				'' :
 				'http://localhost:5000/api/get_part_api';
 		
 			const requestData = {
@@ -121,6 +121,12 @@ $(document).ready(function () {
         fetchData();
     }	
 
+	// Function to reset the current page to 1
+	function resetCurrentPage() {
+		currentPage = 1;
+		createPagination(currentPage);
+		updatePaginationButtons(currentPage);
+	}
 	// Function to handle the search button click
 	$('#search-part').click(function () {
 		const partNumber = $('#part-number-field').val().trim();
@@ -129,9 +135,12 @@ $(document).ready(function () {
 		if (partNumber || partDescription) {
 			// Hide the pagination container
 			$('#page_container').hide();
-		} else {
+			resetCurrentPage();
+		} 
+		else {
 			// If both search fields are empty, reset filtering and show the pagination container
 			filteredData = [];
+			resetCurrentPage();
 			fetchData(); // Fetch all data
 			$('#page_container').show(); // Show the pagination container
 		}
@@ -157,7 +166,7 @@ $(document).ready(function () {
 		} else {
 		// If both search fields are empty, reset filtering
 			filteredData = [];
-			fetchData(); // Fetch all data
+			$('#page_container').show(); // Show the pagination container
 		}
 	}); 
   

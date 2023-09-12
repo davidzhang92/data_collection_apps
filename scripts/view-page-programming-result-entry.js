@@ -45,27 +45,31 @@ $(document).ready(function () {
 		return;
 		}
 	
-		data.forEach(function (result) {
+data.forEach(function (result) {
+        // Parse the date string
+        var createDate = new Date(result.created_date);
 
+        // Format the date as 'YYYY-MM-DD HH:MM:SS'
+        var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
 
-	var row = `<tr data-id="${result.id}">
-			<td>
-			<span class="custom-checkbox">
-				<input type="checkbox" class="row-checkbox" id="${result.id}">
-				<label for="${result.id}"></label>
-			</span>
-			</td>
-			<td>${result.part_no}</td>
-			<td>${result.serial_no}</td>
-			<td>${result.result}</td>
-			<td>${result.details}</td>
-			<td>${result.created_date}</td>
-			<td>
-			<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-			</td>
-		</tr>`;
+        var row = `<tr data-id="${result.id}">
+            <td>
+            <span class="custom-checkbox">
+                <input type="checkbox" class="row-checkbox" id="${result.id}">
+                <label for="${result.id}"></label>
+            </span>
+            </td>
+            <td>${result.part_no}</td>
+            <td>${result.serial_no}</td>
+            <td>${result.result}</td>
+            <td>${result.details}</td>
+            <td>${formattedDate}</td>
+            <td>
+            <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+            </td>
+        </tr>`;
 
-		tableBody.append(row);
+        tableBody.append(row);
 		});
 	
 	}
@@ -95,7 +99,7 @@ $(document).ready(function () {
 		});
 
 
-	// Function to GET data from the backend API for pagination filter
+	// Function to GET data from the backend API for pagination
 	// Function to handle the click event on page number links
 	$('.page-number').click(function () {
 		const pageId = $(this).attr('page-id'); // Get the page-id value from the clicked link
@@ -106,7 +110,7 @@ $(document).ready(function () {
 	
 	function fetchData(pageId) {
 		const apiEndpoint = filteredData.length > 0 ?
-			'http://localhost:5000/api/filter_search_programming_result_entry_api' :
+			'' :
 			'http://localhost:5000/api/programming_result_entry_view_api';
 	
 		const requestData = {
@@ -121,6 +125,7 @@ $(document).ready(function () {
 			success: function (data) {
 				// Handle success
 				renderData(data);
+				
 			},
 			error: function (error) {
 				console.error('Error fetching data:', error);
@@ -128,11 +133,99 @@ $(document).ready(function () {
 		});
 	}
 
+// Fetch data on page load if both search fields are empty
+const initialPartNumber = $('#part-number-field').val().trim();
+
+if (!initialPartNumber) {
+    fetchData(); // Moved the initial fetch here
+}
+// Function to reset the current page to 1
+function resetCurrentPage() {
+    currentPage = 1;
+    createPagination(currentPage);
+    updatePaginationButtons(currentPage);
+}
+// Function to handle the search button click
+$('#search-part').click(function () {
+    const partNumber = $('#part-number-field').val().trim();
+    const dateFrom = $('#date-from-field').val().trim();
+    const dateTo = $('#date-to-field').val().trim();
+
+    // Create an empty object to store the data to send in the request
+    const requestData = {};
+
+	if (partNumber || dateFrom || dateTo) {
+		// Hide the pagination container
+		$('#page_container').hide();
+		if (partNumber) {
+			requestData.search_part_no = partNumber;
+		}
+		if (dateFrom) {
+			requestData.search_date_from = dateFrom;
+		}
+		if (dateTo) {
+			requestData.search_date_to = dateTo;
+		}
+		resetCurrentPage(); // Reset the current page to 1
+	} else {
+		// If all search fields are empty, reset filtering and show the pagination container
+		filteredData = [];
+		resetCurrentPage(); // Reset the current page to 1
+		fetchData(); // Fetch all data
+		$('#page_container').show(); // Show the pagination container
+	}
+
+
+	
+	if (partNumber || dateFrom || dateTo) {
+		// First AJAX request to filter data
+		$.ajax({
+			url: 'http://localhost:5000/api/filter_search_programming_result_entry_view_api',
+			type: 'GET',
+			data: requestData, // Send the requestData object
+			success: function (data) {
+				filteredData = data; // Store the filtered data
+				
+				renderData(filteredData); // Render the filtered data
+			},
+			error: function (error) {
+				console.error('Error fetching filtered data:', error);
+			},
+		});
+	} else {
+		// If all search fields are empty, reset filtering and show pagination container
+		filteredData = [];
+		$('#page_container').show(); // Show the pagination container
+	}
+});
 
 
 
 
+// auto-complete for Part Number
 
+$(function () {
+	var getData = function (request, response) {
+		$.getJSON(
+			"http://localhost:5000/api/auto_complete_filter_part_no_api",
+			// { term: request.term }, // Pass the term as a query parameter
+			{ search_part_no: request.term }, // Pass the term as a query parameter
+			function (data) {
+				var items = []; // Array to store the autocomplete suggestions
+				$.each(data, function (index, item) {
+					items.push(item.part_no); // Extract the relevant field from the response
+				});
+				response(items);
+			}
+		);
+	};
+
+	$("#part-number-field").autocomplete({
+		source: getData,
+		select: $("#part-number-field").val().trim(),
+		minLength: 3
+		});
+	});
 
 
 
@@ -152,6 +245,7 @@ $(document).ready(function () {
 // ==========================================================
 // ***pagination section***
 // ==========================================================
+let currentPage = 1;
 function updatePaginationButtons(currentPage) {
     $('.page-number').removeClass('active');
     $('.page-number').eq(currentPage - 1).addClass('active');
@@ -165,7 +259,6 @@ function updatePaginationButtons(currentPage) {
 let totalEntries = 0;
 const entriesPerPage = 10;
 let totalPages = 0;
-let currentPage = 1;
 
 // Initial fetch of pagination entries count and creation of pagination
 fetchPaginationEntriesCount();
