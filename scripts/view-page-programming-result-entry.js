@@ -45,31 +45,56 @@ $(document).ready(function () {
 		return;
 		}
 	
-data.forEach(function (result) {
-        // Parse the date string
-        var createDate = new Date(result.created_date);
-
-        // Format the date as 'YYYY-MM-DD HH:MM:SS'
-        var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
-
-        var row = `<tr data-id="${result.id}">
-            <td>
-            <span class="custom-checkbox">
-                <input type="checkbox" class="row-checkbox" id="${result.id}">
-                <label for="${result.id}"></label>
-            </span>
-            </td>
-            <td>${result.part_no}</td>
-            <td>${result.serial_no}</td>
-            <td>${result.result}</td>
-            <td>${result.details}</td>
-            <td>${formattedDate}</td>
-            <td>
-            <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-            </td>
-        </tr>`;
-
-        tableBody.append(row);
+		data.forEach(function (result) {
+			var failureDetails = [];
+		
+			// Check each "fail" property and add corresponding details to the array
+			if (result.fail_bluetooth) {
+				failureDetails.push('bluetooth');
+			}
+			if (result.fail_current) {
+				failureDetails.push('current');
+			}
+			if (result.fail_hr) {
+				failureDetails.push('hr');
+			}
+			if (result.fail_other) {
+				failureDetails.push('other');
+			}
+			if (result.fail_pairing) {
+				failureDetails.push('pairing');
+			}
+			if (result.fail_sleep_mode) {
+				failureDetails.push('sleep mode');
+			}
+		
+			// Join the failure details into a comma-separated string
+			var failureDetailsString = failureDetails.join(', ');
+		
+			// Parse the date string
+			var createDate = new Date(result.created_date);
+		
+			// Format the date as 'YYYY-MM-DD HH:MM:SS'
+			var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
+		
+			var row = `<tr data-id="${result.id}">
+				<td>
+				<span class="custom-checkbox">
+					<input type="checkbox" class="row-checkbox" id="${result.id}">
+					<label for="${result.id}"></label>
+				</span>
+				</td>
+				<td>${result.part_no}</td>
+				<td>${result.serial_no}</td>
+				<td>${result.result}</td>
+				<td>${failureDetailsString}</td>
+				<td>${formattedDate}</td>
+				<td>
+				<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+				</td>
+			</tr>`;
+		
+			tableBody.append(row);
 		});
 	
 	}
@@ -99,7 +124,7 @@ data.forEach(function (result) {
 		});
 
 
-	// Function to GET data from the backend API for pagination
+// Function to GET data from the backend API for pagination
 	// Function to handle the click event on page number links
 	$('.page-number').click(function () {
 		const pageId = $(this).attr('page-id'); // Get the page-id value from the clicked link
@@ -200,6 +225,110 @@ $('#search-part').click(function () {
 });
 
 
+// Handle delete and DELETE request
+
+	// Handle click event for delete button
+	$(document).on('click', '.delete', function() {
+		// Get the row associated with the clicked button
+		var row = $(this).closest('tr');
+
+		// Get the data-id attribute of the row
+		var deleteCurrentId = row.data('id');
+
+		// Set the data-id attribute of the submit button to the current id
+		$('#submit-data-delete').data('id', deleteCurrentId);
+	});
+
+
+
+	// handing DELETE request
+
+	$('#submit-data-delete').on('click', function(event) {
+		event.preventDefault();
+
+		// Get the data-id attribute of the row associated with the clicked button
+		var deleteCurrentId = $(this).data('id');
+
+
+
+		$.ajax({
+			url: 'http://localhost:5000/api/delete_programming_result_entry_view_api',
+			type: 'DELETE',
+			data: JSON.stringify({
+				id: deleteCurrentId,
+			}),
+			contentType: 'application/json',
+			success: function(response) {
+				// handle successful response
+				console.log(response);
+
+				// Close the edit dialog box
+				$('#batchDeletePartModal').modal('hide');
+
+				// Store the state of the "select all" checkbox
+				localStorage.setItem('selectAllState', 'unchecked');
+
+				// Refresh the page
+				location.reload();
+
+			},
+			error: function(xhr, status, error) {
+				// handle error response
+				console.error(error);
+			}
+		});
+	});
+
+// Handle batch delete and DELETE request
+
+// Get all checked checkboxes
+var checkedCheckboxes = $('input.row-checkbox:checked');
+
+// Create an array to store the IDs of the rows to be deleted
+var idsToDelete = [];
+
+// Loop through each checked checkbox and add its ID to the array
+checkedCheckboxes.each(function() {
+    idsToDelete.push($(this).attr('id'));
+});
+
+// console.log(idsToDelete);
+
+// Send the AJAX request to delete the rows
+$('#submit-batch-data-delete').on('click', function(event) {
+	event.preventDefault();
+	// Get all checked checkboxes
+	var checkedCheckboxes = $('input.row-checkbox:checked');
+
+	// Create an array to store the IDs of the rows to be deleted
+	var idsToDelete = [];
+
+	// Loop through each checked checkbox and add its ID to the array
+	checkedCheckboxes.each(function() {
+		idsToDelete.push($(this).attr('id'));
+	});
+
+	// console.log(idsToDelete);
+	// Get the data-id attribute of the row associated with the clicked button
+	$.ajax({
+		url: 'http://localhost:5000/api/delete_programming_result_entry_view_api',
+		type: 'DELETE',
+		data: JSON.stringify({ ids: idsToDelete }),
+		contentType: 'application/json',
+		success: function(response) {
+			// Handle successful deletion here
+			console.log(response);
+					// Refresh the page
+			location.reload();
+		},
+		error: function(xhr, status, error) {
+			// Handle error here
+			console.error(error);
+		// Refresh the page
+		location.reload();
+		}
+	});
+});
 
 
 // auto-complete for Part Number
@@ -226,17 +355,6 @@ $(function () {
 		minLength: 3
 		});
 	});
-
-
-
-
-
-
-
-
-
-
-
 
 
 

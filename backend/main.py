@@ -16,6 +16,7 @@ from auto_complete_defect import get_auto_complete_defect_no, get_auto_complete_
 from post_programming_result_entry import post_programming_result_entry
 from get_pagination_programming_result_entry_count import get_pagination_programming_result_entry_count
 from get_programming_result_entry_view import get_filter_search_programming_result_entry_view, get_programming_result_entry_view
+from delete_programming_result_entry_view import delete_programming_result_entry_view
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -185,7 +186,7 @@ def get_pagination_defect_entries_api():
 # programming-result-entry-POST
 # --------------------------------
 
-# # API endpoint using the post_data function
+# API endpoint using the post_data function
 @app.route('/api/post-programming-result-entry-api', methods=['POST'])
 def post_programming_result_entry_api():
     return post_programming_result_entry()
@@ -198,15 +199,20 @@ def post_programming_result_entry_api():
 # view-result-programming-entry-POST
 # --------------------------------
 
-#API endpoint to retrieve number of entries on result-programming-entry
+# API endpoint to retrieve number of entries on result-programming-entry
 @app.route('/api/pagination_programming_result_entry_count_api', methods=['GET'])
 def get_pagination_programming_result_entry_count_api():
     return get_pagination_programming_result_entry_count()
 
-# # API endpoint using the get_filter_search_programming_result_entry function
+# API endpoint using the get_filter_search_programming_result_entry function
 @app.route('/api/filter_search_programming_result_entry_view_api', methods=['GET'])
 def get_filter_search_programming_result_entry_view_api():
     return get_filter_search_programming_result_entry_view()
+
+# API endpoint using the delete_data function
+@app.route('/api/delete_programming_result_entry_view_api', methods=['DELETE'])
+def delete_programming_result_entry_view_api():
+    return delete_programming_result_entry_view()
 
 # # API endpoint using the get_programming_result_entry_view function
 @app.route('/api/programming_result_entry_view_api', methods=['GET'])

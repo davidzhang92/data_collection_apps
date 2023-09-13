@@ -28,7 +28,7 @@ def get_programming_result_entry_view():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "SELECT a.id, b.part_no, a.serial_no, a.result, a.fail_current, a.fail_hr, a.fail_pairing, a.fail_bluetooth, a.fail_sleep_mode, a.fail_other, a.created_date FROM programming_result_entry a INNER JOIN part_master b ON a.part_id = b.id ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        query = "SELECT a.id, b.part_no, a.serial_no, a.result, a.fail_current, a.fail_hr, a.fail_pairing, a.fail_bluetooth, a.fail_sleep_mode, a.fail_other, a.created_date FROM programming_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE a.is_deleted = '0' ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
 
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()
@@ -63,7 +63,7 @@ def get_filter_search_programming_result_entry_view():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the programming result entry table
-    query = "SELECT a.id AS part_id, b.part_no, serial_no, result, a.fail_current, a.fail_hr, a.fail_pairing, a.fail_bluetooth, a.fail_sleep_mode, a.fail_other, a.created_date FROM programming_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE 1=1"
+    query = "SELECT a.id AS id, b.part_no, serial_no, result, a.fail_current, a.fail_hr, a.fail_pairing, a.fail_bluetooth, a.fail_sleep_mode, a.fail_other, a.created_date FROM programming_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE 1=1"
 
     parameters = []
 
@@ -85,7 +85,7 @@ def get_filter_search_programming_result_entry_view():
         parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'))
 
 
-    query += " ORDER BY a.created_date DESC;"
+    query += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
 
     # Construct the parameter values with wildcards
     cursor.execute(query, parameters)
