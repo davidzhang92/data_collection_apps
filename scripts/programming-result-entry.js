@@ -228,7 +228,13 @@ $('#fail-button').click(function (e) {
             },
             error: function(xhr, status, error) {
                 // handle error response
-                console.error(error);
+                if (xhr.status === 400) {
+                    // The response status is 400, indicating a duplicate
+                    alert(xhr.responseJSON.message);
+                } else {
+                    console.error(error);
+                    alert('An error occurred while submitting the result.');
+                }
             }
         });
     });
