@@ -9,6 +9,9 @@ body,
   margin-top:10px;
   }
 
+  .input-field:read-only {
+    background-color: rgb(214, 254, 255);
+  }
 
 .leaktest-result-entry-card{
     width: 1100px;
@@ -75,12 +78,14 @@ body,
         margin-left:390px;
       }
       #label-fail-status{
+        position: absolute;
         margin-left: 1rem;
         width: 300px; 
         height:12px;
         float: left; 
         margin: 0 -60px 0 20px; 
         padding-top: 10px; 
+        left:50px;
       }
 
   .product-field-span { 
@@ -151,7 +156,7 @@ body,
       left:80px;
       font-size: 22px;
       display: inline-flex;
-      width: 400px;
+      width: 240px;
       /* border: 1px solid #000;
       margin-top: 15px;
       padding: 5px; */
@@ -171,7 +176,7 @@ body,
       left:80px;
       font-size: 22px;
       display: inline-flex;
-      width: 400px;
+      width: 240px;
       /* border: 1px solid #000;
       margin-top: 15px;
       padding: 5px; */
@@ -190,7 +195,7 @@ body,
       left:80px;
       font-size: 22px;
       display: inline-flex;
-      width: 400px;
+      width: 240px;
       /* border: 1px solid #000;
       margin-top: 15px;
       padding: 5px; */
@@ -272,8 +277,8 @@ body,
   }
       /* Enabled state */
       #select-button:not(.ph-btn-disabled) {
-        background-color: #bf3f3f;
-        border-color: #791e1e;
+        background-color: #3F8ABF;
+        border-color: #387dad;
       }
       
       /* Disabled state */
@@ -286,8 +291,8 @@ body,
       #select-button:hover,
       #select-button:focus,
       #select-button:active {
-        background-color: #bf3f3f;
-        border-color: #791e1e;
+        background-color: #3376a7;
+        border-color: #2d6c99;
       }
       
       /* Hover and active state for disabled button */
@@ -317,4 +322,18 @@ body,
     border-color: #791e1e; 
   }
 
+.result-value-group{
+  position: relative;
+  right:50px;
+  top:130px;
+}
+.result-button-group {
+  position: relative;
+  right:0px;
+  top:0px;
+}
+
+
+/* jquery result */
+.ui-helper-hidden-accessible { position: absolute; left: -9999px; }
 

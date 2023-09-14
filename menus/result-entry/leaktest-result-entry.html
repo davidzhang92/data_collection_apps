@@ -81,32 +81,36 @@
     <form>
       <label class = label-field id="label-serial-no" for="serial-no">
         <span class="product-field-span">Serial No.</span>
-        <input class = input-field type="text" id="part-no-field" placeholder="Enter Serial No."  />
+        <input class = input-field type="text" id="serial-no-field" placeholder="Enter Serial No."  />
       </label>
+    </form>
+    <div class="result-button-group">
       <label class ="label-field" id="label-result" for="result">Result</label>
-    </form>
-    <form>
-      <a href='#' id='pass-button' class='ph-button ph-btn-green'>PASS</a>
-      <a href='#' id='fail-button' class='ph-button ph-btn-red'>FAIL</a>
-    </form>
-    <div class="check-boxes-fail-group">
-        <label class = "label-field product-field-span" id="label-fail-status" for="fail-status">Fail Status</label>
-        <div class= "label-field" id = "fail-1">
+      <form>
+        <a href='#' id='pass-button' class='ph-button ph-btn-green'>PASS</a>
+        <a href='#' id='fail-button' class='ph-button ph-btn-red'>FAIL</a>
+      </form>
+    </div>
+    
+
+        <div class="result-value-group">
+          <label class = "label-field product-field-span" id="label-fail-status" for="fail-status">Result Value</label>
+          <div class= "label-field" id = "fail-1">
             <label for="fine-checkbox">Fine</label>
-            <input class= "fail-checkbox" type="checkbox" id="fine-checkbox" name="fail-1" for="fine-field"value="Fine"/>
+            <!-- <input class= "fail-checkbox" type="checkbox" id="fine-checkbox" name="fail-1" for="fine-field"value="Fine"/> -->
             <input type="text" id="fine-field" placeholder="" />
         </div>
         <div class= "label-field" id = "fail-2">
           <label for="gross-checkbox">Gross</label>
-          <input class= "fail-checkbox" type="checkbox" id="gross-checkbox" name="fail-2" value="Gross"/>
+          <!-- <input class= "fail-checkbox" type="checkbox" id="gross-checkbox" name="fail-2" value="Gross"/> -->
           <input type="text" id="gross-field" placeholder="" />
         </div>
         <div class= "label-field" id = "fail-3">
           <label for="others-checkbox">Others</label>
-          <input class= "fail-checkbox" type="checkbox" id="others-checkbox" name="fail-3" value="Others"/>
+          <!-- <input class= "fail-checkbox" type="checkbox" id="others-checkbox" name="fail-3" value="Others"/> -->
           <input type="text" id="others-field" placeholder="" />
         </div>
-    </div>
+      </div>
   </div>
   <div class="leaktest-result-entry-sub-card-2">
     <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
@@ -120,3 +124,4 @@
 <script src="/scripts/jquery/jquery.js"></script> 
 <script src="/scripts/jquery/jquery-ui.min.js"></script> 
 <script src="/scripts/auto-complete-part.js"></script> 
+<script src="/scripts/leaktest-result-entry.js"></script> 

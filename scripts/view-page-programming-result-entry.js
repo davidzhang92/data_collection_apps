@@ -87,7 +87,7 @@ $(document).ready(function () {
 				<td>${result.part_no}</td>
 				<td>${result.serial_no}</td>
 				<td>${result.result}</td>
-				<td>${failureDetailsString}</td>
+				<td>${failureDetailsString} </td> 
 				<td>${formattedDate}</td>
 				<td>
 				<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -474,14 +474,6 @@ $(document).on('click', '#lastPage', function () {
     }
 });
 
-	// Check the stored state of the "select all" checkbox and update it
-	var selectAllState = localStorage.getItem('selectAllState');
-	if (selectAllState === 'checked') {
-		$("#selectAll").prop("checked", true);
-	} else {
-		$("#selectAll").prop("checked", false);
-	}  
-	
 
 
 });

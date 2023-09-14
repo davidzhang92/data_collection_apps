@@ -1,4 +1,4 @@
-// initialization state of page 
+// -----initialization state of page and rules---------
 $('.programming-result-entry-sub-card').hide();
 $('.programming-result-entry-sub-card-2').hide();
 
@@ -93,34 +93,48 @@ $(document).ready(function (){
 
 // fail/pass button function
 
-  var inputResult = $('#input-result');
+    var inputResult = $('#input-result');
 
-// Click event handler for the "PASS" button
-$('#pass-button').click(function (e) {
-    e.preventDefault();
-    
-    // Disable the entire div and its child elements
-    $('.check-boxes-fail-group').addClass('disabled');
-    $('.check-boxes-fail-group input').prop('disabled', true);
-// Clear all checkboxes inside the div with class "check-boxes-fail-group"
-$('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
-    // Set the result text and color
-    inputResult.text('PASS');
-    inputResult.css('color', '#00ff2a');
-});
+    // Click event handler for the "PASS" button
+    $('#pass-button').click(function (e) {
+        e.preventDefault();
+        
+        // Disable the entire div and its child elements
+        $('.check-boxes-fail-group').addClass('disabled');
+        $('.check-boxes-fail-group input').prop('disabled', true);
+    // Clear all checkboxes inside the div with class "check-boxes-fail-group"
+    $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
+        // Set the result text and color
+        inputResult.text('PASS');
+        inputResult.css('color', '#00ff2a');
+    });
 
-// Click event handler for the "FAIL" button
-$('#fail-button').click(function (e) {
-    e.preventDefault();
-    
-    // Enable the entire div and its child elements
-    $('.check-boxes-fail-group').addClass('disabled');
-    $('.check-boxes-fail-group input').prop('disabled', false);
-    
-    // Set the result text and color
-    inputResult.text('FAIL');
-    inputResult.css('color', '#ff0000');
-});
+    // Click event handler for the "FAIL" button
+    $('#fail-button').click(function (e) {
+        e.preventDefault();
+        
+        // Enable the entire div and its child elements
+        $('.check-boxes-fail-group').addClass('disabled');
+        $('.check-boxes-fail-group input').prop('disabled', false);
+        
+        // Set the result text and color
+        inputResult.text('FAIL');
+        inputResult.css('color', '#ff0000');
+    });
+
+    $("#serial-no-field").on("blur", function() {
+        var inputValue = $(this).val();
+        var errorMessage = $("#error-message");
+
+        if (!/^\d+$/.test(inputValue)) {
+            alert("Please enter a numeric value.");
+            $(this).val("");
+            $(this).focus();
+        } else {
+            errorMessage.text("");
+        }
+    });
+
 
 // ---handing POST request---
     // Initialize partId and result variables
@@ -136,6 +150,12 @@ $('#fail-button').click(function (e) {
 
     $('#pass-button').click(function () {
         result = $('#input-result').text();
+        failCurrent = false; // Reset failCurrent
+        failHr = false; // Reset failHr
+        failPairing = false; // Reset failPairing
+        failBluetooth = false; // Reset failBluetooth
+        failSleepMode = false; // Reset failSleepMode
+        failOther = false; // Reset failOther
     });
 
     $('#fail-button').click(function () {
