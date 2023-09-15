@@ -98,23 +98,25 @@
           <div class= "label-field" id = "fail-1">
             <label for="fine-checkbox">Fine</label>
             <!-- <input class= "fail-checkbox" type="checkbox" id="fine-checkbox" name="fail-1" for="fine-field"value="Fine"/> -->
-            <input type="text" id="fine-field" placeholder="" />
+            <input type="text" id="fine-field" placeholder="0.00000" />
         </div>
         <div class= "label-field" id = "fail-2">
           <label for="gross-checkbox">Gross</label>
           <!-- <input class= "fail-checkbox" type="checkbox" id="gross-checkbox" name="fail-2" value="Gross"/> -->
-          <input type="text" id="gross-field" placeholder="" />
+          <input type="text" id="gross-field" placeholder="0.00000" />
         </div>
         <div class= "label-field" id = "fail-3">
           <label for="others-checkbox">Others</label>
           <!-- <input class= "fail-checkbox" type="checkbox" id="others-checkbox" name="fail-3" value="Others"/> -->
-          <input type="text" id="others-field" placeholder="" />
+          <input type="text" id="others-field" placeholder="0.00000" />
         </div>
       </div>
   </div>
   <div class="leaktest-result-entry-sub-card-2">
-    <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
-    <a id='input-result'>PASS</a>
+    <form id="save-form">
+      <a href='#'  id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
+    </form>
+    <a id='input-result'></a>
   </div>
 </div>
 </body>

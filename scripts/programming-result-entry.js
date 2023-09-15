@@ -125,8 +125,11 @@ $(document).ready(function (){
     $("#serial-no-field").on("blur", function() {
         var inputValue = $(this).val();
         var errorMessage = $("#error-message");
-
-        if (!/^\d+$/.test(inputValue)) {
+    
+        if (inputValue.trim() === "") {
+            // Only display the alert if the field is empty
+            errorMessage.text("");
+        } else if (!/^\d+$/.test(inputValue)) {
             alert("Please enter a numeric value.");
             $(this).val("");
             $(this).focus();
@@ -134,6 +137,7 @@ $(document).ready(function (){
             errorMessage.text("");
         }
     });
+    
 
 
 // ---handing POST request---
