@@ -1,6 +1,6 @@
 // -----initialization state of page and rules---------
-// $('.leaktest-result-entry-sub-card').hide();
-// $('.leaktest-result-entry-sub-card-2').hide();
+$('.leaktest-result-entry-sub-card').hide();
+$('.leaktest-result-entry-sub-card-2').hide();
 
 $(document).ready(function (){
 
@@ -141,16 +141,16 @@ $(document).ready(function (){
     if (storedPartId) {
         $('#pname').attr('part-id', storedPartId);
     }
-    var serialPartNumber=$('#serial-no-field').val();
+    var housingPartNumber=$('#housing-no-field').val();
     // Add an event listener to the input field to update serialPartNumber on input changes
-    $('#serial-no-field').on('input', function () {
-        serialPartNumber = $(this).val();
+    $('#housing-no-field').on('input', function () {
+      housingPartNumber = $('#housing-no-field').val();
     });
-    $('#serial-no-field').on('keydown', function(event) {
+    $('#housing-no-field').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
         }
-        $("#serial-no-field").on("blur", function() {
+        $("#housing-no-field").on("blur", function() {
           var inputValue = $(this).val();
           var errorMessage = $("#error-message");
       
@@ -169,9 +169,9 @@ $(document).ready(function (){
     
 // result value assignment and checking
 
-    var valueFine = $('#fine-field').val() || '0.0000';
+    var fineValue = $('#fine-field').val() || '0.0000';
     $('#fine-field').on('input', function () {
-      valueFine = $(this).val() || '0.0000';
+      fineValue = $(this).val() || '0.0000';
     });
 
     $('#fine-field').on('keydown', function(event) {
@@ -197,9 +197,9 @@ $(document).ready(function (){
     });
   
   
-    var valueGross = $('#gross-field').val() || '0.0000';
+    var grossValue = $('#gross-field').val() || '0.0000';
     $('#gross-field').on('input', function () {
-      valueGross = $(this).val() || '0.0000';
+      grossValue = $(this).val() || '0.0000';
     });
     $('#gross-field').on('keydown', function(event) {
       if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
@@ -223,9 +223,9 @@ $(document).ready(function (){
       });
     });
 
-    var valueOthers = $('#others-field').val() || '0.0000';
+    var othersValue = $('#others-field').val() || '0.0000';
     $('#others-field').on('input', function () {
-      valueOthers = $(this).val() || '0.0000';
+      othersValue = $(this).val() || '0.0000';
     });
     $('#others-field').on('keydown', function(event) {
       if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
@@ -251,15 +251,15 @@ $(document).ready(function (){
     $('#save-form').on('submit', function(event) {
         event.preventDefault();
         $.ajax({
-            url: 'http://localhost:5000/api/post-programming-result-entry-api',
+            url: 'http://localhost:5000/api/leaktest-result-entry-api',
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
-                serial_no: serialPartNumber,
+                housing_no: housingPartNumber,
                 result: result,
-                fine_value: valueFine,
-                gross_value: valueGross,
-                others_value: valueOthers
+                fine_value: fineValue,
+                gross_value: grossValue,
+                others_value: othersValue
             }),
             contentType: 'application/json',
             success: function(response) {
@@ -269,9 +269,10 @@ $(document).ready(function (){
                 $('#input-result').text('');
                 // Reset other variables
                 result = ''; // Reset result
-                fine_value = ''; // Reset fine_value
-                gross_value = ''; // Reset gross_value
-                others_value = ''; // Reset other_value
+                $('#housing-no-field').val('')
+                $('#fine-field').val('')
+                $('#gross-field').val('')
+                $('#others-field').val('')
 
                 alert('Result submitted successfully.');
             },
@@ -291,12 +292,12 @@ $(document).ready(function (){
     // Trigger the form submission when the anchor is clicked
     $('#save-button').click(function() {
         // Get the values of serial number and result
-        var serialNumber = $('#serial-no-field').val();
+        var housingPartNumber = $('#housing-no-field').val();
         var resultValue = $('#input-result').text();
 
 
         // Check if serial number is empty
-        if (serialNumber.trim() === '') {
+        if (housingPartNumber.trim() === '') {
             alert('Serial number cannot be empty.');
             return; // Prevent further processing if serial number is empty
         }

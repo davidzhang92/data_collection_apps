@@ -17,6 +17,7 @@ from post_programming_result_entry import post_programming_result_entry
 from get_pagination_programming_result_entry_count import get_pagination_programming_result_entry_count
 from get_programming_result_entry_view import get_filter_search_programming_result_entry_view, get_programming_result_entry_view
 from delete_programming_result_entry_view import delete_programming_result_entry_view
+from post_leaktest_result_entry import post_leaktest_result_entry
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -195,10 +196,6 @@ def post_programming_result_entry_api():
 #####view-programming-result-entry-section#######
 ###############################
 
-# --------------------------------
-# view-result-programming-entry-POST
-# --------------------------------
-
 # API endpoint to retrieve number of entries on result-programming-entry
 @app.route('/api/pagination_programming_result_entry_count_api', methods=['GET'])
 def get_pagination_programming_result_entry_count_api():
@@ -218,6 +215,22 @@ def delete_programming_result_entry_view_api():
 @app.route('/api/programming_result_entry_view_api', methods=['GET'])
 def get_programming_result_entry_view_api():
     return get_programming_result_entry_view()
+
+###############################
+#####leaktest-result-entry-section#######
+###############################
+
+# --------------------------------
+# leaktest-result-entry-POST
+# --------------------------------
+
+# API endpoint using the post_data function
+@app.route('/api/leaktest-result-entry-api', methods=['POST'])
+def post_leaktest_result_entry_api():
+    return post_leaktest_result_entry()
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -132,7 +132,6 @@ $(document).ready(function () {
 		} else {
 			// If both search fields are empty, reset filtering and show the pagination container
 			filteredData = [];
-			fetchData(); // Fetch all data
 			$('#page_container').show(); // Show the pagination container
 		}
 		
