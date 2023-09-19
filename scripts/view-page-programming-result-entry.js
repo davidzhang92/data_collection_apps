@@ -158,71 +158,71 @@ $(document).ready(function () {
 		});
 	}
 
-// Fetch data on page load if both search fields are empty
-const initialPartNumber = $('#part-number-field').val().trim();
+	// Fetch data on page load if both search fields are empty
+	const initialPartNumber = $('#part-number-field').val().trim();
 
-if (!initialPartNumber) {
-    fetchData(); // Moved the initial fetch here
-}
-// Function to reset the current page to 1
-function resetCurrentPage() {
-    currentPage = 1;
-    createPagination(currentPage);
-    updatePaginationButtons(currentPage);
-}
-// Function to handle the search button click
-$('#search-part').click(function () {
-    const partNumber = $('#part-number-field').val().trim();
-    const dateFrom = $('#date-from-field').val().trim();
-    const dateTo = $('#date-to-field').val().trim();
-
-    // Create an empty object to store the data to send in the request
-    const requestData = {};
-
-	if (partNumber || dateFrom || dateTo) {
-		// Hide the pagination container
-		$('#page_container').hide();
-		if (partNumber) {
-			requestData.search_part_no = partNumber;
-		}
-		if (dateFrom) {
-			requestData.search_date_from = dateFrom;
-		}
-		if (dateTo) {
-			requestData.search_date_to = dateTo;
-		}
-		resetCurrentPage(); // Reset the current page to 1
-	} else {
-		// If all search fields are empty, reset filtering and show the pagination container
-		filteredData = [];
-		resetCurrentPage(); // Reset the current page to 1
-		fetchData(); // Fetch all data
-		$('#page_container').show(); // Show the pagination container
+	if (!initialPartNumber) {
+		fetchData(); // Moved the initial fetch here
 	}
-
-
-	
-	if (partNumber || dateFrom || dateTo) {
-		// First AJAX request to filter data
-		$.ajax({
-			url: 'http://localhost:5000/api/filter_search_programming_result_entry_view_api',
-			type: 'GET',
-			data: requestData, // Send the requestData object
-			success: function (data) {
-				filteredData = data; // Store the filtered data
-				
-				renderData(filteredData); // Render the filtered data
-			},
-			error: function (error) {
-				console.error('Error fetching filtered data:', error);
-			},
-		});
-	} else {
-		// If all search fields are empty, reset filtering and show pagination container
-		filteredData = [];
-		$('#page_container').show(); // Show the pagination container
+	// Function to reset the current page to 1
+	function resetCurrentPage() {
+		currentPage = 1;
+		createPagination(currentPage);
+		updatePaginationButtons(currentPage);
 	}
-});
+	// Function to handle the search button click
+	$('#search-part').click(function () {
+		const partNumber = $('#part-number-field').val().trim();
+		const dateFrom = $('#date-from-field').val().trim();
+		const dateTo = $('#date-to-field').val().trim();
+
+		// Create an empty object to store the data to send in the request
+		const requestData = {};
+
+		if (partNumber || dateFrom || dateTo) {
+			// Hide the pagination container
+			$('#page_container').hide();
+			if (partNumber) {
+				requestData.search_part_no = partNumber;
+			}
+			if (dateFrom) {
+				requestData.search_date_from = dateFrom;
+			}
+			if (dateTo) {
+				requestData.search_date_to = dateTo;
+			}
+			resetCurrentPage(); // Reset the current page to 1
+		} else {
+			// If all search fields are empty, reset filtering and show the pagination container
+			filteredData = [];
+			resetCurrentPage(); // Reset the current page to 1
+			fetchData(); // Fetch all data
+			$('#page_container').show(); // Show the pagination container
+		}
+
+
+		
+		if (partNumber || dateFrom || dateTo) {
+			// First AJAX request to filter data
+			$.ajax({
+				url: 'http://localhost:5000/api/filter_search_programming_result_entry_view_api',
+				type: 'GET',
+				data: requestData, // Send the requestData object
+				success: function (data) {
+					filteredData = data; // Store the filtered data
+					
+					renderData(filteredData); // Render the filtered data
+				},
+				error: function (error) {
+					console.error('Error fetching filtered data:', error);
+				},
+			});
+		} else {
+			// If all search fields are empty, reset filtering and show pagination container
+			filteredData = [];
+			$('#page_container').show(); // Show the pagination container
+		}
+	});
 
 
 // Handle delete and DELETE request

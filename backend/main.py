@@ -18,6 +18,9 @@ from get_pagination_programming_result_entry_count import get_pagination_program
 from get_programming_result_entry_view import get_filter_search_programming_result_entry_view, get_programming_result_entry_view
 from delete_programming_result_entry_view import delete_programming_result_entry_view
 from post_leaktest_result_entry import post_leaktest_result_entry
+from get_pagination_leaktest_result_entry_count import get_pagination_leaktest_result_entry_count
+from get_leaktest_result_entry_view import get_filter_search_leaktest_result_entry_view, get_leaktest_result_entry_view
+from delete_leaktest_result_entry_view import delete_leaktest_result_entry_view
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -229,6 +232,29 @@ def get_programming_result_entry_view_api():
 def post_leaktest_result_entry_api():
     return post_leaktest_result_entry()
 
+###############################
+#####view-leaktest-result-entry-section#######
+###############################
+
+# API endpoint to retrieve number of entries on result-leaktest-entry
+@app.route('/api/pagination_leaktest_result_entry_count_api', methods=['GET'])
+def get_pagination_leaktest_result_entry_count_api():
+    return get_pagination_leaktest_result_entry_count()
+
+# API endpoint using the get_filter_search_leaktest_result_entry function
+@app.route('/api/filter_search_leaktest_result_entry_view_api', methods=['GET'])
+def get_filter_search_leaktest_result_entry_view_api():
+    return get_filter_search_leaktest_result_entry_view()
+
+# API endpoint using the get_leaktest_result_entry_view function
+@app.route('/api/leaktest_result_entry_view_api', methods=['GET'])
+def get_leaktest_result_entry_view_api():
+    return get_leaktest_result_entry_view()
+
+# API endpoint using the delete_data function
+@app.route('/api/delete_leaktest_result_entry_view_api', methods=['DELETE'])
+def delete_leaktest_result_entry_view_api():
+    return delete_leaktest_result_entry_view()
 
 
 
