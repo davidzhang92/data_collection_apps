@@ -60,5 +60,6 @@ $(function () {
         source: getData,
         select: selectItem,
         minLength: 2
+        
     });
 });

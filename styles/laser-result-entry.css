@@ -233,8 +233,8 @@ body,
     position:absolute;
     top:95px;
     margin-left: 20px;
-    background-color: #bf3f3f;
-    border-color: #791e1e;   
+    /* background-color: #bf3f3f;
+    border-color: #791e1e;    */
   }
   #view-button {
     position:absolute;

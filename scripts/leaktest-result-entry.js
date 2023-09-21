@@ -141,6 +141,9 @@ $(document).ready(function (){
     if (storedPartId) {
         $('#pname').attr('part-id', storedPartId);
     }
+
+        
+// result value assignment and checking
     var housingPartNumber=$('#housing-no-field').val();
     // Add an event listener to the input field to update serialPartNumber on input changes
     $('#housing-no-field').on('input', function () {
@@ -149,6 +152,7 @@ $(document).ready(function (){
     $('#housing-no-field').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
+            $('#fine-field').focus();
         }
         $("#housing-no-field").on("blur", function() {
           var inputValue = $(this).val();
@@ -167,7 +171,7 @@ $(document).ready(function (){
       });
     });
     
-// result value assignment and checking
+
 
     var fineValue = $('#fine-field').val() || '0.0000';
     $('#fine-field').on('input', function () {

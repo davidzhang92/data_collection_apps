@@ -47,18 +47,19 @@ def get_auto_complete_defect_name():
     cursor = conn.cursor()
 
     # Construct the SQL query to get the description based on the selected value
-    query = "SELECT defect_description FROM defect_master WHERE defect_no = ?"
+    query = "SELECT id, defect_description FROM defect_master WHERE defect_no = ?"
     params = (selected_defectCodeField,)
-
     cursor.execute(query, params)
-    description = cursor.fetchone()
+    rows = cursor.fetchall()
 
-    if description:
-        return jsonify({'description': description[0]})
-    else:
-        print(selected_defectCodeField)
-        return jsonify({'description': 'Description not found'})
+    # Convert the result into a list of dictionaries for JSON serialization
+    results = []
+    columns = [column[0] for column in cursor.description]
     
+    for row in rows:
+        results.append(dict(zip(columns, row)))
+    
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run()
