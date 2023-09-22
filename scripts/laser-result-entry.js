@@ -114,6 +114,7 @@ $(document).ready(function (){
 });
 
 // ---handing POST request---
+ 
     // Initialize partId and result variables
     var partId = localStorage.getItem('partId') || '';
     var result = '';
@@ -141,18 +142,18 @@ $(document).ready(function (){
     }
 
         
-  // result value assignment and checking
-    var serialNumber=$('#serial-no-field').val();
+// result value assignment and checking
+    var housingPartNumber=$('#housing-no-field').val();
     // Add an event listener to the input field to update serialPartNumber on input changes
-    $('#serial-no-field').on('input', function () {
-      serialNumber = $('#serial-no-field').val();
+    $('#housing-no-field').on('input', function () {
+      housingPartNumber = $('#housing-no-field').val();
     });
-    $('#serial-no-field').on('keydown', function(event) {
+    $('#housing-no-field').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
-            $('#data-matrix-field').focus();
+            $('#fine-field').focus();
         }
-        $("#serial-no-field").on("blur", function() {
+        $("#housing-no-field").on("blur", function() {
           var inputValue = $(this).val();
           var errorMessage = $("#error-message");
       
@@ -167,58 +168,173 @@ $(document).ready(function (){
               errorMessage.text("");
           }
       });
+    });
     
-      var dataMatrix=$('#data-matrix-field').val();
-      // Add an event listener to the input field to update serialPartNumber on input changes
-      $('#data-matrix-field').on('input', function () {
-        dataMatrix = $('#data-matrix-field').val();
-      });
-      $('#data-matrix-field').on('keydown', function(event) {
-          if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
-              event.preventDefault(); // Prevent the default behavior of the Enter key
-              $('#label-id-field').focus();
-          }
-          $("#data-matrix-field").on("blur", function() {
-            var inputValue = $(this).val();
-            var errorMessage = $("#error-message");
-        
-            if (inputValue.trim() === "") {
-                // Only display the alert if the field is empty
-                errorMessage.text("");
-            } else if (!/^\d+$/.test(inputValue)) {
-                alert("Please enter a numeric value.");
-                $(this).val("");
-                $(this).focus();
-            } else {
-                errorMessage.text("");
-            }
-        });
-      });
-      
-      var labelId=$('#label-id-field').val();
-      // Add an event listener to the input field to update serialPartNumber on input changes
-      $('#label-id-field').on('input', function () {
-        labelId = $('#label-id-field').val();
-      });
-      $('#label-id-field').on('keydown', function(event) {
-          if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
-              event.preventDefault(); // Prevent the default behavior of the Enter key
-          }
-          $("#label-id-field").on("blur", function() {
-            var inputValue = $(this).val();
-            var errorMessage = $("#error-message");
-        
-            if (inputValue.trim() === "") {
-                // Only display the alert if the field is empty
-                errorMessage.text("");
-            } else if (!/^\d+$/.test(inputValue)) {
-                alert("Please enter a numeric value.");
-                $(this).val("");
-                $(this).focus();
-            } else {
-                errorMessage.text("");
-            }
-        });
-      });   
 
-});  
+
+    var fineValue = $('#fine-field').val() || '0.0000';
+    $('#fine-field').on('input', function () {
+      fineValue = $(this).val() || '0.0000';
+    });
+
+    $('#fine-field').on('keydown', function(event) {
+      if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+          event.preventDefault(); // Prevent the default behavior of the Enter key
+          $('#gross-field').focus(); // Move focus to the next field,
+      }
+      $("#fine-field").on("blur", function() {
+          var inputValue = $(this).val();
+          var errorMessage = $("#error-message");
+  
+          if (inputValue.trim() === "") {
+              // Only display the alert if the field is empty
+              errorMessage.text("");
+          } else if (!/^\d+(\.\d+)?$/.test(inputValue)) {
+              alert("Please enter a numeric or float value.");
+              $(this).val("");
+              $(this).focus();
+          } else {
+              errorMessage.text("");
+          }
+      });
+    });
+  
+  
+    var grossValue = $('#gross-field').val() || '0.0000';
+    $('#gross-field').on('input', function () {
+      grossValue = $(this).val() || '0.0000';
+    });
+    $('#gross-field').on('keydown', function(event) {
+      if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+          event.preventDefault(); // Prevent the default behavior of the Enter key
+          $('#others-field').focus(); // Move focus to the next field,
+      }
+      $("#gross-field").on("blur", function() {
+          var inputValue = $(this).val();
+          var errorMessage = $("#error-message");
+  
+          if (inputValue.trim() === "") {
+              // Only display the alert if the field is empty
+              errorMessage.text("");
+          } else if (!/^\d+(\.\d+)?$/.test(inputValue)) {
+              alert("Please enter a numeric or float value.");
+              $(this).val("");
+              $(this).focus();
+          } else {
+              errorMessage.text("");
+          }
+      });
+    });
+
+    var othersValue = $('#others-field').val() || '0.0000';
+    $('#others-field').on('input', function () {
+      othersValue = $(this).val() || '0.0000';
+    });
+    $('#others-field').on('keydown', function(event) {
+      if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+          event.preventDefault(); // Prevent the default behavior of the Enter key
+      }
+      $("#others-field").on("blur", function() {
+          var inputValue = $(this).val();
+          var errorMessage = $("#error-message");
+  
+          if (inputValue.trim() === "") {
+              // Only display the alert if the field is empty
+              errorMessage.text("");
+          } else if (!/^\d+(\.\d+)?$/.test(inputValue)) {
+              alert("Please enter a numeric or float value.");
+              $(this).val("");
+              $(this).focus();
+          } else {
+              errorMessage.text("");
+          }
+      });
+    });
+
+
+
+
+
+
+    $('#save-form').on('submit', function(event) {
+      event.preventDefault();
+      $.ajax({
+          url: 'http://localhost:5000/api/laser-result-entry-api',
+          type: 'POST',
+          data: JSON.stringify({
+              part_id: partId,
+              defect_id: defectId,
+              serial_no: serialNumber,
+              result: result,
+              data_matrix: dataMatrix,
+              label_id:labelId,
+              gross_value: grossValue,
+              others_value: othersValue
+          }),
+          contentType: 'application/json',
+          success: function(response) {
+              // handle successful response
+              console.log(response);
+
+              $('#input-result').text('');
+              // Reset other variables
+              result = ''; // Reset result
+              $('#serial-no-field').val('')
+              $('#data-matrix-field').val('')
+              $('#label-id-field').val('')
+              $('#defect-code-field').val('')
+
+
+              alert('Result submitted successfully.');
+          },
+          error: function(xhr, status, error) {
+              // handle error response
+              if (xhr.status === 400) {
+                  // The response status is 400, indicating a duplicate
+                  alert(xhr.responseJSON.message);
+              } else {
+                  console.error(error);
+                  alert('An error occurred while submitting the result.');
+              }
+          }
+      });
+  });
+
+  // Trigger the form submission when the anchor is clicked
+  $('#save-button').click(function() {
+    // Get the values of serial number and result
+    var serialNumber = $('#serial-no-field').val();
+    var dataMatrix = $('#data-matrix-field').val();
+    var labelId = $('#label-id-field').val();
+    var defectId = $('#defect-code-field').attr();
+
+
+    // Check if serial number is empty
+    if (serialNumber.trim() === '') {
+        alert('Serial number cannot be empty.');
+        return; // Prevent further processing if serial number is empty
+    }
+
+    // Check if dataMatrix is empty
+    if (dataMatrix.trim() === '') {
+        alert('Data Matrix cannot be empty.');
+        return; // Prevent further processing if result is empty
+    }
+
+    // Check if labelId is empty
+    if (labelId.trim() === '') {
+        alert('Label ID cannot be empty.');
+        return; // Prevent further processing if result is empty
+    }
+
+    // Check if labelId is empty
+    if (defectId.trim() === '') {
+      alert('Defect Code cannot be empty.');
+      return; // Prevent further processing if result is empty
+    }
+
+
+    // If all checks pass, proceed with the form submission
+    $('#save-form').submit();
+    
+  });

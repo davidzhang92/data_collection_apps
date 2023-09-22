@@ -21,6 +21,7 @@ from post_leaktest_result_entry import post_leaktest_result_entry
 from get_pagination_leaktest_result_entry_count import get_pagination_leaktest_result_entry_count
 from get_leaktest_result_entry_view import get_filter_search_leaktest_result_entry_view, get_leaktest_result_entry_view
 from delete_leaktest_result_entry_view import delete_leaktest_result_entry_view
+from post_laser_result_entry import post_laser_result_entry
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -256,6 +257,18 @@ def get_leaktest_result_entry_view_api():
 def delete_leaktest_result_entry_view_api():
     return delete_leaktest_result_entry_view()
 
+###############################
+#####laser-result-entry-section#######
+###############################
+
+# --------------------------------
+# laser-result-entry-POST
+# --------------------------------
+
+# API endpoint using the post_data function
+@app.route('/api/laser-result-entry-api', methods=['POST'])
+def post_laser_result_entry_api():
+    return post_laser_result_entry()
 
 
 if __name__ == "__main__":
