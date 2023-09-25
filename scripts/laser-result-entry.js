@@ -143,17 +143,17 @@ $(document).ready(function (){
 
         
 // result value assignment and checking
-    var housingPartNumber=$('#housing-no-field').val();
+    var serialNumber=$('#serial-no-field').val();
     // Add an event listener to the input field to update serialPartNumber on input changes
-    $('#housing-no-field').on('input', function () {
-      housingPartNumber = $('#housing-no-field').val();
+    $('#serial-no-field').on('input', function () {
+      serialNumber = $('#serial-no-field').val();
     });
-    $('#housing-no-field').on('keydown', function(event) {
+    $('#serial-no-field').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
-            $('#fine-field').focus();
+            $('#data-matrix-field').focus();
         }
-        $("#housing-no-field").on("blur", function() {
+        $("#serial-no-field").on("blur", function() {
           var inputValue = $(this).val();
           var errorMessage = $("#error-message");
       
@@ -172,17 +172,17 @@ $(document).ready(function (){
     
 
 
-    var fineValue = $('#fine-field').val() || '0.0000';
-    $('#fine-field').on('input', function () {
-      fineValue = $(this).val() || '0.0000';
+    var dataMatrix = $('#data-matrix-field').val();
+    $('#data-matrix-field').on('input', function () {
+      dataMatrix = $(this).val() 
     });
 
-    $('#fine-field').on('keydown', function(event) {
+    $('#data-matrix-field').on('keydown', function(event) {
       if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
           event.preventDefault(); // Prevent the default behavior of the Enter key
-          $('#gross-field').focus(); // Move focus to the next field,
+          $('#label-id-field').focus(); // Move focus to the next field,
       }
-      $("#fine-field").on("blur", function() {
+      $("#data-matrix-field").on("blur", function() {
           var inputValue = $(this).val();
           var errorMessage = $("#error-message");
   
@@ -200,16 +200,16 @@ $(document).ready(function (){
     });
   
   
-    var grossValue = $('#gross-field').val() || '0.0000';
-    $('#gross-field').on('input', function () {
-      grossValue = $(this).val() || '0.0000';
+    var labelId = $('#label-id-field').val();
+    $('#label-id-field').on('input', function () {
+      labelId = $(this).val();
     });
-    $('#gross-field').on('keydown', function(event) {
+    $('#label-id-field').on('keydown', function(event) {
       if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
           event.preventDefault(); // Prevent the default behavior of the Enter key
-          $('#others-field').focus(); // Move focus to the next field,
+          $('#defect-code-field').focus(); // Move focus to the next field,
       }
-      $("#gross-field").on("blur", function() {
+      $("#label-id-field").on("blur", function() {
           var inputValue = $(this).val();
           var errorMessage = $("#error-message");
   
@@ -226,29 +226,14 @@ $(document).ready(function (){
       });
     });
 
-    var othersValue = $('#others-field').val() || '0.0000';
-    $('#others-field').on('input', function () {
-      othersValue = $(this).val() || '0.0000';
+    $('#defect-code-field').on('input', function () {
+      defectId = $(this).attr('defect-id'); // Update defectId when input changes
     });
-    $('#others-field').on('keydown', function(event) {
-      if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
-          event.preventDefault(); // Prevent the default behavior of the Enter key
+    
+    $('#defect-code-field').on('keydown', function(event) {
+      if (event.keyCode === 13) {
+        event.preventDefault();
       }
-      $("#others-field").on("blur", function() {
-          var inputValue = $(this).val();
-          var errorMessage = $("#error-message");
-  
-          if (inputValue.trim() === "") {
-              // Only display the alert if the field is empty
-              errorMessage.text("");
-          } else if (!/^\d+(\.\d+)?$/.test(inputValue)) {
-              alert("Please enter a numeric or float value.");
-              $(this).val("");
-              $(this).focus();
-          } else {
-              errorMessage.text("");
-          }
-      });
     });
 
 
@@ -256,7 +241,7 @@ $(document).ready(function (){
 
 
 
-    $('#save-form').on('submit', function(event) {
+    $('#save-button').click(function(event) {
       event.preventDefault();
       $.ajax({
           url: 'http://localhost:5000/api/laser-result-entry-api',
@@ -267,9 +252,7 @@ $(document).ready(function (){
               serial_no: serialNumber,
               result: result,
               data_matrix: dataMatrix,
-              label_id:labelId,
-              gross_value: grossValue,
-              others_value: othersValue
+              label_id:labelId
           }),
           contentType: 'application/json',
           success: function(response) {
@@ -283,6 +266,7 @@ $(document).ready(function (){
               $('#data-matrix-field').val('')
               $('#label-id-field').val('')
               $('#defect-code-field').val('')
+              $('#defect-desc').val('')
 
 
               alert('Result submitted successfully.');
@@ -336,5 +320,5 @@ $(document).ready(function (){
 
     // If all checks pass, proceed with the form submission
     $('#save-form').submit();
-    
+
   });
