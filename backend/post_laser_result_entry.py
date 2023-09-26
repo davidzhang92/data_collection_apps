@@ -50,9 +50,9 @@ def post_laser_result_entry():
         new_part_id = uuid.UUID(data['part_id'])
         new_defect_id = uuid.UUID(data['defect_id'])
         new_result = str(data['result'])
-        new_serial_no = int(data['serial_no'])
-        new_data_matrix = int(data['data_matrix'])
-        new_label_id = int(data['label_id'])
+        new_serial_no = str(data['serial_no'])
+        new_data_matrix = str(data['data_matrix'])
+        new_label_id = str(data['label_id'])
 
 
         # Construct the SQL query to insert the data

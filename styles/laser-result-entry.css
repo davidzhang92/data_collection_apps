@@ -13,7 +13,9 @@ body,
   /* padding-top:5px; */
   font-size: 18px;
 }
-
+.input-field:read-only {
+  background-color: rgb(214, 254, 255);
+}
 
 .laser-result-entry-card{
     width: 1100px;
