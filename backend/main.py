@@ -22,6 +22,10 @@ from get_pagination_leaktest_result_entry_count import get_pagination_leaktest_r
 from get_leaktest_result_entry_view import get_filter_search_leaktest_result_entry_view, get_leaktest_result_entry_view
 from delete_leaktest_result_entry_view import delete_leaktest_result_entry_view
 from post_laser_result_entry import post_laser_result_entry
+from get_laser_result_entry_view import get_laser_result_entry_view, get_filter_search_laser_result_entry_view
+from get_pagination_laser_result_entry_count import get_pagination_laser_result_entry_count
+from delete_laser_result_entry_view import delete_laser_result_entry_view
+
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -269,6 +273,26 @@ def delete_leaktest_result_entry_view_api():
 @app.route('/api/laser-result-entry-api', methods=['POST'])
 def post_laser_result_entry_api():
     return post_laser_result_entry()
+
+# API endpoint to retrieve number of entries on result-laser-entry
+@app.route('/api/pagination_laser_result_entry_count_api', methods=['GET'])
+def get_pagination_laser_result_entry_count_api():
+    return get_pagination_laser_result_entry_count()
+
+# API endpoint using the get_filter_search_laser_result_entry function
+@app.route('/api/filter_search_laser_result_entry_view_api', methods=['GET'])
+def get_filter_search_laser_result_entry_view_api():
+    return get_filter_search_laser_result_entry_view()
+
+# API endpoint using the get_laser_result_entry_view function
+@app.route('/api/laser_result_entry_view_api', methods=['GET'])
+def get_laser_result_entry_view_api():
+    return get_laser_result_entry_view()
+
+# API endpoint using the delete_data function
+@app.route('/api/delete_laser_result_entry_view_api', methods=['DELETE'])
+def delete_laser_result_entry_view_api():
+    return delete_laser_result_entry_view()
 
 
 if __name__ == "__main__":

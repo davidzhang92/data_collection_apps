@@ -384,7 +384,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	// console.log(idsToDelete);
 	// Get the data-id attribute of the row associated with the clicked button
 	$.ajax({
-		url: 'http://localhost:5000/api/delete_data_api',
+		url: 'http://localhost:5000/api/delete_part_api',
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',

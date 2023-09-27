@@ -1,6 +1,6 @@
 // -----initialization stateelement of page and rules---------
-// $('.laser-result-entry-sub-card').hide();
-// $('.laser-result-entry-sub-card-2').hide();
+$('.laser-result-entry-sub-card').hide();
+$('.laser-result-entry-sub-card-2').hide();
 $('#input-result').text('');
 $('#defect-code-field').attr('defect-id', '');
 
@@ -254,23 +254,24 @@ $('#label-id-field').on('keydown', function(event) {
 });
 
   // Initialize defectId and result variables
-  var defectId = localStorage.getItem('defectId') || '';
+  var defectId = $('#defect-code-field').attr('defect-id')
+  // var defectId = localStorage.getItem('defectId') || '';
 
 
 
-  // Handling the button clicks
-  $('#fail-button').click(function () {
-    defectId = $('#defect-code-field').attr('defect-id');
-  // Store the defectId in localStorage
-      localStorage.setItem('defectId', defectId);
-  });
+  // // Handling the button clicks
+  // $('#fail-button').click(function () {
+  //   defectId = $('#defect-code-field').attr('defect-id');
+  // // Store the defectId in localStorage
+  //     localStorage.setItem('defectId', defectId);
+  // });
 
  
-  // (so that the defect-id attribute will contain defectId GUID value after page refresh)
-  var storedDefectId = localStorage.getItem('defectId');
-  if (storedDefectId) {
-    $('#defect-code-field').attr('defect-id', storedDefectId);
-  }
+  // // (so that the defect-id attribute will contain defectId GUID value after page refresh)
+  // var storedDefectId = localStorage.getItem('defectId');
+  // if (storedDefectId) {
+  //   $('#defect-code-field').attr('defect-id', storedDefectId);
+  // }
 
 
 
@@ -283,7 +284,7 @@ $('#save-form').on('submit', function(event) {
       type: 'POST',
       data: JSON.stringify({
           part_id: partId,
-          defect_id: defectId,
+          defect_id: $('#defect-code-field').attr('defect-id'),
           serial_no: serialNumber,
           result: result,
           data_matrix: dataMatrix,
@@ -352,6 +353,12 @@ $('#save-form').on('submit', function(event) {
     if (result.trim() === '') {
       alert('Result cannot be empty.');
       return; // Prevent further processing if result is empty
+    }
+
+    // Check if result is "FAIL" and defectId is empty
+    if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
+      alert('Result is "FAIL," but defectCode cannot be empty.');
+      return; // Prevent further processing if result is "FAIL" and defectId is empty
     }
 
     // If all checks pass, proceed with the form submission
