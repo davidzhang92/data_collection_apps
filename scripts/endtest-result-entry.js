@@ -1,25 +1,31 @@
-// fail/pass button function
+$(document).ready(function () {
+  $('#file-import').on('change', function () {
+    // Get the selected file
+    var file = this.files[0];
+  
+    // Create a FormData object and append the file to it
+    var formData = new FormData();
+    formData.append('file', file);
+  
+    // Perform the AJAX POST request
+    $.ajax({
+      url: 'http://localhost:5000/api/endtest-upload-file_api', // Replace with your backend API endpoint
+      type: 'POST',
+      data: formData,
+      contentType: false, // Set content type to false, as FormData handles it
+      processData: false, // Set processData to false to prevent jQuery from transforming the data
+      success: function (response) {
+        // Handle the successful response here
+        console.log(response);
+        alert('File uploaded successfully.');
+      },
+      error: function (xhr, status, error) {
+        // Handle error responses here
+        console.error(error);
+        alert('An error occurred while uploading the file.');
+      }
+    });
+  });
+  
 
-document.addEventListener('DOMContentLoaded', function() {
-  const deleteBtn = document.getElementById('select-button');
-  if (deleteBtn.classList.contains('ph-btn-disabled')) {
-    deleteBtn.removeAttribute('href');
-    deleteBtn.setAttribute('disabled', true);
-  }
-
-var passButton = document.getElementById('pass-button');
-var failButton = document.getElementById('fail-button');
-var inputResult = document.getElementById('input-result');
-
-passButton.addEventListener('click', function(e) {
-  e.preventDefault();
-  inputResult.textContent = 'PASS';
-  inputResult.style.color = '#00ff2a';
-});
-
-failButton.addEventListener('click', function(e) {
-  e.preventDefault();
-  inputResult.textContent = 'FAIL';
-  inputResult.style.color = '#ff0000';
-});
-});
+}); 

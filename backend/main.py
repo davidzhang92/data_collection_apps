@@ -29,6 +29,7 @@ from post_oqc_result_entry import post_oqc_result_entry
 from get_oqc_result_entry_view import get_oqc_result_entry_view, get_filter_search_oqc_result_entry_view
 from get_pagination_oqc_result_entry_count import get_pagination_oqc_result_entry_count
 from delete_oqc_result_entry_view import delete_oqc_result_entry_view
+from post_endtest_result_entry import post_endtest_upload_file
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -330,6 +331,13 @@ def get_oqc_result_entry_view_api():
 def delete_oqc_result_entry_view_api():
     return delete_oqc_result_entry_view()
 
+###############################
+#####endtest-result-entry section#######
+###############################
+
+@app.route('/api/endtest-upload-file_api', methods=['POST'])
+def post_endtest_upload_file_api():
+    return post_endtest_upload_file()
 
 if __name__ == "__main__":
     app.run(debug=True)

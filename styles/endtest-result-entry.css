@@ -3,14 +3,14 @@
 body,
 .container {
   height: 100%;
+  color: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
 }
 
-.input-field {
-  margin-top:10px;
-  }
 
 
-.leaktest-result-entry-card{
+
+.endtest-result-entry-card{
     width: 1100px;
     height: 180px;
     background-color: #1E2B32;
@@ -23,213 +23,20 @@ body,
     margin-left:10px;
     }
   
-  .label-field { 
-  color: #FFFFFF;
-  font-family: 'Roboto', sans-serif;
-    }
-      #label-part-no{
-        margin-left: 1rem;
-        width: 300px; 
-        height:12px;
-        float: left; 
-        margin: 0 -60px 0 20px; 
-        padding-top: 10px; 
-      }
-      #label-part-description{
-        margin-left: 1rem;
-        width: 300px; 
-        height:12px;
-        float: left; 
-        margin: 0 -60px 0 20px; 
-        padding-top: 10px; 
-      }
-      #label-serial-no{
-        margin-left: 1rem;
-        width: 300px; 
-        height:12px;
-        float: left; 
-        margin: 0 -60px 0 20px; 
-        padding-top: 10px; 
-      }
-      #label-part-description{
-        width: 400px; 
-        height:12px;
-        padding-top: 10px;  
-      }
-      #label-serial-no{
-        width: 400px;
-        height: 20px;
-        padding-top: 15px;
-        position: absolute;
-        /* top: 0px; */
-        /* margin-left: -600px;
-        margin-top: 50px; */
-      }
-      #label-result{
-        padding-top: 15px;
-        position: absolute;
-        font-size: 1.2em;
-        font-weight: bold;
-        /* top: 0px;
-        margin-top: 50px; */
-        margin-left:390px;
-      }
-      #label-fail-status{
-        margin-left: 1rem;
-        width: 300px; 
-        height:12px;
-        float: left; 
-        margin: 0 -60px 0 20px; 
-        padding-top: 10px; 
-      }
+
 
   .product-field-span { 
     display: block; 
-    margin: 0 0 5px; 
+    margin-left: 30px;
+    margin-top: 8px;
     font-size: 1.2em; 
     font-weight: bold; 
   }
       
-  .input-field { 
-    width: 80%; 
-    border: 1px solid #000; 
-    margin-top: 15px;
-    padding: 5px; 
-    /* padding-top:5px; */
-    font-size: 18px;
-  }
 
 
 
-.leaktest-result-entry-sub-card{
-  width: 820px;
-  height: 360px;
-  background-color: #1E2B32;
-  border-radius: 10px 10px;
-  position:absolute;
-  left: 330px;
-  /* top: 300px; */
-  margin-top: -360px;
-  margin-right: 5px;
-  margin-left:10px;
-  }
-  
-    .check-boxes-fail-group{
-      /* background-color: #3e82ff20; */
-      position:absolute;
-      width: 100%;
-      /* height: 360px; */
-      height: 200px;
-      top: 140px;
-      border-top: 1px solid rgb(139, 139, 139);
-    }
-     /* adjusting checkbox position relative to the label */
-    .fail-checkbox {
-      transform: scale(1.35);
-      left: -30px;
-      top: 6px;
-      width: 15px;
-      height: 15px;
-      padding: 0;
-      margin: 0;
-      vertical-align: bottom;
-      position: absolute;
-  
-    }
-      /* adjusting label position*/
-    #fail-1{
-      position: absolute;
-      top: 60px;
-      left:70px;
-      font-size: 22px;
-      display: inline-flex;
-    }
 
-    #fine-field{
-      position: absolute;
-      top: -5px;
-      left:80px;
-      font-size: 22px;
-      display: inline-flex;
-      width: 400px;
-      /* border: 1px solid #000;
-      margin-top: 15px;
-      padding: 5px; */
-      }
-    
-    #fail-2{
-      position: absolute;
-      top: 110px;
-      left:70px;
-      font-size: 22px;
-      display: inline-flex;
-    }
-
-    #gross-field{
-      position: absolute;
-      top: -5px;
-      left:80px;
-      font-size: 22px;
-      display: inline-flex;
-      width: 400px;
-      /* border: 1px solid #000;
-      margin-top: 15px;
-      padding: 5px; */
-    }
-    #fail-3{
-      position: absolute;
-      top: 160px;
-      left:70px;
-      font-size: 22px;
-      display: inline-flex;
-      }
-  
-    #others-field{
-      position: absolute;
-      top: -5px;
-      left:80px;
-      font-size: 22px;
-      display: inline-flex;
-      width: 400px;
-      /* border: 1px solid #000;
-      margin-top: 15px;
-      padding: 5px; */
-      }
-.leaktest-result-entry-sub-card-2{
-  width: 270px;
-  height: 360px;
-  background-color: #1E2B32;
-  border-radius: 10px 10px;
-  position:absolute;
-  left: 1160px;
-  /* top: 300px; */
-  margin-top: -360px;
-  margin-right: 5px;
-  margin-left:10px;
-  /* z-index: 1; */
-  }
-  #save-button {
-    position:absolute;
-    top:  215px;
-    left: 5px;
-    padding: 32px 64px 32px ;
-    margin-left: 20px;
-    border-color: #326E99;
-    background-color: #3F8ABF;
-    font-size: 24px;
-    /* font-weight: 400; */
-    text-align: center;
-    z-index: 1;
-  }
-  #input-result {
-    color: #00ff2a; 
-    font-family: 'Roboto', sans-serif;
-    font-size: 72px;
-    font-weight: bold;
-    position:absolute;
-    top:  50px;
-    left: 40px;
-  }
 
 /* for button */
 
@@ -255,67 +62,22 @@ body,
     font-size: 18px;
     }
 
-  #select-button {
-    position:absolute;
-    top:95px;
-    margin-left: 20px;
-    background-color: #bf3f3f;
-    border-color: #791e1e;   
-  }
-  #import-button {
+
+  #file-import-button{
     position:absolute;
     top:95px;
     left:10px;
     margin-top: 5px;
     margin-left: 20px;
-    background-color: #5FCF80;
-    border-color: #3AC162;  
+    background-color: #c0124c;
+    border-color: #a51143;  
   }
-      /* Enabled state */
-      #select-button:not(.ph-btn-disabled) {
-        background-color: #bf3f3f;
-        border-color: #791e1e;
-      }
-      
-      /* Disabled state */
-      #select-button.ph-btn-disabled {
-        background-color: #4e4e4e;
-        border-color: #2b2b2b;
-      }
-      
-      /* Hover and active state */
-      #select-button:hover,
-      #select-button:focus,
-      #select-button:active {
-        background-color: #bf3f3f;
-        border-color: #791e1e;
-      }
-      
-      /* Hover and active state for disabled button */
-      #select-button.ph-btn-disabled:hover,
-      #select-button.ph-btn-disabled:focus,
-      #select-button.ph-btn-disabled:active {
-        background-color: #4e4e4e;
-        border-color: #2b2b2b;
-      }
 
-  #pass-button {
-    position:absolute;
-    top:55px;
-    left: 390px;
-    padding: 19px 60px 18px;
-    background-color: #5FCF80;
-    border-color: #3AC162; 
-
-  }
-  #fail-button {
-    position:absolute;
-    top:  55px;
-    left: 590px;
-    padding: 19px 60px 18px;
+  #view-button {
+    position: absolute;
+    top: 95px;
+    right: 50px;
     margin-left: 20px;
-    background-color: #bf3f3f;
-    border-color: #791e1e; 
+    background-color: #5FCF80;
+    border-color: #3AC162;
   }
-
-
