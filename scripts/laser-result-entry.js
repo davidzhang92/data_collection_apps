@@ -277,94 +277,94 @@ $('#label-id-field').on('keydown', function(event) {
 
 
 
-$('#save-form').on('submit', function(event) {
-  event.preventDefault();
-  $.ajax({
-      url: 'http://localhost:5000/api/laser-result-entry-api',
-      type: 'POST',
-      data: JSON.stringify({
-          part_id: partId,
-          defect_id: $('#defect-code-field').attr('defect-id'),
-          serial_no: serialNumber,
-          result: result,
-          data_matrix: dataMatrix,
-          label_id:labelId
-      }),
-      contentType: 'application/json',
-      success: function(response) {
-          // handle successful response
-          console.log(response);
+    $('#save-form').on('submit', function(event) {
+    event.preventDefault();
+    $.ajax({
+        url: 'http://localhost:5000/api/laser-result-entry-api',
+        type: 'POST',
+        data: JSON.stringify({
+            part_id: partId,
+            defect_id: $('#defect-code-field').attr('defect-id'),
+            serial_no: serialNumber,
+            result: result,
+            data_matrix: dataMatrix,
+            label_id:labelId
+        }),
+        contentType: 'application/json',
+        success: function(response) {
+            // handle successful response
+            console.log(response);
 
-          $('#input-result').text('');
-          // Reset other variables
-          result = ''; // Reset result
-          $('#serial-no-field').val('')
-          $('#data-matrix-field').val('')
-          $('#label-id-field').val('')
-          $('#defect-code-field').val('')
-          $('#defect-code-field').attr('defect-id', '');
-          defectId='';
-          $('#defect-desc').val('')
-          localStorage.removeItem('defectId');
-          alert('Result submitted successfully.');
-      },
-      error: function(xhr, status, error) {
-          // handle error response
-          if (xhr.status === 400) {
-              // The response status is 400, indicating a duplicate
-              alert(xhr.responseJSON.message);
-          } else {
-              console.error(error);
-              alert('An error occurred while submitting the result.');
-          }
-      }
-    });
-  });
+            $('#input-result').text('');
+            // Reset other variables
+            result = ''; // Reset result
+            $('#serial-no-field').val('')
+            $('#data-matrix-field').val('')
+            $('#label-id-field').val('')
+            $('#defect-code-field').val('')
+            $('#defect-code-field').attr('defect-id', '');
+            defectId='';
+            $('#defect-desc').val('')
+            localStorage.removeItem('defectId');
+            alert('Result submitted successfully.');
+        },
+        error: function(xhr, status, error) {
+            // handle error response
+            if (xhr.status === 400) {
+                // The response status is 400, indicating a duplicate
+                alert(xhr.responseJSON.message);
+            } else {
+                console.error(error);
+                alert('An error occurred while submitting the result.');
+            }
+        }
+            });
+        });
 
-  // Trigger the form submission when the anchor is clicked
-  $('#save-button').click(function() {
-    // Get the values of serial number and result
-    var serialNumber = $('#serial-no-field').val();
-    var dataMatrix = $('#data-matrix-field').val();
-    var labelId = $('#label-id-field').val();
-    var result = $('#input-result').text();
+    // Trigger the form submission when the anchor is clicked
+    $('#save-button').click(function() {
+        // Get the values of serial number and result
+        var serialNumber = $('#serial-no-field').val();
+        var dataMatrix = $('#data-matrix-field').val();
+        var labelId = $('#label-id-field').val();
+        var result = $('#input-result').text();
 
 
-    // Check if serial number is empty
-    if (serialNumber.trim() === '') {
-        alert('Serial number cannot be empty.');
-        return; // Prevent further processing if serial number is empty
-    }
+        // Check if serial number is empty
+        if (serialNumber.trim() === '') {
+            alert('Serial number cannot be empty.');
+            return; // Prevent further processing if serial number is empty
+        }
 
-    // Check if dataMatrix is empty
-    if (dataMatrix.trim() === '') {
-        alert('Data Matrix cannot be empty.');
+        // Check if dataMatrix is empty
+        if (dataMatrix.trim() === '') {
+            alert('Data Matrix cannot be empty.');
+            return; // Prevent further processing if result is empty
+        }
+
+        // Check if labelId is empty
+        if (labelId.trim() === '') {
+            alert('Label ID cannot be empty.');
+            return; // Prevent further processing if result is empty
+        }
+
+
+        // Check if result is empty
+        if (result.trim() === '') {
+        alert('Result cannot be empty.');
         return; // Prevent further processing if result is empty
-    }
+        }
 
-    // Check if labelId is empty
-    if (labelId.trim() === '') {
-        alert('Label ID cannot be empty.');
-        return; // Prevent further processing if result is empty
-    }
+        // Check if result is "FAIL" and defectId is empty
+        if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
+        alert('Result is "FAIL," but defectCode cannot be empty.');
+        return; // Prevent further processing if result is "FAIL" and defectId is empty
+        }
 
+        // If all checks pass, proceed with the form submission
+        $('#save-form').submit();
 
-    // Check if result is empty
-    if (result.trim() === '') {
-      alert('Result cannot be empty.');
-      return; // Prevent further processing if result is empty
-    }
-
-    // Check if result is "FAIL" and defectId is empty
-    if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
-      alert('Result is "FAIL," but defectCode cannot be empty.');
-      return; // Prevent further processing if result is "FAIL" and defectId is empty
-    }
-
-    // If all checks pass, proceed with the form submission
-    $('#save-form').submit();
-
-    });
+        });
 
 
 });

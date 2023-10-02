@@ -63,8 +63,6 @@ function renderData(data) {
             </td>
             <td>${result.part_no}</td>
             <td>${result.serial_no}</td>
-            <td>${result.data_matrix}</td>
-            <td>${result.label_id}</td>
             <td>${result.result}</td>
             <td>${defectDescription}</td>
             <td>${formattedDate}</td>
@@ -114,7 +112,7 @@ function renderData(data) {
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
 				'' :
-				'http://localhost:5000/api/laser_result_entry_view_api';
+				'http://localhost:5000/api/oqc_result_entry_view_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -183,7 +181,7 @@ function renderData(data) {
 			if (partNumber || dateFrom || dateTo) {
 				// First AJAX request to filter data
 				$.ajax({
-					url: 'http://localhost:5000/api/filter_search_laser_result_entry_view_api',
+					url: 'http://localhost:5000/api/filter_search_oqc_result_entry_view_api',
 					type: 'GET',
 					data: requestData, // Send the requestData object
 					success: function (data) {
@@ -228,7 +226,7 @@ function renderData(data) {
 
 
 			$.ajax({
-				url: 'http://localhost:5000/api/delete_laser_result_entry_view_api',
+				url: 'http://localhost:5000/api/delete_oqc_result_entry_view_api',
 				type: 'DELETE',
 				data: JSON.stringify({
 					id: deleteCurrentId,
@@ -287,7 +285,7 @@ function renderData(data) {
 		// console.log(idsToDelete);
 		// Get the data-id attribute of the row associated with the clicked button
 		$.ajax({
-			url: 'http://localhost:5000/api/delete_laser_result_entry_view_api',
+			url: 'http://localhost:5000/api/delete_oqc_result_entry_view_api',
 			type: 'DELETE',
 			data: JSON.stringify({ ids: idsToDelete }),
 			contentType: 'application/json',
@@ -364,7 +362,7 @@ function renderData(data) {
 	function fetchPaginationEntriesCount() {
 		$.ajax({
 			type: 'GET',
-			url: 'http://localhost:5000/api/pagination_laser_result_entry_count_api',
+			url: 'http://localhost:5000/api/pagination_oqc_result_entry_count_api',
 			dataType: 'json',
 			success: function (response) {
 				totalEntries = response[0].count;
