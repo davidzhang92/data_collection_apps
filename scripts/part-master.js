@@ -197,18 +197,16 @@ $(document).ready(function () {
 
 
 	// handing PATCH request
-
 	$('.edit-form').on('submit', function(event) {
 		event.preventDefault();
-
+	
 		var editPartNumber = $('#edit-part-number').val();
 		var editPartDescription = $('#edit-part-description').val();
-
+	
 		// Get the data-id attribute of the row associated with the clicked button
-		var addCurrentId = $('[data-id]').data('id');
-
-
-
+		var editButton = $(this); // The clicked edit button
+		var addCurrentId = editButton.closest('tr').data('id');
+	
 		$.ajax({
 			url: 'http://localhost:5000/api/update_part_api',
 			type: 'PATCH',
@@ -221,27 +219,12 @@ $(document).ready(function () {
 			success: function(response) {
 				// handle successful response
 				console.log(response);
-
+	
 				// Close the edit dialog box
 				$('#editPartModal').modal('hide');
-
-				// Refresh the page
-				// location.reload();
-
-			//update the row
-			function updateTableRow(response) {
-				// Find the table row with the corresponding data-id
-				var rowToUpdate = $('table tbody').find(`tr[data-id="${response.id}"]`);
-			
-				// Update the row with the new data
-				rowToUpdate.find('td').eq(1).text(response.part_no);
-				rowToUpdate.find('td').eq(2).text(response.part_description);
-				rowToUpdate.find('td').eq(3).text(response.latest_date);
-			}
-
-			updateTableRow(response);
-
-
+	
+				// Update the row
+				updateTableRow(response, editButton.closest('tr'));
 			},
 			error: function(xhr, status, error) {
 				// handle error response
@@ -249,52 +232,91 @@ $(document).ready(function () {
 			}
 		});
 	});
+	
+	function updateTableRow(response, rowToUpdate) {
+		// Update the row with the new data
+		rowToUpdate.find('td').eq(1).text(response.part_no);
+		rowToUpdate.find('td').eq(2).text(response.part_description);
+		rowToUpdate.find('td').eq(3).text(response.latest_date);
+	}
+	
 
 
 
 	// handing POST request
+// Add a click event listener to the "Edit" button
+$('a.edit').on('click', function(event) {
+    event.preventDefault();
+
+    // Get the parent <tr> of the clicked "Edit" button
+    var row = $(this).closest('tr');
+
+    // Retrieve data-id attribute from the row
+    var addCurrentId = row.data('id');
+
+    // Retrieve data from the row
+    var partNumber = row.find('td').eq(1).text();
+    var partDescription = row.find('td').eq(2).text();
+
+    // Populate the modal fields with the retrieved data
+    $('#edit-part-number').val(partNumber);
+    $('#edit-part-description').val(partDescription);
+
+    // Set the data-id attribute in the form data
+    $('.edit-form').data('id', addCurrentId);
+
+    // Show the edit modal
+    $('#editPartModal').modal('show');
+});
+
+// Modify your edit-form submit event as before
+$('.edit-form').on('submit', function(event) {
+    event.preventDefault();
+
+    // Get the data-id attribute from the form data
+    var addCurrentId = $(this).data('id');
+
+    var editPartNumber = $('#edit-part-number').val();
+    var editPartDescription = $('#edit-part-description').val();
+
+    $.ajax({
+        url: 'http://localhost:5000/api/update_part_api',
+        type: 'PATCH',
+        data: JSON.stringify({
+            id: addCurrentId,
+            part_no: editPartNumber,
+            part_description: editPartDescription
+        }),
+        contentType: 'application/json',
+        success: function(response) {
+            // handle successful response
+            console.log(response);
+
+            // Close the edit dialog box
+            $('#editPartModal').modal('hide');
+
+            // Update the row
+            updateTableRow(response, addCurrentId);
+        },
+        error: function(xhr, status, error) {
+            // handle error response
+            console.error(error);
+        }
+    });
+});
+
+function updateTableRow(response, addCurrentId) {
+    // Find the table row with the corresponding data-id
+    var rowToUpdate = $('table tbody').find(`tr[data-id="${addCurrentId}"]`);
+
+    // Update the row with the new data
+    rowToUpdate.find('td').eq(1).text(response.part_no);
+    rowToUpdate.find('td').eq(2).text(response.part_description);
+    rowToUpdate.find('td').eq(3).text(response.latest_date);
+}
+
+
 	
-
-	$('.submit-form').on('submit', function(event) {
-		event.preventDefault();
-
-		var addPartNumber = $('#add-part-number').val();
-		var addPartDescription = $('#add-part-description').val();
-
-		// Get the data-id attribute of the row associated with the clicked button
-
-		// var currentId = $(this).data('id');
-
-
-		$.ajax({
-			url: 'http://localhost:5000/api/post_part_api',
-			type: 'POST',
-			data: JSON.stringify({
-				part_no: addPartNumber,
-				part_description: addPartDescription
-			}),
-			contentType: 'application/json',
-			success: function(response) {
-				// handle successful response
-				console.log(response);
-
-				// Close the edit dialog box
-				$('#addPartModal').modal('hide');
-
-				 // Clear input fields
-				 $('#add-part-number').val('');
-				 $('#add-part-description').val('');
-
-				// Refresh the page
-				location.reload();
-			},
-			error: function(xhr, status, error) {
-				// handle error response
-				console.error(error);
-			}
-		});
-	});
-
 
 
 

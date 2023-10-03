@@ -30,6 +30,9 @@ from get_oqc_result_entry_view import get_oqc_result_entry_view, get_filter_sear
 from get_pagination_oqc_result_entry_count import get_pagination_oqc_result_entry_count
 from delete_oqc_result_entry_view import delete_oqc_result_entry_view
 from post_endtest_result_entry import post_endtest_upload_file
+from get_pagination_endtest_result_entry_count import get_pagination_endtest_result_entry_count
+from get_endtest_result_entry_view import get_endtest_result_entry_view, get_filter_search_endtest_result_entry_view
+# from delete_endtest_result_entry_view import delete_endtest_result_entry_view
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -335,9 +338,30 @@ def delete_oqc_result_entry_view_api():
 #####endtest-result-entry section#######
 ###############################
 
-@app.route('/api/endtest-upload-file_api', methods=['POST'])
+@app.route('/api/endtest_upload_file_api', methods=['POST'])
 def post_endtest_upload_file_api():
     return post_endtest_upload_file()
+
+# API endpoint to retrieve number of entries on result-endtest-entry
+@app.route('/api/pagination_endtest_result_entry_count_api', methods=['GET'])
+def get_pagination_endtest_result_entry_count_api():
+    return get_pagination_endtest_result_entry_count()
+
+# API endpoint using the get_filter_search_endtest_result_entry function
+@app.route('/api/filter_search_endtest_result_entry_view_api', methods=['GET'])
+def get_filter_search_endtest_result_entry_view_api():
+    return get_filter_search_endtest_result_entry_view()
+
+# API endpoint using the get_endtest_result_entry_view function
+@app.route('/api/endtest_result_entry_view_api', methods=['GET'])
+def get_endtest_result_entry_view_api():
+    return get_endtest_result_entry_view()
+
+# # API endpoint using the delete_data function
+# @app.route('/api/delete_endtest_result_entry_view_api', methods=['DELETE'])
+# def delete_endtest_result_entry_view_api():
+#     return delete_endtest_result_entry_view()
+
 
 if __name__ == "__main__":
     app.run(debug=True)

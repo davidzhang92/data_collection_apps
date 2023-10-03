@@ -56,20 +56,40 @@ def post_endtest_upload_file():
         # Create a cursor for the SQL Server connection
         cursor_sql = conn_sql.cursor()
 
-        # Iterate through the data from the MDB file
-        for row in mdb_data:
-            idx, dc_type, sn, pcb_data_matrix, date_time = row
+        # Get the maximum created_date value from the SQL Server database
+        cursor_sql.execute("SELECT MAX(created_date) FROM endtest_result_entry")
+        max_sql_datetime = cursor_sql.fetchone()
+        max_sql_datetime = max_sql_datetime[0] if max_sql_datetime is not None else None  # Set max_sql_datetime to None if it's None
 
-            # Check if the DCType value matches a row in the part_master table based on part_description
-            cursor_sql.execute("SELECT part_id FROM part_master WHERE part_description = ?", (sn,))
-            part_id_row = cursor_sql.fetchone()
+        # Get the maximum date_time value from the MDB file
+        max_mdb_datetime = max(row[4] for row in mdb_data)
 
-            if part_id_row:
-                part_id = part_id_row[0]
+        # Initialize a list to store rows for insertion
+        rows_to_insert = []
 
-                # Insert the data into the endtest_result_entry table
-                cursor_sql.execute("INSERT INTO endtest_result_entry (id, idx, part_id, dc_type, serial_no, data_matrix, date_created) VALUES (NEWID(), ?, ?, ?, ?, ?, ?)",
-                                   (idx, part_id, dc_type, sn, pcb_data_matrix, date_time))
+        # Compare the maximum created_date values
+        if max_sql_datetime is None or max_mdb_datetime > max_sql_datetime:
+            # Retrieve all MDB data from SQL latest date up to MDB latest date
+            for row in mdb_data:
+                idx, dc_type, sn, pcb_data_matrix, date_time = row
+                if max_sql_datetime is None or date_time > max_sql_datetime:
+                    # Check if the part_description matches the DCType
+                    cursor_sql.execute("SELECT id FROM part_master WHERE part_description = ?", (dc_type,))
+                    part_id_row = cursor_sql.fetchone()
+
+                    if part_id_row is not None and len(part_id_row) > 0:
+                        part_id = part_id_row[0]
+                    else:
+                        part_id = None  # Set part_id to None when there's no match
+
+                    # Append the row for insertion
+                    rows_to_insert.append((idx, part_id, dc_type, sn, pcb_data_matrix, date_time))
+
+        # Insert the rows into the endtest_result_entry table
+        for row_to_insert in rows_to_insert:
+            idx, part_id, dc_type, sn, pcb_data_matrix, date_time = row_to_insert
+            cursor_sql.execute("INSERT INTO endtest_result_entry (id, idx, part_id, dc_type, serial_no, data_matrix, created_date, is_deleted) VALUES (NEWID(), ?, ?, ?, ?, ?, ?, 0)",
+                                (idx, part_id, dc_type, sn, pcb_data_matrix, date_time))
 
         # Commit the changes to the SQL Server database
         conn_sql.commit()
