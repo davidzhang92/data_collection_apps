@@ -4,7 +4,7 @@ $(function () {
 
     var getData = function (request, response) {
         $.getJSON(
-            "http://localhost:5000/api/auto_complete_part_no_api",
+            "http://localhost:4000/api/auto_complete_part_no_api",
             { term: request.term }, // Pass the term as a query parameter
             function (data) {
                 var items = []; // Array to store the autocomplete suggestions
@@ -21,7 +21,7 @@ $(function () {
     
         // Make an additional AJAX request to retrieve the description based on the selected value
         $.getJSON(
-            "http://localhost:5000/api/auto_complete_part_name_api",
+            "http://localhost:4000/api/auto_complete_part_name_api",
             { pname: ui.item.value }, // Pass the selected value as a query parameter
             function (data) {
                 // Check if data is an array and has at least one item

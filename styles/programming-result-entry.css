@@ -267,13 +267,13 @@ body,
       }
       
       /* Hover and active state */
-      #select-button:hover,
+      /* #select-button:hover,
       #select-button:focus,
       #select-button:active {
-        background-color: #3376a7;
-        border-color: #2d6c99;
+        background-color: #5FCF80;
+        border-color: #3AC162;
       }
-      
+       */
       /* Hover and active state for disabled button */
       #select-button.ph-btn-disabled:hover,
       #select-button.ph-btn-disabled:focus,

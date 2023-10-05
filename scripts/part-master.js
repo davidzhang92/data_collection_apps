@@ -1,5 +1,6 @@
 $(document).ready(function () {
-	
+
+
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
 
@@ -94,7 +95,7 @@ $(document).ready(function () {
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
 				'' :
-				'http://localhost:5000/api/get_part_api';
+				'http://localhost:4000/api/get_part_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -149,7 +150,7 @@ $(document).ready(function () {
 		if (partNumber || partDescription) {
 		// Fetch data using the filter API
 		$.ajax({
-			url: 'http://localhost:5000/api/filter_search_part_master_api',
+			url: 'http://localhost:4000/api/filter_search_part_master_api',
 			type: 'GET',
 			data: {
 				search_part_no:partNumber,
@@ -197,18 +198,22 @@ $(document).ready(function () {
 
 
 	// handing PATCH request
+
+	var addCurrentId;
+
+	$(document).on('click', 'a.edit', function() {
+		// Get the data-id of the parent row of the clicked button
+		addCurrentId = $(this).parents('tr').data('id');
+	});
+	
 	$('.edit-form').on('submit', function(event) {
 		event.preventDefault();
 	
 		var editPartNumber = $('#edit-part-number').val();
 		var editPartDescription = $('#edit-part-description').val();
 	
-		// Get the data-id attribute of the row associated with the clicked button
-		var editButton = $(this); // The clicked edit button
-		var addCurrentId = editButton.closest('tr').data('id');
-	
 		$.ajax({
-			url: 'http://localhost:5000/api/update_part_api',
+			url: 'http://localhost:4000/api/update_part_api',
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
@@ -223,8 +228,18 @@ $(document).ready(function () {
 				// Close the edit dialog box
 				$('#editPartModal').modal('hide');
 	
-				// Update the row
-				updateTableRow(response, editButton.closest('tr'));
+				//update the row
+				function updateTableRow(response) {
+					// Find the table row with the corresponding data-id
+					var rowToUpdate = $('table tbody').find(`tr[data-id="${response.id}"]`);
+				
+					// Update the row with the new data
+					rowToUpdate.find('td').eq(1).text(response.part_no);
+					rowToUpdate.find('td').eq(2).text(response.part_description);
+					rowToUpdate.find('td').eq(3).text(response.latest_date);
+				}
+	
+				updateTableRow(response);
 			},
 			error: function(xhr, status, error) {
 				// handle error response
@@ -233,90 +248,52 @@ $(document).ready(function () {
 		});
 	});
 	
-	function updateTableRow(response, rowToUpdate) {
-		// Update the row with the new data
-		rowToUpdate.find('td').eq(1).text(response.part_no);
-		rowToUpdate.find('td').eq(2).text(response.part_description);
-		rowToUpdate.find('td').eq(3).text(response.latest_date);
-	}
-	
 
 
 
 	// handing POST request
-// Add a click event listener to the "Edit" button
-$('a.edit').on('click', function(event) {
-    event.preventDefault();
-
-    // Get the parent <tr> of the clicked "Edit" button
-    var row = $(this).closest('tr');
-
-    // Retrieve data-id attribute from the row
-    var addCurrentId = row.data('id');
-
-    // Retrieve data from the row
-    var partNumber = row.find('td').eq(1).text();
-    var partDescription = row.find('td').eq(2).text();
-
-    // Populate the modal fields with the retrieved data
-    $('#edit-part-number').val(partNumber);
-    $('#edit-part-description').val(partDescription);
-
-    // Set the data-id attribute in the form data
-    $('.edit-form').data('id', addCurrentId);
-
-    // Show the edit modal
-    $('#editPartModal').modal('show');
-});
-
-// Modify your edit-form submit event as before
-$('.edit-form').on('submit', function(event) {
-    event.preventDefault();
-
-    // Get the data-id attribute from the form data
-    var addCurrentId = $(this).data('id');
-
-    var editPartNumber = $('#edit-part-number').val();
-    var editPartDescription = $('#edit-part-description').val();
-
-    $.ajax({
-        url: 'http://localhost:5000/api/update_part_api',
-        type: 'PATCH',
-        data: JSON.stringify({
-            id: addCurrentId,
-            part_no: editPartNumber,
-            part_description: editPartDescription
-        }),
-        contentType: 'application/json',
-        success: function(response) {
-            // handle successful response
-            console.log(response);
-
-            // Close the edit dialog box
-            $('#editPartModal').modal('hide');
-
-            // Update the row
-            updateTableRow(response, addCurrentId);
-        },
-        error: function(xhr, status, error) {
-            // handle error response
-            console.error(error);
-        }
-    });
-});
-
-function updateTableRow(response, addCurrentId) {
-    // Find the table row with the corresponding data-id
-    var rowToUpdate = $('table tbody').find(`tr[data-id="${addCurrentId}"]`);
-
-    // Update the row with the new data
-    rowToUpdate.find('td').eq(1).text(response.part_no);
-    rowToUpdate.find('td').eq(2).text(response.part_description);
-    rowToUpdate.find('td').eq(3).text(response.latest_date);
-}
-
-
 	
+
+	$('.submit-form').on('submit', function(event) {
+		event.preventDefault();
+
+		var addPartNumber = $('#add-part-number').val();
+		var addPartDescription = $('#add-part-description').val();
+
+		// Get the data-id attribute of the row associated with the clicked button
+
+		// var currentId = $(this).data('id');
+
+
+		$.ajax({
+			url: 'http://localhost:4000/api/post_part_api',
+			type: 'POST',
+			data: JSON.stringify({
+				part_no: addPartNumber,
+				part_description: addPartDescription
+			}),
+			contentType: 'application/json',
+			success: function(response) {
+				// handle successful response
+				console.log(response);
+
+				// Close the edit dialog box
+				$('#addPartModal').modal('hide');
+
+				 // Clear input fields
+				 $('#add-part-number').val('');
+				 $('#add-part-description').val('');
+
+				// Refresh the page
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				// handle error response
+				console.error(error);
+			}
+		});
+	});
+
 
 
 
@@ -347,7 +324,7 @@ function updateTableRow(response, addCurrentId) {
 
 
 		$.ajax({
-			url: 'http://localhost:5000/api/delete_part_api',
+			url: 'http://localhost:4000/api/delete_part_api',
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
@@ -406,7 +383,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	// console.log(idsToDelete);
 	// Get the data-id attribute of the row associated with the clicked button
 	$.ajax({
-		url: 'http://localhost:5000/api/delete_part_api',
+		url: 'http://localhost:4000/api/delete_data_api',
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',
@@ -432,7 +409,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_no_api",
+				"http://localhost:4000/api/auto_complete_filter_part_no_api",
 				// { term: request.term }, // Pass the term as a query parameter
 				{ search_part_no: request.term }, // Pass the term as a query parameter
 				function (data) {
@@ -450,7 +427,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 
 			// Make an additional AJAX request to retrieve the description based on the selected value
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_name_for_part_no_api",
+				"http://localhost:4000/api/auto_complete_filter_part_name_for_part_no_api",
 				{ search_part_description: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
 					$("#part-description-field").val(data.part_description);
@@ -470,7 +447,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_name_api",
+				"http://localhost:4000/api/auto_complete_filter_part_name_api",
 				{ search_part_description: request.term }, // Pass the term as a query parameter
 				function (data) {
 					var items = []; // Array to store the autocomplete suggestions
@@ -487,7 +464,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 
 			// Make an additional AJAX request to retrieve the part no based on the selected value
 			$.getJSON(
-				"http://localhost:5000/api/auto_complete_filter_part_no_for_part_name_api",
+				"http://localhost:4000/api/auto_complete_filter_part_no_for_part_name_api",
 				{ search_part_no: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
 					$("#part-number-field").val(data.part_no);
@@ -531,7 +508,7 @@ fetchPaginationEntriesCount();
 function fetchPaginationEntriesCount() {
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:5000/api/pagination_part_entries_api',
+        url: 'http://localhost:4000/api/pagination_part_entries_api',
         dataType: 'json',
         success: function (response) {
             totalEntries = response[0].count;
@@ -638,7 +615,7 @@ $(document).on('click', '#lastPage', function () {
 
 //         // Fetch data using the filter API
 //         $.ajax({
-//             url: 'http://localhost:5000/api/filter_search_part_master_api',
+//             url: 'http://localhost:4000/api/filter_search_part_master_api',
 //             type: 'GET',
 //             data: {
 //                 search_part_no: partNumber,

@@ -280,7 +280,7 @@ $('#label-id-field').on('keydown', function(event) {
     $('#save-form').on('submit', function(event) {
     event.preventDefault();
     $.ajax({
-        url: 'http://localhost:5000/api/laser-result-entry-api',
+        url: 'http://localhost:4000/api/laser-result-entry-api',
         type: 'POST',
         data: JSON.stringify({
             part_id: partId,

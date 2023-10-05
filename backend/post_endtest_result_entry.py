@@ -32,7 +32,7 @@ def post_endtest_upload_file():
         new_filename = get_unique_filename()
 
         # Save the uploaded file with the new filename
-        upload_folder = r'C:\data_collection_apps\upload'  # Choose a folder for uploaded files
+        upload_folder = r'C:\upload'  # Choose a folder for uploaded files
         uploaded_file_path = os.path.join(upload_folder, new_filename)
         uploaded_file.save(uploaded_file_path)
 
