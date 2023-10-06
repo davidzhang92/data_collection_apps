@@ -6,9 +6,10 @@
     <title>Laser Result Entry</title>
 
     <link rel="stylesheet" href="../../styles/side-menu.css">
-    <link rel="stylesheet" href="../../styles/laser-result-entry.css">
     <link rel="stylesheet" href="../../icons/css/all.css">
     <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
+    <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui-timepicker-addon.min.css">
+    <link rel="stylesheet" href="../../styles/laser-result-entry.css">
   </head>
 <body>
 <div class="container">
@@ -103,6 +104,20 @@
       <a href='#' id='fail-button' class='ph-button ph-btn-red'>FAIL</a>
     </form>
   </div>
+
+  <div class="export-laser-result-entry-sub-card">
+    <a href="#" id="export-data-button" class="ph-button" style="background-color: rgb(162, 172, 33);">Export Data</a>
+      <label id="date-from-label" for="date-from-field">
+        <label class="product-field-span">Date From</label>
+        <input type="text" id="date-from-field"/>
+      </label>
+      <label id="date-to-label" for="date-to-field">
+          <label class="product-field-span">Date To</label>
+          <input type="text" id="date-to-field"/>
+      </label>
+    </div>
+  </div>
+
   <div class="laser-result-entry-sub-card-2">
     <form id="save-form">
       <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
@@ -111,12 +126,17 @@
     <a id='input-result'>PASS</a>
   </div>
 </div>
+
+
 </body>
 </html>
 
 
 <script src="/scripts/jquery/jquery.js"></script> 
 <script src="/scripts/jquery/jquery-ui.min.js"></script> 
+<script src="/scripts/jquery/jquery-ui-timepicker-addon.min.js"></script> 
+<script src="/scripts/bootstrap.min.js"></script>
 <script src="/scripts/auto-complete-part.js"></script> 
 <script src="/scripts/auto-complete-defect.js"></script> 
 <script src="/scripts/laser-result-entry.js"></script> 
+

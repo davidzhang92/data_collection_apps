@@ -132,6 +132,8 @@ body,
     margin: 0 0 5px; 
     font-size: 1.2em; 
     font-weight: bold; 
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
   }
   
   .product-field-def-code { 
@@ -191,7 +193,7 @@ body,
     left: 25px;
     padding: 24px 53px 24px ;
     background-color: #5FCF80;
-    border-color: #3AC162;  
+    border-color: #000000;  
     font-size: 24px;
     /* font-weight: 400; */
     text-align: center;
@@ -293,4 +295,66 @@ body,
     border-color: #791e1e; 
   }
 
+/* export laser result entry section */
+  .export-laser-result-entry-sub-card{ 
+    width: 620px;
+    height: 150px;
+    background-color: #1E2B32;
+    border-radius: 10px 10px;
+    position:absolute;
+    left: 330px;
+    /* top: 300px; */
+    margin-top: -360px;
+    margin-right: 5px;
+    margin-left:10px;
+    }
 
+  
+    #date-from-field {
+
+      background-color: #ffffff;
+      font-size: 18px;
+      font-weight: normal;
+      margin-right:10px;
+      width:110px;
+      padding:4px;
+      border: 1px solid #000;
+  }
+
+  #date-to-field {
+
+      background-color: #ffffff;
+      font-size: 18px;
+      font-weight: normal;
+      margin-right:10px;
+      width:110px;
+      padding:4px;
+      border: 1px solid #000;
+  }
+
+  #date-from-label {
+    width: 120px;
+    display: inline-block;
+    position: relative;
+    left:20px;
+    top:20px;
+  }
+  #date-to-label {
+    width: 120px;
+    display: inline-block;
+    position: relative;
+    left:30px;
+    top:20px;
+  }
+  #export-data-button {
+    position:absolute;
+    top:  35px;
+    left: 355px;
+    padding: 20px 50px 20px ;
+    background-color:  rgb(162, 172, 33);
+    border-color:  rgb(145, 153, 30);  
+    font-size: 24px;
+    /* font-weight: 400; */
+    text-align: center;
+    z-index: 1;
+  }

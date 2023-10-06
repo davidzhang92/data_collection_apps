@@ -1,6 +1,7 @@
 // -----initialization stateelement of page and rules---------
 $('.laser-result-entry-sub-card').hide();
 $('.laser-result-entry-sub-card-2').hide();
+$('.export-laser-result-entry-sub-card').hide();
 $('#input-result').text('');
 $('#defect-code-field').attr('defect-id', '');
 
@@ -64,6 +65,11 @@ $('#select-button').click(function () {
     $('.laser-result-entry-sub-card input[type="text"]').val('');
     // Clear all checkboxes inside the div with class "check-boxes-fail-group"
     $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
+    $('.export-laser-result-entry-sub-card').hide();
+    $('#export-button').text(exportOriginalText);
+    $('#export-button').css('background-color', originalColor);
+    $('#save-button').show();
+
 
     // Check if #pdesc is empty
     var pdescIsEmpty = $('#pdesc').val().trim() === '';
@@ -91,6 +97,7 @@ $('#select-button').click(function () {
         // Toggle the visibility of the elements with class laser-result-entry-sub-card
         $('.laser-result-entry-sub-card').toggle(isSelected);
         $('.laser-result-entry-sub-card-2').toggle(isSelected);
+        
     }
 });
 
@@ -367,5 +374,114 @@ $('#label-id-field').on('keydown', function(event) {
         });
 
 
-});
+    //Laser Export Section
+	// datepicker function for date to and date from
+	$(function() {
+		$("#date-from-field").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
 
+		$("#date-to-field").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+
+		// Add an event listener to the "date-to-field" input
+		$("#date-to-field").on("change", function() {
+			// Get the selected dates from both fields
+			var fromDate = $("#date-from-field").datepicker("getDate");
+			var toDate = $("#date-to-field").datepicker("getDate");
+
+			// Check if toDate is smaller (earlier) than fromDate
+			if (toDate < fromDate) {
+				// Show an alert message
+				$("#date-to-field").val('')
+				alert("The end date cannot be earlier than the start date.");
+				// You can also reset the "date-to-field" value or take other actions as needed
+			}
+		});
+	});
+    // Define variables buttonfor text and color changes
+    var exportOriginalText = 'Export';
+    var cancelText = 'Back';
+    // var emptyColor = '#4e4e4e'; // Color when #pdesc is empty
+    var originalColor = '#5FCF80'; // Color when #pdesc has a value
+    var cancelColor = '#bf3f3f'; // Color when selected
+
+    // Initialize the selected state as false
+    var isSelected = false;
+
+
+    // Click event handler for the button
+    $('#export-button').click(function () {
+        // Clear input fields inside the div with class "export-laser-result-entry-sub-card"
+        $('.export-laser-result-entry-sub-card input[type="text"]').val('');
+
+        // Toggle the selected state
+        isSelected = !isSelected;
+
+        // Change text and background color based on the selected state
+        if (isSelected) {
+            // When selected
+            $('#export-button').text(cancelText);
+            $('#export-button').css('background-color', cancelColor);
+            $('.laser-result-entry-sub-card').hide();
+            $('.laser-result-entry-sub-card input[type="text"]').val('');
+            $('#input-result').text('');
+            $('#save-button').hide();
+        } else {
+            // When not selected
+            $('#export-button').text(exportOriginalText);
+            $('#export-button').css('background-color', originalColor);
+            $('.laser-result-entry-sub-card').show();
+            $('#save-button').show();
+            
+        }
+
+        // Toggle the visibility of the elements with class export-laser-result-entry-sub-card
+        $('.export-laser-result-entry-sub-card').toggle(isSelected);
+
+    });
+    //POST data parameter for data export
+
+    $('#export-data-button').on.click(function(event){
+        event.preventDefault();
+
+        var dateFrom = $('#date-from-field').val();
+        var dateTo = $('#date-to-field').val();
+        
+
+        // Get the data-id attribute of the row associated with the clicked button
+
+        // var currentId = $(this).data('id');
+
+
+        $.ajax({
+            url: 'http://localhost:4000/api/laser_result_entry_api',
+            type: 'POST',
+            data: JSON.stringify({
+                date_from: dateFrom,
+                date_to: dateTo,
+                part_id:partId
+            }),
+            contentType: 'application/json',
+            success: function(response) {
+                // handle successful response
+                console.log(response);
+
+                // Clear input fields
+                $('#date-from-field').val('');
+                $('#date-to-field').val('');
+
+            },
+            error: function(xhr, status, error) {
+                // handle error response
+                console.error(error);
+            }
+        });
+    });
+
+
+
+
+
+});

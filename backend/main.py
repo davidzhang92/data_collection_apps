@@ -33,6 +33,7 @@ from post_endtest_result_entry import post_endtest_upload_file
 from get_pagination_endtest_result_entry_count import get_pagination_endtest_result_entry_count
 from get_endtest_result_entry_view import get_endtest_result_entry_view, get_filter_search_endtest_result_entry_view
 # from delete_endtest_result_entry_view import delete_endtest_result_entry_view
+from get_laser_result_entry import get_laser_result_entry
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -362,6 +363,14 @@ def get_endtest_result_entry_view_api():
 # def delete_endtest_result_entry_view_api():
 #     return delete_endtest_result_entry_view()
 
+###############################
+#####laser-result-entry section#######
+###############################
+
+# API endpoint using the get_laser_result_entry function
+@app.route('/api/laser_result_entry_api', methods=['GET'])
+def get_laser_result_entry_api():
+    return get_laser_result_entry()
 
 if __name__ == "__main__":
     app.run(debug=True, port=4000)
