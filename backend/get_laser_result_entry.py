@@ -1,9 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Response
 import pyodbc
 import datetime
-import os
-from openpyxl import load_workbook
-import shutil
+from io import BytesIO
+from openpyxl import load_workbook  # Import openpyxl
 
 app = Flask(__name__)
 
@@ -19,93 +18,89 @@ conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database
 # --------------------
 # API endpoint get all leaktest result entry
 # --------------------
-@app.route('/api/get_laser_result_entry', methods=['GET'])
+@app.route('/api/get_laser_result_entry', methods=['POST'])
 def get_laser_result_entry():
-    
-        
-    selected_part_id = request.args.get('search_part_id')  # Get the selected value from the query parameters
-    selected_date_from = request.args.get('search_date_from')  # Get the selected value from the query parameters
-    selected_date_to = request.args.get('search_date_to')  # Get the selected value from the query parameters
+    # Define the path to the Excel template (modify this path accordingly)
+    template_path = r'C:\excel_import\laser_result_template.xlsx'
 
-    # if selected_part_no is None:
-    #     return jsonify({'error': 'Search parameters not provided'})
-    
+    try:
+        # Try to parse JSON data from the request body
+        request_data = request.get_json()
 
-    cursor = conn.cursor()
-    
-    # Construct the SQL query to select all data from the leaktest result entry table
-    query = "select a.serial_no, a.data_matrix, a.label_id from laser_result_entry a inner join part_master b on a.part_id = b.id WHERE 1=1"
+        # Check if request_data is None or not a dictionary
+        if request_data is None or not isinstance(request_data, dict):
+            return jsonify({'error': 'Invalid JSON data in the request body.'}), 400
 
-    parameters = []
+        # Get the search parameters from the JSON data
+        selected_part_id = request_data.get('part_id')
+        selected_date_from = request_data.get('date_from')
+        selected_date_to = request_data.get('date_to')
 
-    if selected_part_id:
-        query += " AND a.part_id = ?"
-        parameters.append(f"%{selected_part_id}%")
+        # Check if required parameters are provided
+        if not selected_part_id and not selected_date_from and not selected_date_to:
+            return jsonify({'error': 'Missing required parameters. Please provide at least one search parameter.'}), 400
 
-    if selected_date_from:
-        # Append the time '00:00:00' to the date
-        date_from_with_time = f"{selected_date_from} 00:00:00"
-        query += " AND a.created_date >= ?"
-        parameters.append(datetime.datetime.strptime(date_from_with_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'))
+        cursor = conn.cursor()
 
+        # Construct the SQL query to select data based on the provided parameters
+        query = "SELECT a.serial_no, a.data_matrix, a.label_id FROM laser_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE 1=1"
+        parameters = []
 
-    if selected_date_to:
-        # Append the time '23:59:59' to the date
-        date_to_with_time = f"{selected_date_to} 23:59:59"
-        query += " AND a.created_date <= ?"
-        parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'))
+        if selected_part_id:
+            query += " AND a.part_id = ?"
+            parameters.append(selected_part_id)
 
+        if selected_date_from:
+            date_from_with_time = f"{selected_date_from} 00:00:00"
+            query += " AND a.created_date >= ?"
+            parameters.append(datetime.datetime.strptime(date_from_with_time, '%Y-%m-%d %H:%M:%S'))
 
-    query += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
+        if selected_date_to:
+            date_to_with_time = f"{selected_date_to} 23:59:59"
+            query += " AND a.created_date <= ?"
+            parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S'))
 
-    # Execute the SQL query and fetch data
-    cursor = conn.cursor()
-    cursor.execute(query)
-    query_result = cursor.fetchall()
+        query += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
 
-    # Load the Excel template
-    template_path = r"C:\excel_import\laser_result_template.xlsx"
-    if not os.path.exists(template_path):
-        print(f"Error: Excel template '{template_path}' not found.")
-    else:
-        # Get the current date in 'yyyy-mm-dd' format
-        current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+        # Execute the SQL query and fetch data
+        cursor.execute(query, parameters)
+        query_result = cursor.fetchall()
 
-        # Append the date to the new Excel file name
-        new_excel_path = f'C:\excel_import\laserResult_{current_date}.xlsx'
-        shutil.copyfile(template_path, new_excel_path)
-
-        # Load the new copy of the Excel workbook
-        workbook = load_workbook(new_excel_path)
-
-        # Select the worksheet in the workbook (you may need to specify the sheet name)
+  # Load the Excel template
+        workbook = load_workbook(template_path)
         worksheet = workbook.active
 
-        # Start populating data in row 2 (A2, B2, C2, etc.) for each row of query result
+      
         row_number = 2  # Start from row 2
+
         for row_data in query_result:
-            # Column indices (0-based) for each column in the row
-            column1_index = 0  # A2
-            column2_index = 1  # B2
-            column3_index = 2  # C2
+           
+            column1_index = 1  # Column A
+            column2_index = 2  # Column B
+            column3_index = 3  # Column C
 
-            # Insert data into specific cell coordinates for the current row
-            worksheet.cell(row=row_number, column=column1_index + 1, value=row_data[0])  # A2
-            worksheet.cell(row=row_number, column=column2_index + 1, value=row_data[1])  # B2
-            worksheet.cell(row=row_number, column=column3_index + 1, value=row_data[2])  # C2
+            worksheet.cell(row=row_number, column=column1_index, value=row_data[0])  
+            worksheet.cell(row=row_number, column=column2_index, value=row_data[1]) 
+            worksheet.cell(row=row_number, column=column3_index, value=row_data[2]) 
 
-            # Move to the next row
             row_number += 1
 
-        # Save the modified workbook with data to the new file
-        workbook.save(new_excel_path)
+        # Save the modified workbook in memory
+        excel_output = BytesIO()
+        workbook.save(excel_output)
+        excel_output.seek(0)
 
-        print(f"Data has been populated in '{new_excel_path}'")
+        # Send the modified Excel file as a binary attachment
+        return Response(
+            excel_output,
+            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            headers={
+                'Content-Disposition': 'attachment; filename=laser_result.xlsx'
+            }
+        )
 
-    response_data = {"query_result": query_result}
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-    return jsonify(response_data)  # Return a JSON response
-    
 if __name__ == '__main__':
     app.run()
-    

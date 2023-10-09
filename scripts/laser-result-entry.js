@@ -443,42 +443,48 @@ $('#label-id-field').on('keydown', function(event) {
     });
     //POST data parameter for data export
 
-    $('#export-data-button').on.click(function(event){
+    $('#export-data-button').click(function(event){
         event.preventDefault();
-
+    
         var dateFrom = $('#date-from-field').val();
         var dateTo = $('#date-to-field').val();
-        
-
-        // Get the data-id attribute of the row associated with the clicked button
-
-        // var currentId = $(this).data('id');
-
-
-        $.ajax({
-            url: 'http://localhost:4000/api/laser_result_entry_api',
-            type: 'POST',
-            data: JSON.stringify({
+    
+        fetch('http://localhost:4000/api/laser_result_entry_api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
                 date_from: dateFrom,
                 date_to: dateTo,
-                part_id:partId
-            }),
-            contentType: 'application/json',
-            success: function(response) {
-                // handle successful response
-                console.log(response);
-
-                // Clear input fields
-                $('#date-from-field').val('');
-                $('#date-to-field').val('');
-
-            },
-            error: function(xhr, status, error) {
-                // handle error response
-                console.error(error);
-            }
-        });
+                part_id: partId
+            })
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            // Create a blob URL from the response
+            var blobUrl = window.URL.createObjectURL(blob);
+    
+            // Create an anchor element to trigger the download
+            var a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = 'laser_result.xlsx';
+            document.body.appendChild(a);
+    
+            // Trigger the download
+            a.click();
+    
+            // Clean up
+            window.URL.revokeObjectURL(blobUrl);
+    
+            // Clear input fields
+            $('#date-from-field').val('');
+            $('#date-to-field').val('');
+        })
+        .catch(error => console.error(error));
     });
+    
 
 
 

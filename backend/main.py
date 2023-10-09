@@ -368,7 +368,7 @@ def get_endtest_result_entry_view_api():
 ###############################
 
 # API endpoint using the get_laser_result_entry function
-@app.route('/api/laser_result_entry_api', methods=['GET'])
+@app.route('/api/laser_result_entry_api', methods=['POST'])
 def get_laser_result_entry_api():
     return get_laser_result_entry()
 
