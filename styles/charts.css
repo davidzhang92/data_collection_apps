@@ -1,0 +1,32 @@
+body {
+    background-color: hsl(0, 0%, 21%);
+    background-size: contain;
+    
+  }
+
+
+
+
+#chart-container {
+    width: 1200px; /* Set the width to your desired value in pixels */
+    height: 400px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    padding: 10px;
+}
+
+#donut-container {
+    width: 1800px; /* Set the width to your desired value in pixels */
+    height: 400px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 50px;
+    top: 470px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    padding: 10px;
+}
