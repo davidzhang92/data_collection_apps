@@ -4,27 +4,105 @@ body {
     
   }
 
+.donut-label {
+position: absolute;
+top: 45%;
+left: 50%;
+transform: translate(-50%, -50%);
+font-family: Arial;
+font-size: 36px;
+color: white;
+}
 
 
 
-#chart-container {
+#graph-container {
     width: 1200px; /* Set the width to your desired value in pixels */
     height: 400px; /* Set the height to your desired value in pixels */
     position: absolute;
     left: 50px;
-    top: 50px;
+    top: 20px;
     border: 1px;
     border-color: rgb(255, 255, 255);
     border-style: solid;
     padding: 10px;
 }
 
-#donut-container {
-    width: 1800px; /* Set the width to your desired value in pixels */
-    height: 400px; /* Set the height to your desired value in pixels */
+#donut-1-container {
+    width: 350px; /* Set the width to your desired value in pixels */
+    height: 470px; /* Set the height to your desired value in pixels */
     position: absolute;
     left: 50px;
-    top: 470px;
+    top: 450px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    padding: 10px;
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    text-align: center;
+}
+#donut-1-container canvas {
+    position: relative; /* You can use relative, absolute, or fixed positioning as needed */
+    left: 0px; /* Adjust the horizontal position as needed */
+    top: -50px; /* Adjust the vertical position as needed */
+}
+
+
+#donut-2-container {
+    width: 350px; /* Set the width to your desired value in pixels */
+    height: 350px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 410px;
+    top: 450px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    padding: 10px;
+}
+
+#donut-3-container {
+    width: 350px; /* Set the width to your desired value in pixels */
+    height: 350px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 770px;
+    top: 450px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    padding: 10px;
+}
+
+#donut-4-container {
+    width: 350px; /* Set the width to your desired value in pixels */
+    height: 350px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 1130px;
+    top: 450px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    padding: 10px;
+}
+
+#donut-5-container {
+    width: 350px; /* Set the width to your desired value in pixels */
+    height: 350px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 1490px;
+    top: 450px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    padding: 10px;
+}
+#table-overall{
+    width: 600px; /* Set the width to your desired value in pixels */
+    height: 400px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 1280px;
+    top: 20px;
     border: 1px;
     border-color: rgb(255, 255, 255);
     border-style: solid;
