@@ -6,7 +6,7 @@ body {
 
 .donut-label {
 position: absolute;
-top: 45%;
+top: 47%;
 left: 50%;
 transform: translate(-50%, -50%);
 font-family: Arial;
@@ -26,17 +26,18 @@ color: white;
     border-color: rgb(255, 255, 255);
     border-style: solid;
     padding: 10px;
+    border-radius: 5px;
 }
 
 #donut-1-container {
     width: 350px; /* Set the width to your desired value in pixels */
     height: 470px; /* Set the height to your desired value in pixels */
-    position: absolute;
-    left: 50px;
-    top: 450px;
+    position: relative;
+    left: 0px;
+    top: 0;
     border: 1px;
-    border-color: rgb(255, 255, 255);
-    border-style: solid;
+    /* border-color: rgb(255, 255, 255);
+    border-style: solid; */
     padding: 10px;
     font-family: Arial;
     font-size: 22px;
@@ -46,59 +47,214 @@ color: white;
 #donut-1-container canvas {
     position: relative; /* You can use relative, absolute, or fixed positioning as needed */
     left: 0px; /* Adjust the horizontal position as needed */
-    top: -50px; /* Adjust the vertical position as needed */
+    top: -40px; /* Adjust the vertical position as needed */
+}
+.donut-1-model {
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+.donut-1-serial-number {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
 }
 
+/* donut 2*/
 
 #donut-2-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 350px; /* Set the height to your desired value in pixels */
-    position: absolute;
-    left: 410px;
-    top: 450px;
+    height: 470px; /* Set the height to your desired value in pixels */
+    position: inherit;
+    left: 360px;
+    top: 0;
     border: 1px;
-    border-color: rgb(255, 255, 255);
-    border-style: solid;
+    /* border-color: rgb(255, 255, 255);
+    border-style: solid; */
     padding: 10px;
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    text-align: center;
 }
+#donut-2-container canvas {
+    position: relative; /* You can use relative, absolute, or fixed positioning as needed */
+    left: 0px; /* Adjust the horizontal position as needed */
+    top: -40px; /* Adjust the vertical position as needed */
+}
+.donut-2-model {
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+.donut-2-serial-number {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+
+/* donut 3 */
 
 #donut-3-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 350px; /* Set the height to your desired value in pixels */
-    position: absolute;
-    left: 770px;
-    top: 450px;
+    height: 470px; /* Set the height to your desired value in pixels */
+    position: inherit;
+    left: 720px;
+    top: 0;
     border: 1px;
-    border-color: rgb(255, 255, 255);
-    border-style: solid;
+    /* border-color: rgb(255, 255, 255);
+    border-style: solid; */
     padding: 10px;
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    text-align: center;
 }
+#donut-3-container canvas {
+    position: relative; /* You can use relative, absolute, or fixed positioning as needed */
+    left: 0px; /* Adjust the horizontal position as needed */
+    top: -40px; /* Adjust the vertical position as needed */
+}
+.donut-3-model {
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+.donut-3-serial-number {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+
+/* donut 4 */
 
 #donut-4-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 350px; /* Set the height to your desired value in pixels */
-    position: absolute;
-    left: 1130px;
-    top: 450px;
+    height: 470px; /* Set the height to your desired value in pixels */
+    position: inherit;
+    left: 1080px;
+    top: 0;
     border: 1px;
-    border-color: rgb(255, 255, 255);
-    border-style: solid;
+    /* border-color: rgb(255, 255, 255);
+    border-style: solid; */
     padding: 10px;
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    text-align: center;
 }
+#donut-4-container canvas {
+    position: relative; /* You can use relative, absolute, or fixed positioning as needed */
+    left: 0px; /* Adjust the horizontal position as needed */
+    top: -40px; /* Adjust the vertical position as needed */
+}
+.donut-4-model {
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+.donut-4-serial-number {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+
+/* donut 5*/
 
 #donut-5-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 350px; /* Set the height to your desired value in pixels */
-    position: absolute;
-    left: 1490px;
-    top: 450px;
+    height: 470px; /* Set the height to your desired value in pixels */
+    position: inherit;
+    left: 1440px;
+    top: 0;
     border: 1px;
-    border-color: rgb(255, 255, 255);
-    border-style: solid;
+    /* border-color: rgb(255, 255, 255);
+    border-style: solid; */
     padding: 10px;
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    text-align: center;
 }
+#donut-5-container canvas {
+    position: relative; /* You can use relative, absolute, or fixed positioning as needed */
+    left: 0px; /* Adjust the horizontal position as needed */
+    top: -40px; /* Adjust the vertical position as needed */
+}
+.donut-5-model {
+    position: absolute;
+    top: 87%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+.donut-5-serial-number {
+    position: absolute;
+    top: 95%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+    font-family: Arial;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+}
+
+/* table css */
 #table-overall{
-    width: 600px; /* Set the width to your desired value in pixels */
+    width: 560px; /* Set the width to your desired value in pixels */
     height: 400px; /* Set the height to your desired value in pixels */
     position: absolute;
     left: 1280px;
@@ -108,3 +264,65 @@ color: white;
     border-style: solid;
     padding: 10px;
 }
+#group-donut-container{
+    width: 1790px; /* Set the width to your desired value in pixels */
+    height: 470px; /* Set the height to your desired value in pixels */
+    position: absolute;
+    left: 50px;
+    top: 435px;
+    border: 1px;
+    border-color: rgb(255, 255, 255);
+    border-style: solid;
+    border-radius: 5px;
+    
+
+}
+
+table.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #28394200;
+}
+table.table-striped.table-hover tbody tr:hover {
+    background: #1E2B32;
+}
+
+table.table tr th, table.table tr td {
+    border-color: #e9e9e9;
+    padding: 0px;
+    vertical-align: middle;
+    width: 25%;
+    color: #e9e9e9;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+table.table tr th:first-child {
+    width: 60px;
+    height: 50px;
+}
+table.table tr th:last-child {
+    width: 100px;
+}
+
+table.table th i {
+    font-size: 13px;
+    margin: 0 5px;
+    cursor: pointer;
+}	
+table.table td:last-child i {
+    opacity: 0.9;
+    font-size: 22px;
+    margin: 0 5px;
+}
+
+table.table .avatar {
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+table.table tr td:first-child {
+    text-align: left;
+    padding-left: 40px;
+
+}
+
+

@@ -97,7 +97,7 @@ $(document).ready(function() {
             backgroundColor: "rgba(75, 192, 192, 0.2)",
             borderColor: "rgba(119, 255, 0)",
             borderWidth: 2,
-            lineTension: 0.3
+            lineTension: 0.45
         }]
     };
 
@@ -114,7 +114,7 @@ $(document).ready(function() {
     var canvasDonut1 = document.getElementById("donut1");
 
     var donutData = {
-        labels: ["A","B"],
+        labels: ["PASS","FAIL"],
         datasets: [{
             data: [70,30], // Value for data point B
             backgroundColor: ["rgba(119, 255, 0, 0.6)", "rgba(255, 0, 0, 0.6)"],
@@ -135,7 +135,7 @@ $(document).ready(function() {
     var canvasDonut2 = document.getElementById("donut2");
 
     var donutData = {
-        labels: ["A","B"],
+        labels: ["PASS","FAIL"],
         datasets: [{
             data: [80,20], // Value for data point B
             backgroundColor: ["rgba(119, 255, 0, 0.6)", "rgba(255, 0, 0, 0.6)"],
@@ -156,7 +156,7 @@ $(document).ready(function() {
     var canvasDonut3 = document.getElementById("donut3");
 
     var donutData = {
-        labels: ["A","B"],
+        labels: ["PASS","FAIL"],
         datasets: [{
             data: [95,5], // Value for data point B
             backgroundColor: ["rgba(119, 255, 0, 0.6)", "rgba(255, 0, 0, 0.6)"],
@@ -177,7 +177,7 @@ $(document).ready(function() {
     var canvasDonut4 = document.getElementById("donut4");
 
     var donutData = {
-        labels: ["A","B"],
+        labels: ["PASS","FAIL"],
         datasets: [{
             data: [65,35], // Value for data point B
             backgroundColor: ["rgba(119, 255, 0, 0.6)", "rgba(255, 0, 0, 0.6)"],
@@ -198,7 +198,7 @@ $(document).ready(function() {
     var canvasDonut5 = document.getElementById("donut5");
 
     var donutData = {
-        labels: ["A","B"],
+        labels: ["PASS","FAIL"],
         datasets: [{
             data: [33,64], // Value for data point B
             backgroundColor: ["rgba(119, 255, 0, 0.6)", "rgba(255, 0, 0, 0.6)"],
