@@ -34,6 +34,7 @@ from get_pagination_endtest_result_entry_count import get_pagination_endtest_res
 from get_endtest_result_entry_view import get_endtest_result_entry_view, get_filter_search_endtest_result_entry_view
 # from delete_endtest_result_entry_view import delete_endtest_result_entry_view
 from get_laser_result_entry import get_laser_result_entry
+from get_overall_throughput import get_overall_throughput
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -371,6 +372,18 @@ def get_endtest_result_entry_view_api():
 @app.route('/api/laser_result_entry_api', methods=['POST'])
 def get_laser_result_entry_api():
     return get_laser_result_entry()
+
+###############################
+#####dashboard-charting-section#######
+###############################
+
+# --------------------------------
+# graph-overall-throughput-GET
+# --------------------------------
+
+@app.route('/api/overall_throughput_api', methods=['GET'])
+def get_overall_throughput_api():
+    return get_overall_throughput()
 
 if __name__ == "__main__":
     app.run(debug=True, port=4000)

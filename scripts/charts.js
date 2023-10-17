@@ -41,7 +41,8 @@ $(document).ready(function() {
                     font: {
                         family: 'Helvetica',
                         size: 16
-                    }
+                    },
+                    precision: 0 // Set precision to 0 to display whole numbers
                 }
             }
         },
@@ -87,27 +88,106 @@ $(document).ready(function() {
 
     // Create a new Chart.js chart for the line chart
             //graph 1
-    var canvasGraph = document.getElementById("graph1");
 
-    var data = {
-        labels: ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30",  "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00"],
-        datasets: [{
-            label: "My Dataset",
-            data: [10, 20, 15, 25, 20, 14, 5, 0, 0, 0, 12, 15, 2, 5, 0, 1, 4],
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
-            borderColor: "rgba(119, 255, 0)",
-            borderWidth: 2,
-            lineTension: 0.45
-        }]
-    };
 
-    var ctx = canvasGraph.getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: graphOption
-    });
+            function fetchDataFromAPI() {
+                $.getJSON('http://localhost:4000/api/overall_throughput_api', function(data) {
+                    console.log('Data from API:', data);
+            
+                    // Process the data and generate data points
+                    const { labels, values } = processData(data);
+                    console.log('Processed data:', labels, values);
+            
+                    // Update the chart data with the dynamic data
+                    myChart.data.labels = labels;
+                    myChart.data.datasets[0].data = values;
+                    myChart.update(); // Update the chart to reflect the changes
+                }).fail(function(error) {
+                    console.error('Error fetching data from API: ', error);
+                });
+            }
+            
+            // Function to process the data and generate data points
+            function processData(apiData) {
+                const labels = generateLabels();
+                const values = new Array(labels.length).fill(0);
 
+                $.each(apiData, function(idx, item) {
+                    const date = new Date(item.created_date);
+                    const index = labels.indexOf(formatDate(date));
+
+                    if (index !== -1) {
+                        const totalEntries = parseInt(item.total_entries);
+
+                        if (totalEntries > values[index]) {
+                            values[index] = totalEntries; 
+                        }
+                    }
+                });
+                return { labels, values };
+            }
+
+            // Function to format a date as HH:00 or HH:30 in UTC
+            function formatDate(date) {
+                return date.getUTCHours().toString().padStart(2, '0') + ':' +
+                    (date.getUTCMinutes() < 30 ? '00' : '30');
+            }
+
+            
+            // Function to generate labels with 30-minute increments
+            function generateLabels() {
+                const labels = [];
+                let currentTime = new Date();
+            
+                // Round down minutes to the nearest 30-minute block
+                currentTime.setMinutes(Math.floor(currentTime.getMinutes() / 30) * 30);
+                currentTime.setSeconds(0);
+            
+                // Subtract 8 hours from the current time
+                currentTime.setHours(currentTime.getHours() - 8);
+            
+                for (let i = 0; i <= 16; i++) { 
+                    const label = currentTime.getHours().toString().padStart(2, '0') + ':' +
+                        (currentTime.getMinutes() === 0 ? '00' : '30'); // Display as HH:00 or HH:30
+                    labels.push(label); // Add label at the end of array
+            
+                    // Increment the time after generating the label
+                    currentTime.setMinutes(currentTime.getMinutes() + 30);
+                }
+                return labels;
+            }
+            
+            
+            var canvasGraph = document.getElementById("graph1");
+            var ctx = canvasGraph.getContext('2d');
+            var initialData = {
+                labels: generateLabels(),
+                datasets: [{
+                    label: "My Dataset",
+                    data: new Array(17).fill(0), // Initialize with zeros
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(119, 255, 0)",
+                    borderWidth: 2,
+                    lineTension: 0.1
+                }]
+            };
+            
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: initialData,
+                options: graphOption
+            });
+            
+            fetchDataFromAPI();
+            // Fetch new data from the API and update the chart every 30 minutes
+            setInterval(fetchDataFromAPI, 1 * 60 * 1000);
+            // setInterval(fetchDataFromAPI, 60000);
+
+            // Update the chart's labels every 15 mins
+            setInterval(generateLabels, 1 * 60 * 1000);
+            // setInterval(generateLabels, 60000);
+                        
+            
 
     // Create a new Chart.js chart for the donut chart   
         //donut 1
