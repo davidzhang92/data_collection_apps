@@ -24,8 +24,8 @@ def fetch_data(query):
 # --------------------
 # API endpoint get overall throughput
 # --------------------
-@app.route('/api/get_overall_throughput', methods=['GET'])
-def get_overall_throughput():
+@app.route('/api/get_donut_chart_throughput', methods=['GET'])
+def get_donut_chart_throughput():
     try:
 
         # Execute the query to retrieve data from the overall_throughput table
