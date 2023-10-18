@@ -256,8 +256,8 @@ body,
   }
       /* Enabled state */
       #select-button:not(.ph-btn-disabled) {
-        background-color: #3F8ABF;
-        border-color: #387dad;
+        background-color: #00000000;
+        border-color: #00000000;
       }
       
       /* Disabled state */

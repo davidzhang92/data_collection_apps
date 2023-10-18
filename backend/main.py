@@ -35,6 +35,7 @@ from get_endtest_result_entry_view import get_endtest_result_entry_view, get_fil
 # from delete_endtest_result_entry_view import delete_endtest_result_entry_view
 from get_laser_result_entry import get_laser_result_entry
 from get_overall_throughput import get_overall_throughput
+from get_donut_1_chart_throughput import get_donut_1, get_donut_1_details
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -384,6 +385,19 @@ def get_laser_result_entry_api():
 @app.route('/api/overall_throughput_api', methods=['GET'])
 def get_overall_throughput_api():
     return get_overall_throughput()
+
+# --------------------------------
+# graph-donut-throughput-GET
+# --------------------------------
+
+@app.route('/api/donut_1_api', methods=['GET'])
+def get_donut_1_api():
+    return get_donut_1()
+
+@app.route('/api/donut_1_details', methods=['GET'])
+def get_donut_1_details_api():
+    return get_donut_1_details()
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=4000)
