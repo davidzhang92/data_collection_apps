@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 
 
@@ -190,29 +191,45 @@ $(document).ready(function() {
             
 
     // Create a new Chart.js chart for the donut chart   
+
+        // Declare the chart variable in a higher scope
+        var donutChart1;
+        var donutChart2;
+        var donutChart3;
+        var donutChart4;
+        var donutChart5;
+
+        // Call the API immediately when the page loads
+        fetchDataAndUpdateChartDonut1();
+        fetchDataAndUpdateChartDonut2();
+        fetchDataAndUpdateChartDonut3();
+        fetchDataAndUpdateChartDonut4();
+        fetchDataAndUpdateChartDonut5();
+
+        // Then call the API every 1 minute
+        setInterval(fetchDataAndUpdateChartDonut1, 2500); // 60 * 1000 milliseconds = 1 minute
+        setInterval(fetchDataAndUpdateChartDonut2, 2500);
+        setInterval(fetchDataAndUpdateChartDonut3, 2500);
+        setInterval(fetchDataAndUpdateChartDonut4, 2500);
+        setInterval(fetchDataAndUpdateChartDonut5, 2500);
+
         //donut 1
         var canvasDonut1 = document.getElementById("donut1");
 
         var donutData = {
             labels: ["PASS","FAIL"],
             datasets: [{
-                data: [1,0], // Initial data
+                data: [0,0], // Initial data
                 backgroundColor: ["rgba(119, 255, 0, 0.6)", "rgba(255, 0, 0, 0.6)"],
                 borderColor: ["rgba(255, 255, 255)"],
                 borderWidth: 1,
             }]
         };
         
-        // Declare the chart variable in a higher scope
-        var donutChart1;
 
-        // Call the API immediately when the page loads
-        fetchDataAndUpdateChart();
+        //function to call donut 1 api and count api
 
-        // Then call the API every 1 minute
-        setInterval(fetchDataAndUpdateChart, 1000); // 60 * 1000 milliseconds = 1 minute
-
-        function fetchDataAndUpdateChart() {
+        function fetchDataAndUpdateChartDonut1() {
             fetch('http://localhost:4000/api/donut_1_api')
             .then(response => response.json())
             .then(data => {
@@ -257,14 +274,14 @@ $(document).ready(function() {
                         partNoElement.innerText = data.part_no;
                     })
                     .catch(error => console.error('Error:', error));
-                }, 100);
+                });
 
-                processDonutData();
+                processDonut1Data();
             })
             .catch(error => console.error('Error:', error));
         }
 
-        function processDonutData() {
+        function processDonut1Data() {
             var passValue = parseInt(donut1DataPass, 10);
             var failValue = parseInt(donut1DataFail, 10);
             $("#donut-1-pass").text(passValue);
@@ -279,20 +296,76 @@ $(document).ready(function() {
     var donutData = {
         labels: ["PASS","FAIL"],
         datasets: [{
-            data: [80,20], // Value for data point B
+            data: [0,0], // Value for data point B
             backgroundColor: ["rgba(119, 255, 0, 0.6)", "rgba(255, 0, 0, 0.6)"],
             borderColor: ["rgba(255, 255, 255)"],
             borderWidth: 1,
         }]
     };
 
+        //function to call donut 2 api and count api
 
-    var donutCtx = canvasDonut2.getContext('2d');
-    var donutChart2 = new Chart(donutCtx, {
-        type: 'doughnut',
-        data: donutData,
-        options: donutOptions
-    });
+        function fetchDataAndUpdateChartDonut2() {
+            fetch('http://localhost:4000/api/donut_2_api')
+            .then(response => response.json())
+            .then(data => {
+                // Update the global variables
+                Donut2DataPass = data.pass;
+                Donut2DataFail = data.fail;
+
+                // Update the chart data
+                if (data.pass === 0 && data.fail === 0) {
+                    donutData.datasets[0].data = [1];
+                    donutData.datasets[0].backgroundColor = ["rgba(128, 128, 128, 0.6)"];
+                    var donutLabel = document.querySelector('#donut-2-container .donut-label');
+                    donutLabel.innerText = 'NO DATA';
+                } else {
+                    donutData.datasets[0].data = [data.pass, data.fail];
+                    var total = data.pass + data.fail;
+                    var passPercentage = parseInt((data.pass / total) * 100);
+                    var donutLabel = document.querySelector('#donut-2-container .donut-label');
+                    donutLabel.innerText = passPercentage.toFixed(0) + '%';
+                }
+
+                // If the chart doesn't exist, create it
+                if (!donutChart2) {
+                    var donutCtx = canvasDonut2.getContext('2d');
+                    donutChart2 = new Chart(donutCtx, {
+                        type: 'doughnut',
+                        data: donutData,
+                        options: donutOptions
+                    });
+                } else {
+                    // If the chart already exists, update it
+                    donutChart2.update();
+                }
+
+                setTimeout(function() {
+                    fetch('http://localhost:4000/api/donut_2_details')
+                    .then(response => response.json())
+                    .then(data => {
+                        var partDescriptionElement = document.querySelector('#donut-2-container .donut-2-part-description');
+                        var partNoElement = document.querySelector('#donut-2-container .donut-2-part-no');
+                        partDescriptionElement.innerText = data.part_description;
+                        partNoElement.innerText = data.part_no;
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+
+                processDonut2Data();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function processDonut2Data() {
+            var passValue = parseInt(Donut2DataPass, 10);
+            var failValue = parseInt(Donut2DataFail, 10);
+            $("#donut-2-pass").text(passValue);
+            $("#donut-2-fail").text(failValue);
+            var totalValue = passValue + failValue;
+            $("#donut-2-total").text(totalValue);
+        }
+
 
         //donut 3
     var canvasDonut3 = document.getElementById("donut3");
@@ -307,13 +380,70 @@ $(document).ready(function() {
         }]
     };
 
+        //function to call donut 3 api and count api
 
-    var donutCtx = canvasDonut3.getContext('2d');
-    var donutChart3 = new Chart(donutCtx, {
-        type: 'doughnut',
-        data: donutData,
-        options: donutOptions
-    });
+        function fetchDataAndUpdateChartDonut3() {
+            fetch('http://localhost:4000/api/donut_3_api')
+            .then(response => response.json())
+            .then(data => {
+                // Update the global variables
+                Donut3DataPass = data.pass;
+                Donut3DataFail = data.fail;
+
+                // Update the chart data
+                if (data.pass === 0 && data.fail === 0) {
+                    donutData.datasets[0].data = [1];
+                    donutData.datasets[0].backgroundColor = ["rgba(128, 128, 128, 0.6)"];
+                    var donutLabel = document.querySelector('#donut-3-container .donut-label');
+                    donutLabel.innerText = 'NO DATA';
+                } else {
+                    donutData.datasets[0].data = [data.pass, 0];
+                    var total = data.pass + 0;
+                    var passPercentage = parseInt((data.pass / total) * 100);
+                    var donutLabel = document.querySelector('#donut-3-container .donut-label');
+                    donutLabel.innerText = passPercentage.toFixed(0) + '%';
+                }
+
+                // If the chart doesn't exist, create it
+                if (!donutChart3) {
+                    var donutCtx = canvasDonut3.getContext('2d');
+                    donutChart3 = new Chart(donutCtx, {
+                        type: 'doughnut',
+                        data: donutData,
+                        options: donutOptions
+                    });
+                } else {
+                    // If the chart already exists, update it
+                    donutChart3.update();
+                }
+
+                setTimeout(function() {
+                    fetch('http://localhost:4000/api/donut_3_details')
+                    .then(response => response.json())
+                    .then(data => {
+                        var partDescriptionElement = document.querySelector('#donut-3-container .donut-3-part-description');
+                        var partNoElement = document.querySelector('#donut-3-container .donut-3-part-no');
+                        partDescriptionElement.innerText = data.part_description;
+                        partNoElement.innerText = data.part_no;
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+
+                processDonut3Data();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function processDonut3Data() {
+            var passValue = parseInt(Donut3DataPass, 10);
+            var failValue = parseInt(Donut3DataFail, 10);
+            $("#donut-3-pass").text(passValue);
+            // $("#donut-3-fail").text(failValue);
+            var totalValue = passValue + 0;
+            $("#donut-3-total").text(totalValue);
+        }
+
+
 
         //donut 4
     var canvasDonut4 = document.getElementById("donut4");
@@ -328,13 +458,66 @@ $(document).ready(function() {
         }]
     };
 
+    function fetchDataAndUpdateChartDonut4() {
+        fetch('http://localhost:4000/api/donut_4_api')
+        .then(response => response.json())
+        .then(data => {
+            // Update the global variables
+            Donut4DataPass = data.pass;
+            Donut4DataFail = data.fail;
 
-    var donutCtx = canvasDonut4.getContext('2d');
-    var donutChart4 = new Chart(donutCtx, {
-        type: 'doughnut',
-        data: donutData,
-        options: donutOptions
-    });
+            // Update the chart data
+            if (data.pass === 0 && data.fail === 0) {
+                donutData.datasets[0].data = [1];
+                donutData.datasets[0].backgroundColor = ["rgba(128, 128, 128, 0.6)"];
+                var donutLabel = document.querySelector('#donut-4-container .donut-label');
+                donutLabel.innerText = 'NO DATA';
+            } else {
+                donutData.datasets[0].data = [data.pass, data.fail];
+                var total = data.pass + data.fail;
+                var passPercentage = parseInt((data.pass / total) * 100);
+                var donutLabel = document.querySelector('#donut-4-container .donut-label');
+                donutLabel.innerText = passPercentage.toFixed(0) + '%';
+            }
+
+            // If the chart doesn't exist, create it
+            if (!donutChart4) {
+                var donutCtx = canvasDonut4.getContext('2d');
+                donutChart4 = new Chart(donutCtx, {
+                    type: 'doughnut',
+                    data: donutData,
+                    options: donutOptions
+                });
+            } else {
+                // If the chart already exists, update it
+                donutChart4.update();
+            }
+
+            setTimeout(function() {
+                fetch('http://localhost:4000/api/donut_4_details')
+                .then(response => response.json())
+                .then(data => {
+                    var partDescriptionElement = document.querySelector('#donut-4-container .donut-4-part-description');
+                    var partNoElement = document.querySelector('#donut-4-container .donut-4-part-no');
+                    partDescriptionElement.innerText = data.part_description;
+                    partNoElement.innerText = data.part_no;
+                })
+                .catch(error => console.error('Error:', error));
+            });
+
+            processDonut4Data();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function processDonut4Data() {
+        var passValue = parseInt(Donut4DataPass, 10);
+        var failValue = parseInt(Donut4DataFail, 10);
+        $("#donut-4-pass").text(passValue);
+        $("#donut-4-fail").text(failValue);
+        var totalValue = passValue + failValue;
+        $("#donut-4-total").text(totalValue);
+    }
 
         //donut 5
     var canvasDonut5 = document.getElementById("donut5");
@@ -349,15 +532,66 @@ $(document).ready(function() {
         }]
     };
 
+    function fetchDataAndUpdateChartDonut5() {
+        fetch('http://localhost:4000/api/donut_5_api')
+        .then(response => response.json())
+        .then(data => {
+            // Update the global variables
+            Donut5DataPass = data.pass;
+            Donut5DataFail = data.fail;
 
-    var donutCtx = canvasDonut5.getContext('2d');
-    var donutChart5 = new Chart(donutCtx, {
-        type: 'doughnut',
-        data: donutData,
-        options: donutOptions
-    });
+            // Update the chart data
+            if (data.pass === 0 && data.fail === 0) {
+                donutData.datasets[0].data = [1];
+                donutData.datasets[0].backgroundColor = ["rgba(128, 128, 128, 0.6)"];
+                var donutLabel = document.querySelector('#donut-5-container .donut-label');
+                donutLabel.innerText = 'NO DATA';
+            } else {
+                donutData.datasets[0].data = [data.pass, data.fail];
+                var total = data.pass + data.fail;
+                var passPercentage = parseInt((data.pass / total) * 100);
+                var donutLabel = document.querySelector('#donut-5-container .donut-label');
+                donutLabel.innerText = passPercentage.toFixed(0) + '%';
+            }
 
+            // If the chart doesn't exist, create it
+            if (!donutChart5) {
+                var donutCtx = canvasDonut5.getContext('2d');
+                donutChart5 = new Chart(donutCtx, {
+                    type: 'doughnut',
+                    data: donutData,
+                    options: donutOptions
+                });
+            } else {
+                // If the chart already exists, update it
+                donutChart5.update();
+            }
 
+            setTimeout(function() {
+                fetch('http://localhost:4000/api/donut_5_details')
+                .then(response => response.json())
+                .then(data => {
+                    var partDescriptionElement = document.querySelector('#donut-5-container .donut-5-part-description');
+                    var partNoElement = document.querySelector('#donut-5-container .donut-5-part-no');
+                    partDescriptionElement.innerText = data.part_description;
+                    partNoElement.innerText = data.part_no;
+                })
+                .catch(error => console.error('Error:', error));
+            });
 
-    
+            processDonut5Data();
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function processDonut5Data() {
+        var passValue = parseInt(Donut5DataPass, 10);
+        var failValue = parseInt(Donut5DataFail, 10);
+        $("#donut-5-pass").text(passValue);
+        $("#donut-5-fail").text(failValue);
+        var totalValue = passValue + failValue;
+        $("#donut-5-total").text(totalValue);
+    }
+
 });
+

@@ -36,6 +36,10 @@ from get_endtest_result_entry_view import get_endtest_result_entry_view, get_fil
 from get_laser_result_entry import get_laser_result_entry
 from get_overall_throughput import get_overall_throughput
 from get_donut_1_chart_throughput import get_donut_1, get_donut_1_details
+from get_donut_2_chart_throughput import get_donut_2, get_donut_2_details
+from get_donut_3_chart_throughput import get_donut_3, get_donut_3_details
+from get_donut_4_chart_throughput import get_donut_4, get_donut_4_details
+from get_donut_5_chart_throughput import get_donut_5, get_donut_5_details
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -387,7 +391,7 @@ def get_overall_throughput_api():
     return get_overall_throughput()
 
 # --------------------------------
-# graph-donut-throughput-GET
+# graph-donut-1-throughput-GET
 # --------------------------------
 
 @app.route('/api/donut_1_api', methods=['GET'])
@@ -397,6 +401,55 @@ def get_donut_1_api():
 @app.route('/api/donut_1_details', methods=['GET'])
 def get_donut_1_details_api():
     return get_donut_1_details()
+
+# --------------------------------
+# graph-donut-2-throughput-GET
+# --------------------------------
+
+@app.route('/api/donut_2_api', methods=['GET'])
+def get_donut_2_api():
+    return get_donut_2()
+
+@app.route('/api/donut_2_details', methods=['GET'])
+def get_donut_2_details_api():
+    return get_donut_2_details()
+
+# --------------------------------
+# graph-donut-3-throughput-GET
+# --------------------------------
+
+@app.route('/api/donut_3_api', methods=['GET'])
+def get_donut_3_api():
+    return get_donut_3()
+
+@app.route('/api/donut_3_details', methods=['GET'])
+def get_donut_3_details_api():
+    return get_donut_3_details()
+
+# --------------------------------
+# graph-donut-4-throughput-GET
+# --------------------------------
+
+@app.route('/api/donut_4_api', methods=['GET'])
+def get_donut_4_api():
+    return get_donut_4()
+
+@app.route('/api/donut_4_details', methods=['GET'])
+def get_donut_4_details_api():
+    return get_donut_4_details()
+
+# --------------------------------
+# graph-donut-5-throughput-GET
+# --------------------------------
+
+@app.route('/api/donut_5_api', methods=['GET'])
+def get_donut_5_api():
+    return get_donut_5()
+
+@app.route('/api/donut_5_details', methods=['GET'])
+def get_donut_5_details_api():
+    return get_donut_5_details()
+
 
 
 if __name__ == "__main__":

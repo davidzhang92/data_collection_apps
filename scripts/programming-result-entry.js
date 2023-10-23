@@ -138,7 +138,17 @@ $(document).ready(function (){
         }
     });
     
+    // Event handler for the #pname input
+    $('#pname').on('input', function () {
+        var currentValue = $(this).val();
 
+        if (currentValue.trim() === '') {
+            // If #pname is empty, clear #pdesc, part-id attribute, and localStorage
+            $('#pdesc').val('');
+            $('#pname').removeAttr('part-id');
+            localStorage.removeItem('partId'); // Replace 'yourStorageKey' with the actual key you used for localStorage
+        }
+    });
 
 // ---handing POST request---
     // Initialize partId and result variables

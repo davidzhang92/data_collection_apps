@@ -38,26 +38,26 @@ def fetch_data_donut(query):
     return rows[0] if rows else 0
 
 # API endpoint to get pass and fail counts
-@app.route('/api/get_donut_1', methods=['GET'])
-def get_donut_1():
+@app.route('/api/get_donut_2', methods=['GET'])
+def get_donut_2():
     try:
         # Execute the queries to retrieve pass and fail counts
         pass_query = """
         SELECT COUNT(id) 
-        FROM programming_result_entry 
+        FROM leaktest_result_entry 
         WHERE result = 'pass' 
             AND is_deleted = 0 
             AND CAST(created_date AS DATE) = CAST(GETDATE() AS DATE)
-            AND part_id = (SELECT TOP 1 part_id FROM programming_result_entry ORDER BY created_date DESC);
+            AND part_id = (SELECT TOP 1 part_id FROM leaktest_result_entry ORDER BY created_date DESC);
         """
 
         fail_query = """
         SELECT COUNT(id) 
-        FROM programming_result_entry 
+        FROM leaktest_result_entry 
         WHERE result = 'fail' 
             AND is_deleted = 0 
             AND CAST(created_date AS DATE) = CAST(GETDATE() AS DATE)
-            AND part_id = (SELECT TOP 1 part_id FROM programming_result_entry ORDER BY created_date DESC);
+            AND part_id = (SELECT TOP 1 part_id FROM leaktest_result_entry ORDER BY created_date DESC);
         """
 
         pass_count = fetch_data_donut(pass_query)
@@ -74,18 +74,18 @@ def get_donut_1():
 
 
     
-@app.route('/api/get_donut_1_details', methods=['GET'])
+@app.route('/api/get_donut_2_details', methods=['GET'])
 
-def get_donut_1_details():
+def get_donut_2_details():
     try:
         # Execute the queries to retrieve pass and fail counts
         details_query = """
-        SELECT top 1 b.part_description, b.part_no FROM programming_result_entry  a
+        SELECT top 1 b.part_description, b.part_no FROM leaktest_result_entry  a
         inner join part_master b on a.part_id = b.id
 
         WHERE a.is_deleted = 0 
             AND CAST(a.created_date AS DATE) = CAST(GETDATE() AS DATE)
-            AND a.part_id = (SELECT TOP 1 a.part_id FROM programming_result_entry order by a.created_date desc) order by a.created_date desc
+            AND a.part_id = (SELECT TOP 1 a.part_id FROM leaktest_result_entry order by a.created_date desc) order by a.created_date desc
         """
 
 
