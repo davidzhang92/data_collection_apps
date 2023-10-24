@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="../../icons/css/all.css">
 
     <!-- from template -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/styles/material-icons/material-icons.css">
+     <link rel="stylesheet" href="/icons/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/icons/css/all.min.css">
+
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/part-master-pagination-crud.css">
     <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
 
-    <link rel="stylesheet" href="../../styles/part-master.css">
+    <link rel="stylesheet" href="../../styles/side-menu-2.css">
     <link rel="stylesheet" href="../../styles/side-menu.css">
  
 
@@ -39,7 +41,12 @@
     </div>
     <div class="body">
       <ul class = "ul-side-menu">
-        <li class="li-side-menu"><i class="fas fa-chart-area icon"></i><a class="a-side-menu" href="../dashboard/dashboard.html">Dashboard</a></li>
+        <li class="li-side-menu"><i class="fas fa-chart-area icon"></i>Dashboard &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  &nbsp &nbsp<i class="fas fa-chevron-circle-right" id="dashboard-indent"></i>
+          <ul>
+            <li><i class="fas fa-chart-area icon"></i><a href="../dashboard/charts.html">Charts</a></li>
+
+          </ul>
+          
         <li><i class="fas fa-pencil-alt icon"></i>Result Entry <i class="fas fa-chevron-circle-right" id="result-entry-indent"></i>
           <ul>
             <li><i class="fas fa-pencil-alt icon"></i><a class="a-side-menu" href="../result-entry/programming-result-entry.html">Programming</a></li>

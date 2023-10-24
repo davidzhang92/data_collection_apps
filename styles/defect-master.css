@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('/styles/fonts/roboto.css');;
 .body-background {
     background-color: hsl(202, 33%, 23%);
     background-size: contain;
