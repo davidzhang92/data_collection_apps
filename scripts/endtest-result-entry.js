@@ -9,7 +9,7 @@ $(document).ready(function () {
   
     // Perform the AJAX POST request
     $.ajax({
-      url: 'http://localhost:4000/api/endtest_upload_file_api', // Replace with your backend API endpoint
+      url: 'http://192.168.100.121:4000/api/endtest_upload_file_api', // Replace with your backend API endpoint
       type: 'POST',
       data: formData,
       contentType: false, // Set content type to false, as FormData handles it

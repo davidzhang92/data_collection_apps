@@ -5,20 +5,18 @@ from dbutils.pooled_db import PooledDB
 app = Flask(__name__)
 
 # Define your MS SQL Server connection details
-server = '192.168.100.90'
-database = 'DataCollection'
-username = 'sa'
-password = 'Cannon45!'
+# server = '192.168.100.121'
+# database = 'DataCollection'
+# username = 'sa'
+# password = 'Cannon45!'
 
 # Create a pool of connections
 pool = PooledDB(
     creator=pyodbc,
     maxconnections=6,
-    user=username,
-    password=password,
-    database=database,
-    host=server,
-    driver='{SQL Server}'
+    dsn='DataCollection',  # Use the DSN you've defined in your odbc.ini file
+    UID = 'sa',
+    PWD = 'Cannon45!'
 )
 
 def fetch_data_details(query):

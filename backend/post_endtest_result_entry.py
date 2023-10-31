@@ -5,14 +5,30 @@ import os
 
 app = Flask(__name__)
 
-# Define your MS SQL Server connection details
-server = '192.168.100.90'
-database = 'DataCollection'
-username = 'sa'
-password = 'Cannon45!'
+# # Define your MS SQL Server connection details (Windows)
+# server = '192.168.100.121'
+# database = 'DataCollection'
+# username = 'sa'
+# password = 'Cannon45!'
+
+# # Establish the connection
+# conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+
+
+# def fetch_data(query):
+#     cursor = conn.cursor()
+#     cursor.execute(query)
+#     rows = cursor.fetchall()
+#     return rows
+
+
+# Define your MS SQL Server connection details (Linux)
+# Use the DSN you've defined in your odbc.ini file
+
+dsn = 'DataCollection'
 
 # Establish the connection
-conn_sql = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 
 # Define a function to generate a unique filename
 def get_unique_filename():
@@ -54,7 +70,7 @@ def post_endtest_upload_file():
         conn_mdb.close()
 
         # Create a cursor for the SQL Server connection
-        cursor_sql = conn_sql.cursor()
+        cursor_sql = conn.cursor()
 
         # Get the maximum created_date value from the SQL Server database
         cursor_sql.execute("SELECT MAX(created_date) FROM endtest_result_entry")
@@ -92,7 +108,7 @@ def post_endtest_upload_file():
                                 (idx, part_id, dc_type, sn, pcb_data_matrix, date_time))
 
         # Commit the changes to the SQL Server database
-        conn_sql.commit()
+        conn.commit()
 
         # Close the cursor and the connection to the SQL Server database
         cursor_sql.close()

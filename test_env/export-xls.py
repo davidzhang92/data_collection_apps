@@ -5,7 +5,7 @@ import datetime
 import os
 
 # Define your MS SQL Server connection details
-server = '192.168.100.90'
+server = '192.168.100.121'
 database = 'DataCollection'
 username = 'sa'
 password = 'Cannon45!'

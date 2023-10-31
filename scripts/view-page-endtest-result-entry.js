@@ -112,7 +112,7 @@ function renderData(data) {
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
 				'' :
-				'http://localhost:4000/api/endtest_result_entry_view_api';
+				'http://192.168.100.121:4000/api/endtest_result_entry_view_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -181,7 +181,7 @@ function renderData(data) {
 			if (partNumber || dateFrom || dateTo) {
 				// First AJAX request to filter data
 				$.ajax({
-					url: 'http://localhost:4000/api/filter_search_endtest_result_entry_view_api',
+					url: 'http://192.168.100.121:4000/api/filter_search_endtest_result_entry_view_api',
 					type: 'GET',
 					data: requestData, // Send the requestData object
 					success: function (data) {
@@ -226,7 +226,7 @@ function renderData(data) {
 
 
 			$.ajax({
-				url: 'http://localhost:4000/api/delete_endtest_result_entry_view_api',
+				url: 'http://192.168.100.121:4000/api/delete_endtest_result_entry_view_api',
 				type: 'DELETE',
 				data: JSON.stringify({
 					id: deleteCurrentId,
@@ -285,7 +285,7 @@ function renderData(data) {
 		// console.log(idsToDelete);
 		// Get the data-id attribute of the row associated with the clicked button
 		$.ajax({
-			url: 'http://localhost:4000/api/delete_endtest_result_entry_view_api',
+			url: 'http://192.168.100.121:4000/api/delete_endtest_result_entry_view_api',
 			type: 'DELETE',
 			data: JSON.stringify({ ids: idsToDelete }),
 			contentType: 'application/json',
@@ -313,7 +313,7 @@ function renderData(data) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://localhost:4000/api/auto_complete_filter_part_no_api",
+				"http://192.168.100.121:4000/api/auto_complete_filter_part_no_api",
 				// { term: request.term }, // Pass the term as a query parameter
 				{ search_part_no: request.term }, // Pass the term as a query parameter
 				function (data) {
@@ -362,7 +362,7 @@ function renderData(data) {
 	function fetchPaginationEntriesCount() {
 		$.ajax({
 			type: 'GET',
-			url: 'http://localhost:4000/api/pagination_endtest_result_entry_count_api',
+			url: 'http://192.168.100.121:4000/api/pagination_endtest_result_entry_count_api',
 			dataType: 'json',
 			success: function (response) {
 				totalEntries = response[0].count;

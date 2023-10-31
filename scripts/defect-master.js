@@ -93,8 +93,8 @@ $(document).ready(function () {
 		
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
-				'http://localhost:4000/api/get_filter_search_defect_master_api' :
-				'http://localhost:4000/api/get_defect_api';
+				'http://192.168.100.121:4000/api/get_filter_search_defect_master_api' :
+				'http://192.168.100.121:4000/api/get_defect_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -138,7 +138,7 @@ $(document).ready(function () {
 		if (defectNumber || defectDescription) {
 		// Fetch data using the filter API
 		$.ajax({
-			url: 'http://localhost:4000/api/filter_search_defect_master_api',
+			url: 'http://192.168.100.121:4000/api/filter_search_defect_master_api',
 			type: 'GET',
 			data: {
 				search_defect_no:defectNumber,
@@ -201,7 +201,7 @@ $(document).ready(function () {
 		var editDefectDescription = $('#edit-defect-description').val();
 
 		$.ajax({
-			url: 'http://localhost:4000/api/update_defect_api',
+			url: 'http://192.168.100.121:4000/api/update_defect_api',
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
@@ -258,7 +258,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:4000/api/post_defect_api',
+			url: 'http://192.168.100.121:4000/api/post_defect_api',
 			type: 'POST',
 			data: JSON.stringify({
 				defect_no: addDefectNumber,
@@ -316,7 +316,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:4000/api/delete_defect_api',
+			url: 'http://192.168.100.121:4000/api/delete_defect_api',
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
@@ -375,7 +375,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	// console.log(idsToDelete);
 	// Get the data-id attribute of the row associated with the clicked button
 	$.ajax({
-		url: 'http://localhost:4000/api/delete_defect_api',
+		url: 'http://192.168.100.121:4000/api/delete_defect_api',
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',
@@ -401,7 +401,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://localhost:4000/api/auto_complete_filter_defect_no_api",
+				"http://192.168.100.121:4000/api/auto_complete_filter_defect_no_api",
 				// { term: request.term }, // Pass the term as a query parameter
 				{ search_defect_no: request.term }, // Pass the term as a query parameter
 				function (data) {
@@ -419,7 +419,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 
 			// Make an additional AJAX request to retrieve the description based on the selected value
 			$.getJSON(
-				"http://localhost:4000/api/auto_complete_filter_defect_name_for_defect_no_api",
+				"http://192.168.100.121:4000/api/auto_complete_filter_defect_name_for_defect_no_api",
 				{ search_defect_description: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
 					$("#defect-description-field").val(data.defect_description);
@@ -439,7 +439,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://localhost:4000/api/auto_complete_filter_defect_name_api",
+				"http://192.168.100.121:4000/api/auto_complete_filter_defect_name_api",
 				{ search_defect_description: request.term }, // Pass the term as a query parameter
 				function (data) {
 					var items = []; // Array to store the autocomplete suggestions
@@ -456,7 +456,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 
 			// Make an additional AJAX request to retrieve the part no based on the selected value
 			$.getJSON(
-				"http://localhost:4000/api/auto_complete_filter_defect_no_for_defect_name_api",
+				"http://192.168.100.121:4000/api/auto_complete_filter_defect_no_for_defect_name_api",
 				{ search_part_no: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
 					$("#defect-number-field").val(data.delete_no);
@@ -500,7 +500,7 @@ fetchPaginationEntriesCount();
 function fetchPaginationEntriesCount() {
     $.ajax({
         type: 'GET',
-        url: 'http://localhost:4000/api/pagination_defect_entries_api',
+        url: 'http://192.168.100.121:4000/api/pagination_defect_entries_api',
         dataType: 'json',
         success: function (response) {
             totalEntries = response[0].count;
@@ -607,7 +607,7 @@ $(document).on('click', '#lastPage', function () {
 
 //         // Fetch data using the filter API
 //         $.ajax({
-//             url: 'http://localhost:4000/api/filter_search_part_master_api',
+//             url: 'http://192.168.100.121:4000/api/filter_search_part_master_api',
 //             type: 'GET',
 //             data: {
 //                 search_part_no: partNumber,

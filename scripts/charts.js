@@ -92,7 +92,7 @@ $(document).ready(function() {
 
 
             function fetchDataFromAPI() {
-                $.getJSON('http://localhost:4000/api/overall_throughput_api', function(data) {
+                $.getJSON('http://192.168.100.121:4000/api/overall_throughput_api', function(data) {
                     console.log('Data from API:', data);
             
                     // Process the data and generate data points
@@ -230,7 +230,7 @@ $(document).ready(function() {
         //function to call donut 1 api and count api
 
         function fetchDataAndUpdateChartDonut1() {
-            fetch('http://localhost:4000/api/donut_1_api')
+            fetch('http://192.168.100.121:4000/api/donut_1_api')
                 .then(response => response.json())
                 .then(data => {
                     // Update the global variables
@@ -258,7 +258,7 @@ $(document).ready(function() {
                         donutLabel.innerText = passPercentage.toFixed(0) + '%';
         
                         // Fetch and update the part description and part number
-                        fetch('http://localhost:4000/api/donut_1_details')
+                        fetch('http://192.168.100.121:4000/api/donut_1_details')
                             .then(response => response.json())
                             .then(data => {
                                 var partDescriptionElement = document.querySelector('#donut-1-container .donut-1-part-description');
@@ -304,7 +304,7 @@ $(document).ready(function() {
         //function to call donut 2 api and count api
 
         function fetchDataAndUpdateChartDonut2() {
-            fetch('http://localhost:4000/api/donut_2_api')
+            fetch('http://192.168.100.121:4000/api/donut_2_api')
                 .then(response => response.json())
                 .then(data => {
                     // Update the global variables
@@ -332,7 +332,7 @@ $(document).ready(function() {
                         donutLabel.innerText = passPercentage.toFixed(0) + '%';
     
                         // Fetch and update the part description and part number
-                        fetch('http://localhost:4000/api/donut_2_details')
+                        fetch('http://192.168.100.121:4000/api/donut_2_details')
                             .then(response => response.json())
                             .then(data => {
                                 var partDescriptionElement = document.querySelector('#donut-2-container .donut-2-part-description');
@@ -380,7 +380,7 @@ $(document).ready(function() {
     //function to call donut 3 api and count api
 
     function fetchDataAndUpdateChartDonut3() {
-        fetch('http://localhost:4000/api/donut_3_api')
+        fetch('http://192.168.100.121:4000/api/donut_3_api')
             .then(response => response.json())
             .then(data => {
                 // Update the global variables
@@ -410,7 +410,7 @@ $(document).ready(function() {
                     donutLabel.innerText = passPercentage.toFixed(0) + '%';
 
                     // Fetch and update the part description and part number
-                    fetch('http://localhost:4000/api/donut_3_details')
+                    fetch('http://192.168.100.121:4000/api/donut_3_details')
                         .then(response => response.json())
                         .then(data => {
                             var partDescriptionElement = document.querySelector('#donut-3-container .donut-3-part-description');
@@ -458,7 +458,7 @@ $(document).ready(function() {
 
 
     function fetchDataAndUpdateChartDonut4() {
-        fetch('http://localhost:4000/api/donut_4_api')
+        fetch('http://192.168.100.121:4000/api/donut_4_api')
             .then(response => response.json())
             .then(data => {
                 // Update the global variables
@@ -486,7 +486,7 @@ $(document).ready(function() {
                     donutLabel.innerText = passPercentage.toFixed(0) + '%';
 
                     // Fetch and update the part description and part number
-                    fetch('http://localhost:4000/api/donut_4_details')
+                    fetch('http://192.168.100.121:4000/api/donut_4_details')
                         .then(response => response.json())
                         .then(data => {
                             var partDescriptionElement = document.querySelector('#donut-4-container .donut-4-part-description');
@@ -530,7 +530,7 @@ $(document).ready(function() {
 
 
     function fetchDataAndUpdateChartDonut5() {
-        fetch('http://localhost:4000/api/donut_5_api')
+        fetch('http://192.168.100.121:4000/api/donut_5_api')
             .then(response => response.json())
             .then(data => {
                 // Update the global variables
@@ -558,7 +558,7 @@ $(document).ready(function() {
                     donutLabel.innerText = passPercentage.toFixed(0) + '%';
 
                     // Fetch and update the part description and part number
-                    fetch('http://localhost:4000/api/donut_5_details')
+                    fetch('http://192.168.100.121:4000/api/donut_5_details')
                         .then(response => response.json())
                         .then(data => {
                             var partDescriptionElement = document.querySelector('#donut-5-container .donut-5-part-description');

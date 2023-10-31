@@ -3,14 +3,31 @@ import pyodbc
 
 app = Flask(__name__)
 
-# Define your MS SQL Server connection details
-server = '192.168.100.90'
-database = 'DataCollection'
-username = 'sa'
-password = 'Cannon45!'
+# # Define your MS SQL Server connection details (Windows)
+# server = '192.168.100.121'
+# database = 'DataCollection'
+# username = 'sa'
+# password = 'Cannon45!'
+
+# # Establish the connection
+# conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+
+
+# def fetch_data(query):
+#     cursor = conn.cursor()
+#     cursor.execute(query)
+#     rows = cursor.fetchall()
+#     return rows
+
+
+# Define your MS SQL Server connection details (Linux)
+# Use the DSN you've defined in your odbc.ini file
+
+dsn = 'DataCollection'
 
 # Establish the connection
-conn = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
+
 
 @app.route('/api/post-part', methods=['POST'])
 def post_part():

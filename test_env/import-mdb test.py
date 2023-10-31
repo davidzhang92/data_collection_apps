@@ -5,14 +5,10 @@ import os
 
 app = Flask(__name__)
 
-# Define your MS SQL Server connection details
-server = '192.168.100.90'
-database = 'DataCollection'
-username = 'sa'
-password = 'Cannon45!'
+dsn = 'DataCollection'
 
 # Establish the connection
-conn_sql = pyodbc.connect('DRIVER={SQL Server};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password)
+conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 
 # Define a function to generate a unique filename
 def get_unique_filename():

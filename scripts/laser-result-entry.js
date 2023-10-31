@@ -287,7 +287,7 @@ $('#label-id-field').on('keydown', function(event) {
     $('#save-form').on('submit', function(event) {
     event.preventDefault();
     $.ajax({
-        url: 'http://localhost:4000/api/laser-result-entry-api',
+        url: 'http://192.168.100.121:4000/api/laser-result-entry-api',
         type: 'POST',
         data: JSON.stringify({
             part_id: partId,
@@ -449,7 +449,7 @@ $('#label-id-field').on('keydown', function(event) {
         var dateFrom = $('#date-from-field').val();
         var dateTo = $('#date-to-field').val();
     
-        fetch('http://localhost:4000/api/laser_result_entry_api', {
+        fetch('http://192.168.100.121:4000/api/laser_result_entry_api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

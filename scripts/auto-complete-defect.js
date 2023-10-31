@@ -1,7 +1,7 @@
 $(function () {
     var getData = function (request, response) {
         $.getJSON(
-            "http://localhost:4000/api/auto_complete_defect_no_api",
+            "http://192.168.100.121:4000/api/auto_complete_defect_no_api",
             { term: request.term },
             function (data) {
                 var items = [];
@@ -17,7 +17,7 @@ $(function () {
         $("#defect-code-field").val(ui.item.value);
 
         $.getJSON(
-            "http://localhost:4000/api/auto_complete_defect_name_api",
+            "http://192.168.100.121:4000/api/auto_complete_defect_name_api",
             { defectCodeField: ui.item.value },
             function (data) {
                 // Check if data is an array and has at least one item

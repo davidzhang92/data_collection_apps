@@ -255,7 +255,7 @@ $(document).ready(function (){
     $('#save-form').on('submit', function(event) {
         event.preventDefault();
         $.ajax({
-            url: 'http://localhost:4000/api/leaktest-result-entry-api',
+            url: 'http://192.168.100.121:4000/api/leaktest-result-entry-api',
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,

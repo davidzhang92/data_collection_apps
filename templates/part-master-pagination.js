@@ -33,7 +33,7 @@ $(document).ready(function() {
       // Perform AJAX call based on the page clicked
       if (pageNumber === currentPage - 1) {
         $.ajax({
-          url: 'http://localhost:5000/api/previous_10_records_api',
+          url: 'http://192.168.100.121:5000/api/previous_10_records_api',
           type: 'GET',
           data: {
             currentPage: currentPage
@@ -48,7 +48,7 @@ $(document).ready(function() {
         });
       } else if (pageNumber === currentPage - 2) {
         $.ajax({
-          url: 'http://localhost:5000/api/previous_20_records_api',
+          url: 'http://192.168.100.121:5000/api/previous_20_records_api',
           type: 'GET',
           data: {
             currentPage: currentPage
@@ -63,7 +63,7 @@ $(document).ready(function() {
         });
       } else if (pageNumber === currentPage + 1) {
         $.ajax({
-          url: 'http://localhost:5000/api/next_10_records_api',
+          url: 'http://192.168.100.121:5000/api/next_10_records_api',
           type: 'GET',
           data: {
             currentPage: currentPage
@@ -78,7 +78,7 @@ $(document).ready(function() {
         });
       } else if (pageNumber === currentPage + 2) {
         $.ajax({
-          url: 'http://localhost:5000/api/next_20_records_api',
+          url: 'http://192.168.100.121:5000/api/next_20_records_api',
           type: 'GET',
           data: {
             currentPage: currentPage
@@ -93,7 +93,7 @@ $(document).ready(function() {
         });
       } else {
         $.ajax({
-          url: 'http://localhost:5000/api/filter_search_part_master_api',
+          url: 'http://192.168.100.121:5000/api/filter_search_part_master_api',
           type: 'GET',
           data: {
             search_part_no: partNumber,
@@ -116,7 +116,7 @@ $(document).ready(function() {
       currentPage--;
       updatePagination();
       $.ajax({
-        url: 'http://localhost:5000/api/previous_10_records_api',
+        url: 'http://192.168.100.121:5000/api/previous_10_records_api',
         type: 'GET',
         data: {
           currentPage: currentPage
@@ -138,7 +138,7 @@ $(document).ready(function() {
       currentPage++;
       updatePagination();
       $.ajax({
-        url: 'http://localhost:5000/api/next_10_records_api',
+        url: 'http://192.168.100.121:5000/api/next_10_records_api',
         type: 'GET',
         data: {
           currentPage: currentPage

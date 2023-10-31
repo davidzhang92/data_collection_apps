@@ -19,7 +19,7 @@ $('table').on('click', '.edit', function () {
     };
 
     $.ajax({
-    url: 'http://localhost:4000/api/update_data_api', // Replace with the actual API endpoint
+    url: 'http://192.168.100.121:4000/api/update_data_api', // Replace with the actual API endpoint
     type: 'PATCH',
     contentType: 'application/json',
     data: JSON.stringify(requestData),
