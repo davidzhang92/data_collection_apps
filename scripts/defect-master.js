@@ -93,7 +93,7 @@ $(document).ready(function () {
 		
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
-				'http://192.168.100.121:4000/api/get_filter_search_defect_master_api' :
+				'' :
 				'http://192.168.100.121:4000/api/get_defect_api';
 		
 			const requestData = {
@@ -119,7 +119,14 @@ $(document).ready(function () {
     const initialDefectDescription = $('#defect-description-field').val().trim();
     if (!initialDefectNumber && !initialDefectDescription) {
         fetchData();
-    }	
+    }
+
+	// Function to reset the current page to 1
+	function resetCurrentPage() {
+		currentPage = 1;
+		createPagination(currentPage);
+		updatePaginationButtons(currentPage);
+	}
 
 	// Function to handle the search button click
 	$('#search-defect').click(function () {
@@ -129,10 +136,13 @@ $(document).ready(function () {
 		if (defectNumber || defectDescription) {
 			// Hide the pagination container
 			$('#page_container').hide();
+			resetCurrentPage();
 		} else {
 			// If both search fields are empty, reset filtering and show the pagination container
 			filteredData = [];
+			resetCurrentPage();
 			$('#page_container').show(); // Show the pagination container
+			
 		}
 		
 		if (defectNumber || defectDescription) {
@@ -281,8 +291,14 @@ $(document).ready(function () {
 			},
 			error: function(xhr, status, error) {
 				// handle error response
-				console.error(error);
-			}
+				if (xhr.status === 400) {
+                    // The response status is 400, indicating a duplicate
+                    alert(xhr.responseJSON.message);
+                } else {
+                    console.error(error);
+                    alert('An error occurred while submitting the result.');
+                }
+            }
 		});
 	});
 

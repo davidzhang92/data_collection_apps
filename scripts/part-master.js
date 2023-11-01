@@ -142,7 +142,6 @@ $(document).ready(function () {
 			// If both search fields are empty, reset filtering and show the pagination container
 			filteredData = [];
 			resetCurrentPage();
-			fetchData(); // Fetch all data
 			$('#page_container').show(); // Show the pagination container
 		}
 	
@@ -289,8 +288,14 @@ $(document).ready(function () {
 			},
 			error: function(xhr, status, error) {
 				// handle error response
-				console.error(error);
-			}
+				if (xhr.status === 400) {
+                    // The response status is 400, indicating a duplicate
+                    alert(xhr.responseJSON.message);
+                } else {
+                    console.error(error);
+                    alert('An error occurred while submitting the result.');
+                }
+            }
 		});
 	});
 
@@ -383,7 +388,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	// console.log(idsToDelete);
 	// Get the data-id attribute of the row associated with the clicked button
 	$.ajax({
-		url: 'http://192.168.100.121:4000/api/delete_data_api',
+		url: 'http://192.168.100.121:4000/api/delete_part_api',
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',
@@ -397,7 +402,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 			// Handle error here
 			console.error(error);
 		// Refresh the page
-		location.reload();
+		// location.reload();
 		}
 	});
 });
