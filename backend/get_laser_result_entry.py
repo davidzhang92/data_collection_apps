@@ -38,7 +38,7 @@ conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 @app.route('/api/get_laser_result_entry', methods=['POST'])
 def get_laser_result_entry():
     # Define the path to the Excel template (modify this path accordingly)
-    template_path = r'C:\excel_import\laser_result_template.xlsx'
+    template_path = r'/data-storage/sfdc_apps/excel_import/laser_result_template.xlsx'
 
     try:
         # Try to parse JSON data from the request body

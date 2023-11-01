@@ -56,16 +56,16 @@ def get_auto_complete_part_no():
 
 @app.route('/api/auto_complete_part_name', methods=['GET'])
 def get_auto_complete_part_name():
-    selected_pname = request.args.get('pname')  # Get the selected value from the query parameters
+    selected_part_id= request.args.get('part_id')  # Get the selected value from the query parameters
 
-    if selected_pname is None:
+    if selected_part_id is None:
         return jsonify({'error': 'Selected value not provided'})
 
     cursor = conn.cursor()
 
     # Construct the SQL query to get the description based on the selected value
-    query = "SELECT id, part_description FROM part_master WHERE part_no = ?"
-    params = (selected_pname,)
+    query = "SELECT id, part_description FROM part_master WHERE is_deleted = 0 and id = ?"
+    params = (selected_part_id,)
     cursor.execute(query, params)
     rows = cursor.fetchall()
     

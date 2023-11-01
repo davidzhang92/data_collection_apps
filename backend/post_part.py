@@ -41,6 +41,30 @@ def post_part():
 
         cursor = conn.cursor()
 
+        # Check for duplicates
+        part_no_duplicate_query_check = """
+            SELECT COUNT(id) AS count
+            FROM part_master where part_no = ? and is_deleted  = 0
+        """
+        part_description_duplicate_query_check = """
+            SELECT COUNT(id) AS count
+            FROM part_master where part_description = ? and is_deleted  = 0
+        """
+        cursor.execute(part_no_duplicate_query_check, (new_part_no))
+        part_no_result = cursor.fetchone()
+        cursor.execute(part_description_duplicate_query_check, (new_part_description))
+        part_description_result = cursor.fetchone()
+
+        # debug
+        # print (part_no_result)
+        # print (part_description_result)
+    
+        if part_no_result is not None and part_no_result[0] != 0 and part_description_result is not None and part_description_result[0] == 0:
+            return jsonify({'message': 'Error: Part No. is already exist'}), 400
+        if part_no_result is not None and part_no_result[0] == 0 and part_description_result is not None and part_description_result[0] != 0:
+            return jsonify({'message': 'Error: This Description is already used'}), 400
+        if part_no_result is not None and part_no_result[0] != 0 or part_description_result is not None and part_description_result[0] != 0:
+            return jsonify({'message': 'Error: Data is a duplicate.'}), 400
         # Construct the SQL query to update the part_no and part_description for the given id
         query = "insert into part_master  (id, part_no, part_description, created_date, is_deleted) values (newid(), ?, ?, getdate(), 0)"
 

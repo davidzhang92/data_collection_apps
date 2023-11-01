@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import pyodbc
 import uuid
 import os
+import subprocess
 
 app = Flask(__name__)
 
@@ -48,12 +49,12 @@ def post_endtest_upload_file():
         new_filename = get_unique_filename()
 
         # Save the uploaded file with the new filename
-        upload_folder = r'C:\upload'  # Choose a folder for uploaded files
+        upload_folder = '/data-storage/sfdc_apps/uploads'  # Choose a folder for uploaded files
         uploaded_file_path = os.path.join(upload_folder, new_filename)
         uploaded_file.save(uploaded_file_path)
 
         # Establish a connection to the uploaded MDB file
-        conn_str = f'DRIVER={{Microsoft Access Driver (*.mdb, *.accdb)}};DBQ={uploaded_file_path};'
+        conn_str = f'DRIVER={{MDBTools}};DBQ={uploaded_file_path};'
         conn_mdb = pyodbc.connect(conn_str)
 
         # Create a cursor for the MDB file
@@ -68,6 +69,7 @@ def post_endtest_upload_file():
         # Close the cursor and the connection to the MDB file
         cursor_mdb.close()
         conn_mdb.close()
+
 
         # Create a cursor for the SQL Server connection
         cursor_sql = conn.cursor()
@@ -117,6 +119,7 @@ def post_endtest_upload_file():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+ 
 
 if __name__ == '__main__':
     app.run()
