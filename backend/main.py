@@ -41,6 +41,7 @@ from get_donut_3_chart_throughput import get_donut_3, get_donut_3_details
 from get_donut_4_chart_throughput import get_donut_4, get_donut_4_details
 from get_donut_5_chart_throughput import get_donut_5, get_donut_5_details
 from flask_cors import CORS
+from waitress import serve
 
 app = Flask(__name__)
 CORS(app)
@@ -453,4 +454,7 @@ def get_donut_5_details_api():
 
 
 if __name__ == "__main__":
+    # built-in flask server for development
     app.run(debug=True, host='0.0.0.0', port=4000)
+    #UAT / LIVE
+    # serve(app, host='0.0.0.0', port=4000, threads=1024)

@@ -1,0 +1,11 @@
+[Unit]
+Description=Backend API SFDC Database Connection Services
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/data-storage/env0/bin/python3 /data-storage/sfdc_apps/backend/main.py
+
+[Install]
+WantedBy=multi-user.target

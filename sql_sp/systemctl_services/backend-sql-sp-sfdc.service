@@ -1,0 +1,11 @@
+[Unit]
+Description=Backend SQL SP Job Scheduler Services
+After=multi-user.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/data-storage/sfdc_apps/sql_sp/bash_scripts/bash_sql_sp_scheduler.sh
+
+[Install]
+WantedBy=multi-user.target
