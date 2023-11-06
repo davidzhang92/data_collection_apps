@@ -4,6 +4,7 @@ $('.laser-result-entry-sub-card-2').hide();
 $('.export-laser-result-entry-sub-card').hide();
 $('#input-result').text('');
 $('#defect-code-field').attr('defect-id', '');
+$('#defect-code-field').prop('disabled', true);
 
 
 
@@ -235,17 +236,17 @@ $('#data-matrix-field').on('keydown', function(event) {
 
 
 var labelId = $('#label-id-field').val();
-$('#label-id-field').on('input', function () {
-  labelId = $(this).val();
-});
-$('#label-id-field').on('keydown', function(event) {
-  if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
-      event.preventDefault(); // Prevent the default behavior of the Enter key
-      $('#defect-code-field').focus(); // Move focus to the next field,
-  }
-  $("#label-id-field").on("blur", function() {
-      var inputValue = $(this).val();
-      var errorMessage = $("#error-message");
+    $('#label-id-field').on('input', function () {
+    labelId = $(this).val();
+    });
+    $('#label-id-field').on('keydown', function(event) {
+    if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+        event.preventDefault(); // Prevent the default behavior of the Enter key
+        $('#defect-code-field').focus(); // Move focus to the next field,
+    }
+    $("#label-id-field").on("blur", function() {
+        var inputValue = $(this).val();
+        var errorMessage = $("#error-message");
 
       if (inputValue.trim() === "") {
           // Only display the alert if the field is empty
@@ -259,6 +260,8 @@ $('#label-id-field').on('keydown', function(event) {
       }
   });
 });
+
+
 
   // Initialize defectId and result variables
   var defectId = $('#defect-code-field').attr('defect-id')
@@ -320,9 +323,31 @@ $('#label-id-field').on('keydown', function(event) {
             if (xhr.status === 400) {
                 // The response status is 400, indicating a duplicate
                 alert(xhr.responseJSON.message);
+                $('#input-result').text('');
+                // Reset other variables
+                result = ''; // Reset result
+                $('#serial-no-field').val('')
+                $('#data-matrix-field').val('')
+                $('#label-id-field').val('')
+                $('#defect-code-field').val('')
+                $('#defect-code-field').attr('defect-id', '');
+                defectId='';
+                $('#defect-desc').val('')
+                localStorage.removeItem('defectId');
             } else {
                 console.error(error);
                 alert('An error occurred while submitting the result.');
+                $('#input-result').text('');
+                // Reset other variables
+                result = ''; // Reset result
+                $('#serial-no-field').val('')
+                $('#data-matrix-field').val('')
+                $('#label-id-field').val('')
+                $('#defect-code-field').val('')
+                $('#defect-code-field').attr('defect-id', '');
+                defectId='';
+                $('#defect-desc').val('')
+                localStorage.removeItem('defectId');
             }
         }
             });

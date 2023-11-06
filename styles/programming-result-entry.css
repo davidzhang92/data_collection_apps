@@ -1,4 +1,24 @@
 * {box-sizing:border-box;}
+/* For small desktops */
+@media screen and (min-width: 800px) {
+  .view {
+    width: 700px;
+  }
+}
+
+/* For medium desktops */
+@media screen and (min-width: 1200px) {
+  .view {
+    width: 1100px;
+  }
+}
+
+/* For large desktops */
+@media screen and (min-width: 1600px) {
+  .view {
+    width: 1500px;
+  }
+}
 
 body,
 .container {

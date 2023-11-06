@@ -39,9 +39,11 @@ def post_laser_result_entry():
         # Extract required fields from the payload
         new_part_id = uuid.UUID(data['part_id'])
         new_serial_no = str(data['serial_no'])
+        new_data_matrix = str(data['data_matrix'])
+        new_label_id = str(data['label_id'])
 
         # Concatenate part_id and serial_no
-        concatenated_values = str(new_part_id) + new_serial_no
+        concatenated_values = str(new_part_id) + new_serial_no + new_data_matrix + new_label_id
 
         cursor = conn.cursor()
 
@@ -49,7 +51,7 @@ def post_laser_result_entry():
         duplicate_check_query = """
             SELECT COUNT(*) AS count
             FROM laser_result_entry
-            WHERE CONCAT(part_id, serial_no) = ?
+            WHERE CONCAT(part_id, serial_no, data_matrix, label_id) = ?
             AND is_deleted = 0;
         """
         cursor.execute(duplicate_check_query, (concatenated_values,))
