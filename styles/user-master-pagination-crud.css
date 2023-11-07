@@ -191,7 +191,75 @@ table.table .avatar {
 /* Modal styles */
 .modal .modal-dialog {
     max-width: 400px;
+    height: 600px;
+    top:50px;
 }
+.user-form-group {
+    margin-bottom:25px;
+}
+    #add-username {
+        width:300px;
+        font-size: 18px;
+    }
+
+    #add-access-level {
+        width:300px;
+        font-size: 18px;
+    }
+
+    #add-password {
+        width:300px;
+        font-size: 18px;
+    }
+    
+    #add-confirm-password {
+        width:300px;
+        font-size: 18px;
+    }
+    
+    #edit-username {
+        width:300px;
+        font-size: 18px;
+    }
+        #edit-username:disabled{
+            background-color:rgb(214, 254, 255);
+        }
+
+    #edit-access-level {
+        width:300px;
+        font-size: 18px;
+    }
+
+    #edit-password {
+        width:300px;
+        font-size: 18px;
+    }
+    
+    #edit-confirm-password {
+        width:300px;
+        font-size: 18px;
+    }
+    .form-group.user-form-group {
+        display: flex;
+        flex-direction: column;
+    }
+        #add-user-access-selection{
+            color: #000;
+            width: 300px;
+            height: 35px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: normal;
+
+        }
+        #edit-user-access-selection{
+            color: #000;
+            width: 300px;
+            height: 35px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: normal;
+
+        }
+    
 .modal .modal-header, .modal .modal-body, .modal .modal-footer {
     padding: 20px 30px;
 }
@@ -203,11 +271,26 @@ table.table .avatar {
     border: 1px solid rgba(0,0,0,.2);
     border-radius: 6px;
     outline: 0;
+    height: 500px;
+
+}
+.modal .modal-delete-content {
+    border-radius: 3px;
+    position: relative;
+    background-color: #1E2B32;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    height: 260px;
 
 }
 .modal .modal-footer {
     background: #283942;
     border-radius: 0 0 3px 3px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
 }
 .modal .modal-title {
     display: inline-block;
@@ -268,9 +351,10 @@ button.close-white{
 }
 
     #user-access-selection {
-        width: 200px;
+        width: 150px;
         font-family: 'Roboto', sans-serif;
         font-weight: normal;
+        height:35px;
     }
 
 .user-search{ 
@@ -342,7 +426,7 @@ button.close-white{
     line-height: inherit;
     font-family: inherit;
     color: #000;
-    left: 210px;
+    left: 355px;
     top: 25px;
     cursor: pointer;
     }
@@ -401,3 +485,4 @@ button.close-white{
         cursor: pointer;
 
     }
+

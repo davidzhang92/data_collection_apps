@@ -58,7 +58,7 @@
       </li>
         <li><i class="fas fa-boxes icon"></i>Master Data Configuration &nbsp<i class="fas fa-chevron-circle-right"></i>
           <ul>
-            <li><i class="fas fa-boxes icon"></i><a class="a-side-menu" href="../master-config/part-master.html">User Master</a></li>
+            <li><i class="fas fa-boxes icon"></i><a class="a-side-menu" href="../master-config/part-master.html">Part Master</a></li>
             <li><i class="fas fa-boxes icon"></i><a class="a-side-menu" href="../master-config/defect-master.html">Defect Master</a></li>
           </ul>
         </li>
@@ -133,18 +133,34 @@
     <table class="table table-striped table-hover" id="table-pagination-user-master">
         <thead>
             <tr>
-    <th>
-      <span class="custom-checkbox">
-        <input type="checkbox" id="selectAll">
-        <label for="selectAll"></label>
-      </span>
-    </th>
+                <th>
+                  <span class="custom-checkbox">
+                    <input type="checkbox" id="selectAll">
+                    <label for="selectAll"></label>
+                  </span>
+                </th>
                 <th>Username</th>
                 <th>Access Level</th>
-    <!-- <th>Address</th> -->
                 <th>Last Modified Date</th>
                 <th>Actions</th>
             </tr>
+            <!-- placeholder -->
+            <tr data-id="${part.id}">
+              <td>
+                <span class="custom-checkbox">
+                <input type="checkbox" class="row-checkbox" id="${part.id}">
+                <label for="${part.id}"></label>
+                </span>
+              </td>
+              <td>${part.part_no}</td>
+              <td>${part.part_description}</td>
+              <td>${part.latest_date}</td>
+              <td>
+                <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+              </td>
+              </tr>
+              <!-- placeholder -->
         </thead>
         <tbody>
   <!-- dynamically updated -->
@@ -181,13 +197,26 @@
       <button type="button" class="close-white" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
     <div class="modal-body">					
-      <div class="form-group">
-        <label>User Number</label>
+      <div class="form-group user-form-group" >
+        <label>Username</label>
         <input type="text" class="form-control" id="add-username" required>
       </div>
-      <div class="form-group">
-        <label>Access Level</label>
-        <input type="text" class="form-control" id="add-access-level" required>
+      <div class="form-group user-form-group">
+        <label for="user-access-selection">Access Level</label>
+        <select name="add-user-access-level" id="add-user-access-selection">
+            <option value="Admin">Admin</option>
+            <option value="Operator">Operator</option>
+            <option value="Read-Only">Read-Only</option>
+        </select>
+    </div>
+    
+      <div class="form-group user-form-group">
+        <label>Password</label>
+        <input type="text" class="form-control" id="add-password" required>
+      </div>
+      <div class="form-group user-form-group">
+        <label>Confirm Password</label>
+        <input type="text" class="form-control" id="add-confirm-password" required>
       </div>
 
     </div>
@@ -209,13 +238,25 @@
       <button type="button" class="close-white" data-dismiss="modal" aria-hidden="true">&times;</button>
     </div>
     <div class="modal-body">					
-      <div class="form-group">
-        <label>User Number</label>
-        <input type="text" class="form-control" id="edit-username" required>
+      <div class="form-group user-form-group" >
+        <label>Username</label>
+        <input type="text" class="form-control" id="edit-username" required disabled="">
       </div>
-      <div class="form-group">
-        <label>Access Level</label>
-        <input type="text" class="form-control" id="edit-access-level" required>
+      <div class="form-group user-form-group">
+        <label for="user-access-selection">Access Level</label>
+        <select name="add-user-access-level" id="add-user-access-selection">
+            <option value="Admin">Admin</option>
+            <option value="Operator">Operator</option>
+            <option value="Read-Only">Read-Only</option>
+        </select>
+    </div>
+      <div class="form-group user-form-group" >
+        <label>Password</label>
+        <input type="text" class="form-control" id="edit-password" required>
+      </div>
+      <div class="form-group user-form-group" >
+        <label>Confirm Password</label>
+        <input type="text" class="form-control" id="edit-confirm-password" required>
       </div>
 
     </div>
@@ -230,7 +271,7 @@
 <!-- Delete Modal HTML -->
 <div id="deleteUserModal" class="modal fade">
 <div class="modal-dialog">
-<div class="modal-content">
+<div class="modal-delete-content">
   <form>
     <div class="modal-header">						
       <h4 class="modal-title">Delete Records ?</h4>
@@ -251,7 +292,7 @@
 <!-- Batch Delete Modal HTML -->
 <div id="batchDeleteUserModal" class="modal fade">
   <div class="modal-dialog">
-  <div class="modal-content">
+    <div class="modal-delete-content">
     <form>
       <div class="modal-header">						
         <h4 class="modal-title">Delete Records ?</h4>

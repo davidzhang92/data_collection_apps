@@ -216,6 +216,7 @@ table.table .avatar {
     border-radius: 2px;
     box-shadow: none;
     border-color: #dddddd;
+    font-size:18px;
 }
 .modal textarea.form-control {
     resize: vertical;
