@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Master</title>
+    <title>User Management</title>
 
     <!-- <link rel="stylesheet" href="../../styles/master-layout.css"> -->
     <link rel="stylesheet" href="../../icons/css/all.css">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/icons/css/all.min.css">
 
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
-    <link rel="stylesheet" href="/styles/user-master-pagination-crud.css">
+    <link rel="stylesheet" href="/styles/user-management-pagination-crud.css">
     <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
 
     <link rel="stylesheet" href="../../styles/side-menu-2.css">
@@ -26,7 +26,7 @@
     <script src="/scripts/jquery/jquery.js"></script>
     <script src="/scripts/jquery/jquery-ui.min.js"></script> 
     <script src="/scripts/bootstrap.min.js"></script>
-    <script src="/scripts/user-master.js"></script>
+    <script src="/scripts/user-management.js"></script>
     <!-- <script src="/scripts/part-master-pagination.js"></script> -->
   
  
@@ -62,12 +62,7 @@
             <li><i class="fas fa-boxes icon"></i><a class="a-side-menu" href="../master-config/defect-master.html">Defect Master</a></li>
           </ul>
         </li>
-        <li><i class="fas fa-table icon"></i> User Managements <i class="fas fa-chevron-circle-right" id="user-mgmt-indent"></i>
-          <ul>
-            <li><i class="fas fa-table icon"></i><a class="a-side-menu"  href="../user-master/user-master.html">User Master</a></li>
-            <li><i class="fas fa-table icon"></i><a class="a-side-menu"  href="../user-master/user-access.html">User Access Rights</a></li>
-          </ul>
-        </li>
+        <li><i class="fas fa-table icon"></i><a class="a-side-menu" href="../user-master/user-management.html"> Users Management</a> </li>
         <li><i class="fab fa-wpforms icon"></i><a class="a-side-menu" href="../reports/reports.html"> Report</a> </li>
       </ul>
     </div>
@@ -94,7 +89,7 @@
     <div class="table-title">
         <div class="row">
             <div class="col-sm-6">
-    <h2> <b>User Master</b></h2>
+    <h2> <b>User Management</b></h2>
   </div>
   <!-- <div class="col-sm-6">
     <a href="#addUserModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
@@ -112,7 +107,8 @@
 
       <label id="access-level-label" for="access-level-field">
         <span class="access-level-field-span">Access Level</span>
-        <select name="user-access-level" id="user-access-selection">
+        <select name="search-user-access-level" id="user-access-selection">
+            <option value="" selected disabled>Select an option</option>
             <option value="Admin">Admin</option>
             <option value="Operator">Operator</option>
             <option value="Read-Only">Read-Only</option>
@@ -142,6 +138,7 @@
                 <th>Username</th>
                 <th>Access Level</th>
                 <th>Last Modified Date</th>
+                <th>Last Login</th>
                 <th>Actions</th>
             </tr>
             <!-- placeholder -->
@@ -155,6 +152,7 @@
               <td>${part.part_no}</td>
               <td>${part.part_description}</td>
               <td>${part.latest_date}</td>
+              <td>${part.last_login}</td>
               <td>
                 <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                 <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -202,11 +200,12 @@
         <input type="text" class="form-control" id="add-username" required>
       </div>
       <div class="form-group user-form-group">
-        <label for="user-access-selection">Access Level</label>
+        <label for="add-user-access-selection">Access Level</label>
         <select name="add-user-access-level" id="add-user-access-selection">
-            <option value="Admin">Admin</option>
-            <option value="Operator">Operator</option>
-            <option value="Read-Only">Read-Only</option>
+            <option value="" selected disabled>Select an option</option>
+            <option value="admin">Admin</option>
+            <option value="operator">Operator</option>
+            <option value="read-only">Read-Only</option>
         </select>
     </div>
     
@@ -240,14 +239,15 @@
     <div class="modal-body">					
       <div class="form-group user-form-group" >
         <label>Username</label>
-        <input type="text" class="form-control" id="edit-username" required disabled="">
+        <input type="text" class="form-control" id="edit-username" required>
       </div>
       <div class="form-group user-form-group">
-        <label for="user-access-selection">Access Level</label>
-        <select name="add-user-access-level" id="add-user-access-selection">
-            <option value="Admin">Admin</option>
-            <option value="Operator">Operator</option>
-            <option value="Read-Only">Read-Only</option>
+        <label for="edit-user-access-selection">Access Level</label>
+        <select name="edit-user-access-level" id="edit-user-access-selection">
+            <option value="" selected disabled>Select an option</option>
+            <option value="admin">Admin</option>
+            <option value="operator">Operator</option>
+            <option value="read-only">Read-Only</option>
         </select>
     </div>
       <div class="form-group user-form-group" >
