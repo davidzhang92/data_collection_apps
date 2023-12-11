@@ -1,1 +1,23 @@
-1. add auto assignment to the field based on value length in laser entry page
+burner list for the web app
+
+features add = 
+adding field for fail endtest and leaktest to fill in qty and defect code, without unique identifier.
+adding logic to only allow certain defect code to be populated, depending on the result entry page.
+adding input field for scan in Laser result entry.
+create detailed per process in dashboard qty when the href of name clicked.
+
+minor bug fixes = 
+double click issue on Export button in Laser result entry
+
+
+enhancement = 
+scrollable auto complete drop down selection, make the count unlimited.
+create a historic view for dashboard chart.
+
+progression = 
+work on user management
+work on user login page
+work on user token session and authentication
+user access level/rights
+
+update all other table to reflect user entity in backend.
