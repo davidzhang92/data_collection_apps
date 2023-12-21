@@ -2,7 +2,7 @@ $(function () {
 
     var getData = function (request, response) {
         $.getJSON(
-            "http://192.168.100.121:4000/api/auto_complete_part_no_api",
+            "http://" + window.location.hostname + ":4000/api/auto_complete_part_no_api",
             { term: request.term }, // Pass the term as a query parameter
             function (data) {
                 var items = []; // Array to store the autocomplete suggestions
@@ -26,7 +26,7 @@ $(function () {
         if (partId) {
             // Make an AJAX request to the API using partId as a parameter
             $.getJSON(
-                "http://192.168.100.121:4000/api/auto_complete_part_name_api",
+                "http://" + window.location.hostname + ":4000/api/auto_complete_part_name_api",
                 { part_id: partId }, // Send partId as a query parameter
                 function (data) {
                     // Handle the response data as needed

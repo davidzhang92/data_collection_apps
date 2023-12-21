@@ -290,7 +290,7 @@ var labelId = $('#label-id-field').val();
     $('#save-form').on('submit', function(event) {
     event.preventDefault();
     $.ajax({
-        url: 'http://192.168.100.121:4000/api/laser-result-entry-api',
+        url: 'http://' + window.location.hostname + ':4000/api/laser-result-entry-api',
         type: 'POST',
         data: JSON.stringify({
             part_id: partId,
@@ -474,7 +474,7 @@ var labelId = $('#label-id-field').val();
         var dateFrom = $('#date-from-field').val();
         var dateTo = $('#date-to-field').val();
     
-        fetch('http://192.168.100.121:4000/api/laser_result_entry_api', {
+        fetch('http://' + window.location.hostname + ':4000/api/laser_result_entry_api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

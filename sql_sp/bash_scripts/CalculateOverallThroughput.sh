@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # SQL Server connection parameters
-server="192.168.100.121"  # Change to your SQL Server instance
+server="$(hostname -I | cut -d' ' -f1)"   # Change to your SQL Server instance
 database="DataCollection"
 user="sa"
 password="Cannon45!"

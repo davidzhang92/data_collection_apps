@@ -78,7 +78,7 @@ $(document).ready(function () {
     function fetchData(pageId) {
         const apiEndpoint = filteredData.length > 0 ?
             '' :
-            'http://192.168.100.121:4000/xxx';
+            'http://' + window.location.hostname + ':4000/xxx';
     
         const requestData = {
             page: pageId, // Change the parameter name to 'page'
@@ -133,7 +133,7 @@ $(document).ready(function () {
 		if (username || userAccessLevel) {
 		// Fetch data using the filter API
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/filter_search_xxx',
+			url: 'http://' + window.location.hostname + ':4000/api/filter_search_xxx',
 			type: 'GET',
 			data: {
 				search_username:username,
@@ -195,7 +195,7 @@ $(document).ready(function () {
 		var editUserAccessLevel = $('#edit-user-access-selection').val();
 	
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/update_part_api',
+			url: 'http://' + window.location.hostname + ':4000/api/update_part_api',
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
@@ -249,7 +249,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/post_xxx',
+			url: 'http://' + window.location.hostname + ':4000/api/post_xxx',
 			type: 'POST',
 			data: JSON.stringify({
 				username: addUsername,
@@ -313,7 +313,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/delete_part_api',
+			url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
@@ -372,7 +372,7 @@ $(document).ready(function () {
             // console.log(idsToDelete);
             // Get the data-id attribute of the row associated with the clicked button
             $.ajax({
-                url: 'http://192.168.100.121:4000/api/delete_part_api',
+                url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
                 type: 'DELETE',
                 data: JSON.stringify({ ids: idsToDelete }),
                 contentType: 'application/json',

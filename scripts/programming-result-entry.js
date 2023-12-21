@@ -227,7 +227,7 @@ $(document).ready(function (){
     $('#save-form').on('submit', function(event) {
         event.preventDefault();
         $.ajax({
-            url: 'http://192.168.100.121:4000/api/post-programming-result-entry-api',
+            url: 'http://' + window.location.hostname + ':4000/api/post-programming-result-entry-api',
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,

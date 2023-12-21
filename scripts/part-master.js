@@ -95,7 +95,7 @@ $(document).ready(function () {
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
 				'' :
-				'http://192.168.100.121:4000/api/get_part_api';
+				'http://' + window.location.hostname + ':4000/api/get_part_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -149,7 +149,7 @@ $(document).ready(function () {
 		if (partNumber || partDescription) {
 		// Fetch data using the filter API
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/filter_search_part_master_api',
+			url: 'http://' + window.location.hostname + ':4000/api/filter_search_part_master_api',
 			type: 'GET',
 			data: {
 				search_part_no:partNumber,
@@ -212,7 +212,7 @@ $(document).ready(function () {
 		var editPartDescription = $('#edit-part-description').val();
 	
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/update_part_api',
+			url: 'http://' + window.location.hostname + ':4000/api/update_part_api',
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
@@ -265,7 +265,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/post_part_api',
+			url: 'http://' + window.location.hostname + ':4000/api/post_part_api',
 			type: 'POST',
 			data: JSON.stringify({
 				part_no: addPartNumber,
@@ -329,7 +329,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://192.168.100.121:4000/api/delete_part_api',
+			url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
@@ -388,7 +388,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	// console.log(idsToDelete);
 	// Get the data-id attribute of the row associated with the clicked button
 	$.ajax({
-		url: 'http://192.168.100.121:4000/api/delete_part_api',
+		url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',
@@ -414,7 +414,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://192.168.100.121:4000/api/auto_complete_filter_part_no_api",
+				"http://" + window.location.hostname + ":4000/api/auto_complete_filter_part_no_api",
 				// { term: request.term }, // Pass the term as a query parameter
 				{ search_part_no: request.term }, // Pass the term as a query parameter
 				function (data) {
@@ -432,7 +432,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 
 			// Make an additional AJAX request to retrieve the description based on the selected value
 			$.getJSON(
-				"http://192.168.100.121:4000/api/auto_complete_filter_part_name_for_part_no_api",
+				"http://" + window.location.hostname + ":4000/api/auto_complete_filter_part_name_for_part_no_api",
 				{ search_part_description: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
 					$("#part-description-field").val(data.part_description);
@@ -452,7 +452,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	$(function () {
 		var getData = function (request, response) {
 			$.getJSON(
-				"http://192.168.100.121:4000/api/auto_complete_filter_part_name_api",
+				"http://" + window.location.hostname + ":4000/api/auto_complete_filter_part_name_api",
 				{ search_part_description: request.term }, // Pass the term as a query parameter
 				function (data) {
 					var items = []; // Array to store the autocomplete suggestions
@@ -469,7 +469,7 @@ $('#submit-batch-data-delete').on('click', function(event) {
 
 			// Make an additional AJAX request to retrieve the part no based on the selected value
 			$.getJSON(
-				"http://192.168.100.121:4000/api/auto_complete_filter_part_no_for_part_name_api",
+				"http://" + window.location.hostname + ":4000/api/auto_complete_filter_part_no_for_part_name_api",
 				{ search_part_no: ui.item.value }, // Pass the selected value as a query parameter
 				function (data) {
 					$("#part-number-field").val(data.part_no);
@@ -513,7 +513,7 @@ fetchPaginationEntriesCount();
 function fetchPaginationEntriesCount() {
     $.ajax({
         type: 'GET',
-        url: 'http://192.168.100.121:4000/api/pagination_part_entries_api',
+        url: 'http://' + window.location.hostname + ':4000/api/pagination_part_entries_api',
         dataType: 'json',
         success: function (response) {
             totalEntries = response[0].count;
@@ -620,7 +620,7 @@ $(document).on('click', '#lastPage', function () {
 
 //         // Fetch data using the filter API
 //         $.ajax({
-//             url: 'http://192.168.100.121:4000/api/filter_search_part_master_api',
+//             url: 'http://' + window.location.hostname + ':4000/api/filter_search_part_master_api',
 //             type: 'GET',
 //             data: {
 //                 search_part_no: partNumber,
