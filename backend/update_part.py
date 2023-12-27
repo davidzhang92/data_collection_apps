@@ -29,7 +29,7 @@ dsn = 'DataCollection'
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 
 
-@app.route('/api/update-part', methods=['PATCH'])
+@app.route('/api/update-user', methods=['PATCH'])
 def update_part():
     try:
         # Get data from the request payload

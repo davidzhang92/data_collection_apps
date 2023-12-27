@@ -27,7 +27,7 @@ $(document).ready(function () {
                         <label for="${user.id}"></label>
                     </span>
                     </td>
-                    <td>${user.username}</td>
+                    <td>${user.user_name}</td>
                     <td>${user.access_level}</td>
                     <td>${user.latest_date}</td>
                     <td>${user.last_login}</td>
