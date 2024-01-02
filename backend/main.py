@@ -285,6 +285,7 @@ def delete_leaktest_result_entry_view_api():
 # --------------------------------
 
 # API endpoint using the post_data function
+
 @app.route('/api/laser-result-entry-api', methods=['POST'])
 def post_laser_result_entry_api():
     return post_laser_result_entry()
@@ -308,6 +309,12 @@ def get_laser_result_entry_view_api():
 @app.route('/api/delete_laser_result_entry_view_api', methods=['DELETE'])
 def delete_laser_result_entry_view_api():
     return delete_laser_result_entry_view()
+
+# API endpoint using the get_laser_result_entry function for upload excel
+@app.route('/api/laser_result_entry_api', methods=['POST'])
+def get_laser_result_entry_api():
+    return get_laser_result_entry()
+
 
 ###############################POST
 #####oqc-result-entry-section#######
@@ -371,13 +378,33 @@ def get_endtest_result_entry_view_api():
 #     return delete_endtest_result_entry_view()
 
 ###############################
-#####laser-result-entry section#######
+#####user-master section#######
 ###############################
 
-# API endpoint using the get_laser_result_entry function
-@app.route('/api/laser_result_entry_api', methods=['POST'])
-def get_laser_result_entry_api():
-    return get_laser_result_entry()
+# # API endpoint using the post_data function
+# @app.route('/api/post_user_api', methods=['POST'])
+# def post_user_api():
+#     return post_user()
+
+# # API endpoint using the get_data function
+# @app.route('/api/get_user_api', methods=['GET'])
+# def get_user_api():
+#     return get_user()
+
+# # API endpoint using the update_data function
+# @app.route('/api/update_user_api', methods=['PATCH'])
+# def update_user_api():
+#     return update_user()
+
+# # API endpoint using the delete_data function
+# @app.route('/api/delete_user_api', methods=['DELETE'])
+# def delete_user_api():
+#     return delete_user()
+
+
+
+
+
 
 ###############################
 #####dashboard-charting-section#######
