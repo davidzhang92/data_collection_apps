@@ -27,8 +27,8 @@ $(document).ready(function () {
                         <label for="${user.id}"></label>
                     </span>
                     </td>
-                    <td>${user.user_name}</td>
-                    <td>${user.access_level}</td>
+                    <td>${user.username}</td>
+                    <td>${user.access_type}</td>
                     <td>${user.latest_date}</td>
                     <td>${user.last_login}</td>
                     <td>
@@ -78,7 +78,7 @@ $(document).ready(function () {
     function fetchData(pageId) {
         const apiEndpoint = filteredData.length > 0 ?
             '' :
-            'http://' + window.location.hostname + ':4000/xxx';
+            'http://' + window.location.hostname + ':4000/api/get_user_api';
     
         const requestData = {
             page: pageId, // Change the parameter name to 'page'
@@ -195,7 +195,7 @@ $(document).ready(function () {
 		var editUserAccessLevel = $('#edit-user-access-selection').val();
 	
 		$.ajax({
-			url: 'http://' + window.location.hostname + ':4000/api/update_part_api',
+			url: 'http://' + window.location.hostname + ':4000/api/update_user_api',
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
@@ -249,7 +249,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://' + window.location.hostname + ':4000/api/post_xxx',
+			url: 'http://' + window.location.hostname + ':4000/api/post_user_api',
 			type: 'POST',
 			data: JSON.stringify({
 				username: addUsername,
@@ -313,7 +313,7 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
+			url: 'http://' + window.location.hostname + ':4000/api/delete_user_api',
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
@@ -372,7 +372,7 @@ $(document).ready(function () {
             // console.log(idsToDelete);
             // Get the data-id attribute of the row associated with the clicked button
             $.ajax({
-                url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
+                url: 'http://' + window.location.hostname + ':4000/api/delete_user_api',
                 type: 'DELETE',
                 data: JSON.stringify({ ids: idsToDelete }),
                 contentType: 'application/json',

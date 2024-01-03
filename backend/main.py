@@ -10,6 +10,12 @@ from post_defect import post_defect
 from get_defect import get_defect
 from update_defect import update_defect
 from delete_defect import delete_defect
+
+from post_user import post_user
+from get_user import get_user
+from update_user import update_user
+from delete_user import delete_user
+
 from auto_complete_filter_defect import get_auto_complete_filter_defect_no, get_auto_complete_filter_defect_name_for_defect_no, get_auto_complete_filter_defect_name, get_auto_complete_filter_defect_no_for_defect_name, get_filter_search_defect_master
 from get_pagination_defect_entries import get_pagination_defect_entries
 from auto_complete_defect import get_auto_complete_defect_no, get_auto_complete_defect_name
@@ -381,25 +387,25 @@ def get_endtest_result_entry_view_api():
 #####user-master section#######
 ###############################
 
-# # API endpoint using the post_data function
-# @app.route('/api/post_user_api', methods=['POST'])
-# def post_user_api():
-#     return post_user()
+# API endpoint using the post_data function
+@app.route('/api/post_user_api', methods=['POST'])
+def post_user_api():
+    return post_user()
 
-# # API endpoint using the get_data function
-# @app.route('/api/get_user_api', methods=['GET'])
-# def get_user_api():
-#     return get_user()
+# API endpoint using the get_data function
+@app.route('/api/get_user_api', methods=['GET'])
+def get_user_api():
+    return get_user()
 
-# # API endpoint using the update_data function
-# @app.route('/api/update_user_api', methods=['PATCH'])
-# def update_user_api():
-#     return update_user()
+# API endpoint using the update_data function
+@app.route('/api/update_user_api', methods=['PATCH'])
+def update_user_api():
+    return update_user()
 
-# # API endpoint using the delete_data function
-# @app.route('/api/delete_user_api', methods=['DELETE'])
-# def delete_user_api():
-#     return delete_user()
+# API endpoint using the delete_data function
+@app.route('/api/delete_user_api', methods=['DELETE'])
+def delete_user_api():
+    return delete_user()
 
 
 

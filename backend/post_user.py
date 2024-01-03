@@ -30,7 +30,7 @@ conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 
 
 @app.route('/api/post-user', methods=['POST'])
-def post_part():
+def post_user():
     try:
         # Get data from the request payload
         data = request.get_json()

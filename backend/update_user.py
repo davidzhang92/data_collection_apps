@@ -30,7 +30,7 @@ conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 
 
 @app.route('/api/update-user', methods=['PATCH'])
-def update_part():
+def update_user():
     try:
         # Get data from the request payload
         data = request.get_json()
