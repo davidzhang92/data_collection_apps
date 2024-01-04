@@ -41,20 +41,20 @@ def get_user():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = """SELECT a.id, a.username,  b.access_type, a.latest_date
-                    FROM (
-                        SELECT 
-                            a.id, 
-                            a.username, 
-                            CASE WHEN a.modified_date >= a.created_date THEN a.modified_date ELSE a.created_date END AS latest_date,
-                            a.access_level
-                        FROM user_master a
-                        WHERE a.is_deleted = 0
-                    ) AS a
-
-                    INNER JOIN access_level_master b ON a.access_level = b.id
-                    ORDER BY a.latest_date DESC
-                    OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY;"""
+        query = """SELECT a.id, a.username, b.access_type, a.latest_date, a.last_login
+                FROM (
+                    SELECT 
+                        a.id, 
+                        a.username, 
+                        CASE WHEN a.modified_date >= a.created_date THEN a.modified_date ELSE a.created_date END AS latest_date,
+                        a.last_login,  -- Include last_login column
+                        a.access_level
+                    FROM user_master a
+                    WHERE a.is_deleted = 0
+                ) AS a
+                INNER JOIN access_level_master b ON a.access_level = b.id
+                ORDER BY a.latest_date DESC
+                OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY;"""
 
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()

@@ -19,7 +19,16 @@ $(document).ready(function () {
 		}
 	  
 		data.forEach(function (user) {
+
+			// Parse the date string
+			var latestDate = new Date(user.latest_date);
+
+			// Format the date as 'YYYY-MM-DD HH:MM:SS'
+			var formattedlatestDate = latestDate.toISOString().slice(0, 16).replace('T', ' ');
 	  
+			// Replace 'null' with '-'
+			var last_login = user.last_login !== null ? user.last_login : '-';
+
             var row = `<tr data-id="${user.id}">
                     <td>
                     <span class="custom-checkbox">
@@ -29,8 +38,8 @@ $(document).ready(function () {
                     </td>
                     <td>${user.username}</td>
                     <td>${user.access_type}</td>
-                    <td>${user.latest_date}</td>
-                    <td>${user.last_login}</td>
+                    <td>${formattedlatestDate}</td>
+                    <td>${last_login}</td>
                     <td>
                     <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                     <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -158,6 +167,8 @@ $(document).ready(function () {
     // Handle edit and PATCH request
 
 	// Handle click event for edit button
+
+	
 	$(document).on('click', '.edit', function() {
 		// Get the row associated with the clicked button
 		var row = $(this).closest('tr');
@@ -167,21 +178,37 @@ $(document).ready(function () {
 
 		// Get the part number and part description from the row
 		var editUsername = row.find('td').eq(1).text();
-		var editUserAccessLevel = row.find('td').eq(2).text();
+		var editUserAccessLevel = row.find('td').eq(2).data('access-id');
+		var editPassword = row.find('td').eq(4).text();
 
 		// Set the value of the part number and part description fields in the edit dialog
 		$('#edit-username').val(editUsername);
 		$('#edit-user-access-selection').val(editUserAccessLevel);
+		$('#edit-confirm-password').val(editPassword);
+		
 
 		// Set the data-id attribute of the submit button to the current id
 		$('#submit-data-edit').data('id', addCurrentId);
 	});
 
 
+	// Handle change event for user access level selection in add form
+
+	$('#add-user-access-selection').on('change', function() {
+		// Get the selected option element
+		var selectedOption = $(this).find('option:selected');
+
+		// Update the accessId variable
+		accessId = selectedOption.attr('access-id');
+
+		// Set the access-id attribute for the #edit-user-access-selection element
+		$('#edit-user-access-selection').attr('data-access-id', accessId);
+	});
+
 
 	// handing PATCH request
-
 	var addCurrentId;
+	var accessId;
 
 	$(document).on('click', 'a.edit', function() {
 		// Get the data-id of the parent row of the clicked button
@@ -190,9 +217,14 @@ $(document).ready(function () {
 	
 	$('.edit-form').on('submit', function(event) {
 		event.preventDefault();
-	
 		var editUsername = $('#edit-username').val();
-		var editUserAccessLevel = $('#edit-user-access-selection').val();
+		
+		// Get the selected option element
+		var selectedOption = $('#edit-user-access-selection').find('option:selected');
+		
+		// Get the access-id attribute from the selected option
+		var editUserAccessLevel = selectedOption.attr('access-id');
+		var editPassword = $('edit-confirm-password').val()
 	
 		$.ajax({
 			url: 'http://' + window.location.hostname + ':4000/api/update_user_api',
@@ -200,7 +232,8 @@ $(document).ready(function () {
 			data: JSON.stringify({
 				id: addCurrentId,
 				username: editUsername,
-				user_access_level: editUserAccessLevel
+				user_access_level: editUserAccessLevel,
+				password: editPassword
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -219,6 +252,7 @@ $(document).ready(function () {
 					rowToUpdate.find('td').eq(1).text(response.username);
 					rowToUpdate.find('td').eq(2).text(response.user_access_level);
 					rowToUpdate.find('td').eq(3).text(response.latest_date);
+					rowToUpdate.find('td').eq(3).text(response.last_login);
 				}
 	
 				updateTableRow(response);
@@ -229,6 +263,7 @@ $(document).ready(function () {
 			}
 		});
 	});
+	
 	
 
 
