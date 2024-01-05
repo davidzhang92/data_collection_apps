@@ -42,6 +42,7 @@ $(document).ready(function () {
                     <td>${last_login}</td>
                     <td>
                     <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+					<a href="#changePasswordUserModal" class="change-password" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Change Password">&#xE73c;</i></a>
                     <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                     </td>
                 </tr>`;
@@ -176,15 +177,14 @@ $(document).ready(function () {
 		// Get the data-id attribute of the row
 		var addCurrentId = row.data('id');
 
-		// Get the part number and part description from the row
+		// Get the username and accesslevel from the row
 		var editUsername = row.find('td').eq(1).text();
 		var editUserAccessLevel = row.find('td').eq(2).data('access-id');
-		var editPassword = row.find('td').eq(4).text();
 
 		// Set the value of the part number and part description fields in the edit dialog
 		$('#edit-username').val(editUsername);
 		$('#edit-user-access-selection').val(editUserAccessLevel);
-		$('#edit-confirm-password').val(editPassword);
+
 		
 
 		// Set the data-id attribute of the submit button to the current id

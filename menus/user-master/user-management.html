@@ -155,7 +155,9 @@
               <td>${user.last_login}</td>
               <td>
                 <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                <a href="#changePasswordUserModal" class="change-password" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Change Password">&#xE73c;</i></a>
                 <a href="#deleteUserModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+
               </td>
               </tr> -->
               <!-- placeholder -->
@@ -229,45 +231,69 @@
 </div>
 <!-- Edit Modal HTML -->
 <div id="editUserModal" class="modal fade">
-<div class="modal-dialog">
-<div class="modal-content">
-  <form class = "edit-form">
-    <div class="modal-header">						
-      <h4 class="modal-title">Edit Record</h4>
-      <button type="button" class="close-white" data-dismiss="modal" aria-hidden="true">&times;</button>
-    </div>
-    <div class="modal-body">					
-      <div class="form-group user-form-group" >
-        <label>Username</label>
-        <input type="text" class="form-control" id="edit-username" required>
-      </div>
-      <div class="form-group user-form-group">
-        <label for="edit-user-access-selection">Access Level</label>
-        <select name="edit-user-access-level" id="edit-user-access-selection">
-            <option value="" selected disabled>Select an option</option>
-            <option access-id= "10000000-0000-0000-0000-000000000000" value="admin">Admin</option>
-            <option access-id= "20000000-0000-0000-0000-000000000000" value="operator">Operator</option>
-            <option access-id= "30000000-0000-0000-0000-000000000000" value="read-only">Read-Only</option>
-        </select>
-    </div>
-      <div class="form-group user-form-group" >
-        <label>Password</label>
-        <input type="text" class="form-control" id="edit-password" required>
-      </div>
-      <div class="form-group user-form-group" >
-        <label>Confirm Password</label>
-        <input type="text" class="form-control" id="edit-confirm-password" required>
-      </div>
+  <div class="modal-dialog">
+    <div class="modal-edit-content">
+      <form class = "edit-form">
+        <div class="modal-header">						
+          <h4 class="modal-title">Edit Record</h4>
+          <button type="button" class="close-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">					
+          <div class="form-group user-form-group" >
+            <label>Username</label>
+            <input type="text" class="form-control" id="edit-username" required>
+          </div>
+          <div class="form-group user-form-group">
+            <label for="edit-user-access-selection">Access Level</label>
+            <select name="edit-user-access-level" id="edit-user-access-selection">
+                <option value="" selected disabled>Select an option</option>
+                <option access-id= "10000000-0000-0000-0000-000000000000" value="admin">Admin</option>
+                <option access-id= "20000000-0000-0000-0000-000000000000" value="operator">Operator</option>
+                <option access-id= "30000000-0000-0000-0000-000000000000" value="read-only">Read-Only</option>
+            </select>
+        </div>
+          
 
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+          <input type="submit" class="btn btn-info" id="submit-data-edit" value="Save">
+        </div>
+      </form>
     </div>
-    <div class="modal-footer">
-      <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-      <input type="submit" class="btn btn-info" id="submit-data-edit" value="Save">
+  </div>
+</div>
+
+<!-- Change Password Modal HTML -->
+<div id="changePasswordUserModal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-change-password-content">
+      <form class = "edit-form">
+        <div class="modal-header">						
+          <h4 class="modal-title">Change Password</h4>
+          <button type="button" class="close-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body">					
+
+          <div class="form-group user-form-group" >
+            <label>Password</label>
+            <input type="text" class="form-control" id="edit-password" required>
+          </div>
+          <div class="form-group user-form-group" >
+            <label>Confirm Password</label>
+            <input type="text" class="form-control" id="edit-confirm-password" required>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+          <input type="submit" class="btn btn-info" id="submit-data-edit" value="Save">
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
 </div>
-</div>
-</div>
+
 <!-- Delete Modal HTML -->
 <div id="deleteUserModal" class="modal fade">
 <div class="modal-dialog">

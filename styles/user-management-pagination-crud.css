@@ -58,7 +58,7 @@ table.table tr th:first-child {
     width: 60px;
 }
 table.table tr th:last-child {
-    width: 100px;
+    width: 140px;
 }
 table.table-striped tbody tr:nth-of-type(odd) {
     background-color: #1E2B32;
@@ -87,6 +87,10 @@ table.table td a:hover {
     color: #2196F3;
 }
 table.table td a.edit {
+    color: #FFC107;
+}
+
+table.table td a.change-password {
     color: #FFC107;
 }
 table.table td a.delete {
@@ -282,6 +286,31 @@ table.table .avatar {
     height: 500px;
 
 }
+
+.modal .modal-edit-content {
+    border-radius: 3px;
+    position: relative;
+    background-color: #1E2B32;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    height: 350px;
+
+}
+
+.modal .modal-change-password-content {
+    border-radius: 3px;
+    position: relative;
+    background-color: #1E2B32;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    height: 350px;
+
+}
+
 .modal .modal-delete-content {
     border-radius: 3px;
     position: relative;
@@ -293,6 +322,8 @@ table.table .avatar {
     height: 260px;
 
 }
+
+
 .modal .modal-footer {
     background: #283942;
     border-radius: 0 0 3px 3px;
