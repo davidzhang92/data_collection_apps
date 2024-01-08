@@ -123,7 +123,7 @@ $(document).ready(function () {
 	}
 
 	// Function to handle the search button click
-	$('#search-part').click(function () {
+	$('#search-user').click(function () {
 		const username = $('#username-field').val().trim();
 		const userAccessLevel = $('#user-access-selection').val().trim();
 	
@@ -179,9 +179,9 @@ $(document).ready(function () {
 
 		// Get the username and accesslevel from the row
 		var editUsername = row.find('td').eq(1).text();
-		var editUserAccessLevel = row.find('td').eq(2).data('access-id');
+		var editUserAccessLevel = row.find('td').eq(2).text();
 
-		// Set the value of the part number and part description fields in the edit dialog
+		// Set the value of the user number and user description fields in the edit dialog
 		$('#edit-username').val(editUsername);
 		$('#edit-user-access-selection').val(editUserAccessLevel);
 
@@ -224,7 +224,7 @@ $(document).ready(function () {
 		
 		// Get the access-id attribute from the selected option
 		var editUserAccessLevel = selectedOption.attr('access-id');
-		var editPassword = $('edit-confirm-password').val()
+		// var editPassword = $('edit-confirm-password').val()
 	
 		$.ajax({
 			url: 'http://' + window.location.hostname + ':4000/api/update_user_api',
@@ -232,8 +232,8 @@ $(document).ready(function () {
 			data: JSON.stringify({
 				id: addCurrentId,
 				username: editUsername,
-				user_access_level: editUserAccessLevel,
-				password: editPassword
+				access_level: editUserAccessLevel,
+				// password: editPassword
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -241,7 +241,7 @@ $(document).ready(function () {
 				console.log(response);
 	
 				// Close the edit dialog box
-				$('#editPartModal').modal('hide');
+				$('#editUserModal').modal('hide');
 	
 				//update the row
 				function updateTableRow(response) {
@@ -250,9 +250,22 @@ $(document).ready(function () {
 				
 					// Update the row with the new data
 					rowToUpdate.find('td').eq(1).text(response.username);
-					rowToUpdate.find('td').eq(2).text(response.user_access_level);
-					rowToUpdate.find('td').eq(3).text(response.latest_date);
-					rowToUpdate.find('td').eq(3).text(response.last_login);
+					rowToUpdate.find('td').eq(2).text(response.access_level);
+					rowToUpdate.find('td').eq(3).text(response.modified_date);
+
+					// Capture the value
+					var originalValue = rowToUpdate.find('td').eq(3).text();
+
+					// Parse the date string
+					var latestDate = new Date(originalValue);
+
+					// Format the date as 'YYYY-MM-DD HH:MM:SS'
+					var formattedlatestDate = latestDate.toISOString().slice(0, 16).replace('T', ' ');
+
+					// Replace the original value
+					rowToUpdate.find('td').eq(3).text(formattedlatestDate);
+
+
 				}
 	
 				updateTableRow(response);
@@ -296,7 +309,7 @@ $(document).ready(function () {
 				console.log(response);
 
 				// Close the edit dialog box
-				$('#addPartModal').modal('hide');
+				$('#addUserModal').modal('hide');
 
 				 // Clear input fields
 				 $('#add-username').val('');
@@ -321,111 +334,10 @@ $(document).ready(function () {
 
 
 
-    // Handle delete and DELETE request
-
-	// Handle click event for delete button
-	$(document).on('click', '.delete', function() {
-		// Get the row associated with the clicked button
-		var row = $(this).closest('tr');
-
-		// Get the data-id attribute of the row
-		var deleteCurrentId = row.data('id');
-
-		// Set the data-id attribute of the submit button to the current id
-		$('#submit-data-delete').data('id', deleteCurrentId);
 	});
 
 
 
-	// handing DELETE request
 
-	$('#submit-data-delete').on('click', function(event) {
-		event.preventDefault();
-
-		// Get the data-id attribute of the row associated with the clicked button
-		var deleteCurrentId = $(this).data('id');
-
-
-
-		$.ajax({
-			url: 'http://' + window.location.hostname + ':4000/api/delete_user_api',
-			type: 'DELETE',
-			data: JSON.stringify({
-				id: deleteCurrentId,
-			}),
-			contentType: 'application/json',
-			success: function(response) {
-				// handle successful response
-				console.log(response);
-
-				// Close the edit dialog box
-				$('#batchDeletePartModal').modal('hide');
-
-				// Store the state of the "select all" checkbox
-				localStorage.setItem('selectAllState', 'unchecked');
-
-				// Refresh the page
-				location.reload();
-
-			},
-			error: function(xhr, status, error) {
-				// handle error response
-				console.error(error);
-			}
-		});
-	});
-
-        // Handle batch delete and DELETE request
-
-        // Get all checked checkboxes
-        var checkedCheckboxes = $('input.row-checkbox:checked');
-
-        // Create an array to store the IDs of the rows to be deleted
-        var idsToDelete = [];
-
-        // Loop through each checked checkbox and add its ID to the array
-        checkedCheckboxes.each(function() {
-            idsToDelete.push($(this).attr('id'));
-        });
-
-        // console.log(idsToDelete);
-
-        // Send the AJAX request to delete the rows
-        $('#submit-batch-data-delete').on('click', function(event) {
-            event.preventDefault();
-            // Get all checked checkboxes
-            var checkedCheckboxes = $('input.row-checkbox:checked');
-
-            // Create an array to store the IDs of the rows to be deleted
-            var idsToDelete = [];
-
-            // Loop through each checked checkbox and add its ID to the array
-            checkedCheckboxes.each(function() {
-                idsToDelete.push($(this).attr('id'));
-            });
-
-            // console.log(idsToDelete);
-            // Get the data-id attribute of the row associated with the clicked button
-            $.ajax({
-                url: 'http://' + window.location.hostname + ':4000/api/delete_user_api',
-                type: 'DELETE',
-                data: JSON.stringify({ ids: idsToDelete }),
-                contentType: 'application/json',
-                success: function(response) {
-                    // Handle successful deletion here
-                    console.log(response);
-                            // Refresh the page
-                    location.reload();
-                },
-                error: function(xhr, status, error) {
-                    // Handle error here
-                    console.error(error);
-                // Refresh the page
-                // location.reload();
-                }
-            });
-        });
-
-    });
-
+	
 });

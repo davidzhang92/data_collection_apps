@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import pyodbc
+import uuid
 
 app = Flask(__name__)
 
@@ -36,13 +37,58 @@ def update_user():
         data = request.get_json()
 
         # Extract required fields from the payload
+
+        new_username = str(data['username'])
+        new_access_level = uuid.UUID(data['access_level'])
+        user_id = uuid.UUID(data['id'])
+
+
+
+        cursor = conn.cursor()
+
+        # Construct the SQL query to update the part_no and part_description for the given id
+        query = "update user_master set username = ?, access_level = ?, modified_date = getdate() where id = ?"
+
+        # Execute the SQL query
+        cursor.execute(query, ( new_username, new_access_level, user_id))
+        conn.commit()
+
+        # Check if any rows were affected by the update operation
+        if cursor.rowcount == 0:
+            return jsonify({'message': 'No data found for the given id.'}), 404
+        
+        # Construct and execute the query to fetch updated data
+        success_output_query = "select a.id, a.username, b.access_type, a.modified_date from user_master a inner join access_level_master b on a.access_level=b.id and a.id = ? where a.is_deleted = 0"
+
+        cursor.execute(success_output_query, (user_id,))
+        updated_data_row  = cursor.fetchone()
+        if updated_data_row:
+            updated_data = {
+                'id': updated_data_row[0],
+                'username': updated_data_row[1],
+                'access_level': updated_data_row[2],
+                'modified_date': updated_data_row[3],
+                # '(debug) raw_data_row': list(updated_data_row)  # Include the raw data row here
+            }
+            return jsonify(updated_data), 200
+        else:
+            return jsonify({'message': 'No data found for the given id.'}), 404
+        
+        
+    except Exception as e:
+        return jsonify({'message': 'Error occurred while updating data.', 'error': str(e)}), 500
+
+
+@app.route('/api/update-user-password', methods=['PATCH'])
+def update_user_password():
+    try:
+        # Get data from the request payload
+        data = request.get_json()
+
+        # Extract required fields from the payload
         user_id = data['id']
-        new_username = data['username']
         new_password = data['password']
-        new_access_level = data['access_level']
-
-
-
+    
         cursor = conn.cursor()
 
         # Construct the SQL query to update the part_no and part_description for the given id
@@ -54,16 +100,13 @@ def update_user():
                 DECLARE @id uniqueidentifier;
 
                 SET @id = ?
-                SET @Username = ?
                 SET @Password = ?
-                SET @AccessLevel = ?
 
 
                 EXEC HashPassword @Username, @Password, @Salt = @Salt OUTPUT, @HashedPassword = @HashedPassword OUTPUT;
 
                 update user_master
                 set 
-                username = @Username,
                 salt = @Salt,
                 password_hash = @HashedPassword,
                 modified_date = GETDATE()
@@ -72,7 +115,7 @@ def update_user():
 
 
         # Execute the SQL query
-        cursor.execute(query, (user_id, new_username, new_password, new_access_level))
+        cursor.execute(query, (user_id,new_password))
         conn.commit()
 
         # Check if any rows were affected by the update operation
