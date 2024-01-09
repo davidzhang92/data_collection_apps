@@ -192,6 +192,7 @@ $(document).ready(function () {
 
 		// Set the data-id attribute of the submit button to the current id
 		$('#submit-data-edit').data('id', addCurrentId);
+		// console.log('Button a.edit clicked, id:', addCurrentId);
 	});
 
 
@@ -245,6 +246,7 @@ $(document).ready(function () {
 				console.error(error);
 			}
 		});
+		// console.log('Button a.edit clicked, id:', addCurrentId);
 	});
 	
 
