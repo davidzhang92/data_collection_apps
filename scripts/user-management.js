@@ -287,7 +287,6 @@ $(document).ready(function () {
 
 			// Get the data-id attribute of the row
 			var addCurrentIdForPasswordEdit = row.data('id');
-			console.log(addCurrentIdForPasswordEdit);
 
 			// Set the data-id attribute of the submit button to the current id
 			$('#submit-password-edit').data('id', addCurrentIdForPasswordEdit);
@@ -311,9 +310,13 @@ $(document).ready(function () {
 			var confirmPassword = $('#edit-confirm-password').val();
 
 			if (password === confirmPassword) {
-				validPassword = confirmPassword;
+				var validPassword = confirmPassword;
 			}  else {
+				alert('Error: Password doesn\'t match, try again.');
+				password = $('#edit-password').val('');
+				confirmPassword = $('#edit-confirm-password').val('');
 				validPassword =''
+				return;
 			}
 
 		
@@ -328,12 +331,13 @@ $(document).ready(function () {
 				success: function(response) {
 					// handle successful response
 					console.log(response);
-		
+					password = $('#edit-password').val('')
+					confirmPassword = $('#edit-confirm-password').val('');
+					validPassword =''
+					alert('Password changed successfully.');
+
 					// Close the edit dialog box
 					$('#changePasswordUserModal').modal('hide');
-
-		
-					updateTableRow(response);
 				},
 				
 				error: function(xhr, status, error) {
@@ -346,26 +350,48 @@ $(document).ready(function () {
 
 
 	// handing POST request
-	
 
-	$('.submit-form').on('submit', function(event) {
+
+
+	var selectedUserAccessLevel =''
+	$('#add-user-access-selection').change(function() {
+		var selectedOption = $(this).find('option:selected');
+		selectedUserAccessLevel = selectedOption.attr('access-id');
+	});
+
+	$('.add-user-submit-form').on('submit', function(event) {
 		event.preventDefault();
 
+		var addUserAccesLevel = selectedUserAccessLevel;
 		var addUsername = $('#add-username').val();
-        $('#add-user-access-selection').change(function() {
-            var addUserAccessLevel = $(this).val();
+		var password = $('#add-password').val();
+		var confirmPassword = $('#add-confirm-password').val();
+		var validPassword = ''
 
-		// Get the data-id attribute of the row associated with the clicked button
+		// input validation
 
-		// var currentId = $(this).data('id');
+		 if (selectedUserAccessLevel === '') {
+			alert('Select the Access Level first.');
+			return;
+		}
 
+		if (password === confirmPassword) {
+			validPassword = confirmPassword;
+		}  else {
+			alert('Error: Password doesn\'t match, try again.');
+			password = $('#add-password').val('');
+			confirmPassword = $('#add-confirm-password').val('');
+			validPassword =''
+			return;
+		}
 
 			$.ajax({
 				url: 'http://' + window.location.hostname + ':4000/api/post_user_api',
 				type: 'POST',
 				data: JSON.stringify({
 					username: addUsername,
-					user_access_level: addUserAccessLevel
+					access_level: addUserAccesLevel,
+					password: validPassword
 				}),
 				contentType: 'application/json',
 				success: function(response) {
@@ -378,9 +404,13 @@ $(document).ready(function () {
 					// Clear input fields
 					$('#add-username').val('');
 					$('#add-user-access-selection').val('');
+					validPassword = ''
+					$('#add-password').val('');
+					$('#add-confirm-password').val('');
+
 
 					// Refresh the page
-					// location.reload();
+					location.reload();
 				},
 				error: function(xhr, status, error) {
 					// handle error response
@@ -393,7 +423,7 @@ $(document).ready(function () {
 					}
 				}
 			});
-		});
+
 
 	});
 

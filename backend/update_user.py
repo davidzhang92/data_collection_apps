@@ -86,13 +86,13 @@ def update_user_password():
         data = request.get_json()
 
         # Extract required fields from the payload
-        user_id = data['id']
-        new_password = data['password']
+        user_id = uuid.UUID(data['id'])
+        new_password = str(data['password'])
     
         cursor = conn.cursor()
 
         # Construct the SQL query to update the part_no and part_description for the given id
-        query = """DECLARE @Username NVARCHAR(MAX);
+        query = """
                 DECLARE @Password NVARCHAR(MAX);
                 DECLARE @Salt VARCHAR(MAX);
                 DECLARE @HashedPassword VARBINARY(MAX);
@@ -102,6 +102,9 @@ def update_user_password():
                 SET @id = ?
                 SET @Password = ?
 
+				DECLARE @Username NVARCHAR(MAX);
+				SELECT @Username = username FROM user_master WHERE id=@id;
+
 
                 EXEC HashPassword @Username, @Password, @Salt = @Salt OUTPUT, @HashedPassword = @HashedPassword OUTPUT;
 
@@ -109,7 +112,8 @@ def update_user_password():
                 set 
                 salt = @Salt,
                 password_hash = @HashedPassword,
-                modified_date = GETDATE()
+                modified_date = GETDATE(),
+                last_password_change = GETDATE()
                 where id = @id
                 """
 
@@ -123,9 +127,9 @@ def update_user_password():
             return jsonify({'message': 'No data found for the given id.'}), 404
         
         # Construct and execute the query to fetch updated data
-        success_output_query = "select username, access_level, modified_date from user_master where is_deleted = 0 and id = ?"
+        success_output_query = "select id, username, access_level, modified_date from user_master where is_deleted = 0 and id = ?"
 
-        cursor.execute(success_output_query, (id,))
+        cursor.execute(success_output_query, (user_id,))
         updated_data_row  = cursor.fetchone()
         if updated_data_row:
             updated_data = {

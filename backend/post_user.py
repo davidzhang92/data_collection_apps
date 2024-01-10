@@ -36,7 +36,7 @@ def post_user():
         data = request.get_json()
 
         # Extract required fields from the payload
-        new_user_name = data['user_name']
+        new_user_name = data['username']
         new_access_level = data['access_level']
         new_password = data['password']
 
