@@ -109,8 +109,8 @@ $(document).ready(function () {
         });
     }
 	// Fetch data on page load if both search fields are empty
-    const initialUsername = $('#username-field').val().trim();
-    const initialUserAccessLevel = $('#user-access-selection').val().trim();
+    var initialUsername = $('#username-field').val().trim();
+    var initialUserAccessLevel = $('#user-access-selection').val().trim();
     if (!initialUsername && !initialUserAccessLevel) {
         fetchData();
     }	
@@ -124,8 +124,8 @@ $(document).ready(function () {
 
 	// Function to handle the search button click
 	$('#search-user').click(function () {
-		const username = $('#username-field').val().trim();
-		const userAccessLevel = $('#user-access-selection').val().trim();
+		var username = $('#username-field').val().trim();
+		var userAccessLevel = $('#user-access-selection').val().trim();
 	
 		if (username || userAccessLevel) {
 			// Hide the pagination container
@@ -143,7 +143,7 @@ $(document).ready(function () {
 		if (username || userAccessLevel) {
 		// Fetch data using the filter API
 		$.ajax({
-			url: 'http://' + window.location.hostname + ':4000/api/filter_search_xxx',
+			url: 'http://' + window.location.hostname + ':4000/api/filter_search_user_master_api',
 			type: 'GET',
 			data: {
 				search_username:username,
@@ -160,7 +160,7 @@ $(document).ready(function () {
 		} else {
 		// If both search fields are empty, reset filtering
 			filteredData = [];
-			$('#page_container').show(); // Show the pagination container
+			fetchData(); // Fetch all data
 		}
 	}); 
 
@@ -530,5 +530,161 @@ $(document).ready(function () {
 			}
 		});
 	});
+
+	
+	//handling auto-complete for username
+
+	$(function () {
+		var getData = function (request, response) {
+			$.getJSON(
+				"http://" + window.location.hostname + ":4000/api/auto_complete_filter_user_name_api",
+				// { term: request.term }, // Pass the term as a query parameter
+				{ search_username: request.term }, // Pass the term as a query parameter
+				function (data) {
+					var items = []; // Array to store the autocomplete suggestions
+					$.each(data, function (index, item) {
+						items.push(item.username); // Extract the relevant field from the response
+					});
+					response(items);
+				}
+			);
+		};
+
+
+		var selectItem = function (event, ui) {
+			$("#username-field").val(ui.item.value);
+		};
+
+
+
+		$("#username-field").autocomplete({
+			source: getData,
+			select: selectItem,
+			minLength: 3
+			});
+		});
+	
+
+	// ==========================================================
+	// ***pagination section***
+	// ==========================================================
+	function updatePaginationButtons(currentPage) {
+		$('.page-number').removeClass('active');
+		$('.page-number').eq(currentPage - 1).addClass('active');
+
+		$('#prevPage').toggleClass('disabled', currentPage === 1);
+		$('#nextPage').toggleClass('disabled', currentPage === totalPages);
+		$('#firstPage').toggleClass('disabled', currentPage === 1);
+		$('#lastPage').toggleClass('disabled', currentPage === totalPages);
+	}
+
+	let totalEntries = 0;
+	const entriesPerPage = 10;
+	let totalPages = 0;
+	let currentPage = 1;
+
+	// Initial fetch of pagination entries count and creation of pagination
+	fetchPaginationEntriesCount();
+
+	// Function to fetch the total entries count from the API
+	function fetchPaginationEntriesCount() {
+		$.ajax({
+			type: 'GET',
+			url: 'http://' + window.location.hostname + ':4000/api/pagination_user_entries_api',
+			dataType: 'json',
+			success: function (response) {
+				totalEntries = response[0].count;
+				totalPages = Math.ceil(totalEntries / entriesPerPage);
+				createPagination(currentPage);
+			},
+			error: function (xhr, status, error) {
+				console.log("API request failed:", error);
+			}
+		});
+	}
+
+	// Function to create pagination buttons
+	function createPagination(currentPage) {
+		// Calculate the range of page numbers to display
+		let startPage = Math.max(1, currentPage - 2);
+		let endPage = Math.min(totalPages, currentPage + 2);
+
+		// Create the pagination buttons HTML
+		let paginationHTML = '';
+
+		paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">First</a></li>`;
+		paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">Previous</a></li>`;
+
+		for (let i = startPage; i <= endPage; i++) {
+			if (i === currentPage) {
+				paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
+			} else {
+				paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
+			}
+		}
+
+		paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">Next</a></li>`;
+		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
+
+		// Update the HTML of the page container with the generated pagination buttons
+		$('#page_container').html(paginationHTML);
+	}
+
+	// Event handler for clicking a page number
+	$(document).on('click', '.page-number', function () {
+		currentPage = parseInt($(this).text());
+		createPagination(currentPage); // Update the pagination buttons
+		updatePaginationButtons(currentPage); // Update the active page highlight
+		fetchData(currentPage);
+	});
+
+	// Event handler for clicking the "Previous" button
+	$(document).on('click', '#prevPage', function () {
+		if (currentPage > 1) {
+			currentPage--;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+	// Event handler for clicking the "Next" button
+	$(document).on('click', '#nextPage', function () {
+		if (currentPage < totalPages) {
+			currentPage++;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+	// Event handler for clicking the "First" button
+	$(document).on('click', '#firstPage', function () {
+		if (currentPage !== 1) {
+			currentPage = 1;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+	// Event handler for clicking the "Last" button
+	$(document).on('click', '#lastPage', function () {
+		if (currentPage !== totalPages) {
+			currentPage = totalPages;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+		// Check the stored state of the "select all" checkbox and update it
+		var selectAllState = localStorage.getItem('selectAllState');
+		if (selectAllState === 'checked') {
+			$("#selectAll").prop("checked", true);
+		} else {
+			$("#selectAll").prop("checked", false);
+		} 
+
 
 });

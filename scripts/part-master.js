@@ -166,7 +166,7 @@ $(document).ready(function () {
 		} else {
 		// If both search fields are empty, reset filtering
 			filteredData = [];
-			$('#page_container').show(); // Show the pagination container
+			fetchData(); // Fetch all data
 		}
 	}); 
   
@@ -293,6 +293,8 @@ $(document).ready(function () {
 				if (xhr.status === 400) {
                     // The response status is 400, indicating a duplicate
                     alert(xhr.responseJSON.message);
+					$('#add-part-number').val('');
+					$('#add-part-description').val('');
                 } else {
                     console.error(error);
                     alert('An error occurred while submitting the result.');
