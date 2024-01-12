@@ -255,7 +255,7 @@ def get_filter_search_user_master_api():
 # pagination section
 # --------------------------------
 
-#API endpoint to retrieve number of entries on defect master
+#API endpoint to retrieve number of entries on user master
 @app.route('/api/pagination_user_entries_api', methods=['GET'])
 def get_pagination_user_entries_api():
     return get_pagination_user_entries()

@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import pyodbc
 import uuid
+import re
 
 app = Flask(__name__)
 
@@ -88,6 +89,10 @@ def update_user_password():
         # Extract required fields from the payload
         user_id = uuid.UUID(data['id'])
         new_password = str(data['password'])
+
+        # Password complexity check
+        if not re.match(r'^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$', new_password):
+            return jsonify({'message': 'Error: Password must be at least 8 characters long, contain at least one capital letter and one number'}), 400
     
         cursor = conn.cursor()
 

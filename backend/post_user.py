@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import pyodbc
+import re
 
 app = Flask(__name__)
 
@@ -39,6 +40,10 @@ def post_user():
         new_user_name = data['username']
         new_access_level = data['access_level']
         new_password = data['password']
+
+        # Password complexity check
+        if not re.match(r'^(?=.*[A-Z])(?=.*\d)(?=.*[a-zA-Z\d]).{8,}$', new_password):
+            return jsonify({'message': 'Error: Password must be alphanumeric and at least 8 characters long.'}), 400
 
 
         cursor = conn.cursor()

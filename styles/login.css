@@ -1,0 +1,61 @@
+@import url('/styles/fonts/roboto.css');
+.body-background {
+    background-color: hsl(202, 33%, 23%);
+    background-size: contain;
+    line-height: 1.05;
+    color: #fff;
+    /* font-family: 'Varela Round', sans-serif; */
+    font-family: 'Roboto';
+    font-size: 18px;
+  }
+
+ /* login form */
+
+
+ .login-form {
+    width:500px;
+    height:400px;
+    background-color:#1E2B32;
+    position:relative;
+    margin:auto;
+    margin-top: 7%;
+ }
+
+    .login-form-header {
+        width:100%;
+        height:80px;
+        background-color:#1E2B32;
+        position:relative;
+        margin:auto;
+
+
+    }
+    .login-form-content {
+        width:100%;
+        height:210px;
+        background-color:#1E2B32;
+        position:relative;
+        margin:auto;
+        border-top: 1px solid #fff;
+        border-bottom: 1px solid #fff;
+        text-align: center;
+    }
+    .login-form-content label {
+        display: block; /* Make labels block elements to appear on new lines */
+        color: #fff; /* Set label text color */
+        margin-bottom: 5px; /* Add some margin below each label for spacing */
+    }
+
+    .login-field {
+        display: inline-block; /* This ensures that the div is centered without taking the full width */
+        text-align: center; /* Reset text alignment for the inner content */
+    }
+
+    .login-form-footer {
+        width:100%;
+        height:110px;
+        background-color:#283942;
+        position:relative;
+        margin:auto;
+    }
+

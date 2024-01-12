@@ -1,8 +1,15 @@
 $(document).ready(function () {
-
-
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
+
+	//clear all field in modal window when it's hidden
+	$('#addPartModal').on('hidden.bs.modal', function () {
+		// Clear the fields here
+		$('#add-part-number').val('');
+		$('#add-part-description').val('');
+		// Add more fields as needed
+	});
+
 
 	// renderData function
 	function renderData(data) {

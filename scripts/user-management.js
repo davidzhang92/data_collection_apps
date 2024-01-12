@@ -3,6 +3,24 @@ $(document).ready(function () {
     // Activate tooltip
     $('[data-toggle="tooltip"]').tooltip();
 
+	//clear all field in modal window when it's hidden
+	$('#addUserModal').on('hidden.bs.modal', function () {
+		// Clear the fields here
+		$('#add-username').val('');
+		$('#add-user-access-selection').val('');
+		$('#add-password').val('');
+		$('#add-confirm-password').val('');
+		// Add more fields as needed
+	});
+
+	$('#changePasswordUserModal').on('hidden.bs.modal', function () {
+		// Clear the fields here
+		$('#edit-password').val('');
+		$('#edit-confirm-password').val('');
+		// Add more fields as needed
+	});
+
+
     // renderData function
 	function renderData(data) {
 		var tableBody = $('table tbody');
@@ -233,7 +251,7 @@ $(document).ready(function () {
 				id: addCurrentId,
 				username: editUsername,
 				access_level: editUserAccessLevel,
-				// password: editPassword
+
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -311,6 +329,7 @@ $(document).ready(function () {
 
 			if (password === confirmPassword) {
 				var validPassword = confirmPassword;
+				
 			}  else {
 				alert('Error: Password doesn\'t match, try again.');
 				password = $('#edit-password').val('');
@@ -341,8 +360,13 @@ $(document).ready(function () {
 				},
 				
 				error: function(xhr, status, error) {
-					// handle error response
-					console.error(error);
+					if (xhr.status === 400) {
+						// The response status is 400, indicating a duplicate
+						alert(xhr.responseJSON.message);
+					} else {
+						console.error(error);
+						alert('An error occurred while submitting the result.');
+					}
 				}
 			});
 
