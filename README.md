@@ -1,3 +1,3 @@
 # data_collection_apps
 
-this is experimental and my first attempt to make web based app with my barely working knowledge in html, css, and python.
+Data Collection System to collect data for scanned, checked, product in production line. The code is created and generated using ChatGPT.
