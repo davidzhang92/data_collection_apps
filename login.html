@@ -27,25 +27,33 @@
 
     <div class="login-form">
         <div class = "login-form-header"> 
-            <h4 class="modal-title">Login to App</h4>
+            <h4 id="title">SFDC Login</h4>
         </div>
 
         
         <div class = "login-form-content"> 
             <div class = "login-field">
-                <label>Username</label>
-                <input type="text" class="" id="add-username" required="">
-                <label>Password</label>
-                <input type="text" class="" id="add-password" required="">
+                <div id = "username-field">
+                    <label>Username</label>
+                    <input type="text" class="" id="input-username" required="">
+                </div>
+
+                <div id = password-field>
+                    <label>Password</label>
+                    <input type="text" class="" id="input-password" required="">
+                </div>
             </div>
         </div>
 
 
         
         <div class = "login-form-footer"> 
-            <input type="submit" class="btn btn-success" id="submit-data-add" value="Login">
+            <input type="submit" class="btn btn-success" id="submit-login" value="Login">
         </div>
     </div>
+
+
+    <h5 class="version">Develop 0.1_0ca5b6c7</h5>
 
 </body>
 </html>
