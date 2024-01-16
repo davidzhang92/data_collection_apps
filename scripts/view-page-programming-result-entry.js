@@ -282,24 +282,8 @@ $(document).ready(function () {
 		});
 	});
 
-// Handle batch delete and DELETE request
+	// Handle batch delete and DELETE request
 
-// Get all checked checkboxes
-var checkedCheckboxes = $('input.row-checkbox:checked');
-
-// Create an array to store the IDs of the rows to be deleted
-var idsToDelete = [];
-
-// Loop through each checked checkbox and add its ID to the array
-checkedCheckboxes.each(function() {
-    idsToDelete.push($(this).attr('id'));
-});
-
-// console.log(idsToDelete);
-
-// Send the AJAX request to delete the rows
-$('#submit-batch-data-delete').on('click', function(event) {
-	event.preventDefault();
 	// Get all checked checkboxes
 	var checkedCheckboxes = $('input.row-checkbox:checked');
 
@@ -312,170 +296,261 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	});
 
 	// console.log(idsToDelete);
-	// Get the data-id attribute of the row associated with the clicked button
-	$.ajax({
-		url: 'http://' + window.location.hostname + ':4000/api/delete_programming_result_entry_view_api',
-		type: 'DELETE',
-		data: JSON.stringify({ ids: idsToDelete }),
-		contentType: 'application/json',
-		success: function(response) {
-			// Handle successful deletion here
-			console.log(response);
-					// Refresh the page
+
+	// Send the AJAX request to delete the rows
+	$('#submit-batch-data-delete').on('click', function(event) {
+		event.preventDefault();
+		// Get all checked checkboxes
+		var checkedCheckboxes = $('input.row-checkbox:checked');
+
+		// Create an array to store the IDs of the rows to be deleted
+		var idsToDelete = [];
+
+		// Loop through each checked checkbox and add its ID to the array
+		checkedCheckboxes.each(function() {
+			idsToDelete.push($(this).attr('id'));
+		});
+
+		// console.log(idsToDelete);
+		// Get the data-id attribute of the row associated with the clicked button
+		$.ajax({
+			url: 'http://' + window.location.hostname + ':4000/api/delete_programming_result_entry_view_api',
+			type: 'DELETE',
+			data: JSON.stringify({ ids: idsToDelete }),
+			contentType: 'application/json',
+			success: function(response) {
+				// Handle successful deletion here
+				console.log(response);
+						// Refresh the page
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				// Handle error here
+				console.error(error);
+			// Refresh the page
 			location.reload();
-		},
-		error: function(xhr, status, error) {
-			// Handle error here
-			console.error(error);
-		// Refresh the page
-		location.reload();
-		}
-	});
-});
-
-
-// auto-complete for Part Number
-
-$(function () {
-	var getData = function (request, response) {
-		$.getJSON(
-			"http://" + window.location.hostname + ":4000/api/auto_complete_filter_part_no_api",
-			// { term: request.term }, // Pass the term as a query parameter
-			{ search_part_no: request.term }, // Pass the term as a query parameter
-			function (data) {
-				var items = []; // Array to store the autocomplete suggestions
-				$.each(data, function (index, item) {
-					items.push(item.part_no); // Extract the relevant field from the response
-				});
-				response(items);
 			}
-		);
-	};
-
-	$("#part-number-field").autocomplete({
-		source: getData,
-		select: $("#part-number-field").val().trim(),
-		minLength: 3
 		});
 	});
 
 
+	// auto-complete for Part Number
+
+	$(function () {
+		var getData = function (request, response) {
+			$.getJSON(
+				"http://" + window.location.hostname + ":4000/api/auto_complete_filter_part_no_api",
+				// { term: request.term }, // Pass the term as a query parameter
+				{ search_part_no: request.term }, // Pass the term as a query parameter
+				function (data) {
+					var items = []; // Array to store the autocomplete suggestions
+					$.each(data, function (index, item) {
+						items.push(item.part_no); // Extract the relevant field from the response
+					});
+					response(items);
+				}
+			);
+		};
+
+		$("#part-number-field").autocomplete({
+			source: getData,
+			select: $("#part-number-field").val().trim(),
+			minLength: 3
+			});
+		});
 
 
 
-// ==========================================================
-// ***pagination section***
-// ==========================================================
-let currentPage = 1;
-function updatePaginationButtons(currentPage) {
-    $('.page-number').removeClass('active');
-    $('.page-number').eq(currentPage - 1).addClass('active');
 
-    $('#prevPage').toggleClass('disabled', currentPage === 1);
-    $('#nextPage').toggleClass('disabled', currentPage === totalPages);
-    $('#firstPage').toggleClass('disabled', currentPage === 1);
-    $('#lastPage').toggleClass('disabled', currentPage === totalPages);
-}
 
-let totalEntries = 0;
-const entriesPerPage = 10;
-let totalPages = 0;
+	// ==========================================================
+	// ***pagination section***
+	// ==========================================================
+	let currentPage = 1;
+	function updatePaginationButtons(currentPage) {
+		$('.page-number').removeClass('active');
+		$('.page-number').eq(currentPage - 1).addClass('active');
 
-// Initial fetch of pagination entries count and creation of pagination
-fetchPaginationEntriesCount();
+		$('#prevPage').toggleClass('disabled', currentPage === 1);
+		$('#nextPage').toggleClass('disabled', currentPage === totalPages);
+		$('#firstPage').toggleClass('disabled', currentPage === 1);
+		$('#lastPage').toggleClass('disabled', currentPage === totalPages);
+	}
 
-// Function to fetch the total entries count from the API
-function fetchPaginationEntriesCount() {
-    $.ajax({
-        type: 'GET',
-        url: 'http://' + window.location.hostname + ':4000/api/pagination_programming_result_entry_count_api',
-        dataType: 'json',
-        success: function (response) {
-            totalEntries = response[0].count;
-            totalPages = Math.ceil(totalEntries / entriesPerPage);
-            createPagination(currentPage);
-        },
-        error: function (xhr, status, error) {
-            console.log("API request failed:", error);
-        }
+	let totalEntries = 0;
+	const entriesPerPage = 10;
+	let totalPages = 0;
+
+	// Initial fetch of pagination entries count and creation of pagination
+	fetchPaginationEntriesCount();
+
+	// Function to fetch the total entries count from the API
+	function fetchPaginationEntriesCount() {
+		$.ajax({
+			type: 'GET',
+			url: 'http://' + window.location.hostname + ':4000/api/pagination_programming_result_entry_count_api',
+			dataType: 'json',
+			success: function (response) {
+				totalEntries = response[0].count;
+				totalPages = Math.ceil(totalEntries / entriesPerPage);
+				createPagination(currentPage);
+			},
+			error: function (xhr, status, error) {
+				console.log("API request failed:", error);
+			}
+		});
+	}
+
+
+	// Function to create pagination buttons
+	function createPagination(currentPage) {
+		// Calculate the range of page numbers to display
+		let startPage = Math.max(1, currentPage - 2);
+		let endPage = Math.min(totalPages, currentPage + 2);
+
+		// Create the pagination buttons HTML
+		let paginationHTML = '';
+
+		paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">First</a></li>`;
+		paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">Previous</a></li>`;
+
+		for (let i = startPage; i <= endPage; i++) {
+			if (i === currentPage) {
+				paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
+			} else {
+				paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
+			}
+		}
+
+		paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">Next</a></li>`;
+		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
+
+		// Update the HTML of the page container with the generated pagination buttons
+		$('#page_container').html(paginationHTML);
+	}
+
+	// Event handler for clicking a page number
+	$(document).on('click', '.page-number', function () {
+		currentPage = parseInt($(this).text());
+		createPagination(currentPage); // Update the pagination buttons
+		updatePaginationButtons(currentPage); // Update the active page highlight
+		fetchData(currentPage);
+	});
+
+	// Event handler for clicking the "Previous" button
+	$(document).on('click', '#prevPage', function () {
+		if (currentPage > 1) {
+			currentPage--;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+	// Event handler for clicking the "Next" button
+	$(document).on('click', '#nextPage', function () {
+		if (currentPage < totalPages) {
+			currentPage++;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+	// Event handler for clicking the "First" button
+	$(document).on('click', '#firstPage', function () {
+		if (currentPage !== 1) {
+			currentPage = 1;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+	// Event handler for clicking the "Last" button
+	$(document).on('click', '#lastPage', function () {
+		if (currentPage !== totalPages) {
+			currentPage = totalPages;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
+
+
+
+	   //Laser Export Section
+	// datepicker function for date to and date from
+	$(function() {
+		$("#date-from-field").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+
+		$("#date-to-field").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+
+		// Add an event listener to the "date-to-field" input
+		$("#date-to-field").on("change", function() {
+			// Get the selected dates from both fields
+			var fromDate = $("#date-from-field").datepicker("getDate");
+			var toDate = $("#date-to-field").datepicker("getDate");
+
+			// Check if toDate is smaller (earlier) than fromDate
+			if (toDate < fromDate) {
+				// Show an alert message
+				$("#date-to-field").val('')
+				alert("The end date cannot be earlier than the start date.");
+				// You can also reset the "date-to-field" value or take other actions as needed
+			}
+		});
+	});
+
+
+    //POST data parameter for data export
+
+    $('#download').click(function(event){
+        event.preventDefault();
+    
+        var dateFrom = $('#date-from-field').val();
+        var dateTo = $('#date-to-field').val();
+		var partNumber = $('#part-number-field').val().trim()
+    
+        fetch('http://' + window.location.hostname + ':4000/api/laser_result_entry_api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                date_from: dateFrom,
+                date_to: dateTo,
+                part_no: partNumber
+            })
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            // Create a blob URL from the response
+            var blobUrl = window.URL.createObjectURL(blob);
+    
+            // Create an anchor element to trigger the download
+            var a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = 'laser_result.xlsx';
+            document.body.appendChild(a);
+    
+            // Trigger the download
+            a.click();
+    
+            // Clean up
+            window.URL.revokeObjectURL(blobUrl);
+    
+            // Clear input fields
+            // $('#date-from-field').val('');
+            // $('#date-to-field').val('');
+        })
+        .catch(error => console.error(error));
     });
-}
-
-
-// Function to create pagination buttons
-function createPagination(currentPage) {
-    // Calculate the range of page numbers to display
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, currentPage + 2);
-
-    // Create the pagination buttons HTML
-    let paginationHTML = '';
-
-    paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">First</a></li>`;
-    paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">Previous</a></li>`;
-
-    for (let i = startPage; i <= endPage; i++) {
-        if (i === currentPage) {
-            paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
-        } else {
-            paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
-        }
-    }
-
-    paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">Next</a></li>`;
-    paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
-
-    // Update the HTML of the page container with the generated pagination buttons
-    $('#page_container').html(paginationHTML);
-}
-
-// Event handler for clicking a page number
-$(document).on('click', '.page-number', function () {
-    currentPage = parseInt($(this).text());
-    createPagination(currentPage); // Update the pagination buttons
-    updatePaginationButtons(currentPage); // Update the active page highlight
-    fetchData(currentPage);
-});
-
-// Event handler for clicking the "Previous" button
-$(document).on('click', '#prevPage', function () {
-    if (currentPage > 1) {
-        currentPage--;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
-
-// Event handler for clicking the "Next" button
-$(document).on('click', '#nextPage', function () {
-    if (currentPage < totalPages) {
-        currentPage++;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
-
-// Event handler for clicking the "First" button
-$(document).on('click', '#firstPage', function () {
-    if (currentPage !== 1) {
-        currentPage = 1;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
-
-// Event handler for clicking the "Last" button
-$(document).on('click', '#lastPage', function () {
-    if (currentPage !== totalPages) {
-        currentPage = totalPages;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
 
 
 

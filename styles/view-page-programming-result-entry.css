@@ -336,7 +336,7 @@ button.close-white{
     line-height: inherit;
     font-family: inherit;
     color: #000;
-    left: 660px;
+    left: 515px;
     top: 25px;
     cursor: pointer;
     }
@@ -344,7 +344,7 @@ button.close-white{
 
 
 
-    #add-part-button {
+    #download-button {
 
         text-align: center;
         font-size: 28px;
@@ -366,9 +366,10 @@ button.close-white{
         font-size: 28px;
         cursor: pointer;
         vertical-align: middle;
+        
         }
 
-    #add-part {
+    #download {
         font-size: 18px;
         font-weight: 400;
         line-height: 1.42857143;
