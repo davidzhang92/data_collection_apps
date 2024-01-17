@@ -60,11 +60,18 @@ def get_laser_result_entry():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data based on the provided parameters
-        query = "SELECT a.serial_no, a.data_matrix, a.label_id FROM laser_result_entry a INNER JOIN part_master b ON a.part_id = b.id WHERE 1=1"
+        query = """SELECT 
+                    a.serial_no, 
+                    a.data_matrix, 
+                    a.label_id 
+                FROM 
+                    laser_result_entry a 
+                INNER JOIN 
+                    part_master b ON a.part_id = b.id """
         parameters = []
 
         if selected_part_id:
-            query += " AND a.part_id = ?"
+            query += " WHERE a.part_id = ?"
             parameters.append(selected_part_id)
 
         if selected_date_from:
@@ -83,9 +90,13 @@ def get_laser_result_entry():
         cursor.execute(query, parameters)
         query_result = cursor.fetchall()
 
+        # if query_result is None:
+        #      return jsonify({'error : no data found'}), 500
+
   # Load the Excel template
         workbook = load_workbook(template_path)
         worksheet = workbook.active
+
 
       
         row_number = 2  # Start from row 2

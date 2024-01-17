@@ -479,7 +479,7 @@ $(document).ready(function () {
 
 
 
-	   //Laser Export Section
+	   //Programming Report Section
 	// datepicker function for date to and date from
 	$(function() {
 		$("#date-from-field").datepicker({
@@ -516,7 +516,7 @@ $(document).ready(function () {
         var dateTo = $('#date-to-field').val();
 		var partNumber = $('#part-number-field').val().trim()
     
-        fetch('http://' + window.location.hostname + ':4000/api/laser_result_entry_api', {
+        fetch('http://' + window.location.hostname + ':4000/api/programming_result_report_api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -536,7 +536,7 @@ $(document).ready(function () {
             var a = document.createElement('a');
             a.style.display = 'none';
             a.href = blobUrl;
-            a.download = 'laser_result.xlsx';
+            a.download = 'programming_report.xlsx';
             document.body.appendChild(a);
     
             // Trigger the download

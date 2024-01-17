@@ -480,9 +480,10 @@ var labelId = $('#label-id-field').val();
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
+                part_id: partId,
                 date_from: dateFrom,
-                date_to: dateTo,
-                part_id: partId
+                date_to: dateTo
+
             })
         })
         .then(response => response.blob())

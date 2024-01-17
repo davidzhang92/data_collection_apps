@@ -22,7 +22,7 @@ from get_pagination_defect_entries import get_pagination_defect_entries
 from auto_complete_defect import get_auto_complete_defect_no, get_auto_complete_defect_name
 from post_programming_result_entry import post_programming_result_entry
 from get_pagination_programming_result_entry_count import get_pagination_programming_result_entry_count
-from get_programming_result_entry_view import get_filter_search_programming_result_entry_view, get_programming_result_entry_view
+from get_programming_result_entry_view import get_filter_search_programming_result_entry_view, get_programming_result_entry_view, get_programming_result_report
 from delete_programming_result_entry_view import delete_programming_result_entry_view
 from post_leaktest_result_entry import post_leaktest_result_entry
 from get_pagination_leaktest_result_entry_count import get_pagination_leaktest_result_entry_count
@@ -297,6 +297,13 @@ def delete_programming_result_entry_view_api():
 @app.route('/api/programming_result_entry_view_api', methods=['GET'])
 def get_programming_result_entry_view_api():
     return get_programming_result_entry_view()
+
+# # API endpoint to download report from programming result entry view
+@app.route('/api/programming_result_report_api', methods=['POST'])
+def get_programming_result_report_api():
+    return get_programming_result_report()
+
+
 
 ###############################
 #####leaktest-result-entry-section#######
