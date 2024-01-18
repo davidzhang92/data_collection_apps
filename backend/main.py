@@ -26,19 +26,19 @@ from get_programming_result_entry_view import get_filter_search_programming_resu
 from delete_programming_result_entry_view import delete_programming_result_entry_view
 from post_leaktest_result_entry import post_leaktest_result_entry
 from get_pagination_leaktest_result_entry_count import get_pagination_leaktest_result_entry_count
-from get_leaktest_result_entry_view import get_filter_search_leaktest_result_entry_view, get_leaktest_result_entry_view
+from get_leaktest_result_entry_view import get_filter_search_leaktest_result_entry_view, get_leaktest_result_entry_view, get_leaktest_result_report
 from delete_leaktest_result_entry_view import delete_leaktest_result_entry_view
 from post_laser_result_entry import post_laser_result_entry
-from get_laser_result_entry_view import get_laser_result_entry_view, get_filter_search_laser_result_entry_view
+from get_laser_result_entry_view import get_laser_result_entry_view, get_filter_search_laser_result_entry_view, get_laser_result_report
 from get_pagination_laser_result_entry_count import get_pagination_laser_result_entry_count
 from delete_laser_result_entry_view import delete_laser_result_entry_view
 from post_oqc_result_entry import post_oqc_result_entry
-from get_oqc_result_entry_view import get_oqc_result_entry_view, get_filter_search_oqc_result_entry_view
+from get_oqc_result_entry_view import get_oqc_result_entry_view, get_filter_search_oqc_result_entry_view, get_oqc_result_report
 from get_pagination_oqc_result_entry_count import get_pagination_oqc_result_entry_count
 from delete_oqc_result_entry_view import delete_oqc_result_entry_view
 from post_endtest_result_entry import post_endtest_upload_file
 from get_pagination_endtest_result_entry_count import get_pagination_endtest_result_entry_count
-from get_endtest_result_entry_view import get_endtest_result_entry_view, get_filter_search_endtest_result_entry_view
+from get_endtest_result_entry_view import get_endtest_result_entry_view, get_filter_search_endtest_result_entry_view, get_endtest_result_report
 # from delete_endtest_result_entry_view import delete_endtest_result_entry_view
 from get_laser_result_entry import get_laser_result_entry
 from get_overall_throughput import get_overall_throughput
@@ -342,6 +342,11 @@ def get_leaktest_result_entry_view_api():
 def delete_leaktest_result_entry_view_api():
     return delete_leaktest_result_entry_view()
 
+# # API endpoint to download report from leaktest result entry view
+@app.route('/api/leaktest_result_report_api', methods=['POST'])
+def get_leaktest_result_report_api():
+    return get_leaktest_result_report()
+
 ###############################
 #####laser-result-entry-section#######
 ###############################
@@ -381,6 +386,10 @@ def delete_laser_result_entry_view_api():
 def get_laser_result_entry_api():
     return get_laser_result_entry()
 
+# # API endpoint to download report from laser result entry view
+@app.route('/api/laser_result_report_api', methods=['POST'])
+def get_laser_result_report_api():
+    return get_laser_result_report()
 
 ###############################POST
 #####oqc-result-entry-section#######
@@ -415,6 +424,11 @@ def get_oqc_result_entry_view_api():
 def delete_oqc_result_entry_view_api():
     return delete_oqc_result_entry_view()
 
+# API endpoint to download report from oqc result entry view
+@app.route('/api/oqc_result_report_api', methods=['POST'])
+def get_oqc_result_report_api():
+    return get_oqc_result_report()
+
 ###############################
 #####endtest-result-entry section#######
 ###############################
@@ -443,6 +457,10 @@ def get_endtest_result_entry_view_api():
 # def delete_endtest_result_entry_view_api():
 #     return delete_endtest_result_entry_view()
 
+# # API endpoint to download report from endtest result entry view
+@app.route('/api/endtest_result_report_api', methods=['POST'])
+def get_endtest_result_report_api():
+    return get_endtest_result_report()
 
 
 

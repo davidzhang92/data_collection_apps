@@ -451,4 +451,77 @@ $(document).ready(function () {
 		}
 	});
 
+		//Leaktest Report Section
+	// datepicker function for date to and date from
+	$(function() {
+		$("#date-from-field").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+
+		$("#date-to-field").datepicker({
+			dateFormat: "yy-mm-dd"
+		});
+
+		// Add an event listener to the "date-to-field" input
+		$("#date-to-field").on("change", function() {
+			// Get the selected dates from both fields
+			var fromDate = $("#date-from-field").datepicker("getDate");
+			var toDate = $("#date-to-field").datepicker("getDate");
+
+			// Check if toDate is smaller (earlier) than fromDate
+			if (toDate < fromDate) {
+				// Show an alert message
+				$("#date-to-field").val('')
+				alert("The end date cannot be earlier than the start date.");
+				// You can also reset the "date-to-field" value or take other actions as needed
+			}
+		});
+	});
+
+
+    //POST data parameter for data export
+
+    $('#download').click(function(event){
+        event.preventDefault();
+    
+        var dateFrom = $('#date-from-field').val();
+        var dateTo = $('#date-to-field').val();
+		var partNumber = $('#part-number-field').val().trim()
+    
+        fetch('http://' + window.location.hostname + ':4000/api/leaktest_result_report_api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                date_from: dateFrom,
+                date_to: dateTo,
+                part_no: partNumber
+            })
+        })
+        .then(response => response.blob())
+        .then(blob => {
+            // Create a blob URL from the response
+            var blobUrl = window.URL.createObjectURL(blob);
+    
+            // Create an anchor element to trigger the download
+            var a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = blobUrl;
+            a.download = 'leaktest_report.xlsx';
+            document.body.appendChild(a);
+    
+            // Trigger the download
+            a.click();
+    
+            // Clean up
+            window.URL.revokeObjectURL(blobUrl);
+    
+            // Clear input fields
+            // $('#date-from-field').val('');
+            // $('#date-to-field').val('');
+        })
+        .catch(error => console.error(error));
+    });
+
 });

@@ -341,7 +341,13 @@ button.close-white{
     cursor: pointer;
     }
 
+    #download-button {
 
+        text-align: center;
+        font-size: 28px;
+        cursor: pointer;
+        vertical-align: middle;
+        }
 
 
     #add-part-button {
@@ -367,6 +373,16 @@ button.close-white{
         cursor: pointer;
         vertical-align: middle;
         }
+
+    #download {
+        font-size: 18px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        cursor: pointer;
+
+    }
 
     #add-part {
         font-size: 18px;
