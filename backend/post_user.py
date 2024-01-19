@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify
 import pyodbc
 import re
+import os
+import hashlib
+import random
+import string
 
 app = Flask(__name__)
 
@@ -37,7 +41,7 @@ def post_user():
         data = request.get_json()
 
         # Extract required fields from the payload
-        new_user_name = data['username']
+        new_username = data['username']
         new_access_level = data['access_level']
         new_password = data['password']
 
@@ -54,7 +58,7 @@ def post_user():
             FROM user_master where username = ? and is_deleted  = 0
         """
 
-        cursor.execute(user_name_duplicate_query_check, (new_user_name))
+        cursor.execute(user_name_duplicate_query_check, (new_username))
         user_name_result = cursor.fetchone()
 
         # debug
@@ -64,28 +68,31 @@ def post_user():
         if user_name_result is not None and user_name_result[0] != 0:
             return jsonify({'message': 'Error: Username is already exist'}), 400
 
+
+        def generate_salt_and_hashed_password(new_username, new_password):
+            # Generate a salt
+            salt = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(25))
+
+            # Hash the password with the salt
+            hashed_password = hashlib.sha512((new_password + salt).encode('utf-8')).hexdigest()
+
+            return new_username, salt, hashed_password
+
+        username, salt, hashed_password = generate_salt_and_hashed_password(new_username,new_password)
+
+
+
+
         # Construct the SQL query to update the part_no and part_description for the given id
         query = """
-        DECLARE @Username NVARCHAR(MAX);
-        DECLARE @Password NVARCHAR(MAX);
-        DECLARE @Salt VARCHAR(MAX);
-        DECLARE @HashedPassword VARBINARY(MAX);
-        DECLARE @AccessLevel uniqueidentifier;
-
-        SET @Username = ?; -- replace with your username
-        SET @Password = ?; -- replace with your password
-        SET @AccessLevel = ?
-
-        EXEC HashPassword @Username, @Password, @Salt = @Salt OUTPUT, @HashedPassword = @HashedPassword OUTPUT;
-
-        INSERT INTO user_master(id, username, salt, password_hash, access_level, is_superadmin, created_date, is_deleted)
-        VALUES (NEWID(), @Username, @Salt, @HashedPassword, @AccessLevel, '0', GETDATE(), '0');
-        """
+                INSERT INTO user_master(id, username, salt, password_hash, access_level, is_superadmin, created_date, is_deleted)
+                VALUES (NEWID(), ?, ?, ?, ?, '0', GETDATE(), '0');
+                """
 
 
 
         # Execute the SQL query
-        cursor.execute(query, (new_user_name, new_password, new_access_level))
+        cursor.execute(query, (username, salt, hashed_password, new_access_level))
         conn.commit()
 
         # Check if any rows were affected by the update operation

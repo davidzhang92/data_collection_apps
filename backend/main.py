@@ -10,11 +10,11 @@ from post_defect import post_defect
 from get_defect import get_defect
 from update_defect import update_defect
 from delete_defect import delete_defect
-
 from post_user import post_user
 from get_user import get_user
 from update_user import update_user, update_user_password
 from delete_user import delete_user
+from post_user_authentication import post_user_authentication
 from get_pagination_user_entries import get_pagination_user_entries
 from auto_complete_filter_user import get_auto_complete_filter_user_name, get_filter_search_user_master
 from auto_complete_filter_defect import get_auto_complete_filter_defect_no, get_auto_complete_filter_defect_name_for_defect_no, get_auto_complete_filter_defect_name, get_auto_complete_filter_defect_no_for_defect_name, get_filter_search_defect_master
@@ -236,6 +236,15 @@ def update_user_api():
 @app.route('/api/delete_user_api', methods=['DELETE'])
 def delete_user_api():
     return delete_user()
+
+# --------------------------------
+# authentication user section
+# --------------------------------
+# API endpoint to authenticate credential
+
+@app.route('/api/user_authentication_api', methods=['POST'])
+def post_user_authentication_api():
+    return post_user_authentication()
 
 
 # --------------------------------

@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify
 import pyodbc
 import uuid
 import re
+import os
+import hashlib
+import random
+import string
 
 app = Flask(__name__)
 
@@ -43,11 +47,26 @@ def update_user():
         new_access_level = uuid.UUID(data['access_level'])
         user_id = uuid.UUID(data['id'])
 
-
-
         cursor = conn.cursor()
 
-        # Construct the SQL query to update the part_no and part_description for the given id
+        # Check for duplicates
+        user_name_duplicate_query_check = """
+            SELECT COUNT(id) AS count 
+            FROM user_master where username = ? and is_deleted  = 0
+        """
+
+        cursor.execute(user_name_duplicate_query_check, (new_username))
+        user_name_result = cursor.fetchone()
+
+        # debug
+        # print (user_name_result)
+        # print (access_level_result)
+    
+        if user_name_result is not None and user_name_result[0] != 0:
+            return jsonify({'message': 'Error: Username is already exist'}), 400
+
+
+        # Construct the SQL query to update the username and password for the given id
         query = "update user_master set username = ?, access_level = ?, modified_date = getdate() where id = ?"
 
         # Execute the SQL query
@@ -91,40 +110,37 @@ def update_user_password():
         new_password = str(data['password'])
 
         # Password complexity check
-        if not re.match(r'^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$', new_password):
-            return jsonify({'message': 'Error: Password must be at least 8 characters long, contain at least one capital letter and one number'}), 400
+        if not re.match(r'^(?=.*[A-Z])(?=.*\d)(?=.*[a-zA-Z\d]).{8,}$', new_password):
+            return jsonify({'message': 'Error: Password must be alphanumeric and at least 8 characters long.'}), 400
     
         cursor = conn.cursor()
 
+        def generate_salt_and_hashed_password(new_password):
+            # Generate a salt
+            salt = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(25))
+
+            # Hash the password with the salt
+            updated_hash_password = hashlib.sha512((new_password + salt).encode('utf-8')).hexdigest()
+
+            return salt, updated_hash_password
+
+        salt, updated_hash_password = generate_salt_and_hashed_password(new_password)
+
+
         # Construct the SQL query to update the part_no and part_description for the given id
         query = """
-                DECLARE @Password NVARCHAR(MAX);
-                DECLARE @Salt VARCHAR(MAX);
-                DECLARE @HashedPassword VARBINARY(MAX);
-                DECLARE @AccessLevel uniqueidentifier;
-                DECLARE @id uniqueidentifier;
-
-                SET @id = ?
-                SET @Password = ?
-
-				DECLARE @Username NVARCHAR(MAX);
-				SELECT @Username = username FROM user_master WHERE id=@id;
-
-
-                EXEC HashPassword @Username, @Password, @Salt = @Salt OUTPUT, @HashedPassword = @HashedPassword OUTPUT;
-
                 update user_master
                 set 
-                salt = @Salt,
-                password_hash = @HashedPassword,
+                salt =?,
+                password_hash = ?,
                 modified_date = GETDATE(),
                 last_password_change = GETDATE()
-                where id = @id
+                where id = ?
                 """
 
 
         # Execute the SQL query
-        cursor.execute(query, (user_id,new_password))
+        cursor.execute(query, (salt, updated_hash_password, user_id))
         conn.commit()
 
         # Check if any rows were affected by the update operation

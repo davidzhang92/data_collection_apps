@@ -289,7 +289,14 @@ $(document).ready(function () {
 				updateTableRow(response);
 			},
 			error: function(xhr, status, error) {
-				// handle error response
+				if (xhr.status === 400) {
+					// The response status is 400, indicating a duplicate
+					alert(xhr.responseJSON.message);
+					
+				} else {
+					console.error(error);
+					alert('An error occurred while submitting the result.');
+				}
 				console.error(error);
 			}
 		});
@@ -363,6 +370,7 @@ $(document).ready(function () {
 					if (xhr.status === 400) {
 						// The response status is 400, indicating a duplicate
 						alert(xhr.responseJSON.message);
+						
 					} else {
 						console.error(error);
 						alert('An error occurred while submitting the result.');
