@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
     // Attach the submit event handler to the form
-    $('.login-form-footer').on('submit', function(event) {
+    $('.login-form-content').on('submit', function(event) {
         event.preventDefault();
 
         // Get the username and password values when the form is submitted
@@ -21,8 +21,8 @@ $(document).ready(function () {
             contentType: 'application/json',
             success: function(response) {
                 // handle successful response
-                console.log(response);
-                alert(response);
+                console.log(response.message);
+                alert(response.message);
             },
             error: function(xhr, status, error) {
                 // handle error response
