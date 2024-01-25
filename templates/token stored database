@@ -1,0 +1,18 @@
+                # Generate JWT token
+                SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
+                token = jwt.encode({'user': user_name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, SECRET_KEY)
+
+                query_insert_token = """
+                        INSERT INTO user_tokens
+                        (id, user_id, token, expiration_date, is_expired)
+                        VALUES 
+                        (newid(), (SELECT id FROM user_master WHERE username = ?),?,DATEADD(hour, 2, GETDATE()), 0)
+                        """
+                # Insert the token into the token table
+                cursor.execute(query_insert_token, (user_name, token))
+                cursor.commit()
+
+                query_update_last_login = """
+                        update user_master
+                        set last_login = GETDATE()
+                        where username = ? and salt = ? and password_hash = ?"""
