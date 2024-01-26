@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 import pyodbc
 import re
 import hashlib
 import jwt
 import datetime
+
 
 app = Flask(__name__)
 
@@ -32,7 +33,7 @@ dsn = 'DataCollection'
 # Establish the connection
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 
-
+SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
 @app.route('/api/post-user-authentication', methods=['POST'])
 def post_user_authentication():
     try:
@@ -52,9 +53,10 @@ def post_user_authentication():
             # Compare the computed hash with the stored hashed password
             return computed_hash == stored_hashed_password  # The provided password is correct
 
+
         # Construct the SQL query to retrieve salt, password_hash, and access_level for the user
         query = """
-                select salt, password_hash, b.access_type from user_master a
+                select salt, password_hash from user_master a
 				inner join access_level_master b on a.access_level=b.id
                 where username = ? and is_deleted = 0
                 """
@@ -64,17 +66,24 @@ def post_user_authentication():
         result = cursor.fetchone()  # fetchone() retrieves one record from the query result
 
         if result is not None:
-            salt, password_hash, access_type = result  # Unpack the result into the variables
+            salt, password_hash= result  # Unpack the result into the variables
             if authenticate_user_password(salt, password_hash, password):
 
                 # Generate JWT token
-                SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
-                access_token = jwt.encode({'user': user_name, 'access_level': access_type,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, SECRET_KEY)
-                refresh_token = jwt.encode({'user': user_name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)}, SECRET_KEY)
+
+                access_token = jwt.encode({'user': user_name,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, SECRET_KEY, algorithm='HS256')
+                refresh_token = jwt.encode({'user': user_name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)}, SECRET_KEY, algorithm='HS256')
 
 
+                # Create a response
+                response = make_response(jsonify({'message': 'Login OK', 'access_token': access_token}), 200)
 
-                return jsonify({'message': 'Login OK'}), 200
+                # Set the refresh token as an HttpOnly cookie
+                response.set_cookie('refreshToken', refresh_token, httponly=True, samesite='Strict')
+
+
+                
+                return response
             else:
                 return jsonify({'message': 'Bad username or password'}), 400
         else:
@@ -85,25 +94,5 @@ def post_user_authentication():
         return jsonify({'message': 'Error occurred while attempting to authenticate, please try again.', 'error': str(e)}), 500
     
 
-# @app.route('/refresh-token', methods=['POST'])
-# def refresh_token():
-#     # Get the refresh token from the request
-#     refresh_token = request.headers.get('Authorization')
-
-#     # Verify the refresh token and get the user ID
-#     try:
-#         payload = jwt.decode(refresh_token, SECRET_KEY)
-#         user_id = payload['user_id']
-#     except jwt.ExpiredSignatureError:
-#         return jsonify({'message': 'Refresh token expired'}), 401
-#     except jwt.InvalidTokenError:
-#         return jsonify({'message': 'Invalid token'}), 401
-
-#     # Generate a new JWT
-#     new_token = jwt.encode({'user_id': user_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, SECRET_KEY)
-
-#     return jsonify({'token': new_token}), 200
 
     
-
-

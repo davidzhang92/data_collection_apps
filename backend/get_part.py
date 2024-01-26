@@ -1,7 +1,9 @@
 from flask import Flask, request, jsonify
 import pyodbc
-
+from functools import wraps
+import jwt
 app = Flask(__name__)
+
 
 # # Define your MS SQL Server connection details (Windows)
 # server = '192.168.100.121'
@@ -27,9 +29,36 @@ dsn = 'DataCollection'
 
 # Establish the connection
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
+SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = None
+        if 'Authorization' in request.headers:
+            token = request.headers['Authorization']
+            # The token includes the 'Bearer ' prefix, so you should remove it
+            token = token.replace('Bearer ', '', 1)
+
+        if 'x-access-token' in request.headers:
+            token = request.headers['x-access-token']
+
+        if not token:
+            return jsonify({'message': 'Token is missing!'}), 401
+
+        try:
+            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 @app.route('/api/get-part', methods=['GET'])
+@token_required
 def get_part():
     try:
         # Extract the page query parameter from the request

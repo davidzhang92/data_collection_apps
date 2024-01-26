@@ -107,12 +107,18 @@ $(document).ready(function () {
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
 			};
-		
+
+			// Get the token from local storage
+			const token = localStorage.getItem('accessToken');
+	
 			$.ajax({
 				url: apiEndpoint,
 				type: 'GET',
 				data: requestData, // Send the data object directly
 				contentType: 'application/json',
+				headers: {
+					'Authorization': 'Bearer ' + token // Include the token in the headers
+				},	
 				success: function (data) {
 					// Handle success
 					renderData(data);
@@ -620,40 +626,11 @@ $(document).on('click', '#lastPage', function () {
 		$("#selectAll").prop("checked", false);
 	}  
 
-// // Function to handle the search button click
-// $('#search-part').click(function () {
-//     const partNumber = $('#part-number-field').val().trim();
-//     const partDescription = $('#part-description-field').val().trim();
 
-//     if (partNumber || partDescription) {
-//         // Hide the pagination container
-//         $('#page_container').hide();
-
-//         // Fetch data using the filter API
-//         $.ajax({
-//             url: 'http://' + window.location.hostname + ':4000/api/filter_search_part_master_api',
-//             type: 'GET',
-//             data: {
-//                 search_part_no: partNumber,
-//                 search_part_description: partDescription
-//             },
-//             success: function (data) {
-//                 filteredData = data; // Store the filtered data
-//                 renderData(filteredData); // Render the filtered data
-//             },
-//             error: function (error) {
-//                 console.error('Error fetching filtered data:', error);
-//             },
-//         });
-//     } else {
-//         // If both search fields are empty, reset filtering
-//         filteredData = [];
-//         fetchData(); // Fetch all data
-
-//         // Show the pagination container
-//         $('#page_container').show();
-//     }
-// });
+	//logout function, clear all access token upon log out
+	$('#logout').click(function(){
+        localStorage.removeItem('accessToken');
+    });
 	
 });
 
