@@ -1,7 +1,7 @@
 import jwt
 
-token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiMTIzIn0.bJgJYLG1LJgplfr6lg1efT73_8_6mGy6fCyoZoiHhaw'
-decoded = jwt.decode(token, options={"verify_signature": True})
+token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdCIsImV4cCI6MTcwNjUyMzQxN30.JNtn7uhTnepB62DpOnYGCjd5B6joH9nNxiH4MOvqzpk'
+decoded = jwt.decode(token, options={"verify_signature": False})
 print(decoded)
 
 

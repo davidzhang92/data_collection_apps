@@ -109,7 +109,7 @@ $(document).ready(function () {
 			};
 
 			// Get the token from local storage
-			const token = localStorage.getItem('accessToken');
+			const accessToken = localStorage.getItem('accessToken');
 	
 			$.ajax({
 				url: apiEndpoint,
@@ -117,14 +117,19 @@ $(document).ready(function () {
 				data: requestData, // Send the data object directly
 				contentType: 'application/json',
 				headers: {
-					'Authorization': 'Bearer ' + token // Include the token in the headers
+					'Authorization': accessToken // Include the token in the headers
 				},	
 				success: function (data) {
 					// Handle success
 					renderData(data);
 				},
-				error: function (error) {
-					console.error('Error fetching data:', error);
+				error: function (xhr, error) {
+					if (xhr.status >= 400 && xhr.status < 600) {
+						alert(xhr.responseJSON.message);
+					} else {
+						console.error(error);
+						alert('An error occurred while retrieving the data.');
+					}
 				},
 			});
 		}

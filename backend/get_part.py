@@ -34,20 +34,27 @@ SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        token = None
+        access_token = None
+
+        
         if 'Authorization' in request.headers:
-            token = request.headers['Authorization']
-            # The token includes the 'Bearer ' prefix, so you should remove it
-            token = token.replace('Bearer ', '', 1)
+            access_token = request.headers['Authorization']
+
 
         if 'x-access-token' in request.headers:
-            token = request.headers['x-access-token']
+            access_token = request.headers['x-access-token']
 
-        if not token:
+        if not access_token:
             return jsonify({'message': 'Token is missing!'}), 401
 
         try:
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
+            data = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
+            access_level = data.get('access_level')
+
+            # if access_level not in ['read-only', 'operator', 'admin']:
+            if access_level not in ['operator', 'admin']:
+                return jsonify({'message': 'Error: You don\'t have sufficient privilege to perform this action.'}), 403
+            
         except Exception as e:
             print(e)
             return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
@@ -81,7 +88,7 @@ def get_part():
 
         for row in rows:
             results.append(dict(zip(columns, row)))
-
+            
         return jsonify(results)
 
     except Exception as e:

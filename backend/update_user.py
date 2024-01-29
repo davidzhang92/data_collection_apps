@@ -43,34 +43,34 @@ def update_user():
 
         # Extract required fields from the payload
 
-        new_username = str(data['username'])
+
         new_access_level = uuid.UUID(data['access_level'])
         user_id = uuid.UUID(data['id'])
 
         cursor = conn.cursor()
 
-        # Check for duplicates
-        user_name_duplicate_query_check = """
-            SELECT COUNT(id) AS count 
-            FROM user_master where username = ? and is_deleted  = 0
-        """
+        # # Check for duplicates
+        # user_name_duplicate_query_check = """
+        #     SELECT COUNT(id) AS count 
+        #     FROM user_master where username = ? and is_deleted  = 0
+        # """
 
-        cursor.execute(user_name_duplicate_query_check, (new_username))
-        user_name_result = cursor.fetchone()
+        # cursor.execute(user_name_duplicate_query_check, (new_username))
+        # user_name_result = cursor.fetchone()
 
-        # debug
-        # print (user_name_result)
-        # print (access_level_result)
+        # # debug
+        # # print (user_name_result)
+        # # print (access_level_result)
     
-        if user_name_result is not None and user_name_result[0] != 0:
-            return jsonify({'message': 'Error: Username is already exist'}), 400
+        # if user_name_result is not None and user_name_result[0] != 0:
+        #     return jsonify({'message': 'Error: Username is already exist'}), 400
 
 
         # Construct the SQL query to update the username and password for the given id
-        query = "update user_master set username = ?, access_level = ?, modified_date = getdate() where id = ?"
+        query = "update user_master set access_level = ?, modified_date = getdate() where id = ?"
 
         # Execute the SQL query
-        cursor.execute(query, ( new_username, new_access_level, user_id))
+        cursor.execute(query, (new_access_level, user_id))
         conn.commit()
 
         # Check if any rows were affected by the update operation

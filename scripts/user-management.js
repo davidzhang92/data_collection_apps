@@ -235,7 +235,7 @@ $(document).ready(function () {
 	
 	$('.edit-form').on('submit', function(event) {
 		event.preventDefault();
-		var editUsername = $('#edit-username').val();
+		// var editUsername = $('#edit-username').val();
 		
 		// Get the selected option element
 		var selectedOption = $('#edit-user-access-selection').find('option:selected');
@@ -249,7 +249,6 @@ $(document).ready(function () {
 			type: 'PATCH',
 			data: JSON.stringify({
 				id: addCurrentId,
-				username: editUsername,
 				access_level: editUserAccessLevel,
 
 			}),

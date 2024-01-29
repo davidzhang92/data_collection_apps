@@ -56,7 +56,7 @@ def post_user_authentication():
 
         # Construct the SQL query to retrieve salt, password_hash, and access_level for the user
         query = """
-                select salt, password_hash from user_master a
+                select salt, password_hash, b.access_type from user_master a
 				inner join access_level_master b on a.access_level=b.id
                 where username = ? and is_deleted = 0
                 """
@@ -66,12 +66,12 @@ def post_user_authentication():
         result = cursor.fetchone()  # fetchone() retrieves one record from the query result
 
         if result is not None:
-            salt, password_hash= result  # Unpack the result into the variables
+            salt, password_hash, access_type = result  # Unpack the result into the variables
             if authenticate_user_password(salt, password_hash, password):
 
                 # Generate JWT token
 
-                access_token = jwt.encode({'user': user_name,'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, SECRET_KEY, algorithm='HS256')
+                access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, SECRET_KEY, algorithm='HS256')
                 refresh_token = jwt.encode({'user': user_name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)}, SECRET_KEY, algorithm='HS256')
 
 
