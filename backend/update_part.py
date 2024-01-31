@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify
 import pyodbc
+from functools import wraps
+import jwt
 
 app = Flask(__name__)
 
@@ -27,9 +29,43 @@ dsn = 'DataCollection'
 
 # Establish the connection
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
+SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        access_token = None
+
+        
+        if 'Authorization' in request.headers:
+            access_token = request.headers['Authorization']
+
+
+        if 'x-access-token' in request.headers:
+            access_token = request.headers['x-access-token']
+
+        if not access_token:
+            return jsonify({'message': 'Session timed out, please login again1.'}), 401
+
+        try:
+            data = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
+            access_level = data.get('access_level')
+
+            # if access_level not in ['read-only', 'operator', 'admin']:
+            if access_level not in ['operator', 'admin']:
+                return jsonify({'message': 'Error: You don\'t have sufficient privilege to perform this action.'}), 403
+            
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Session timed out, please login again.', 'error': str(e)}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 @app.route('/api/update-part', methods=['PATCH'])
+@token_required
 def update_part():
     try:
         # Get data from the request payload
@@ -74,3 +110,7 @@ def update_part():
 
     except Exception as e:
         return jsonify({'message': 'Error occurred while updating data.', 'error': str(e)}), 500
+
+if __name__ == '__main__':
+    app.run()
+    

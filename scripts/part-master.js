@@ -1,4 +1,6 @@
 $(document).ready(function () {
+	// Get the token from local storage
+	var accessToken = localStorage.getItem('accessToken');
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
 
@@ -108,8 +110,7 @@ $(document).ready(function () {
 				page: pageId, // Change the parameter name to 'page'
 			};
 
-			// Get the token from local storage
-			const accessToken = localStorage.getItem('accessToken');
+
 	
 			$.ajax({
 				url: apiEndpoint,
@@ -124,7 +125,11 @@ $(document).ready(function () {
 					renderData(data);
 				},
 				error: function (xhr, error) {
-					if (xhr.status >= 400 && xhr.status < 600) {
+					if (xhr.status === 401) {
+						alert(xhr.responseJSON.message);
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
 						alert(xhr.responseJSON.message);
 					} else {
 						console.error(error);
@@ -177,8 +182,17 @@ $(document).ready(function () {
 				filteredData = data; // Store the filtered data
 				renderData(filteredData); // Render the filtered data
 			},
-			error: function (error) {
-				console.error('Error fetching filtered data:', error);
+			error: function (xhr, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
 			},
 		});
 		} else {
@@ -239,6 +253,10 @@ $(document).ready(function () {
 				part_description: editPartDescription
 			}),
 			contentType: 'application/json',
+			headers: {
+				'Authorization': accessToken // Include the token in the headers
+			},	
+			
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -259,9 +277,17 @@ $(document).ready(function () {
 	
 				updateTableRow(response);
 			},
-			error: function(xhr, status, error) {
-				// handle error response
-				console.error(error);
+			error: function (xhr, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
 			}
 		});
 		// console.log('Button a.edit clicked, id:', addCurrentId);
@@ -292,6 +318,9 @@ $(document).ready(function () {
 				part_description: addPartDescription
 			}),
 			contentType: 'application/json',
+			headers: {
+				'Authorization': accessToken // Include the token in the headers
+			},	
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -308,12 +337,18 @@ $(document).ready(function () {
 			},
 			error: function(xhr, status, error) {
 				// handle error response
-				if (xhr.status === 400) {
+				if (xhr.status === 401) {
                     // The response status is 400, indicating a duplicate
                     alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+                } else if (xhr.status === 400) {
+					alert(xhr.responseJSON.message);
 					$('#add-part-number').val('');
 					$('#add-part-description').val('');
-                } else {
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
                     console.error(error);
                     alert('An error occurred while submitting the result.');
                 }
@@ -357,6 +392,9 @@ $(document).ready(function () {
 				id: deleteCurrentId,
 			}),
 			contentType: 'application/json',
+			headers: {
+				'Authorization': accessToken // Include the token in the headers
+			},	
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -372,8 +410,13 @@ $(document).ready(function () {
 
 			},
 			error: function(xhr, status, error) {
-				// handle error response
-				console.error(error);
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} 
 			}
 		});
 	});
@@ -414,6 +457,9 @@ $('#submit-batch-data-delete').on('click', function(event) {
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',
+		headers: {
+			'Authorization': accessToken // Include the token in the headers
+		},	
 		success: function(response) {
 			// Handle successful deletion here
 			console.log(response);
@@ -421,13 +467,21 @@ $('#submit-batch-data-delete').on('click', function(event) {
 			location.reload();
 		},
 		error: function(xhr, status, error) {
-			// Handle error here
-			console.error(error);
-		// Refresh the page
-		// location.reload();
+			if (xhr.status === 401) {
+				alert(xhr.responseJSON.message);
+				window.location.href = '/login.html'
+				localStorage.removeItem('accessToken');
+			} else if (xhr.status >= 400 && xhr.status < 600) {
+				alert(xhr.responseJSON.message);
+			} else {
+				console.error(error);
+				alert('An error occurred while retrieving the data.');
+			}
 		}
 	});
 });
+
+
 
 //handling auto-complete for Part Number/Description
 

@@ -45,7 +45,7 @@ def token_required(f):
             access_token = request.headers['x-access-token']
 
         if not access_token:
-            return jsonify({'message': 'Token is missing!'}), 401
+            return jsonify({'message': 'Session timed out, please login again.'}), 401
 
         try:
             data = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
@@ -57,7 +57,7 @@ def token_required(f):
             
         except Exception as e:
             print(e)
-            return jsonify({'message': 'Token is invalid!', 'error': str(e)}), 401
+            return jsonify({'message': 'Session timed out, please login again.', 'error': str(e)}), 401
 
         return f(*args, **kwargs)
 

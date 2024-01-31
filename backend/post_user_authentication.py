@@ -71,7 +71,7 @@ def post_user_authentication():
 
                 # Generate JWT token
 
-                access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=120)}, SECRET_KEY, algorithm='HS256')
+                access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}, SECRET_KEY, algorithm='HS256')
                 refresh_token = jwt.encode({'user': user_name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)}, SECRET_KEY, algorithm='HS256')
 
 
