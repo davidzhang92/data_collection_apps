@@ -71,15 +71,15 @@ def post_user_authentication():
 
                 # Generate JWT token
 
-                access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1)}, SECRET_KEY, algorithm='HS256')
+                access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=15)}, SECRET_KEY, algorithm='HS256')
                 refresh_token = jwt.encode({'user': user_name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)}, SECRET_KEY, algorithm='HS256')
 
 
                 # Create a response
-                response = make_response(jsonify({'message': 'Login OK', 'access_token': access_token}), 200)
+                response = make_response(jsonify({'message': 'Login OK', 'access_token': access_token, 'refresh_token':refresh_token}), 200)
 
                 # Set the refresh token as an HttpOnly cookie
-                response.set_cookie('refreshToken', refresh_token, httponly=True, samesite='Strict')
+                # response.set_cookie('refreshToken', refresh_token, httponly=False, samesite='Lax')
 
 
                 

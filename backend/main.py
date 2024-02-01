@@ -47,6 +47,7 @@ from get_donut_2_chart_throughput import get_donut_2, get_donut_2_details
 from get_donut_3_chart_throughput import get_donut_3, get_donut_3_details
 from get_donut_4_chart_throughput import get_donut_4, get_donut_4_details
 from get_donut_5_chart_throughput import get_donut_5, get_donut_5_details
+from post_refresh_token import refresh_token
 from flask_cors import CORS
 from waitress import serve
 
@@ -544,6 +545,15 @@ def get_donut_5_api():
 @app.route('/api/donut_5_details', methods=['GET'])
 def get_donut_5_details_api():
     return get_donut_5_details()
+
+
+# --------------------------------
+# refresh token POST
+# --------------------------------
+
+@app.route('/api/refresh_token_api', methods=['POST'])
+def refresh_token_api():
+    return refresh_token()
 
 
 

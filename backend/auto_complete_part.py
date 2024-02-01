@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import pyodbc
 
+
 app = Flask(__name__)
 
 # # Define your MS SQL Server connection details (Windows)
@@ -24,6 +25,7 @@ app = Flask(__name__)
 # Use the DSN you've defined in your odbc.ini file
 
 dsn = 'DataCollection'
+
 
 # Establish the connection
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')

@@ -52,7 +52,7 @@ def token_required(f):
             access_level = data.get('access_level')
 
             # if access_level not in ['read-only', 'operator', 'admin']:
-            if access_level not in ['operator', 'admin']:
+            if access_level not in ['admin']:
                 return jsonify({'message': 'Error: You don\'t have sufficient privilege to perform this action.'}), 403
             
         except Exception as e:

@@ -338,7 +338,6 @@ $(document).ready(function () {
 			error: function(xhr, status, error) {
 				// handle error response
 				if (xhr.status === 401) {
-                    // The response status is 400, indicating a duplicate
                     alert(xhr.responseJSON.message);
 					window.location.href = '/login.html'
 					localStorage.removeItem('accessToken');
