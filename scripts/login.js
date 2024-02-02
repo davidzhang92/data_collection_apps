@@ -25,11 +25,11 @@ $(document).ready(function () {
                 alert(response.message);
                 // Store the access token in local storage
                 localStorage.setItem('accessToken', response.access_token);
-                sessionStorage.setItem('refreshToken', response.refresh_token);
+                // sessionStorage.setItem('refreshToken', response.refresh_token);
 
 
                 // Redirect to a certain page
-                window.location.href = '/menus/dashboard/dashboard.html';
+                // window.location.href = '/menus/dashboard/dashboard.html';
             },
             error: function(xhr, status, error) {
                 // handle error response

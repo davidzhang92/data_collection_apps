@@ -1,13 +1,16 @@
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 import pyodbc
 import re
 import hashlib
 import jwt
-import datetime
+from datetime import datetime, timedelta
 from functools import wraps
 
 
+
 app = Flask(__name__)
+CORS(app)
 
 # # Define your MS SQL Server connection details (Windows)
 # server = '192.168.100.121'
@@ -35,77 +38,79 @@ dsn = 'DataCollection'
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
 
+
+
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        refresh_token = None
+        provided_access_token = None
 
-        
+        print(request.headers['Authorization'])
         if 'Authorization' in request.headers:
-            refresh_token = request.headers['Authorization']
+            provided_access_token = request.headers['Authorization']
 
 
         if 'x-access-token' in request.headers:
-            refresh_token = request.headers['x-access-token']
+            provided_access_token = request.headers['x-access-token']
 
-        if not refresh_token:
-            return jsonify({'message': 'Session timed out, please login again.'}), 401
+        if not provided_access_token:
+            return jsonify({'message': 'Token invalid, please login again.'}), 401
 
         try:
-            data = jwt.decode(refresh_token, SECRET_KEY, algorithms=['HS256'])
-            # access_level = data.get('access_level')
+            data = jwt.decode(provided_access_token, SECRET_KEY, algorithms=['HS256'])
 
-            # if access_level not in ['read-only', 'operator', 'admin']:
-            # if access_level not in ['read-only', 'operator', 'admin']:
-            #     return jsonify({'message': 'Error: You don\'t have sufficient privilege to perform this action.'}), 403
+
             
         except Exception as e:
             print(e)
-            return jsonify({'message': 'Session timed out, please login again.', 'error': str(e)}), 401
+            return jsonify({'message': 'Session timed out, please login again,from backend prt.', 'error': str(e)}), 401
 
         return f(*args, **kwargs)
 
     return decorated
 
-@app.route('/refresh-token', methods=['POST'])
+@app.route('/refresh-access-token', methods=['POST'])
 @token_required
-def refresh_token():
-    data_token = request.get_json()
-    # Get the refresh token from the request
-    refresh_token = data_token['refreshToken']
+def post_refresh_access_token():
+
+    old_access_token = request.headers.get('Authorization')
 
     # Verify the refresh token
-    if refresh_token is not None:
+    if old_access_token is not None:
         try:
-            payload = jwt.decode(refresh_token, SECRET_KEY)
-            user_name = payload['user']
+            payload = jwt.decode(old_access_token, SECRET_KEY, algorithms=['HS256'])
+            user_name = payload.get('user')
+            access_level = payload.get('access_type')
+
+
                 
             # Construct the SQL query to access_level for the user
             query = """
                     select b.access_type from user_master a
                     inner join access_level_master b on a.access_level=b.id
-                    where username = ? and is_deleted = 0
+                    where username = ? and b.access_type = ? and is_deleted = 0
                     """
 
             # Execute the SQL query
             cursor = conn.cursor()
-            cursor.execute(query, (user_name,))
+            cursor.execute(query, (user_name, access_level))
             result = cursor.fetchone()  
-
+    
+    
             access_type = result
 
         # Generate a new access token
-            access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=15)}, SECRET_KEY)
-            response = make_response(jsonify({'message': 'Access Token Renewal Successful/', 'access_token': access_token}), 200)
+            access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.utcnow()+ timedelta(hours=7)+ timedelta(minutes=1)}, SECRET_KEY)
+            response = make_response(jsonify({'message': 'Access Token Renewal Successful', 'access_token': access_token}), 200)
 
 
             return response
         except jwt.ExpiredSignatureError:
-            return jsonify({'message': 'Refresh token has expired. Please log in again.'}), 401
-        except jwt.InvalidTokenError:
-            return jsonify({'message': 'Invalid token. Please log in again.'}), 401
+            return jsonify({'message': 'token has expired. Please log in again.'}), 401
+        except jwt.InvalidTokenError as jwt_error:
+            return jsonify({str(jwt_error)}), 401
     else:
-        return jsonify({'message': 'No refresh token provided.'}), 400
+        return jsonify({'message': 'No token provided.'}), 400
 
 
 

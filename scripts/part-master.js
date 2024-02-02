@@ -127,7 +127,7 @@ $(document).ready(function () {
 				error: function (xhr, error) {
 					if (xhr.status === 401) {
 						alert(xhr.responseJSON.message);
-						window.location.href = '/login.html'
+						// window.location.href = '/login.html'
 						localStorage.removeItem('accessToken');
 					} else if (xhr.status >= 400 && xhr.status < 600) {
 						alert(xhr.responseJSON.message);
