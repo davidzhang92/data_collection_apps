@@ -4,6 +4,7 @@ import re
 import hashlib
 import jwt
 from datetime import datetime, timedelta
+import pytz
 
 
 app = Flask(__name__)
@@ -67,16 +68,17 @@ def post_user_authentication():
 
         if result is not None:
             salt, password_hash, access_type = result  # Unpack the result into the variables
+            exp = datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) + timedelta(seconds=30)
             if authenticate_user_password(salt, password_hash, password):
 
                 # Generate JWT token
 
-                access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': datetime.utcnow()+ timedelta(hours=7)+ timedelta(minutes=1)}, SECRET_KEY, algorithm='HS256')
+                access_token = jwt.encode({'user': user_name, 'access_level': access_type, 'exp': exp}, SECRET_KEY, algorithm='HS256')
                 # refresh_token = jwt.encode({'user': user_name, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1)}, SECRET_KEY, algorithm='HS256')
 
 
                 # Create a response
-                response = make_response(jsonify({'message': 'Login OK', 'access_token': access_token}), 200)
+                response = make_response(jsonify({'time':datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) , 'message': 'Login OK', 'access_token': access_token}), 200)
 
                 # Set the refresh token as an HttpOnly cookie
                 # response.set_cookie('refreshToken', refresh_token, httponly=False, samesite='Lax')

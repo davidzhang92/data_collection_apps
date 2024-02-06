@@ -1,17 +1,18 @@
 $(document).ready(function () {
-	var accessToken = localStorage.getItem('accessToken');
+
     var lastActivityTime = Date.now();
 
-    window.refreshToken = function(){
 
+    window.refreshToken = function(){
         $.ajax({
+            
             url: 'http://' + window.location.hostname + ':4000/api/refresh_access_token_api',
             type: 'POST',
             
             contentType: 'application/json',
-				headers: {
-					'Authorization': accessToken // Include the token in the headers
-				},
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },
             success: function(response) {
                 // handle successful response
                 console.log(response.message);
@@ -36,21 +37,30 @@ $(document).ready(function () {
         });
     }
 
-   // Event listeners for mouse and keyboard events
-   $(document).on('mousemove click keypress', function() {
+   /// Event listeners for mouse and keyboard events
+$(document).on('mousemove click keypress', function() {
     lastActivityTime = Date.now();
+});
+
+// Listen for AJAX requests
+$(document).ajaxSend(function(event, xhr, settings) {
+    if (settings.url !== 'http://' + window.location.hostname + ':4000/api/refresh_access_token_api') {
+        lastActivityTime = Date.now();
+    }
 });
 
 // Function to check for user activity within the last 120 minutes
 function checkActivity() {
-    if(Date.now() - lastActivityTime <= 1*60*1000) {
+    if(Date.now() - lastActivityTime <= 1*15*1000) {
         window.refreshToken();
+        console.log (Date.now() - lastActivityTime)
     }
     // Schedule the next check
-    setTimeout(checkActivity, 5*1000);
+    setTimeout(checkActivity, 1*15*1000);
 }
 
 // Start checking for user activity
 checkActivity();
+
 
 });
