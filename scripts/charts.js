@@ -230,7 +230,12 @@ $(document).ready(function() {
         //function to call donut 1 api and count api
 
         function fetchDataAndUpdateChartDonut1() {
-            fetch('http://' + window.location.hostname + ':4000/api/donut_1_api')
+            fetch('http://' + window.location.hostname + ':4000/api/donut_1_api', {
+                headers: {
+                    'Authorization': localStorage.getItem('accessToken')
+                }
+            })
+            
                 .then(response => response.json())
                 .then(data => {
                     // Update the global variables

@@ -51,12 +51,12 @@ $(document).ajaxSend(function(event, xhr, settings) {
 
 // Function to check for user activity within the last 120 minutes
 function checkActivity() {
-    if(Date.now() - lastActivityTime <= 1*15*1000) {
+    if(Date.now() - lastActivityTime <= 60*60*1000) {
         window.refreshToken();
         console.log (Date.now() - lastActivityTime)
     }
     // Schedule the next check
-    setTimeout(checkActivity, 1*15*1000);
+    setTimeout(checkActivity, 60*60*1000);
 }
 
 // Start checking for user activity

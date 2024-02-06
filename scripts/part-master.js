@@ -1,6 +1,5 @@
 $(document).ready(function () {
 	// Get the token from local storage
-	var accessToken = localStorage.getItem('accessToken');
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
 
@@ -117,8 +116,8 @@ $(document).ready(function () {
 				type: 'GET',
 				data: requestData, // Send the data object directly
 				contentType: 'application/json',
-				headers: {
-					'Authorization': accessToken // Include the token in the headers
+				beforeSend: function(xhr) { 
+					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
 				},	
 				success: function (data) {
 					// Handle success
@@ -253,9 +252,9 @@ $(document).ready(function () {
 				part_description: editPartDescription
 			}),
 			contentType: 'application/json',
-			headers: {
-				'Authorization': accessToken // Include the token in the headers
-			},	
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },	
 			
 			success: function(response) {
 				// handle successful response
@@ -318,9 +317,9 @@ $(document).ready(function () {
 				part_description: addPartDescription
 			}),
 			contentType: 'application/json',
-			headers: {
-				'Authorization': accessToken // Include the token in the headers
-			},	
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },	
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -391,9 +390,9 @@ $(document).ready(function () {
 				id: deleteCurrentId,
 			}),
 			contentType: 'application/json',
-			headers: {
-				'Authorization': accessToken // Include the token in the headers
-			},	
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },	
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -456,8 +455,8 @@ $('#submit-batch-data-delete').on('click', function(event) {
 		type: 'DELETE',
 		data: JSON.stringify({ ids: idsToDelete }),
 		contentType: 'application/json',
-		headers: {
-			'Authorization': accessToken // Include the token in the headers
+		beforeSend: function(xhr) { 
+			xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
 		},	
 		success: function(response) {
 			// Handle successful deletion here

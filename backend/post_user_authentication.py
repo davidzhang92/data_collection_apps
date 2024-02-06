@@ -68,7 +68,7 @@ def post_user_authentication():
 
         if result is not None:
             salt, password_hash, access_type = result  # Unpack the result into the variables
-            exp = datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) + timedelta(seconds=30)
+            exp = datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) + timedelta(hours=2)
             if authenticate_user_password(salt, password_hash, password):
 
                 # Generate JWT token
@@ -78,7 +78,7 @@ def post_user_authentication():
 
 
                 # Create a response
-                response = make_response(jsonify({'time':datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) , 'message': 'Login OK', 'access_token': access_token}), 200)
+                response = make_response(jsonify({'message': 'Login OK', 'access_token': access_token}), 200)
 
                 # Set the refresh token as an HttpOnly cookie
                 # response.set_cookie('refreshToken', refresh_token, httponly=False, samesite='Lax')

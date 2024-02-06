@@ -81,7 +81,7 @@ def post_refresh_access_token():
         try:
             payload = jwt.decode(old_access_token, SECRET_KEY, algorithms=['HS256'])
             current_user_name = payload.get('user')
-            exp = datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) + timedelta(seconds=10)
+            exp = datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) + timedelta(hours=2)
 
                 
             # Construct the SQL query to access_level for the user
