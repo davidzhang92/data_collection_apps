@@ -1,10 +1,8 @@
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 import pyodbc
-import re
-import hashlib
 import jwt
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 import pytz
 from functools import wraps
 
@@ -118,8 +116,5 @@ def post_refresh_access_token():
         return jsonify({'message': 'No token provided.'}), 400
 
 
-
-
-    
 
 

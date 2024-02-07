@@ -40,12 +40,23 @@ $(document).ready(function () {
 
 			// Parse the date string
 			var latestDate = new Date(user.latest_date);
+			var lastLoginDate = new Date(user.last_login);
 
 			// Format the date as 'YYYY-MM-DD HH:MM:SS'
 			var formattedlatestDate = latestDate.toISOString().slice(0, 16).replace('T', ' ');
 	  
 			// Replace 'null' with '-'
-			var last_login = user.last_login !== null ? user.last_login : '-';
+			var formattedLastLogin;
+			
+			if (user.last_login !== null) {
+				var lastLoginDate = new Date(user.last_login);
+				formattedLastLogin = lastLoginDate.toISOString().slice(0, 16).replace('T', ' ');
+			} else {
+				formattedLastLogin = '-';
+			}
+
+
+
 
             var row = `<tr data-id="${user.id}">
                     <td>
@@ -57,7 +68,7 @@ $(document).ready(function () {
                     <td>${user.username}</td>
                     <td>${user.access_type}</td>
                     <td>${formattedlatestDate}</td>
-                    <td>${last_login}</td>
+                    <td>${formattedLastLogin}</td>
                     <td>
                     <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 					<a href="#changePasswordUserModal" class="change-password" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Change Password">&#xE73c;</i></a>

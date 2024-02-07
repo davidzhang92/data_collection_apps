@@ -1,0 +1,30 @@
+server {
+    listen 3000;
+    server_name 192.168.100.121; # Replace with your domain or IP address
+
+    root /data-storage/sfdc_apps/; # Set to your web app's directory
+
+    location / {
+        auth_request /auth;
+        try_files $uri $uri/ =404;
+    }
+
+    location = /auth {
+        internal;
+        proxy_pass http://192.168.100.121:4000/api/token_authentication_api;
+        proxy_pass_request_body off;
+        proxy_set_header Content-Length "";
+        proxy_set_header X-Original-URI $request_uri;
+        proxy_set_header Authorization $http_authorization;
+    }
+
+    error_page 401 = @error401;
+
+    location @error401 {
+        return 302 http://192.168.100.121:3000/; # Replace with your login page URL
+    }
+
+    location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
+        expires 30d;
+    }
+}

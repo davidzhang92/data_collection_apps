@@ -48,6 +48,7 @@ from get_donut_3_chart_throughput import get_donut_3, get_donut_3_details
 from get_donut_4_chart_throughput import get_donut_4, get_donut_4_details
 from get_donut_5_chart_throughput import get_donut_5, get_donut_5_details
 from post_refresh_token import post_refresh_access_token
+from get_token_authentication import get_token_authentication
 from flask_cors import CORS
 from waitress import serve
 
@@ -547,6 +548,10 @@ def get_donut_5_details_api():
     return get_donut_5_details()
 
 
+###############################
+#####token-related-section#######
+###############################
+
 # --------------------------------
 # refresh token POST
 # --------------------------------
@@ -555,7 +560,13 @@ def get_donut_5_details_api():
 def post_refresh_access_token_api():
     return post_refresh_access_token()
 
+# --------------------------------
+# authentication token POST
+# --------------------------------
 
+@app.route('/api/token_authentication_api', methods=['GET'])
+def get_token_authentication_api():
+    return get_token_authentication()
 
 if __name__ == "__main__":
     # built-in flask server for development
