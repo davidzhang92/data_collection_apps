@@ -153,7 +153,19 @@ def get_filter_search_part_master():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the part_master table
-    query = "SELECT  id, part_no, part_description, CASE WHEN modified_date >= created_date THEN modified_date ELSE created_date END AS latest_date FROM part_master WHERE  part_no LIKE ? and part_description LIKE ? and is_deleted = 0 Order by latest_date desc;"
+    query = """                 SELECT a.id,
+                        a.part_no,
+                        a.part_description,
+                        b.username,
+                        latest_date
+                FROM     (
+                                SELECT *,
+                                    CASE
+                                            WHEN modified_date >= created_date THEN modified_date
+                                            ELSE created_date
+                                    END AS latest_date
+                                FROM   part_master) AS a
+                INNER JOIN user_master b ON a.created_by = b.id WHERE  part_no LIKE ? and a.part_description LIKE ? and a.is_deleted = 0 Order by a.latest_date desc;"""
 
     # Construct the parameter values with wildcards
     part_no_param = f"%{selected_part_no}%"

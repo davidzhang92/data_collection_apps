@@ -74,6 +74,7 @@ def post_part():
         # Extract required fields from the payload
         new_part_no = data['part_no']
         new_part_description = data['part_description']
+        user_id = data['user_id']
 
         cursor = conn.cursor()
 
@@ -102,11 +103,11 @@ def post_part():
         elif part_no_result is not None and part_no_result[0] != 0 or part_description_result is not None and part_description_result[0] != 0:
             return jsonify({'message': 'Error: Data is a duplicate.'}), 400
         # Construct the SQL query to update the part_no and part_description for the given id
-        query = "insert into part_master  (id, part_no, part_description, created_date, is_deleted) values (newid(), ?, ?, getdate(), 0)"
+        query = "insert into part_master  (id, part_no, part_description, created_by, created_date, is_deleted) values (newid(),?, ?, ?, getdate(), 0)"
 
 
         # Execute the SQL query
-        cursor.execute(query, (new_part_no, new_part_description))
+        cursor.execute(query, (new_part_no, new_part_description, user_id))
         conn.commit()
 
         # Check if any rows were affected by the update operation

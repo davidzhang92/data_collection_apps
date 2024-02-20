@@ -77,7 +77,23 @@ def get_part():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "SELECT id, part_no, part_description, latest_date FROM (SELECT *, CASE WHEN modified_date >= created_date THEN modified_date ELSE created_date END AS latest_date FROM part_master) AS subquery where is_deleted=0 ORDER BY latest_date desc OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY;"
+        query = """
+                 SELECT a.id,
+                        a.part_no,
+                        a.part_description,
+                        b.username,
+                        latest_date
+                FROM     (
+                                SELECT *,
+                                    CASE
+                                            WHEN modified_date >= created_date THEN modified_date
+                                            ELSE created_date
+                                    END AS latest_date
+                                FROM   part_master) AS a
+                INNER JOIN user_master b ON a.created_by = b.id
+                WHERE    a.is_deleted=0
+                ORDER BY latest_date DESC offset ? rows FETCH next 10 rows only; 
+                                """
 
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()

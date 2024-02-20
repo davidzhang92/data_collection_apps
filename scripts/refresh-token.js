@@ -19,7 +19,8 @@ $(document).ready(function () {
                 // alert(response.message);
                 // Store the access token in local storage
                 localStorage.setItem('accessToken', response.access_token);
-
+                localStorage.setItem('userName',response.username)
+                localStorage.setItem('userId',response.user_id)
             },
             error: function (xhr, error) {
                 if (xhr.status === 401) {

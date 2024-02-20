@@ -1,7 +1,8 @@
 $(document).ready(function () {
 	// Get the token from local storage
 	// Activate tooltip
-	$('[data-toggle="tooltip"]').tooltip();
+	$('[data-toggle="tooltip"]').tooltip()
+	$('.displayed-username').text(localStorage.getItem('userName'));
 
 	//clear all field in modal window when it's hidden
 	$('#addPartModal').on('hidden.bs.modal', function () {
@@ -41,8 +42,16 @@ $(document).ready(function () {
 		// 	console.log('modified_date:', part.modified_date);
 		// 	return;
 		//   }
-	  
 	
+	// Parse the date string
+	var createDate = new Date(part.latest_date);
+
+	// Format the date as 'YYYY-MM-DD HH:MM:SS'
+	var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
+
+	// Replace 'null' with '-'
+	var userName = part.username !== null ? part.username : '-';
+
 	var row = `<tr data-id="${part.id}">
 			<td>
 			  <span class="custom-checkbox">
@@ -52,7 +61,8 @@ $(document).ready(function () {
 			</td>
 			<td>${part.part_no}</td>
 			<td>${part.part_description}</td>
-			<td>${part.latest_date}</td>
+			<td>${userName}</td>
+			<td>${formattedDate}</td>
 			<td>
 			  <a href="#editPartModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 			  <a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -249,7 +259,8 @@ $(document).ready(function () {
 			data: JSON.stringify({
 				id: addCurrentId,
 				part_no: editPartNumber,
-				part_description: editPartDescription
+				part_description: editPartDescription,
+				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
             beforeSend: function(xhr) { 
@@ -314,7 +325,8 @@ $(document).ready(function () {
 			type: 'POST',
 			data: JSON.stringify({
 				part_no: addPartNumber,
-				part_description: addPartDescription
+				part_description: addPartDescription,
+				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
             beforeSend: function(xhr) { 
@@ -388,6 +400,7 @@ $(document).ready(function () {
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
+				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
             beforeSend: function(xhr) { 
@@ -419,24 +432,8 @@ $(document).ready(function () {
 		});
 	});
 
-// Handle batch delete and DELETE request
+	// Handle batch delete and DELETE request
 
-// Get all checked checkboxes
-var checkedCheckboxes = $('input.row-checkbox:checked');
-
-// Create an array to store the IDs of the rows to be deleted
-var idsToDelete = [];
-
-// Loop through each checked checkbox and add its ID to the array
-checkedCheckboxes.each(function() {
-    idsToDelete.push($(this).attr('id'));
-});
-
-// console.log(idsToDelete);
-
-// Send the AJAX request to delete the rows
-$('#submit-batch-data-delete').on('click', function(event) {
-	event.preventDefault();
 	// Get all checked checkboxes
 	var checkedCheckboxes = $('input.row-checkbox:checked');
 
@@ -449,35 +446,54 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	});
 
 	// console.log(idsToDelete);
-	// Get the data-id attribute of the row associated with the clicked button
-	$.ajax({
-		url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
-		type: 'DELETE',
-		data: JSON.stringify({ ids: idsToDelete }),
-		contentType: 'application/json',
-		beforeSend: function(xhr) { 
-			xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
-		},	
-		success: function(response) {
-			// Handle successful deletion here
-			console.log(response);
-					// Refresh the page
-			location.reload();
-		},
-		error: function(xhr, status, error) {
-			if (xhr.status === 401) {
-				alert(xhr.responseJSON.message);
-				window.location.href = '/login.html'
-				localStorage.removeItem('accessToken');
-			} else if (xhr.status >= 400 && xhr.status < 600) {
-				alert(xhr.responseJSON.message);
-			} else {
-				console.error(error);
-				alert('An error occurred while retrieving the data.');
+
+	// Send the AJAX request to delete the rows
+	$('#submit-batch-data-delete').on('click', function(event) {
+		event.preventDefault();
+		// Get all checked checkboxes
+		var checkedCheckboxes = $('input.row-checkbox:checked');
+
+		// Create an array to store the IDs of the rows to be deleted
+		var idsToDelete = [];
+
+		// Loop through each checked checkbox and add its ID to the array
+		checkedCheckboxes.each(function() {
+			idsToDelete.push($(this).attr('id'));
+		});
+
+		// console.log(idsToDelete);
+		// Get the data-id attribute of the row associated with the clicked button
+		$.ajax({
+			url: 'http://' + window.location.hostname + ':4000/api/delete_part_api',
+			type: 'DELETE',
+			data: JSON.stringify({ 
+				ids: idsToDelete, 
+				user_id: localStorage.getItem('userId') }),
+
+			contentType: 'application/json',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},	
+			success: function(response) {
+				// Handle successful deletion here
+				console.log(response);
+						// Refresh the page
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
 			}
-		}
+		});
 	});
-});
 
 
 
@@ -562,118 +578,118 @@ $('#submit-batch-data-delete').on('click', function(event) {
 
 
 
-// ==========================================================
-// ***pagination section***
-// ==========================================================
-function updatePaginationButtons(currentPage) {
-    $('.page-number').removeClass('active');
-    $('.page-number').eq(currentPage - 1).addClass('active');
+	// ==========================================================
+	// ***pagination section***
+	// ==========================================================
+	function updatePaginationButtons(currentPage) {
+		$('.page-number').removeClass('active');
+		$('.page-number').eq(currentPage - 1).addClass('active');
 
-    $('#prevPage').toggleClass('disabled', currentPage === 1);
-    $('#nextPage').toggleClass('disabled', currentPage === totalPages);
-    $('#firstPage').toggleClass('disabled', currentPage === 1);
-    $('#lastPage').toggleClass('disabled', currentPage === totalPages);
-}
+		$('#prevPage').toggleClass('disabled', currentPage === 1);
+		$('#nextPage').toggleClass('disabled', currentPage === totalPages);
+		$('#firstPage').toggleClass('disabled', currentPage === 1);
+		$('#lastPage').toggleClass('disabled', currentPage === totalPages);
+	}
 
-let totalEntries = 0;
-const entriesPerPage = 10;
-let totalPages = 0;
-let currentPage = 1;
+	let totalEntries = 0;
+	const entriesPerPage = 10;
+	let totalPages = 0;
+	let currentPage = 1;
 
-// Initial fetch of pagination entries count and creation of pagination
-fetchPaginationEntriesCount();
+	// Initial fetch of pagination entries count and creation of pagination
+	fetchPaginationEntriesCount();
 
-// Function to fetch the total entries count from the API
-function fetchPaginationEntriesCount() {
-    $.ajax({
-        type: 'GET',
-        url: 'http://' + window.location.hostname + ':4000/api/pagination_part_entries_api',
-        dataType: 'json',
-        success: function (response) {
-            totalEntries = response[0].count;
-            totalPages = Math.ceil(totalEntries / entriesPerPage);
-            createPagination(currentPage);
-        },
-        error: function (xhr, status, error) {
-            console.log("API request failed:", error);
-        }
-    });
-}
+	// Function to fetch the total entries count from the API
+	function fetchPaginationEntriesCount() {
+		$.ajax({
+			type: 'GET',
+			url: 'http://' + window.location.hostname + ':4000/api/pagination_part_entries_api',
+			dataType: 'json',
+			success: function (response) {
+				totalEntries = response[0].count;
+				totalPages = Math.ceil(totalEntries / entriesPerPage);
+				createPagination(currentPage);
+			},
+			error: function (xhr, status, error) {
+				console.log("API request failed:", error);
+			}
+		});
+	}
 
-// Function to create pagination buttons
-function createPagination(currentPage) {
-    // Calculate the range of page numbers to display
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, currentPage + 2);
+	// Function to create pagination buttons
+	function createPagination(currentPage) {
+		// Calculate the range of page numbers to display
+		let startPage = Math.max(1, currentPage - 2);
+		let endPage = Math.min(totalPages, currentPage + 2);
 
-    // Create the pagination buttons HTML
-    let paginationHTML = '';
+		// Create the pagination buttons HTML
+		let paginationHTML = '';
 
-    paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">First</a></li>`;
-    paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">Previous</a></li>`;
+		paginationHTML += `<li class="page-item" id="firstPage"><a href="#" class="page-link">First</a></li>`;
+		paginationHTML += `<li class="page-item" id="prevPage"><a href="#" class="page-link">Previous</a></li>`;
 
-    for (let i = startPage; i <= endPage; i++) {
-        if (i === currentPage) {
-            paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
-        } else {
-            paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
-        }
-    }
+		for (let i = startPage; i <= endPage; i++) {
+			if (i === currentPage) {
+				paginationHTML += `<li class="page-item active"><a href="#" class="page-link page-number">${i}</a></li>`;
+			} else {
+				paginationHTML += `<li class="page-item"><a href="#" class="page-link page-number">${i}</a></li>`;
+			}
+		}
 
-    paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">Next</a></li>`;
-    paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
+		paginationHTML += `<li class="page-item" id="nextPage"><a href="#" class="page-link">Next</a></li>`;
+		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
 
-    // Update the HTML of the page container with the generated pagination buttons
-    $('#page_container').html(paginationHTML);
-}
+	// Update the HTML of the page container with the generated pagination buttons
+	$('#page_container').html(paginationHTML);
+	}
 
-// Event handler for clicking a page number
-$(document).on('click', '.page-number', function () {
-    currentPage = parseInt($(this).text());
-    createPagination(currentPage); // Update the pagination buttons
-    updatePaginationButtons(currentPage); // Update the active page highlight
-    fetchData(currentPage);
-});
+	// Event handler for clicking a page number
+	$(document).on('click', '.page-number', function () {
+		currentPage = parseInt($(this).text());
+		createPagination(currentPage); // Update the pagination buttons
+		updatePaginationButtons(currentPage); // Update the active page highlight
+		fetchData(currentPage);
+	});
 
-// Event handler for clicking the "Previous" button
-$(document).on('click', '#prevPage', function () {
-    if (currentPage > 1) {
-        currentPage--;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
+	// Event handler for clicking the "Previous" button
+	$(document).on('click', '#prevPage', function () {
+		if (currentPage > 1) {
+			currentPage--;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
 
-// Event handler for clicking the "Next" button
-$(document).on('click', '#nextPage', function () {
-    if (currentPage < totalPages) {
-        currentPage++;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
+	// Event handler for clicking the "Next" button
+	$(document).on('click', '#nextPage', function () {
+		if (currentPage < totalPages) {
+			currentPage++;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
 
-// Event handler for clicking the "First" button
-$(document).on('click', '#firstPage', function () {
-    if (currentPage !== 1) {
-        currentPage = 1;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
+	// Event handler for clicking the "First" button
+	$(document).on('click', '#firstPage', function () {
+		if (currentPage !== 1) {
+			currentPage = 1;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
 
-// Event handler for clicking the "Last" button
-$(document).on('click', '#lastPage', function () {
-    if (currentPage !== totalPages) {
-        currentPage = totalPages;
-        createPagination(currentPage);
-        updatePaginationButtons(currentPage);
-        fetchData(currentPage);
-    }
-});
+	// Event handler for clicking the "Last" button
+	$(document).on('click', '#lastPage', function () {
+		if (currentPage !== totalPages) {
+			currentPage = totalPages;
+			createPagination(currentPage);
+			updatePaginationButtons(currentPage);
+			fetchData(currentPage);
+		}
+	});
 
 	// Check the stored state of the "select all" checkbox and update it
 	var selectAllState = localStorage.getItem('selectAllState');
@@ -686,7 +702,7 @@ $(document).on('click', '#lastPage', function () {
 
 	//logout function, clear all access token upon log out
 	$('#logout').click(function(){
-        localStorage.removeItem('accessToken');
+		localStorage.clear();
     });
 	
 });

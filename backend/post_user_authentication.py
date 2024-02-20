@@ -57,17 +57,24 @@ def post_user_authentication():
 
         # Construct the SQL query to retrieve salt, password_hash, and access_level for the user
         query = """
-                select salt, password_hash, b.access_type from user_master a
+                select a.id, username, salt, password_hash, b.access_type from user_master a
 				inner join access_level_master b on a.access_level=b.id
                 where username = ? and is_deleted = 0
                 """
-
+        update_login_date = """
+                update user_master
+                set last_login=GETDATE()
+                where username=?
+                """
         # Execute the SQL query
         cursor.execute(query, (user_name,))
         result = cursor.fetchone()  # fetchone() retrieves one record from the query result
 
+        cursor.execute(update_login_date, (user_name,))
+        cursor.commit()
+
         if result is not None:
-            salt, password_hash, access_type = result  # Unpack the result into the variables
+            user_id, username, salt, password_hash, access_type = result  # Unpack the result into the variables
             exp = datetime.utcnow().replace(tzinfo=pytz.UTC).astimezone(pytz.timezone('Asia/Jakarta')) + timedelta(hours=2)
             if authenticate_user_password(salt, password_hash, password):
 
@@ -78,7 +85,7 @@ def post_user_authentication():
 
 
                 # Create a response
-                response = make_response(jsonify({'message': 'Login OK', 'access_token': access_token}), 200)
+                response = make_response(jsonify({'message': 'Login OK', 'access_token': access_token, 'username':username, 'user_id': user_id}), 200)
 
                 # Set the refresh token as an HttpOnly cookie
                 # response.set_cookie('refreshToken', refresh_token, httponly=False, samesite='Lax')

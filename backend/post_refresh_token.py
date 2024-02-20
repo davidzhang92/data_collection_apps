@@ -84,7 +84,7 @@ def post_refresh_access_token():
                 
             # Construct the SQL query to access_level for the user
             query = """
-                    select b.access_type from user_master a
+                    select a.id, b.access_type from user_master a
                     inner join access_level_master b on a.access_level=b.id
                     where username = ? and is_deleted = 0
                     """
@@ -96,7 +96,7 @@ def post_refresh_access_token():
     
     
             if result is not None:
-                access_type = result[0]
+                user_id, access_type = result
             else:
                 return jsonify({'message': 'Error: No valid access level is found.'}), 401
 
@@ -104,7 +104,7 @@ def post_refresh_access_token():
         # Generate a new access token
 
             access_token = jwt.encode({'user': current_user_name, 'access_level': access_type, 'exp': exp }, SECRET_KEY)
-            response = make_response(jsonify({'message': 'Access Token Renewal Successful', 'access_token': access_token, }), 200)
+            response = make_response(jsonify({'message': 'Access Token Renewal Successful', 'access_token': access_token, 'username':current_user_name, 'user_id':user_id }), 200)
 
 
             return response
