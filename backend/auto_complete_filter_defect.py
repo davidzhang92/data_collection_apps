@@ -153,7 +153,19 @@ def get_filter_search_defect_master():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the defect_master table
-    query = "SELECT  id, defect_no, defect_description, CASE WHEN modified_date >= created_date THEN modified_date ELSE created_date END AS latest_date FROM defect_master WHERE  defect_no LIKE ? and defect_description LIKE ? and is_deleted = 0 Order by latest_date desc;"
+    query = """         SELECT a.id,
+                        a.defect_no,
+                        a.defect_description,
+                        b.username,
+                        latest_date
+                FROM     (
+                                SELECT *,
+                                    CASE
+                                            WHEN modified_date >= created_date THEN modified_date
+                                            ELSE created_date
+                                    END AS latest_date
+                                FROM   defect_master) AS a
+                INNER JOIN user_master b ON a.created_by = b.id WHERE  defect_no LIKE ? and a.defect_description LIKE ? and a.is_deleted = 0 Order by a.latest_date desc;"""
 
     # Construct the parameter values with wildcards
     defect_no_param = f"%{selected_defect_no}%"

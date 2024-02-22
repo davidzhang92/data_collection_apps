@@ -2,6 +2,9 @@ $(document).ready(function () {
 
     // Activate tooltip
     $('[data-toggle="tooltip"]').tooltip();
+	$('.displayed-username').text(localStorage.getItem('userName'));
+
+	
 
 	//clear all field in modal window when it's hidden
 	$('#addUserModal').on('hidden.bs.modal', function () {
@@ -56,7 +59,7 @@ $(document).ready(function () {
 			}
 
 
-
+			var createdBy = user.created_by_username !== null ? user.created_by_username : '-';
 
             var row = `<tr data-id="${user.id}">
                     <td>
@@ -69,6 +72,7 @@ $(document).ready(function () {
                     <td>${user.access_type}</td>
                     <td>${formattedlatestDate}</td>
                     <td>${formattedLastLogin}</td>
+					<td>${createdBy}</td>
                     <td>
                     <a href="#editUserModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 					<a href="#changePasswordUserModal" class="change-password" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Change Password">&#xE73c;</i></a>
@@ -131,6 +135,13 @@ $(document).ready(function () {
             success: function (data) {
                 // Handle success
                 renderData(data);
+				//disable checkbox state for own id
+
+				var userId = localStorage.getItem('userId');
+				$('tr[data-id="' + userId + '"]').each(function() {
+					$(this).find('.row-checkbox').prop('disabled', true);
+					$(this).find('.delete').hide();
+				});
             },
             error: function (error) {
                 console.error('Error fetching data:', error);
@@ -261,6 +272,7 @@ $(document).ready(function () {
 			data: JSON.stringify({
 				id: addCurrentId,
 				access_level: editUserAccessLevel,
+				user_id: localStorage.getItem('userId')
 
 			}),
 			contentType: 'application/json',
@@ -433,7 +445,8 @@ $(document).ready(function () {
 				data: JSON.stringify({
 					username: addUsername,
 					access_level: addUserAccesLevel,
-					password: validPassword
+					password: validPassword,
+					user_id: localStorage.getItem('userId')
 				}),
 				contentType: 'application/json',
 				success: function(response) {
@@ -499,6 +512,7 @@ $(document).ready(function () {
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
+				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -518,6 +532,7 @@ $(document).ready(function () {
 			error: function(xhr, status, error) {
 				// handle error response
 				console.error(error);
+				alert(xhr.responseJSON.message);
 			}
 		});
 	});
@@ -525,7 +540,7 @@ $(document).ready(function () {
 	// Handle batch delete and DELETE request
 
 	// Get all checked checkboxes
-	var checkedCheckboxes = $('input.row-checkbox:checked');
+	var checkedCheckboxes = $('input.row-checkbox:checked:not(:disabled)');
 
 	// Create an array to store the IDs of the rows to be deleted
 	var idsToDelete = [];
@@ -541,7 +556,7 @@ $(document).ready(function () {
 	$('#submit-batch-data-delete').on('click', function(event) {
 		event.preventDefault();
 		// Get all checked checkboxes
-		var checkedCheckboxes = $('input.row-checkbox:checked');
+		var checkedCheckboxes = $('input.row-checkbox:checked:not(:disabled)');
 
 		// Create an array to store the IDs of the rows to be deleted
 		var idsToDelete = [];
@@ -556,7 +571,10 @@ $(document).ready(function () {
 		$.ajax({
 			url: 'http://' + window.location.hostname + ':4000/api/delete_user_api',
 			type: 'DELETE',
-			data: JSON.stringify({ ids: idsToDelete }),
+			data: JSON.stringify({ 
+					ids: idsToDelete,
+					user_id: localStorage.getItem('userId')
+				 }),
 			contentType: 'application/json',
 			success: function(response) {
 				// Handle successful deletion here

@@ -5,11 +5,16 @@ server {
     root /data-storage/sfdc_apps/; # Set to your web app's directory
 
     location / {
+        index menus/dashboard/dashboard.html;
         try_files $uri $uri/ =404;
     }
 
     location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
-        expires 30d;
+        expires 1d;
+    }
+    location /basic_status {
+        stub_status;
     }
 }
+
 

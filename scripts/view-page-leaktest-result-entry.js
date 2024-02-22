@@ -2,7 +2,7 @@ $(document).ready(function () {
 
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
-
+	$('.displayed-username').text(localStorage.getItem('userName'));
 	// datepicker function for date to and date from
 	$(function() {
 		$("#date-from-field").datepicker({
@@ -54,6 +54,9 @@ $(document).ready(function () {
 		
 			// Format the date as 'YYYY-MM-DD HH:MM:SS'
 			var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
+
+			// Replace 'null' with '-'
+			var userName = result.username !== null ? result.username : '-';
 		
 			var row = `<tr data-id="${result.id}">
 				<td>
@@ -68,6 +71,7 @@ $(document).ready(function () {
 				<td>${result.fine_value}</td>
 				<td>${result.gross_value}</td>
 				<td>${result.others_value}</td>
+				<td>${userName}</td>
 				<td>${formattedDate}</td>
 				<td>
 				<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -233,6 +237,7 @@ $(document).ready(function () {
 				type: 'DELETE',
 				data: JSON.stringify({
 					id: deleteCurrentId,
+					user_id: localStorage.getItem('userId')
 				}),
 				contentType: 'application/json',
 				success: function(response) {
@@ -290,7 +295,9 @@ $(document).ready(function () {
 		$.ajax({
 			url: 'http://' + window.location.hostname + ':4000/api/delete_leaktest_result_entry_view_api',
 			type: 'DELETE',
-			data: JSON.stringify({ ids: idsToDelete }),
+			data: JSON.stringify({ 
+				ids: idsToDelete, 
+				user_id: localStorage.getItem('userId') }),
 			contentType: 'application/json',
 			success: function(response) {
 				// Handle successful deletion here
@@ -496,7 +503,8 @@ $(document).ready(function () {
             body: JSON.stringify({
                 date_from: dateFrom,
                 date_to: dateTo,
-                part_no: partNumber
+                part_no: partNumber,
+				user_id: localStorage.getItem('userId')
             })
         })
         .then(response => response.blob())

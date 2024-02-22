@@ -4,7 +4,7 @@ $('.programming-result-entry-sub-card-2').hide();
 
 
 $(document).ready(function (){
-
+    $('.displayed-username').text(localStorage.getItem('userName'));
     $('#select-button').click(function(event) {
         // Prevent the default behavior of the anchor element
         event.preventDefault();
@@ -239,6 +239,7 @@ $(document).ready(function (){
                 fail_bluetooth: failBluetooth,
                 fail_sleep_mode: failSleepMode,
                 fail_other: failOther,
+                user_id: localStorage.getItem('userId')
             }),
             contentType: 'application/json',
             success: function(response) {
@@ -264,7 +265,6 @@ $(document).ready(function (){
             error: function(xhr, status, error) {
                 // handle error response
                 if (xhr.status === 400) {
-                    // The response status is 400, indicating a duplicate
                     alert(xhr.responseJSON.message);
                 } else {
                     console.error(error);

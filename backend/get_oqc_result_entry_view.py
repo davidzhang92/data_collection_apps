@@ -49,7 +49,7 @@ def get_oqc_result_entry_view():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "select a.id as id, b.part_no, c.defect_description, a.result, a.serial_no, a.created_date from oqc_result_entry a inner join part_master b on a.part_id = b.id left join defect_master c on a.defect_id = c.id where a.is_deleted='0' order by created_date desc OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        query = "select a.id as id, b.part_no, c.defect_description, a.result, a.serial_no, d.username, a.created_date from oqc_result_entry a inner join part_master b on a.part_id = b.id left join defect_master c on a.defect_id = c.id LEFT JOIN user_master d on a.created_by = d.id where a.is_deleted='0' order by created_date desc OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
 
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()
@@ -84,7 +84,7 @@ def get_filter_search_oqc_result_entry_view():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the leaktest result entry table
-    query = "select a.id as id, b.part_no, c.defect_description, a.result, a.serial_no, a.created_date from oqc_result_entry a inner join part_master b on a.part_id = b.id left join defect_master c on a.defect_id = c.id WHERE 1=1"
+    query = "select a.id as id, b.part_no, c.defect_description, a.result, a.serial_no, d.username, a.created_date from oqc_result_entry a inner join part_master b on a.part_id = b.id left join defect_master c on a.defect_id = c.id LEFT JOIN user_master d on a.created_by = d.id  WHERE 1=1"
 
     parameters = []
 
@@ -142,6 +142,7 @@ def get_oqc_result_report():
         selected_part_no = request_data.get('part_no')
         selected_date_from = request_data.get('date_from')
         selected_date_to = request_data.get('date_to')
+        user_generator = request_data.get('user_id')
 
         # Check if required parameters are provided
         # if not selected_part_id and not selected_date_from and not selected_date_to:
@@ -171,6 +172,8 @@ def get_oqc_result_report():
         cursor.execute(query_header_data, parameters_header_data)
         query_header_result = cursor.fetchall()
 
+        # query who is the generator
+        query_generator = "select username from user_master where id = ?"
 
         # Construct SQL for report data
         query_data = """SELECT 
@@ -179,10 +182,12 @@ def get_oqc_result_report():
                         serial_no, 
                         result, 
                         c.defect_description,
+                        d.username,
                         a.created_date 
                     FROM oqc_result_entry a 
                     INNER JOIN part_master b ON a.part_id = b.id
-                    LEFT JOIN defect_master c ON a.defect_id = c.id"""
+                    LEFT JOIN defect_master c ON a.defect_id = c.id
+                    LEFT JOIN user_master d on a.created_by = d.id"""
         parameters_data = []
 
         conditions = []
@@ -211,6 +216,13 @@ def get_oqc_result_report():
         cursor.execute(query_data, parameters_data)
         query_result = cursor.fetchall()
 
+        # Execute the SQL query and fetch the generator
+        generated_by = None  # Define generated_by before the if statement
+        cursor.execute(query_generator, user_generator)
+        generator_result = cursor.fetchone()
+        if generator_result is not None:
+            generated_by, = generator_result
+
         # Load the Excel template
         workbook = load_workbook(template_path)
         worksheet = workbook.active
@@ -231,9 +243,11 @@ def get_oqc_result_report():
         # Write the data into the cells
         worksheet['C5'] = part_no_joined
         worksheet['C6'] = part_description_joined
-        worksheet['G5'] = date.today().strftime('%Y-%m-%d')
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
+        worksheet['H5'] = date.today().strftime('%Y-%m-%d')
+        worksheet['H6'] = generated_by
+
 
         # Merge cells again and adjust the allignment
         worksheet.merge_cells('C5:E5')
@@ -252,6 +266,7 @@ def get_oqc_result_report():
             column5_index = 5 
             column6_index = 6 
             column7_index = 7 
+            column8_index = 8
  
 
 
@@ -261,6 +276,7 @@ def get_oqc_result_report():
             worksheet.cell(row=row_number, column=column5_index, value=row_data[3]) 
             worksheet.cell(row=row_number, column=column6_index, value=row_data[4]) 
             worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
+            worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
 
 
             row_number += 1

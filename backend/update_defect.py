@@ -39,15 +39,21 @@ def update_defect():
         id = data['id']
         new_defect_no = data['defect_no']
         new_defect_description = data['defect_description']
+        user_id = data['user_id']
 
         cursor = conn.cursor()
 
         # Construct the SQL query to update the defect_no and defect_description for the given id
-        query = "UPDATE defect_master SET defect_no = ?, defect_description = ?, modified_date = GETDATE() WHERE id = ? AND is_deleted = 0"
+        query = """UPDATE
+                defect_master SET defect_no = ?, 
+                defect_description = ?, 
+                modified_by = ?, 
+                modified_date = GETDATE() 
+            WHERE id = ? AND is_deleted = 0"""
 
 
         # Execute the SQL query
-        cursor.execute(query, (new_defect_no, new_defect_description, id))
+        cursor.execute(query, (new_defect_no, new_defect_description, user_id, id))
         conn.commit()
 
         # Check if any rows were affected by the update operation
@@ -55,7 +61,10 @@ def update_defect():
             return jsonify({'message': 'No data found for the given id.'}), 404
         
         # Construct and execute the query to fetch updated data
-        success_output_query = "SELECT id, defect_no, defect_description, CASE WHEN modified_date >= created_date THEN modified_date ELSE created_date END AS latest_date FROM defect_master WHERE is_deleted = 0 and id = ?"
+        success_output_query = """
+        SELECT a.id, a.part_no, a.defect_description, b.username, a.modified_date from defect_master a
+        INNER JOIN user_master b ON a.created_by = b.id
+        """
 
         cursor.execute(success_output_query, (id,))
         updated_data_row  = cursor.fetchone()
@@ -64,6 +73,7 @@ def update_defect():
                 'id': updated_data_row[0],
                 'defect_no': updated_data_row[1],
                 'defect_description': updated_data_row[2],
+                'username' : updated_data_row[3],
                 'latest_date': updated_data_row[3],
                 # '(debug) raw_data_row': list(updated_data_row)  # Include the raw data row here
             }

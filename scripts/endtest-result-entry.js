@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  $('.displayed-username').text(localStorage.getItem('userName'));
   $('#file-import').on('change', function () {
     // Get the selected file
     var file = this.files[0];

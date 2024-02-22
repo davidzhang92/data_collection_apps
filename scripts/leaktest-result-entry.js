@@ -3,7 +3,7 @@ $('.leaktest-result-entry-sub-card').hide();
 $('.leaktest-result-entry-sub-card-2').hide();
 
 $(document).ready(function (){
-
+	$('.displayed-username').text(localStorage.getItem('userName'));
     $('#select-button').click(function(event) {
         // Prevent the default behavior of the anchor element
         event.preventDefault();
@@ -263,7 +263,8 @@ $(document).ready(function (){
                 result: result,
                 fine_value: fineValue,
                 gross_value: grossValue,
-                others_value: othersValue
+                others_value: othersValue,
+                user_id: localStorage.getItem('userId')
             }),
             contentType: 'application/json',
             success: function(response) {

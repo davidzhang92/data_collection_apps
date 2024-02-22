@@ -70,16 +70,17 @@ def post_leaktest_result_entry():
         new_fine_value = float(data['fine_value'])
         new_gross_value = float(data['gross_value'])
         new_others_value = float(data['others_value'])
+        user_id = data['user_id']
 
 
         # Construct the SQL query to insert the data
         insert_query = """
-        insert into leaktest_result_entry (id, part_id, housing_no, result, fine_value, gross_value, others_value, created_date, is_deleted)
-        values (newid(),?,?,?,?,?,?, GETDATE(), 0)
+        insert into leaktest_result_entry (id, part_id, housing_no, result, fine_value, gross_value, others_value, created_by, created_date, is_deleted)
+        values (newid(),?,?,?,?,?,?,?, GETDATE(), 0)
         """
 
         # Execute the SQL query to insert the data
-        cursor.execute(insert_query, (new_part_id, new_housing_no, new_result, new_fine_value, new_gross_value, new_others_value))
+        cursor.execute(insert_query, (new_part_id, new_housing_no, new_result, new_fine_value, new_gross_value, new_others_value, user_id))
         conn.commit()
 
         return jsonify({'message': 'Data inserted successfully.'}), 200

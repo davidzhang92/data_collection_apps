@@ -44,6 +44,7 @@ def post_user():
         new_username = data['username']
         new_access_level = data['access_level']
         new_password = data['password']
+        user_id = data['user_id']
 
         # Password complexity check
         if not re.match(r'^(?=.*[A-Z])(?=.*\d)(?=.*[a-zA-Z\d]).{8,}$', new_password):
@@ -85,14 +86,14 @@ def post_user():
 
         # Construct the SQL query to update the part_no and part_description for the given id
         query = """
-                INSERT INTO user_master(id, username, salt, password_hash, access_level, is_superadmin, created_date, is_deleted)
-                VALUES (NEWID(), ?, ?, ?, ?, '0', GETDATE(), '0');
+                INSERT INTO user_master(id, username, salt, password_hash, access_level, created_by, is_superadmin, created_date, is_deleted)
+                VALUES (NEWID(), ?, ?, ?, ?, ?, '0', GETDATE(), '0');
                 """
 
 
 
         # Execute the SQL query
-        cursor.execute(query, (username, salt, hashed_password, new_access_level))
+        cursor.execute(query, (username, salt, hashed_password, new_access_level, user_id))
         conn.commit()
 
         # Check if any rows were affected by the update operation

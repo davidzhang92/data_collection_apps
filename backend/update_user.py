@@ -45,7 +45,8 @@ def update_user():
 
 
         new_access_level = uuid.UUID(data['access_level'])
-        user_id = uuid.UUID(data['id'])
+        target_user_id = uuid.UUID(data['id'])
+        modified_by = uuid.UUID(data['user_id'])
 
         cursor = conn.cursor()
 
@@ -67,10 +68,10 @@ def update_user():
 
 
         # Construct the SQL query to update the username and password for the given id
-        query = "update user_master set access_level = ?, modified_date = getdate() where id = ?"
+        query = "update user_master set access_level = ?, modified_by = ?, modified_date = getdate() where id = ?"
 
         # Execute the SQL query
-        cursor.execute(query, (new_access_level, user_id))
+        cursor.execute(query, (new_access_level, modified_by, target_user_id))
         conn.commit()
 
         # Check if any rows were affected by the update operation
@@ -80,7 +81,7 @@ def update_user():
         # Construct and execute the query to fetch updated data
         success_output_query = "select a.id, a.username, b.access_type, a.modified_date from user_master a inner join access_level_master b on a.access_level=b.id and a.id = ? where a.is_deleted = 0"
 
-        cursor.execute(success_output_query, (user_id,))
+        cursor.execute(success_output_query, (target_user_id,))
         updated_data_row  = cursor.fetchone()
         if updated_data_row:
             updated_data = {
@@ -106,7 +107,7 @@ def update_user_password():
         data = request.get_json()
 
         # Extract required fields from the payload
-        user_id = uuid.UUID(data['id'])
+        target_user_id = uuid.UUID(data['id'])
         new_password = str(data['password'])
 
         # Password complexity check
@@ -140,7 +141,7 @@ def update_user_password():
 
 
         # Execute the SQL query
-        cursor.execute(query, (salt, updated_hash_password, user_id))
+        cursor.execute(query, (salt, updated_hash_password, target_user_id))
         conn.commit()
 
         # Check if any rows were affected by the update operation
@@ -150,7 +151,7 @@ def update_user_password():
         # Construct and execute the query to fetch updated data
         success_output_query = "select id, username, access_level, modified_date from user_master where is_deleted = 0 and id = ?"
 
-        cursor.execute(success_output_query, (user_id,))
+        cursor.execute(success_output_query, (target_user_id,))
         updated_data_row  = cursor.fetchone()
         if updated_data_row:
             updated_data = {

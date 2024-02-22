@@ -2,6 +2,7 @@ $(document).ready(function () {
 	
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
+	$('.displayed-username').text(localStorage.getItem('userName'));
 
 	// renderData function
 	function renderData(data) {
@@ -33,7 +34,15 @@ $(document).ready(function () {
 		// 	return;
 		//   }
 	  
-	
+	// Parse the date string
+	var createDate = new Date(defect.latest_date);
+
+	// Format the date as 'YYYY-MM-DD HH:MM:SS'
+	var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
+
+	// Replace 'null' with '-'
+	var userName = defect.username !== null ? defect.username : '-';
+
 	var row = `<tr data-id="${defect.id}">
 			<td>
 			  <span class="custom-checkbox">
@@ -43,7 +52,8 @@ $(document).ready(function () {
 			</td>
 			<td>${defect.defect_no}</td>
 			<td>${defect.defect_description}</td>
-			<td>${defect.latest_date}</td>
+			<td>${userName}</td>
+			<td>${formattedDate}</td>
 			<td>
 			  <a href="#editDefectModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 			  <a href="#deleteDefectModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -216,7 +226,8 @@ $(document).ready(function () {
 			data: JSON.stringify({
 				id: addCurrentId,
 				defect_no: editDefectNumber,
-				defect_description: editDefectDescription
+				defect_description: editDefectDescription,
+				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -272,7 +283,9 @@ $(document).ready(function () {
 			type: 'POST',
 			data: JSON.stringify({
 				defect_no: addDefectNumber,
-				defect_description: addDefectDescription
+				defect_description: addDefectDescription,
+				user_id: localStorage.getItem('userId')
+
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -336,6 +349,7 @@ $(document).ready(function () {
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
+				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -359,24 +373,8 @@ $(document).ready(function () {
 		});
 	});
 
-// Handle batch delete and DELETE request
+	// Handle batch delete and DELETE request
 
-// Get all checked checkboxes
-var checkedCheckboxes = $('input.row-checkbox:checked');
-
-// Create an array to store the IDs of the rows to be deleted
-var idsToDelete = [];
-
-// Loop through each checked checkbox and add its ID to the array
-checkedCheckboxes.each(function() {
-    idsToDelete.push($(this).attr('id'));
-});
-
-// console.log(idsToDelete);
-
-// Send the AJAX request to delete the rows
-$('#submit-batch-data-delete').on('click', function(event) {
-	event.preventDefault();
 	// Get all checked checkboxes
 	var checkedCheckboxes = $('input.row-checkbox:checked');
 
@@ -389,30 +387,48 @@ $('#submit-batch-data-delete').on('click', function(event) {
 	});
 
 	// console.log(idsToDelete);
-	// Get the data-id attribute of the row associated with the clicked button
-	$.ajax({
-		url: 'http://' + window.location.hostname + ':4000/api/delete_defect_api',
-		type: 'DELETE',
-		data: JSON.stringify({ ids: idsToDelete }),
-		contentType: 'application/json',
-		success: function(response) {
-			// Handle successful deletion here
-			console.log(response);
-					// Refresh the page
+
+	// Send the AJAX request to delete the rows
+	$('#submit-batch-data-delete').on('click', function(event) {
+		event.preventDefault();
+		// Get all checked checkboxes
+		var checkedCheckboxes = $('input.row-checkbox:checked');
+
+		// Create an array to store the IDs of the rows to be deleted
+		var idsToDelete = [];
+
+		// Loop through each checked checkbox and add its ID to the array
+		checkedCheckboxes.each(function() {
+			idsToDelete.push($(this).attr('id'));
+		});
+
+		// console.log(idsToDelete);
+		// Get the data-id attribute of the row associated with the clicked button
+		$.ajax({
+			url: 'http://' + window.location.hostname + ':4000/api/delete_defect_api',
+			type: 'DELETE',
+			data: JSON.stringify({ 				
+				ids: 	 idsToDelete, 
+				user_id: localStorage.getItem('userId') }),
+			contentType: 'application/json',
+			success: function(response) {
+				// Handle successful deletion here
+				console.log(response);
+						// Refresh the page
+				location.reload();
+			},
+			error: function(xhr, status, error) {
+				// Handle error here
+				console.error(error);
+			// Refresh the page
 			location.reload();
-		},
-		error: function(xhr, status, error) {
-			// Handle error here
-			console.error(error);
-		// Refresh the page
-		location.reload();
-		}
+			}
+		});
 	});
-});
 
-//handling auto-complete for Part Number/Description
+	//handling auto-complete for Part Number/Description
 
-// auto-complete for Part Number, populate Part Description
+	// auto-complete for Part Number, populate Part Description
 
 	$(function () {
 		var getData = function (request, response) {

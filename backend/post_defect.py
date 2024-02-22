@@ -38,6 +38,7 @@ def post_defect():
         # Extract required fields from the payload
         new_defect_no = data['defect_no']
         new_defect_description = data['defect_description']
+        user_id = data['user_id']
 
         cursor = conn.cursor()
 
@@ -66,14 +67,11 @@ def post_defect():
         elif defect_no_result is not None and defect_no_result[0] != 0 or defect_description_result is not None and defect_description_result[0] != 0:
             return jsonify({'message': 'Error: Data is a duplicate.'}), 400
         # Construct the SQL query to update the defect_no and defect_description for the given id
-        query = "insert into defect_master  (id, defect_no, defect_description, created_date, is_deleted) values (newid(), ?, ?, getdate(), 0)"
-
-        # Construct the SQL query to update the defect_no and defect_description for the given id
-        query = "insert into defect_master  (id, defect_no, defect_description, created_date, is_deleted) values (newid(), ?, ?, getdate(), 0)"
+        query = "insert into defect_master  (id, defect_no, defect_description, created_by, created_date, is_deleted) values (newid(), ?, ?, ?, getdate(), 0)"
 
 
         # Execute the SQL query
-        cursor.execute(query, (new_defect_no, new_defect_description))
+        cursor.execute(query, (new_defect_no, new_defect_description, user_id))
         conn.commit()
 
         # Check if any rows were affected by the update operation

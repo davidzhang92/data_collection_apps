@@ -8,20 +8,20 @@ $('#defect-code-field').prop('disabled', true);
 
 
 $(document).ready(function (){
-
-  $('#select-button').click(function(event) {
+    $('.displayed-username').text(localStorage.getItem('userName'));
+    $('#select-button').click(function(event) {
     // Prevent the default behavior of the anchor element
     event.preventDefault();
 
     // Check if the input with id 'pdesc' is empty
     if ($('#pdesc').val() === '') {
-      // Display an alert if it's empty
-      alert('Error. Part No. is invalid or empty, please try again.');
+        // Display an alert if it's empty
+        alert('Error. Part No. is invalid or empty, please try again.');
     } else {
-      // Perform your desired action if pdesc is not empty
-      // For example, you can submit a form or trigger another function.
+        // Perform your desired action if pdesc is not empty
+        // For example, you can submit a form or trigger another function.
     }
-  });
+    });
 
     // select button logic    
 
@@ -210,6 +210,7 @@ $(document).ready(function (){
                 defect_id: $('#defect-code-field').attr('defect-id'),
                 serial_no: serialNumber,
                 result: result,
+                user_id: localStorage.getItem('userId')
             }),
             contentType: 'application/json',
             success: function(response) {

@@ -39,6 +39,7 @@ def post_oqc_result_entry():
         # Extract required fields from the payload
         new_part_id = uuid.UUID(data['part_id'])
         new_serial_no = str(data['serial_no'])
+        user_id = data['user_id']
 
         # Concatenate part_id and serial_no
         concatenated_values = str(new_part_id) + new_serial_no
@@ -72,16 +73,16 @@ def post_oqc_result_entry():
         # Construct the SQL query to insert the data
         if defect_id_param is None:
             insert_query = """
-                insert into oqc_result_entry (id, part_id, result, serial_no, created_date, is_deleted)
-                values (NEWID(),?,?,?, GETDATE(), 0)
-            """
-            cursor.execute(insert_query, (new_part_id, new_result, new_serial_no))
-        else:
-            insert_query = """
-                insert into oqc_result_entry (id, part_id, defect_id, result, serial_no, created_date, is_deleted)
+                insert into oqc_result_entry (id, part_id, result, serial_no, created_by,created_date, is_deleted)
                 values (NEWID(),?,?,?,?, GETDATE(), 0)
             """
-            cursor.execute(insert_query, (new_part_id, defect_id_param, new_result, new_serial_no))
+            cursor.execute(insert_query, (new_part_id, new_result, new_serial_no, user_id))
+        else:
+            insert_query = """
+                insert into oqc_result_entry (id, part_id, defect_id, result, serial_no, created_by, created_date, is_deleted)
+                values (NEWID(),?,?,?,?,?, GETDATE(), 0)
+            """
+            cursor.execute(insert_query, (new_part_id, defect_id_param, new_result, new_serial_no, user_id))
 
         conn.commit()
 

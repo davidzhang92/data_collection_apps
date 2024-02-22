@@ -48,7 +48,7 @@ def get_programming_result_entry_view():
 
         cursor = conn.cursor()
 
-        # Construct the SQL query to select data from the part_master table with OFFSET
+        # Construct the SQL query to select data from the programming result entry table with OFFSET
         query = """SELECT 
                         a.id, 
                         b.part_no, 
@@ -60,9 +60,11 @@ def get_programming_result_entry_view():
                         a.fail_bluetooth, 
                         a.fail_sleep_mode, 
                         a.fail_other, 
+                        c.username,
                         a.created_date 
                     FROM programming_result_entry a 
-                    INNER JOIN part_master b ON a.part_id = b.id 
+                    INNER JOIN part_master b ON a.part_id = b.id
+                    LEFT JOIN user_master c on a.created_by = c.id 
                     WHERE a.is_deleted = '0' 
                     ORDER BY a.created_date DESC 
                     OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"""
@@ -111,9 +113,11 @@ def get_filter_search_programming_result_entry_view():
                     a.fail_bluetooth, 
                     a.fail_sleep_mode, 
                     a.fail_other, 
+					c.username,
                     a.created_date 
                 FROM programming_result_entry a 
-                INNER JOIN part_master b ON a.part_id = b.id 
+                INNER JOIN part_master b ON a.part_id = b.id
+				LEFT JOIN user_master c on a.created_by = c.id 
                 WHERE 1=1"""
 
     parameters = []
@@ -173,6 +177,7 @@ def get_programming_result_report():
         selected_part_no = request_data.get('part_no')
         selected_date_from = request_data.get('date_from')
         selected_date_to = request_data.get('date_to')
+        user_generator = request_data.get('user_id')
 
         # Check if required parameters are provided
         # if not selected_part_id and not selected_date_from and not selected_date_to:
@@ -215,9 +220,11 @@ def get_programming_result_report():
                         a.fail_bluetooth, 
                         a.fail_sleep_mode, 
                         a.fail_other, 
+						c.username,
                         a.created_date 
                     FROM programming_result_entry a 
-                    INNER JOIN part_master b ON a.part_id = b.id """
+                    INNER JOIN part_master b ON a.part_id = b.id 
+					LEFT JOIN user_master c on a.created_by = c.id"""
         parameters_data = []
 
         if selected_part_no:
@@ -236,9 +243,21 @@ def get_programming_result_report():
 
         query_data += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
 
+        # query who is the generator
+        query_generator = "select username from user_master where id = ?"
+
         # Execute the SQL query and fetch data
         cursor.execute(query_data, parameters_data)
         query_result = cursor.fetchall()
+
+
+        # Execute the SQL query and fetch the generator
+        generated_by = None  # Define generated_by before the if statement
+        cursor.execute(query_generator, user_generator)
+        generator_result = cursor.fetchone()
+        if generator_result is not None:
+            generated_by, = generator_result
+
 
         # Load the Excel template
         workbook = load_workbook(template_path)
@@ -248,6 +267,7 @@ def get_programming_result_report():
         # Data population
         part_no_data = [data[0] for data in query_header_result]
         part_description_data = [data[1] for data in query_header_result]
+
 
         # Join the data with ;
         part_no_joined = ';'.join(part_no_data)
@@ -260,9 +280,11 @@ def get_programming_result_report():
         # Write the data into the cells
         worksheet['C5'] = part_no_joined
         worksheet['C6'] = part_description_joined
-        worksheet['L5'] = date.today().strftime('%Y-%m-%d')
+        worksheet['M5'] = date.today().strftime('%Y-%m-%d')
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
+        worksheet['M6'] = generated_by
+
 
         # Merge cells again and adjust the allignment
         worksheet.merge_cells('C5:H5')
@@ -286,6 +308,7 @@ def get_programming_result_report():
             column10_index = 10 
             column11_index = 11
             column12_index = 12
+            column13_index = 13
 
 
             worksheet.cell(row=row_number, column=column2_index, value=row_data[0]) 
@@ -299,6 +322,7 @@ def get_programming_result_report():
             worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
             worksheet.cell(row=row_number, column=column11_index, value=row_data[9])  
             worksheet.cell(row=row_number, column=column12_index, value=row_data[10])  
+            worksheet.cell(row=row_number, column=column13_index, value=row_data[11]) 
 
             row_number += 1
 

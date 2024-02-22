@@ -2,7 +2,7 @@ $(document).ready(function () {
 
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
-	
+	$('.displayed-username').text(localStorage.getItem('userName'));
     // datepicker function for date to and date from
     $(function() {
         $("#date-from-field").datepicker({
@@ -79,7 +79,9 @@ $(document).ready(function () {
 		
 			// Format the date as 'YYYY-MM-DD HH:MM:SS'
 			var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
-		
+			// Replace 'null' with '-'
+			var userName = result.username !== null ? result.username : '-';
+
 			var row = `<tr data-id="${result.id}">
 				<td>
 				<span class="custom-checkbox">
@@ -90,7 +92,8 @@ $(document).ready(function () {
 				<td>${result.part_no}</td>
 				<td>${result.serial_no}</td>
 				<td>${result.result}</td>
-				<td>${failureDetailsString} </td> 
+				<td>${failureDetailsString} </td>
+				<td>${userName}</td>
 				<td>${formattedDate}</td>
 				<td>
 				<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
@@ -259,6 +262,7 @@ $(document).ready(function () {
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
+				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
 			success: function(response) {
@@ -278,6 +282,7 @@ $(document).ready(function () {
 			error: function(xhr, status, error) {
 				// handle error response
 				console.error(error);
+				alert(xhr.responseJSON.message);
 			}
 		});
 	});
@@ -316,7 +321,9 @@ $(document).ready(function () {
 		$.ajax({
 			url: 'http://' + window.location.hostname + ':4000/api/delete_programming_result_entry_view_api',
 			type: 'DELETE',
-			data: JSON.stringify({ ids: idsToDelete }),
+			data: JSON.stringify({ 
+				ids: idsToDelete, 
+				user_id: localStorage.getItem('userId') }),
 			contentType: 'application/json',
 			success: function(response) {
 				// Handle successful deletion here
@@ -327,8 +334,9 @@ $(document).ready(function () {
 			error: function(xhr, status, error) {
 				// Handle error here
 				console.error(error);
+				alert(xhr.responseJSON.message);
 			// Refresh the page
-			location.reload();
+			// location.reload();
 			}
 		});
 	});
@@ -524,7 +532,9 @@ $(document).ready(function () {
             body: JSON.stringify({
                 date_from: dateFrom,
                 date_to: dateTo,
-                part_no: partNumber
+                part_no: partNumber,
+				user_id: localStorage.getItem('userId')
+
             })
         })
         .then(response => response.blob())

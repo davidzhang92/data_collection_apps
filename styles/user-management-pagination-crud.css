@@ -187,10 +187,10 @@ table.table .avatar {
     border-color: #fff;
 }
 .custom-checkbox input[type="checkbox"]:disabled + label:before {
-    color: #b8b8b8;
+    color: #9c9c9c;
     cursor: auto;
     box-shadow: none;
-    background: #ddd;
+    background: #929292;
 }
 /* Modal styles */
 .modal .modal-dialog {

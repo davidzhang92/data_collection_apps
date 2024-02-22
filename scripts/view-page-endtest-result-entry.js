@@ -2,7 +2,7 @@ $(document).ready(function () {
 
 	// Activate tooltip
 	$('[data-toggle="tooltip"]').tooltip();
-
+	$('.displayed-username').text(localStorage.getItem('userName'));
 	// datepicker function for date to and date from
 	$(function() {
 		$("#date-from-field").datepicker({
@@ -56,6 +56,7 @@ function renderData(data) {
 
         // Replace 'null' with '-'
         var partNumber = result.part_no !== null ? result.part_no : '-';
+		var userName = result.username !== null ? result.username : '-';
 
         var row = `<tr data-id="${result.id}">
             <td>
@@ -67,6 +68,7 @@ function renderData(data) {
             <td>${partNumber}</td>
             <td>${result.serial_no}</td>
             <td>${result.data_matrix}</td>
+			<td>${userName}</td>
             <td id='created-date'>${formattedDate}</td>
 
         </tr>`;
@@ -230,6 +232,7 @@ function renderData(data) {
 				type: 'DELETE',
 				data: JSON.stringify({
 					id: deleteCurrentId,
+					user_id: localStorage.getItem('userId')
 				}),
 				contentType: 'application/json',
 				success: function(response) {
@@ -287,7 +290,9 @@ function renderData(data) {
 		$.ajax({
 			url: 'http://' + window.location.hostname + ':4000/api/delete_endtest_result_entry_view_api',
 			type: 'DELETE',
-			data: JSON.stringify({ ids: idsToDelete }),
+			data: JSON.stringify({ 
+				ids: idsToDelete, 
+				user_id: localStorage.getItem('userId') }),
 			contentType: 'application/json',
 			success: function(response) {
 				// Handle successful deletion here
@@ -503,7 +508,8 @@ function renderData(data) {
             body: JSON.stringify({
                 date_from: dateFrom,
                 date_to: dateTo,
-                part_no: partNumber
+                part_no: partNumber,
+				user_id: localStorage.getItem('userId')
             })
         })
         .then(response => response.blob())

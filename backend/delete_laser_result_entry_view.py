@@ -37,6 +37,7 @@ def delete_laser_result_entry_view():
         # Extract required fields from the payload
         ids = data.get('ids')  # Get the list of IDs if present, otherwise None
         id_single = data.get('id')  # Get the single ID if present, otherwise None
+        user_id = data.get('user_id')
 
         if ids is None and id_single is None:
             return jsonify({'message': 'No IDs provided for deletion.'}), 400
@@ -46,12 +47,12 @@ def delete_laser_result_entry_view():
         if ids:
             # Batch delete using the IN clause
             placeholders = ', '.join(['?'] * len(ids))
-            query = f"UPDATE laser_result_entry  SET deleted_date = getdate(), is_deleted = 1 WHERE id IN ({placeholders})"
-            cursor.execute(query, tuple(ids))
+            query = f"UPDATE laser_result_entry  SET deleted_date = getdate(),  deleted_by = ?, is_deleted = 1 WHERE id IN ({placeholders})"
+            cursor.execute(query, (user_id,) + tuple(ids))
         elif id_single:
             # Single record delete
-            query = "UPDATE laser_result_entry  SET deleted_date = getdate(), is_deleted = 1 WHERE id = ?"
-            cursor.execute(query, (id_single,))
+            query = "UPDATE laser_result_entry  SET deleted_date = getdate(),  deleted_by = ?, is_deleted = 1 WHERE id = ?"
+            cursor.execute(query, (user_id, id_single,))
 
         conn.commit()
 

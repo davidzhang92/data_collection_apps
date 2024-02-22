@@ -153,7 +153,7 @@ def get_filter_search_part_master():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the part_master table
-    query = """                 SELECT a.id,
+    query = """         SELECT a.id,
                         a.part_no,
                         a.part_description,
                         b.username,
