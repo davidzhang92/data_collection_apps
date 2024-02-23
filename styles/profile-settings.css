@@ -1,0 +1,96 @@
+@import url('/styles/fonts/roboto.css');
+.body-background {
+    background-color: hsl(202, 33%, 23%);
+    background-size: contain;
+    line-height: 1.7;
+  }
+
+
+.profile-card{
+    margin-left: 20px;
+    width: 400px; 
+    height: 640px;
+    background-color: #1E2B32;
+    border-radius: 10px 10px;
+    /* top: 64px; */
+    margin-top: 40px;
+    position: relative;
+
+    
+  }
+
+.header{
+  border-radius: 10px 10px 0px 0px;
+  padding: 5px;
+  background-color: #255777;
+}
+
+body {
+  background-color: hsl(202, 33%, 23%);
+  background-size: contain;
+  color: #fff;
+  font-family: 'Roboto';
+  font-size: 18px;
+  
+}
+
+.h3-profile-settings {
+  color: #FFFFFF;
+  font-family: 'Roboto', sans-serif;
+  width: 250px;
+  height: 12px;
+  font-size: 19px;
+  font-weight: bold; 
+  margin-bottom: 17px;
+  margin-left: 1.7rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom:30px;
+}
+
+.form-control {
+  border-radius: 2px;
+  box-shadow: none;
+  border-color: #dddddd;
+  width : 300px;
+  font-size: 18px;
+
+}
+
+.body-form {
+  position: relative;
+  width : 300px;
+  left: 30px;
+  top: 30px;
+  justify-content: center;
+  text-align: left;
+  /* display: flex; */
+}
+
+.form-control[disabled] {
+  background-color: rgb(214, 254, 255);;
+}
+
+
+#cancel {
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+#save {
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	cursor: pointer;
+  left: 90px;
+  position: relative;
+}

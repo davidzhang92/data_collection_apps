@@ -22,7 +22,7 @@ $(document).ready(function () {
             success: function(response) {
                 // handle successful response
                 console.log(response.message);
-                alert(response.message);
+                // alert(response.message);
                 // Store the access token in local storage
                 localStorage.setItem('accessToken', response.access_token);
                 localStorage.setItem('userName',response.username)
@@ -31,7 +31,7 @@ $(document).ready(function () {
 
 
                 // Redirect to a certain page
-                // window.location.href = '/menus/dashboard/dashboard.html';
+                window.location.href = '/menus/dashboard/dashboard.html';
             },
             error: function(xhr, status, error) {
                 // handle error response
