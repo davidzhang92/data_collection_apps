@@ -1,40 +1,63 @@
 $(document).ready(function () {
 
-    $('#edit-username').val(localStorage.getItem('userName'))
-
-    var password = $('#new-password').val();
-    var confirmPassword = $('#confirm-password').val();
-
-    if (password === confirmPassword) {
-        var validPassword = confirmPassword;
+	$('#cancel').click(function(e){
+        e.preventDefault();
+        if(window.history.length > 1){
+            window.history.back();
+        } else {
+            window.location.href = '/menus/dashboard/dashboard.html'; 
         }
+    });
+	$('#username').val(localStorage.getItem('userName'))
 
-		// $.ajax({
-		// 	url: 'http://' + window.location.hostname + ':4000/api/update_user_api',
-		// 	type: 'PATCH',
-		// 	data: JSON.stringify({
-		// 		old_password : $('#old-password').val(),
-		// 		new_password : validPassword,
-		// 		user_id: localStorage.getItem('userId')
 
-		// 	}),
-		// 	contentType: 'application/json',
-		// 	success: function(response) {
-		// 		// handle successful response
-		// 		console.log(response);
+	$('.body-form').on('submit', function(event) {
+		event.preventDefault();
+		var password = $('#new-password').val();
+		var confirmPassword = $('#confirm-password').val();
 	
-		// 	},
-		// 	error: function(xhr, status, error) {
-		// 		if (xhr.status === 400) {
-		// 			// The response status is 400, indicating a duplicate
-		// 			alert(xhr.responseJSON.message);
-					
-		// 		} else {
-		// 			console.error(error);
-		// 			alert('An error occurred while changing the password.');
-		// 		}
-		// 		console.error(error);
-		// 	}
-		// });
+		if (password === confirmPassword) {
+			var validPassword = confirmPassword;
+			} else {
+				alert('Error: Password doesn\'t match, try again.');
+				password = $('#new-password').val('');
+				confirmPassword = $('#confirm-password').val('');
+				validPassword =''
+				return;
+			}
+	
+			$.ajax({
+				url: 'http://' + window.location.hostname + ':4000/api/user_profiles',
+				type: 'PATCH',
+				data: JSON.stringify({
+					old_password : $('#old-password').val(),
+					new_password : validPassword,
+					user_id: localStorage.getItem('userId')
+	
+				}),
+				contentType: 'application/json',
+				success: function(response) {
+					// handle successful response
+					$('#old-password').val('');
+					$('#new-password').val('');
+					$('#confirm-password').val('');
+					alert(response.message);
+					console.log(response);
+		
+				},
+				error: function(xhr, status, error) {
+					if (xhr.status >= 400 && xhr.status < 600) {
+						// The response status is 400, indicating an error
+						alert(xhr.responseJSON.message);
+						
+					} else {
+						console.error(error);
+						alert('An error occurred while changing the password.');
+					}
+					console.error(error);
+				}
+			});
+	});
+    
 
     });

@@ -82,6 +82,8 @@ body {
 	text-align: center;
 	white-space: nowrap;
 	cursor: pointer;
+  position: relative;
+  top: 20px;
 }
 
 #save {
@@ -91,6 +93,7 @@ body {
 	text-align: center;
 	white-space: nowrap;
 	cursor: pointer;
-  left: 90px;
+  left: 150px;
   position: relative;
+  top: 20px;
 }

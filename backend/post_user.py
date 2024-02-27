@@ -84,7 +84,7 @@ def post_user():
 
 
 
-        # Construct the SQL query to update the part_no and part_description for the given id
+        # Construct the SQL query to insert username credential
         query = """
                 INSERT INTO user_master(id, username, salt, password_hash, access_level, created_by, is_superadmin, created_date, is_deleted)
                 VALUES (NEWID(), ?, ?, ?, ?, ?, '0', GETDATE(), '0');
