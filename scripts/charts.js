@@ -1,7 +1,6 @@
 
 $(document).ready(function() {
 
-
     // Configuration options for the chart
         //config for bar chart
     var graphOption = {
@@ -303,13 +302,17 @@ $(document).ready(function() {
         }
 
         //donut 2
-    var canvasDonut2 = document.getElementById("donut2");
+        var canvasDonut2 = document.getElementById("donut2");
 
 
         //function to call donut 2 api and count api
 
         function fetchDataAndUpdateChartDonut2() {
-            fetch('http://' + window.location.hostname + ':4000/api/donut_2_api')
+            fetch('http://' + window.location.hostname + ':4000/api/donut_2_api', {
+                headers: {
+                    'Authorization': localStorage.getItem('accessToken')
+                }
+            })
                 .then(response => response.json())
                 .then(data => {
                     // Update the global variables
@@ -385,7 +388,11 @@ $(document).ready(function() {
     //function to call donut 3 api and count api
 
     function fetchDataAndUpdateChartDonut3() {
-        fetch('http://' + window.location.hostname + ':4000/api/donut_3_api')
+        fetch('http://' + window.location.hostname + ':4000/api/donut_3_api', {
+            headers: {
+                'Authorization': localStorage.getItem('accessToken')
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 // Update the global variables
@@ -463,7 +470,11 @@ $(document).ready(function() {
 
 
     function fetchDataAndUpdateChartDonut4() {
-        fetch('http://' + window.location.hostname + ':4000/api/donut_4_api')
+        fetch('http://' + window.location.hostname + ':4000/api/donut_4_api', {
+            headers: {
+                'Authorization': localStorage.getItem('accessToken')
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 // Update the global variables
@@ -535,7 +546,11 @@ $(document).ready(function() {
 
 
     function fetchDataAndUpdateChartDonut5() {
-        fetch('http://' + window.location.hostname + ':4000/api/donut_5_api')
+        fetch('http://' + window.location.hostname + ':4000/api/donut_5_api', {
+            headers: {
+                'Authorization': localStorage.getItem('accessToken')
+            }
+        })
             .then(response => response.json())
             .then(data => {
                 // Update the global variables
@@ -601,6 +616,7 @@ $(document).ready(function() {
         var totalValue = passValue + failValue;
         $("#donut-5-total").text(totalValue);
     }
+
 
 });
 

@@ -3,6 +3,7 @@ import pyodbc
 from dbutils.pooled_db import PooledDB
 from functools import wraps
 import jwt
+from secret_key import SECRET_KEY
 
 app = Flask(__name__)
 
@@ -20,8 +21,6 @@ pool = PooledDB(
     UID = 'sa',
     PWD = 'Cannon45!'
 )
-
-SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
 
 def token_required(f):
     @wraps(f)

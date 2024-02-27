@@ -5,6 +5,9 @@ from io import BytesIO
 from openpyxl import load_workbook  # Import openpyxl
 from openpyxl.styles import Alignment
 from datetime import date
+from secret_key import SECRET_KEY
+import jwt
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -33,11 +36,42 @@ dsn = 'DataCollection'
 # Establish the connection
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        access_token = None
 
+        
+        if 'Authorization' in request.headers:
+            access_token = request.headers['Authorization']
+
+
+        if 'x-access-token' in request.headers:
+            access_token = request.headers['x-access-token']
+
+        if not access_token:
+            return jsonify({'message': 'Session timed out, please login again.'}), 401
+
+        try:
+            data = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
+            access_level = data.get('access_level')
+
+            # if access_level not in ['read-only', 'operator', 'admin']:
+            if access_level not in ['read-only', 'operator', 'admin']:
+                return jsonify({'message': 'Error: You don\'t have sufficient privilege to perform this action.'}), 403
+            
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Session timed out, please login again.', 'error': str(e)}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
 # --------------------
 # API endpoint get all leaktest result entry
 # --------------------
 @app.route('/api/get_leaktest_result_entry_view', methods=['GET'])
+@token_required
 def get_leaktest_result_entry_view():
     try:
         # Extract the page query parameter from the request
@@ -71,6 +105,7 @@ def get_leaktest_result_entry_view():
 # --------------------
 
 @app.route('/api/get_filter_search_leaktest_result_entry_view', methods=['GET'])
+@token_required
 def get_filter_search_leaktest_result_entry_view():
         
     selected_part_no = request.args.get('search_part_no')  # Get the selected value from the query parameters
@@ -126,6 +161,7 @@ def get_filter_search_leaktest_result_entry_view():
 # API endpoint download report
 # --------------------
 @app.route('/api/get_leaktest_result_report', methods=['POST'])
+@token_required
 def get_leaktest_result_report():
     # Define the path to the Excel template (modify this path accordingly)
     template_path = r'/data-storage/sfdc_apps/excel_import/leaktest_report_template.xlsx'

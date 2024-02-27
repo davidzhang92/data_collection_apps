@@ -36,6 +36,9 @@ $(document).ready(function () {
 	
 				}),
 				contentType: 'application/json',
+				beforeSend: function(xhr) { 
+					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+				},
 				success: function(response) {
 					// handle successful response
 					$('#old-password').val('');

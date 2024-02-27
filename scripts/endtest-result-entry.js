@@ -13,7 +13,10 @@ $(document).ready(function () {
       url: 'http://' + window.location.hostname + ':4000/api/endtest_upload_file_api', // Replace with your backend API endpoint
       type: 'POST',
       data: formData,
-      contentType: false, // Set content type to false, as FormData handles it
+      contentType: false,
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},	 // Set content type to false, as FormData handles it
       processData: false, // Set processData to false to prevent jQuery from transforming the data
       success: function (response) {
         // Handle the successful response here

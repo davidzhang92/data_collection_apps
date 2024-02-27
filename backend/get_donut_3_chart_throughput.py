@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify
 import pyodbc
 from dbutils.pooled_db import PooledDB
+from functools import wraps
+import jwt
+from secret_key import SECRET_KEY
 
 app = Flask(__name__)
 
@@ -31,6 +34,38 @@ pool = PooledDB(
     PWD = 'Cannon45!'
 )
 
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        access_token = None
+
+        
+        if 'Authorization' in request.headers:
+            access_token = request.headers['Authorization']
+
+
+        if 'x-access-token' in request.headers:
+            access_token = request.headers['x-access-token']
+
+        if not access_token:
+            return jsonify({'message': 'Session timed out, please login again.'}), 401
+
+        try:
+            data = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
+            access_level = data.get('access_level')
+
+            # if access_level not in ['read-only', 'operator', 'admin']:
+            if access_level not in ['read-only', 'operator', 'admin']:
+                return jsonify({'message': 'Error: You don\'t have sufficient privilege to perform this action.'}), 403
+            
+        except Exception as e:
+            print(e)
+            return jsonify({'message': 'Session timed out, please login again.', 'error': str(e)}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
+
 def fetch_data_details(query):
     conn = pool.connection()
     cursor = conn.cursor()
@@ -49,6 +84,7 @@ def fetch_data_donut(query):
 
 # API endpoint to get pass and fail counts
 @app.route('/api/get_donut_3', methods=['GET'])
+@token_required
 def get_donut_3():
     try:
         # Execute the queries to retrieve pass and fail counts
@@ -84,7 +120,7 @@ def get_donut_3():
 
     
 @app.route('/api/get_donut_3_details', methods=['GET'])
-
+@token_required
 def get_donut_3_details():
     try:
         # Execute the queries to retrieve pass and fail counts

@@ -5,7 +5,7 @@ import jwt
 from datetime import datetime, timedelta
 import pytz
 from functools import wraps
-
+from secret_key import SECRET_KEY
 
 
 app = Flask(__name__)
@@ -35,7 +35,7 @@ dsn = 'DataCollection'
 
 # Establish the connection
 conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
-SECRET_KEY = 'f9433dd1aa5cac3c92caf83680a6c0623979bfb20c14a78dc8f9e2a97dfd1b4e'
+
 
 
 

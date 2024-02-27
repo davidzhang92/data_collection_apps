@@ -302,6 +302,9 @@ var labelId = $('#label-id-field').val();
             user_id: localStorage.getItem('userId')
         }),
         contentType: 'application/json',
+        beforeSend: function(xhr) { 
+            xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+        },
         success: function(response) {
             // handle successful response
             console.log(response);
@@ -480,6 +483,9 @@ var labelId = $('#label-id-field').val();
             headers: {
                 'Content-Type': 'application/json'
             },
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},
             body: JSON.stringify({
                 part_id: partId,
                 date_from: dateFrom,

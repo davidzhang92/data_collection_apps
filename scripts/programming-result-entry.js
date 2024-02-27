@@ -242,6 +242,9 @@ $(document).ready(function (){
                 user_id: localStorage.getItem('userId')
             }),
             contentType: 'application/json',
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'))
+            },
             success: function(response) {
                 // handle successful response
                 console.log(response);

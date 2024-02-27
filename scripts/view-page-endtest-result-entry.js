@@ -125,6 +125,9 @@ function renderData(data) {
 				type: 'GET',
 				data: requestData, // Send the data object directly
 				contentType: 'application/json',
+				beforeSend: function(xhr) { 
+					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+				},	
 				success: function (data) {
 					// Handle success
 					renderData(data);
@@ -235,6 +238,9 @@ function renderData(data) {
 					user_id: localStorage.getItem('userId')
 				}),
 				contentType: 'application/json',
+				beforeSend: function(xhr) { 
+					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+				},	
 				success: function(response) {
 					// handle successful response
 					console.log(response);
@@ -294,6 +300,9 @@ function renderData(data) {
 				ids: idsToDelete, 
 				user_id: localStorage.getItem('userId') }),
 			contentType: 'application/json',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},	
 			success: function(response) {
 				// Handle successful deletion here
 				console.log(response);
@@ -503,8 +512,9 @@ function renderData(data) {
         fetch('http://' + window.location.hostname + ':4000/api/endtest_result_report_api', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
-            },
+                'Content-Type': 'application/json',
+				'Authorization': localStorage.getItem('accessToken'),
+            },	
             body: JSON.stringify({
                 date_from: dateFrom,
                 date_to: dateTo,

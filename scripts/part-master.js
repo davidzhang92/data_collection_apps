@@ -264,7 +264,7 @@ $(document).ready(function () {
 			}),
 			contentType: 'application/json',
             beforeSend: function(xhr) { 
-                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'))
             },	
 			
 			success: function(response) {

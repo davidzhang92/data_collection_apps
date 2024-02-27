@@ -132,6 +132,9 @@ $(document).ready(function () {
             type: 'GET',
             data: requestData, // Send the data object directly
             contentType: 'application/json',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},
             success: function (data) {
                 // Handle success
                 renderData(data);
@@ -276,6 +279,9 @@ $(document).ready(function () {
 
 			}),
 			contentType: 'application/json',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -376,6 +382,9 @@ $(document).ready(function () {
 					password: validPassword,
 				}),
 				contentType: 'application/json',
+				beforeSend: function(xhr) { 
+					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+				},
 				success: function(response) {
 					// handle successful response
 					console.log(response);
@@ -449,6 +458,9 @@ $(document).ready(function () {
 					user_id: localStorage.getItem('userId')
 				}),
 				contentType: 'application/json',
+				beforeSend: function(xhr) { 
+					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+				},
 				success: function(response) {
 					// handle successful response
 					console.log(response);
@@ -515,6 +527,9 @@ $(document).ready(function () {
 				user_id: localStorage.getItem('userId')
 			}),
 			contentType: 'application/json',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -576,6 +591,9 @@ $(document).ready(function () {
 					user_id: localStorage.getItem('userId')
 				 }),
 			contentType: 'application/json',
+			beforeSend: function(xhr) { 
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},
 			success: function(response) {
 				// Handle successful deletion here
 				console.log(response);
