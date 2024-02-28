@@ -122,8 +122,17 @@ $(document).ready(function () {
 					// Handle success
 					renderData(data);
 				},
-				error: function (error) {
-					console.error('Error fetching data:', error);
+				error: function (xhr, error) {
+					if (xhr.status === 401) {
+						alert(xhr.responseJSON.message);
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
+						alert(xhr.responseJSON.message);
+					} else {
+						console.error(error);
+						alert('An error occurred while retrieving the data.');
+					}
 				},
 			});
 		}
@@ -171,8 +180,17 @@ $(document).ready(function () {
 				filteredData = data; // Store the filtered data
 				renderData(filteredData); // Render the filtered data
 			},
-			error: function (error) {
-				console.error('Error fetching filtered data:', error);
+			error: function (xhr, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
 			},
 		});
 		} else {
@@ -261,10 +279,18 @@ $(document).ready(function () {
 
 
 			},
-			error: function(xhr, status, error) {
-				// handle error response
-				console.error(error);
-			}
+			error: function (xhr, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			},
 		});
 	});
 
@@ -311,16 +337,18 @@ $(document).ready(function () {
 				// Refresh the page
 				location.reload();
 			},
-			error: function(xhr, status, error) {
-				// handle error response
-				if (xhr.status === 400) {
-                    // The response status is 400, indicating a duplicate
-                    alert(xhr.responseJSON.message);
-                } else {
-                    console.error(error);
-                    alert('An error occurred while submitting the result.');
-                }
-            }
+			error: function (xhr, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			},
 		});
 	});
 
@@ -378,10 +406,18 @@ $(document).ready(function () {
 				location.reload();
 
 			},
-			error: function(xhr, status, error) {
-				// handle error response
-				console.error(error);
-			}
+			error: function (xhr, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			},
 		});
 	});
 
@@ -432,12 +468,18 @@ $(document).ready(function () {
 						// Refresh the page
 				location.reload();
 			},
-			error: function(xhr, status, error) {
-				// Handle error here
-				console.error(error);
-			// Refresh the page
-			location.reload();
-			}
+			error: function (xhr, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			},
 		});
 	});
 

@@ -23,11 +23,18 @@ $(document).ready(function () {
         console.log(response);
         alert('File uploaded successfully.');
       },
-      error: function (xhr, status, error) {
-        // Handle error responses here
-        console.error(error);
-        alert('An error occurred while uploading the file.');
-      }
+      error: function (xhr, error) {
+        if (xhr.status === 401) {
+            alert(xhr.responseJSON.message);
+            window.location.href = '/login.html'
+            localStorage.removeItem('accessToken');
+        } else if (xhr.status >= 400 && xhr.status < 600) {
+            alert(xhr.responseJSON.message);
+        } else {
+            console.error(error);
+            alert('An error occurred while retrieving the data.');
+        }
+    }
     });
   });
   

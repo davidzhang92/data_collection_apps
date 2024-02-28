@@ -338,6 +338,12 @@ var labelId = $('#label-id-field').val();
                 defectId='';
                 $('#defect-desc').val('')
                 localStorage.removeItem('defectId');
+            } else if (xhr.status === 401) {
+                alert(xhr.responseJSON.message);
+                window.location.href = '/login.html'
+                localStorage.removeItem('accessToken');
+            } else if (xhr.status >= 400 && xhr.status < 600) {
+                alert(xhr.responseJSON.message);
             } else {
                 console.error(error);
                 alert('An error occurred while submitting the result.');
@@ -478,45 +484,57 @@ var labelId = $('#label-id-field').val();
         var dateFrom = $('#date-from-field').val();
         var dateTo = $('#date-to-field').val();
     
-        fetch('http://' + window.location.hostname + ':4000/api/laser_result_entry_api', {
+        $.ajax({
+            url: 'http://' + window.location.hostname + ':4000/api/laser_result_entry_api',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-			beforeSend: function(xhr) { 
-				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
-			},
-            body: JSON.stringify({
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },
+            data: JSON.stringify({
                 part_id: partId,
                 date_from: dateFrom,
                 date_to: dateTo
-
-            })
-        })
-        .then(response => response.blob())
-        .then(blob => {
-            // Create a blob URL from the response
-            var blobUrl = window.URL.createObjectURL(blob);
+            }),
+            success: function(data, textStatus, xhr) {
+                // Create a blob URL from the response
+                var blob = new Blob([data]);
+                var blobUrl = window.URL.createObjectURL(blob);
     
-            // Create an anchor element to trigger the download
-            var a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = blobUrl;
-            a.download = 'laser_result.xlsx';
-            document.body.appendChild(a);
+                // Create an anchor element to trigger the download
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = 'laser_result.xlsx';
+                document.body.appendChild(a);
     
-            // Trigger the download
-            a.click();
+                // Trigger the download
+                a.click();
     
-            // Clean up
-            window.URL.revokeObjectURL(blobUrl);
+                // Clean up
+                window.URL.revokeObjectURL(blobUrl);
     
-            // Clear input fields
-            $('#date-from-field').val('');
-            $('#date-to-field').val('');
-        })
-        .catch(error => console.error(error));
+                // Clear input fields
+                $('#date-from-field').val('');
+                $('#date-to-field').val('');
+            },
+            error: function(xhr, textStatus, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			}
+        });
     });
+    
     
 
 

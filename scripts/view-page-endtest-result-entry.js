@@ -188,14 +188,27 @@ function renderData(data) {
 				$.ajax({
 					url: 'http://' + window.location.hostname + ':4000/api/filter_search_endtest_result_entry_view_api',
 					type: 'GET',
-					data: requestData, // Send the requestData object
+					data: requestData,
+					beforeSend: function(xhr) { 
+						xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'))
+					},
+					 // Send the requestData object
 					success: function (data) {
 						filteredData = data; // Store the filtered data
 						
 						renderData(filteredData); // Render the filtered data
 					},
-					error: function (error) {
-						console.error('Error fetching filtered data:', error);
+					error: function (xhr, error) {
+						if (xhr.status === 401) {
+							alert(xhr.responseJSON.message);
+							window.location.href = '/login.html'
+							localStorage.removeItem('accessToken');
+						} else if (xhr.status >= 400 && xhr.status < 600) {
+							alert(xhr.responseJSON.message);
+						} else {
+							console.error(error);
+							alert('An error occurred while retrieving the data.');
+						}
 					},
 				});
 			} else {
@@ -255,9 +268,17 @@ function renderData(data) {
 					location.reload();
 
 				},
-				error: function(xhr, status, error) {
-					// handle error response
-					console.error(error);
+				error: function (xhr, error) {
+					if (xhr.status === 401) {
+						alert(xhr.responseJSON.message);
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
+						alert(xhr.responseJSON.message);
+					} else {
+						console.error(error);
+						alert('An error occurred while retrieving the data.');
+					}
 				}
 			});
 		});
@@ -312,12 +333,18 @@ function renderData(data) {
 						// Refresh the page
 				location.reload();
 			},
-			error: function(xhr, status, error) {
-				// Handle error here
-				console.error(error);
-			// Refresh the page
-			location.reload();
-			}
+			error: function (xhr, error) {
+                if (xhr.status === 401) {
+                    alert(xhr.responseJSON.message);
+                    window.location.href = '/login.html'
+                    localStorage.removeItem('accessToken');
+                } else if (xhr.status >= 400 && xhr.status < 600) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    console.error(error);
+                    alert('An error occurred while retrieving the data.');
+                }
+            }
 		});
 	});
 

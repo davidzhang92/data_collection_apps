@@ -48,16 +48,17 @@ $(document).ready(function () {
 					console.log(response);
 		
 				},
-				error: function(xhr, status, error) {
-					if (xhr.status >= 400 && xhr.status < 600) {
-						// The response status is 400, indicating an error
+				error: function(xhr, textStatus, error) {
+					if (xhr.status === 401) {
 						alert(xhr.responseJSON.message);
-						
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
+						alert(xhr.responseJSON.message);
 					} else {
 						console.error(error);
 						alert('An error occurred while changing the password.');
 					}
-					console.error(error);
 				}
 			});
 	});

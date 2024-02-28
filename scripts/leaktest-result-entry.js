@@ -284,16 +284,18 @@ $(document).ready(function (){
 
                 alert('Result submitted successfully.');
             },
-            error: function(xhr, status, error) {
-                // handle error response
-                if (xhr.status === 400) {
-                    // The response status is 400, indicating a duplicate
-                    alert(xhr.responseJSON.message);
-                } else {
-                    console.error(error);
-                    alert('An error occurred while submitting the result.');
-                }
-            }
+            error: function(xhr, textStatus, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			}
         });
     });
 

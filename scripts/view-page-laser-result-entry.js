@@ -138,8 +138,17 @@ function renderData(data) {
 					renderData(data);
 					
 				},
-				error: function (error) {
-					console.error('Error fetching data:', error);
+				error: function(xhr, textStatus, error) {
+					if (xhr.status === 401) {
+						alert(xhr.responseJSON.message);
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
+						alert(xhr.responseJSON.message);
+					} else {
+						console.error(error);
+						alert('An error occurred while retrieving the data.');
+					}
 				},
 			});
 		}
@@ -193,15 +202,28 @@ function renderData(data) {
 				$.ajax({
 					url: 'http://' + window.location.hostname + ':4000/api/filter_search_laser_result_entry_view_api',
 					type: 'GET',
-					data: requestData, // Send the requestData object
+					data: requestData,
+					beforeSend: function(xhr) { 
+						xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'))
+					},
+					 // Send the requestData object
 					success: function (data) {
 						filteredData = data; // Store the filtered data
 						
 						renderData(filteredData); // Render the filtered data
 					},
-					error: function (error) {
-						console.error('Error fetching filtered data:', error);
-					},
+					error: function(xhr, textStatus, error) {
+						if (xhr.status === 401) {
+							alert(xhr.responseJSON.message);
+							window.location.href = '/login.html'
+							localStorage.removeItem('accessToken');
+						} else if (xhr.status >= 400 && xhr.status < 600) {
+							alert(xhr.responseJSON.message);
+						} else {
+							console.error(error);
+							alert('An error occurred while retrieving the data.');
+						}
+					}
 				});
 			} else {
 				// If all search fields are empty, reset filtering and show pagination container
@@ -260,9 +282,17 @@ function renderData(data) {
 					location.reload();
 
 				},
-				error: function(xhr, status, error) {
-					// handle error response
-					console.error(error);
+				error: function(xhr, textStatus, error) {
+					if (xhr.status === 401) {
+						alert(xhr.responseJSON.message);
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
+						alert(xhr.responseJSON.message);
+					} else {
+						console.error(error);
+						alert('An error occurred while retrieving the data.');
+					}
 				}
 			});
 		});
@@ -317,11 +347,17 @@ function renderData(data) {
 						// Refresh the page
 				location.reload();
 			},
-			error: function(xhr, status, error) {
-				// Handle error here
-				console.error(error);
-			// Refresh the page
-			location.reload();
+			error: function(xhr, textStatus, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
 			}
 		});
 	});
@@ -508,47 +544,43 @@ function renderData(data) {
     //POST data parameter for data export
 
     $('#download').click(function(event){
-        event.preventDefault();
-    
-        var dateFrom = $('#date-from-field').val();
-        var dateTo = $('#date-to-field').val();
+		event.preventDefault();
+	
+		var dateFrom = $('#date-from-field').val();
+		var dateTo = $('#date-to-field').val();
 		var partNumber = $('#part-number-field').val().trim()
-    
-        fetch('http://' + window.location.hostname + ':4000/api/laser_result_report_api', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-				'Authorization': localStorage.getItem('accessToken'),
-            },
-            body: JSON.stringify({
-                date_from: dateFrom,
-                date_to: dateTo,
-                part_no: partNumber,
-				user_id: localStorage.getItem('userId')
-            })
-        })
-        .then(response => response.blob())
-        .then(blob => {
-            // Create a blob URL from the response
-            var blobUrl = window.URL.createObjectURL(blob);
-    
-            // Create an anchor element to trigger the download
-            var a = document.createElement('a');
-            a.style.display = 'none';
-            a.href = blobUrl;
-            a.download = 'laser_report.xlsx';
-            document.body.appendChild(a);
-    
-            // Trigger the download
-            a.click();
-    
-            // Clean up
-            window.URL.revokeObjectURL(blobUrl);
-    
-            // Clear input fields
-            // $('#date-from-field').val('');
-            // $('#date-to-field').val('');
-        })
-        .catch(error => console.error(error));
-    });
+	
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'http://' + window.location.hostname + ':4000/api/laser_result_report_api', true);
+		xhr.responseType = 'blob';
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'));
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				var blob = new Blob([this.response], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+				var downloadUrl = URL.createObjectURL(blob);
+				var a = document.createElement("a");
+				a.href = downloadUrl;
+				a.download = "laser_report.xlsx";
+				document.body.appendChild(a);
+				a.click();
+			} else if (this.status === 401) {
+				alert('Unauthorized');
+				window.location.href = '/login.html'
+				localStorage.removeItem('accessToken');
+			} else if (this.status >= 400 && this.status < 600) {
+				alert('Error occurred while retrieving the data.');
+			}
+		};
+		xhr.onerror = function() {
+			alert('An error occurred while retrieving the data.');
+		};
+		xhr.send(JSON.stringify({
+			date_from: dateFrom,
+			date_to: dateTo,
+			part_no: partNumber,
+			user_id: localStorage.getItem('userId')
+		}));
+	});
+	
 });

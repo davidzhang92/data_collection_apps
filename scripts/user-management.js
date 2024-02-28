@@ -146,9 +146,25 @@ $(document).ready(function () {
 					$(this).find('.delete').hide();
 				});
             },
-            error: function (error) {
-                console.error('Error fetching data:', error);
-            },
+            error: function(xhr, textStatus, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status  === 403) {
+					alert(xhr.responseJSON.message);
+					if(window.history.length > 1){
+						window.history.back();
+					} else {
+						window.location.href = '/menus/dashboard/dashboard.html'; 
+					}
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			},
         });
     }
 	// Fetch data on page load if both search fields are empty
@@ -316,16 +332,17 @@ $(document).ready(function () {
 	
 				updateTableRow(response);
 			},
-			error: function(xhr, status, error) {
-				if (xhr.status === 400) {
-					// The response status is 400, indicating a duplicate
+			error: function(xhr, textStatus, error) {
+				if (xhr.status === 401) {
 					alert(xhr.responseJSON.message);
-					
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
 				} else {
 					console.error(error);
-					alert('An error occurred while submitting the result.');
+					alert('An error occurred while retrieving the data.');
 				}
-				console.error(error);
 			}
 		});
 	});
@@ -396,15 +413,16 @@ $(document).ready(function () {
 					// Close the edit dialog box
 					$('#changePasswordUserModal').modal('hide');
 				},
-				
-				error: function(xhr, status, error) {
-					if (xhr.status === 400) {
-						// The response status is 400, indicating a duplicate
+				error: function(xhr, textStatus, error) {
+					if (xhr.status === 401) {
 						alert(xhr.responseJSON.message);
-						
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
+						alert(xhr.responseJSON.message);
 					} else {
 						console.error(error);
-						alert('An error occurred while submitting the result.');
+						alert('An error occurred while retrieving the data.');
 					}
 				}
 			});
@@ -479,14 +497,16 @@ $(document).ready(function () {
 					// Refresh the page
 					location.reload();
 				},
-				error: function(xhr, status, error) {
-					// handle error response
-					if (xhr.status === 400) {
-						// The response status is 400, indicating a duplicate
+				error: function(xhr, textStatus, error) {
+					if (xhr.status === 401) {
+						alert(xhr.responseJSON.message);
+						window.location.href = '/login.html'
+						localStorage.removeItem('accessToken');
+					} else if (xhr.status >= 400 && xhr.status < 600) {
 						alert(xhr.responseJSON.message);
 					} else {
 						console.error(error);
-						alert('An error occurred while submitting the result.');
+						alert('An error occurred while retrieving the data.');
 					}
 				}
 			});
