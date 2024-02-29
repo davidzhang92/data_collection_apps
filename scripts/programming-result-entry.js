@@ -316,5 +316,10 @@ $(document).ready(function (){
         // If all checks pass, proceed with the form submission
         $('#save-form').submit();
     });
+
+        //logout function, clear all access token upon log out
+	$('#logout').click(function(){
+		localStorage.clear();
+    });
 });
 

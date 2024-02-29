@@ -83,7 +83,7 @@ def get_programming_result_entry_view():
 
         cursor = conn.cursor()
 
-        # Construct the SQL query to select data from the programming result entry table with OFFSET
+        # Construct the SQL query to select data from the part_master table with OFFSET
         query = """SELECT 
                         a.id, 
                         b.part_no, 
@@ -95,13 +95,13 @@ def get_programming_result_entry_view():
                         a.fail_bluetooth, 
                         a.fail_sleep_mode, 
                         a.fail_other, 
-                        c.username,
+						c.username,
                         a.created_date 
                     FROM programming_result_entry a 
-                    INNER JOIN part_master b ON a.part_id = b.id
-                    LEFT JOIN user_master c on a.created_by = c.id 
+                    INNER JOIN part_master b ON a.part_id = b.id 
+					LEFT JOIN user_master c ON a.created_by = c.id
                     WHERE a.is_deleted = '0' 
-                    ORDER BY a.created_date DESC 
+                    ORDER BY a.created_date DESC
                     OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"""
 
         cursor.execute(query, (offset,))
@@ -149,11 +149,11 @@ def get_filter_search_programming_result_entry_view():
                     a.fail_bluetooth, 
                     a.fail_sleep_mode, 
                     a.fail_other, 
-					c.username,
+                    c.username,
                     a.created_date 
                 FROM programming_result_entry a 
-                INNER JOIN part_master b ON a.part_id = b.id
-				LEFT JOIN user_master c on a.created_by = c.id 
+                INNER JOIN part_master b ON a.part_id = b.id 
+                LEFT JOIN user_master c ON a.created_by = c.id
                 WHERE 1=1"""
 
     parameters = []
@@ -244,6 +244,8 @@ def get_programming_result_report():
         cursor.execute(query_header_data, parameters_header_data)
         query_header_result = cursor.fetchall()
 
+        # query who is the generator
+        query_generator = "select username from user_master where id = ?"
 
         # Construct SQL for report data
         query_data = """SELECT 
@@ -257,36 +259,38 @@ def get_programming_result_report():
                         a.fail_bluetooth, 
                         a.fail_sleep_mode, 
                         a.fail_other, 
-						c.username,
+                        c.username,
                         a.created_date 
                     FROM programming_result_entry a 
                     INNER JOIN part_master b ON a.part_id = b.id 
-					LEFT JOIN user_master c on a.created_by = c.id"""
+                    LEFT JOIN user_master c ON a.created_by = c.id"""
         parameters_data = []
 
+        conditions = []
         if selected_part_no:
-            query_data += "WHERE b.part_no LIKE ?"
+            conditions.append("b.part_no LIKE ?")
             parameters_data.append('%' + selected_part_no + '%')
 
         if selected_date_from:
             date_from_with_time = f"{selected_date_from} 00:00:00"
-            query_data += " AND a.created_date >= ?"
+            conditions.append("a.created_date >= ?")
             parameters_data.append(datetime.datetime.strptime(date_from_with_time, '%Y-%m-%d %H:%M:%S'))
 
         if selected_date_to:
             date_to_with_time = f"{selected_date_to} 23:59:59"
-            query_data += " AND a.created_date <= ?"
+            conditions.append("a.created_date <= ?")
             parameters_data.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S'))
 
-        query_data += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
+        conditions.append("a.is_deleted = '0'")
 
-        # query who is the generator
-        query_generator = "select username from user_master where id = ?"
+        if conditions:
+            query_data += " WHERE " + " AND ".join(conditions)
+
+        query_data += " ORDER BY a.created_date DESC;"
 
         # Execute the SQL query and fetch data
         cursor.execute(query_data, parameters_data)
         query_result = cursor.fetchall()
-
 
         # Execute the SQL query and fetch the generator
         generated_by = None  # Define generated_by before the if statement
@@ -294,7 +298,6 @@ def get_programming_result_report():
         generator_result = cursor.fetchone()
         if generator_result is not None:
             generated_by, = generator_result
-
 
         # Load the Excel template
         workbook = load_workbook(template_path)
@@ -304,7 +307,6 @@ def get_programming_result_report():
         # Data population
         part_no_data = [data[0] for data in query_header_result]
         part_description_data = [data[1] for data in query_header_result]
-
 
         # Join the data with ;
         part_no_joined = ';'.join(part_no_data)
@@ -317,15 +319,16 @@ def get_programming_result_report():
         # Write the data into the cells
         worksheet['C5'] = part_no_joined
         worksheet['C6'] = part_description_joined
-        worksheet['M5'] = date.today().strftime('%Y-%m-%d')
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
-        worksheet['M6'] = generated_by
+        worksheet['M5'] = generated_by
+        worksheet['M6'] = date.today().strftime('%Y-%m-%d')
+
 
 
         # Merge cells again and adjust the allignment
-        worksheet.merge_cells('C5:H5')
-        worksheet.merge_cells('C6:H6')
+        worksheet.merge_cells('C5:E5')
+        worksheet.merge_cells('C6:E6')
         worksheet['C5'].alignment = Alignment(horizontal='left')
         worksheet['C6'].alignment = Alignment(horizontal='left')
 
@@ -358,8 +361,9 @@ def get_programming_result_report():
             worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
             worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
             worksheet.cell(row=row_number, column=column11_index, value=row_data[9])  
-            worksheet.cell(row=row_number, column=column12_index, value=row_data[10])  
+            worksheet.cell(row=row_number, column=column12_index, value=row_data[10])
             worksheet.cell(row=row_number, column=column13_index, value=row_data[11]) 
+
 
             row_number += 1
 
@@ -379,7 +383,7 @@ def get_programming_result_report():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
 if __name__ == '__main__':
     app.run()
     

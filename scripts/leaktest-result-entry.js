@@ -324,4 +324,9 @@ $(document).ready(function (){
         $('#save-form').submit();
     });
 
+    	//logout function, clear all access token upon log out
+	$('#logout').click(function(){
+		localStorage.clear();
+    });
+
 });

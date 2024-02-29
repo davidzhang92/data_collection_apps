@@ -91,21 +91,30 @@ $(document).ready(function() {
 
 
             function fetchDataFromAPI() {
-                $.getJSON('http://' + window.location.hostname + ':4000/api/overall_throughput_api', function(data) {
-                    console.log('Data from API:', data);
+                $.ajax({
+                    url: 'http://' + window.location.hostname + ':4000/api/overall_throughput_api',
+                    dataType: 'json',
+                    headers: {
+                        'Authorization': localStorage.getItem('accessToken')
+                    },
+                    success: function(data) {
+                        console.log('Data from API:', data);
             
-                    // Process the data and generate data points
-                    const { labels, values } = processData(data);
-                    console.log('Processed data:', labels, values);
+                        // Process the data and generate data points
+                        const { labels, values } = processData(data);
+                        console.log('Processed data:', labels, values);
             
-                    // Update the chart data with the dynamic data
-                    myChart.data.labels = labels;
-                    myChart.data.datasets[0].data = values;
-                    myChart.update(); // Update the chart to reflect the changes
-                }).fail(function(error) {
-                    console.error('Error fetching data from API: ', error);
+                        // Update the chart data with the dynamic data
+                        myChart.data.labels = labels;
+                        myChart.data.datasets[0].data = values;
+                        myChart.update(); // Update the chart to reflect the changes
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data from API: ', error);
+                    }
                 });
             }
+            
             
             // Function to process the data and generate data points
             function processData(apiData) {
@@ -262,7 +271,11 @@ $(document).ready(function() {
                         donutLabel.innerText = passPercentage.toFixed(0) + '%';
         
                         // Fetch and update the part description and part number
-                        fetch('http://' + window.location.hostname + ':4000/api/donut_1_details')
+                        fetch('http://' + window.location.hostname + ':4000/api/donut_1_details', {
+                            headers: {
+                                'Authorization': localStorage.getItem('accessToken')
+                            }
+                        })
                             .then(response => response.json())
                             .then(data => {
                                 var partDescriptionElement = document.querySelector('#donut-1-container .donut-1-part-description');
@@ -340,7 +353,11 @@ $(document).ready(function() {
                         donutLabel.innerText = passPercentage.toFixed(0) + '%';
     
                         // Fetch and update the part description and part number
-                        fetch('http://' + window.location.hostname + ':4000/api/donut_2_details')
+                        fetch('http://' + window.location.hostname + ':4000/api/donut_2_details', {
+                            headers: {
+                                'Authorization': localStorage.getItem('accessToken')
+                            }
+                        })
                             .then(response => response.json())
                             .then(data => {
                                 var partDescriptionElement = document.querySelector('#donut-2-container .donut-2-part-description');
@@ -422,7 +439,11 @@ $(document).ready(function() {
                     donutLabel.innerText = passPercentage.toFixed(0) + '%';
 
                     // Fetch and update the part description and part number
-                    fetch('http://' + window.location.hostname + ':4000/api/donut_3_details')
+                    fetch('http://' + window.location.hostname + ':4000/api/donut_3_details', {
+                        headers: {
+                            'Authorization': localStorage.getItem('accessToken')
+                        }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             var partDescriptionElement = document.querySelector('#donut-3-container .donut-3-part-description');
@@ -502,7 +523,11 @@ $(document).ready(function() {
                     donutLabel.innerText = passPercentage.toFixed(0) + '%';
 
                     // Fetch and update the part description and part number
-                    fetch('http://' + window.location.hostname + ':4000/api/donut_4_details')
+                    fetch('http://' + window.location.hostname + ':4000/api/donut_4_details', {
+                        headers: {
+                            'Authorization': localStorage.getItem('accessToken')
+                        }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             var partDescriptionElement = document.querySelector('#donut-4-container .donut-4-part-description');
@@ -578,7 +603,11 @@ $(document).ready(function() {
                     donutLabel.innerText = passPercentage.toFixed(0) + '%';
 
                     // Fetch and update the part description and part number
-                    fetch('http://' + window.location.hostname + ':4000/api/donut_5_details')
+                    fetch('http://' + window.location.hostname + ':4000/api/donut_5_details', {
+                        headers: {
+                            'Authorization': localStorage.getItem('accessToken')
+                        }
+                    })
                         .then(response => response.json())
                         .then(data => {
                             var partDescriptionElement = document.querySelector('#donut-5-container .donut-5-part-description');

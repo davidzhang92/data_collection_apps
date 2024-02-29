@@ -10,7 +10,7 @@ server {
     }
 
     location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
-        expires 1d;
+        expires 1h;
     }
     location /basic_status {
         stub_status;

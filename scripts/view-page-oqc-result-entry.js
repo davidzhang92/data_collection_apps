@@ -336,11 +336,17 @@ function renderData(data) {
 						// Refresh the page
 				location.reload();
 			},
-			error: function(xhr, status, error) {
-				// Handle error here
-				console.error(error);
-			// Refresh the page
-			location.reload();
+			error: function(xhr, textStatus, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
 			}
 		});
 	});
@@ -566,5 +572,9 @@ function renderData(data) {
 		}));
 	});
 	
-	
+    //logout function, clear all access token upon log out
+	$('#logout').click(function(){
+		localStorage.clear();
+    });
+
 });

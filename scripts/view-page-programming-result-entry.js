@@ -79,9 +79,9 @@ $(document).ready(function () {
 		
 			// Format the date as 'YYYY-MM-DD HH:MM:SS'
 			var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
-			// Replace 'null' with '-'
-			var userName = result.username !== null ? result.username : '-';
 
+			var userName = result.username !== null ? result.username : '-';
+		
 			var row = `<tr data-id="${result.id}">
 				<td>
 				<span class="custom-checkbox">
@@ -92,7 +92,7 @@ $(document).ready(function () {
 				<td>${result.part_no}</td>
 				<td>${result.serial_no}</td>
 				<td>${result.result}</td>
-				<td>${failureDetailsString} </td>
+				<td>${failureDetailsString} </td> 
 				<td>${userName}</td>
 				<td>${formattedDate}</td>
 				<td>
@@ -154,8 +154,8 @@ $(document).ready(function () {
 			data: requestData, // Send the data object directly
 			contentType: 'application/json',
 			beforeSend: function(xhr) { 
-                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'))
-            },
+				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+			},
 			success: function (data) {
 				// Handle success
 				renderData(data);
@@ -219,8 +219,7 @@ $(document).ready(function () {
 				data: requestData,
 				beforeSend: function(xhr) { 
 					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'))
-				},
-				// Send the requestData object
+				}, // Send the requestData object
 				success: function (data) {
 					filteredData = data; // Store the filtered data
 					
@@ -269,13 +268,12 @@ $(document).ready(function () {
 			type: 'DELETE',
 			data: JSON.stringify({
 				id: deleteCurrentId,
-				user_id: localStorage.getItem('userId')
+				user_id: localStorage.getItem('userId'),
 			}),
 			contentType: 'application/json',
 			beforeSend: function(xhr) { 
 				xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
 			},
-			
 			success: function(response) {
 				// handle successful response
 				console.log(response);
@@ -290,7 +288,7 @@ $(document).ready(function () {
 				location.reload();
 
 			},
-			error: function (xhr, error) {
+			error: function(xhr, textStatus, error) {
 				if (xhr.status === 401) {
 					alert(xhr.responseJSON.message);
 					window.location.href = '/login.html'
@@ -301,7 +299,7 @@ $(document).ready(function () {
 					console.error(error);
 					alert('An error occurred while retrieving the data.');
 				}
-			},
+			}
 		});
 	});
 
@@ -352,7 +350,7 @@ $(document).ready(function () {
 						// Refresh the page
 				location.reload();
 			},
-			error: function (xhr, error) {
+			error: function(xhr, textStatus, error) {
 				if (xhr.status === 401) {
 					alert(xhr.responseJSON.message);
 					window.location.href = '/login.html'
@@ -363,7 +361,7 @@ $(document).ready(function () {
 					console.error(error);
 					alert('An error occurred while retrieving the data.');
 				}
-			},
+			}
 		});
 	});
 
@@ -582,10 +580,11 @@ $(document).ready(function () {
 			user_id: localStorage.getItem('userId')
 		}));
 	});
-	
-	
 
-
+    //logout function, clear all access token upon log out
+	$('#logout').click(function(){
+		localStorage.clear();
+    });
 
 });
 
