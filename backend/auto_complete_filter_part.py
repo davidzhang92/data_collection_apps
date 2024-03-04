@@ -165,7 +165,7 @@ def get_filter_search_part_master():
                                             ELSE created_date
                                     END AS latest_date
                                 FROM   part_master) AS a
-                INNER JOIN user_master b ON a.created_by = b.id WHERE  part_no LIKE ? and a.part_description LIKE ? and a.is_deleted = 0 Order by a.latest_date desc;"""
+                LEFT JOIN user_master b ON a.created_by = b.id WHERE  part_no LIKE ? and a.part_description LIKE ? and a.is_deleted = 0 Order by a.latest_date desc;"""
 
     # Construct the parameter values with wildcards
     part_no_param = f"%{selected_part_no}%"

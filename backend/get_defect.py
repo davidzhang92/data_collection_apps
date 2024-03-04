@@ -88,7 +88,7 @@ def get_defect():
                                             ELSE created_date
                                     END AS latest_date
                                 FROM   defect_master) AS a
-                INNER JOIN user_master b ON a.created_by = b.id
+                LEFT JOIN user_master b ON a.created_by = b.id
                 WHERE    a.is_deleted=0
                 ORDER BY latest_date DESC offset ? rows FETCH next 10 rows only; 
                                 """

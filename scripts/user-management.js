@@ -1,7 +1,22 @@
 $(document).ready(function () {
 
-    // Activate tooltip
-    $('[data-toggle="tooltip"]').tooltip();
+	// set the zoom level based on resolution
+	var screenWidth = window.innerWidth;
+	var zoomLevel;
+
+	if (screenWidth <= 1600) {
+		zoomLevel = 0.8; 
+	}
+	$('body').css('zoom', zoomLevel);
+	// Calculate the screen width
+	var screenWidth = window.screen.width;
+	// Calculate the desired zoom level based on the screen width
+	var zoomLevel = screenWidth / 1920; // Adjust  according to your base resolution
+	// Apply the zoom level to the body
+	$('body').css('zoom', zoomLevel);
+
+	// Activate tooltip
+	$('[data-toggle="tooltip"]').tooltip();
 	$('.displayed-username').text(localStorage.getItem('userName'));
 
 	
@@ -45,8 +60,18 @@ $(document).ready(function () {
 			var latestDate = new Date(user.latest_date);
 			var lastLoginDate = new Date(user.last_login);
 
-			// Format the date as 'YYYY-MM-DD HH:MM:SS'
-			var formattedlatestDate = latestDate.toISOString().slice(0, 16).replace('T', ' ');
+			
+			// var formattedlatestDate = latestDate.toISOString().slice(0, 16).replace('T', ' ');
+
+			// Format the date as 'YYYY-MM-DD HH:MM:SS' and replace 'null' with -
+			var formattedlatestDate;
+			
+			if (user.latest_date !== null) {
+				var latestDate = new Date(user.latest_date);
+				formattedlatestDate = latestDate.toISOString().slice(0, 16).replace('T', ' ');
+			} else {
+				formattedlatestDate = '-';
+			}
 	  
 			// Replace 'null' with '-'
 			var formattedLastLogin;

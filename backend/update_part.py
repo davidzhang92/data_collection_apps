@@ -99,7 +99,7 @@ def update_part():
         # Construct and execute the query to fetch updated data
         success_output_query = """
         SELECT a.id, a.part_no, a.part_description, b.username, a.modified_date from part_master a
-        INNER JOIN user_master b ON a.created_by = b.id  where a.is_deleted = 0
+        LEFT JOIN user_master b ON a.created_by = b.id  where a.is_deleted = 0
         """
 
         cursor.execute(success_output_query, (id,))

@@ -4,6 +4,24 @@ $('.programming-result-entry-sub-card-2').hide();
 
 
 $(document).ready(function (){
+
+    // set the zoom level based on resolution
+    var screenWidth = window.innerWidth;
+    var zoomLevel;
+
+    if (screenWidth <= 1600) {
+        zoomLevel = 0.8; 
+    }
+    $('body').css('zoom', zoomLevel);
+    // Calculate the screen width
+    var screenWidth = window.screen.width;
+    // Calculate the desired zoom level based on the screen width
+    var zoomLevel = screenWidth / 1920; // Adjust  according to your base resolution
+    // Apply the zoom level to the body
+    $('body').css('zoom', zoomLevel);
+
+
+    
     $('.displayed-username').text(localStorage.getItem('userName'));
     $('#select-button').click(function(event) {
         // Prevent the default behavior of the anchor element
@@ -321,5 +339,7 @@ $(document).ready(function (){
 	$('#logout').click(function(){
 		localStorage.clear();
     });
+
+ 
 });
 
