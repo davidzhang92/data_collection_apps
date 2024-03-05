@@ -321,8 +321,8 @@ def get_programming_result_report():
         worksheet['C6'] = part_description_joined
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
-        worksheet['M5'] = generated_by
-        worksheet['M6'] = date.today().strftime('%Y-%m-%d')
+        worksheet['M6'] = generated_by
+        worksheet['M5'] = date.today().strftime('%Y-%m-%d')
 
 
 
