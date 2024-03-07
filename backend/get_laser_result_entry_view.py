@@ -228,21 +228,27 @@ def get_laser_result_report():
                     LEFT JOIN user_master d on a.created_by = d.id """
         parameters_data = []
 
+        conditions = []
         if selected_part_no:
-            query_data += "WHERE b.part_no LIKE ?"
+            conditions.append("b.part_no LIKE ?")
             parameters_data.append('%' + selected_part_no + '%')
 
         if selected_date_from:
             date_from_with_time = f"{selected_date_from} 00:00:00"
-            query_data += " AND a.created_date >= ?"
+            conditions.append("a.created_date >= ?")
             parameters_data.append(datetime.datetime.strptime(date_from_with_time, '%Y-%m-%d %H:%M:%S'))
 
         if selected_date_to:
             date_to_with_time = f"{selected_date_to} 23:59:59"
-            query_data += " AND a.created_date <= ?"
+            conditions.append("a.created_date <= ?")
             parameters_data.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S'))
 
-        query_data += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
+        conditions.append("a.is_deleted = '0'")
+
+        if conditions:
+            query_data += " WHERE " + " AND ".join(conditions)
+
+        query_data += " ORDER BY a.created_date DESC;"
 
         # query who is the generator
         query_generator = "select username from user_master where id = ?"
