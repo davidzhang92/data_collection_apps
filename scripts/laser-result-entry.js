@@ -500,56 +500,39 @@ var labelId = $('#label-id-field').val();
         var dateFrom = $('#date-from-field').val();
         var dateTo = $('#date-to-field').val();
     
-        $.ajax({
-            url: 'http://' + window.location.hostname + ':4000/api/laser_result_entry_api',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            beforeSend: function(xhr) { 
-                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
-            },
-            data: JSON.stringify({
-                part_id: partId,
-                date_from: dateFrom,
-                date_to: dateTo
-            }),
-            success: function(data, textStatus, xhr) {
-                // Create a blob URL from the response
-                var blob = new Blob([data]);
-                var blobUrl = window.URL.createObjectURL(blob);
-    
-                // Create an anchor element to trigger the download
-                var a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = 'laser_result.xlsx';
-                document.body.appendChild(a);
-    
-                // Trigger the download
-                a.click();
-    
-                // Clean up
-                window.URL.revokeObjectURL(blobUrl);
-    
-                // Clear input fields
-                $('#date-from-field').val('');
-                $('#date-to-field').val('');
-            },
-            error: function(xhr, textStatus, error) {
-				if (xhr.status === 401) {
-					alert(xhr.responseJSON.message);
-					window.location.href = '/login.html'
-					localStorage.removeItem('accessToken');
-				} else if (xhr.status >= 400 && xhr.status < 600) {
-					alert(xhr.responseJSON.message);
-				} else {
-					console.error(error);
-					alert('An error occurred while retrieving the data.');
-				}
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', 'http://' + window.location.hostname + ':4000/api/laser_result_entry_api', true);
+		xhr.responseType = 'blob';
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken'));
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				var blob = new Blob([this.response], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+				var downloadUrl = URL.createObjectURL(blob);
+				var a = document.createElement("a");
+				a.href = downloadUrl;
+				a.download = "laser_report.xlsx";
+				document.body.appendChild(a);
+				a.click();
+			} else if (this.status === 401) {
+				alert('Unauthorized');
+				window.location.href = '/login.html'
+				localStorage.removeItem('accessToken');
+			} else if (this.status >= 400 && this.status < 600) {
+				alert('Error occurred while retrieving the data.');
 			}
-        });
-    });
+		};
+		xhr.onerror = function() {
+			alert('An error occurred while retrieving the data.');
+		};
+		xhr.send(JSON.stringify({
+            part_id: partId,
+            date_from: dateFrom,
+            date_to: dateTo
+            
+		}));
+	});
+
     
     
 
