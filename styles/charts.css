@@ -41,16 +41,16 @@ color: white;
 
 #donut-1-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 470px; /* Set the height to your desired value in pixels */
+    height: 440px; /* Set the height to your desired value in pixels */
     position: relative;
     left: 0px;
     top: 0;
     border: 1px;
-    /* border-color: rgb(255, 255, 255);
+    /* border-coDonut1lor: rgb(255, 255, 255);
     border-style: solid; */
     padding: 10px;
     font-family: Arial;
-    font-size: 22px;
+    font-size: 20px;
     color: white;
     text-align: center;
 }
@@ -61,12 +61,12 @@ color: white;
 }
 .donut-1-part-description {
     position: absolute;
-    top: 87%;
+    top: 90%;
     left: 50%;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -77,7 +77,7 @@ color: white;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -86,7 +86,7 @@ color: white;
 
 #donut-2-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 470px; /* Set the height to your desired value in pixels */
+    height: 440px; /* Set the height to your desired value in pixels */
     position: inherit;
     left: 360px;
     top: 0;
@@ -95,7 +95,7 @@ color: white;
     border-style: solid; */
     padding: 10px;
     font-family: Arial;
-    font-size: 22px;
+    font-size: 20px;
     color: white;
     text-align: center;
 }
@@ -106,12 +106,12 @@ color: white;
 }
 .donut-2-part-description {
     position: absolute;
-    top: 87%;
+    top: 90%;
     left: 50%;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -122,7 +122,7 @@ color: white;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -131,7 +131,7 @@ color: white;
 
 #donut-3-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 470px; /* Set the height to your desired value in pixels */
+    height: 440px; /* Set the height to your desired value in pixels */
     position: inherit;
     left: 720px;
     top: 0;
@@ -140,7 +140,7 @@ color: white;
     border-style: solid; */
     padding: 10px;
     font-family: Arial;
-    font-size: 22px;
+    font-size: 20px;
     color: white;
     text-align: center;
 }
@@ -151,12 +151,12 @@ color: white;
 }
 .donut-3-part-description {
     position: absolute;
-    top: 87%;
+    top: 90%;
     left: 50%;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -167,7 +167,7 @@ color: white;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -176,7 +176,7 @@ color: white;
 
 #donut-4-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 470px; /* Set the height to your desired value in pixels */
+    height: 440px; /* Set the height to your desired value in pixels */
     position: inherit;
     left: 1080px;
     top: 0;
@@ -185,7 +185,7 @@ color: white;
     border-style: solid; */
     padding: 10px;
     font-family: Arial;
-    font-size: 22px;
+    font-size: 20px;
     color: white;
     text-align: center;
 }
@@ -196,12 +196,12 @@ color: white;
 }
 .donut-4-part-description {
     position: absolute;
-    top: 87%;
+    top: 90%;
     left: 50%;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -212,7 +212,7 @@ color: white;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -221,7 +221,7 @@ color: white;
 
 #donut-5-container {
     width: 350px; /* Set the width to your desired value in pixels */
-    height: 470px; /* Set the height to your desired value in pixels */
+    height: 440px; /* Set the height to your desired value in pixels */
     position: inherit;
     left: 1440px;
     top: 0;
@@ -230,7 +230,7 @@ color: white;
     border-style: solid; */
     padding: 10px;
     font-family: Arial;
-    font-size: 22px;
+    font-size: 20px;
     color: white;
     text-align: center;
 }
@@ -241,12 +241,12 @@ color: white;
 }
 .donut-5-part-description {
     position: absolute;
-    top: 87%;
+    top: 90%;
     left: 50%;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -257,7 +257,7 @@ color: white;
     width: 100%;
     transform: translate(-50%, -50%);
     font-family: Arial;
-    font-size: 22px;
+    font-size: 19px;
     color: white;
     font-weight: bold;
 }
@@ -277,7 +277,7 @@ color: white;
 }
 #group-donut-container{
     width: 1790px; /* Set the width to your desired value in pixels */
-    height: 470px; /* Set the height to your desired value in pixels */
+    height: 440px; /* Set the height to your desired value in pixels */
     position: absolute;
     left: 50px;
     top: 435px;

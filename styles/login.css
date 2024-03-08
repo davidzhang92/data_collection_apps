@@ -112,14 +112,14 @@
     .version{
         font-family: inherit;
         color: #fff;
-        font-size: 18px;
-        position: fixed;
-        margin-bottom: 30px;
-        margin-right: 30px;
-
-        text-align: right;
-        bottom: 0;
-        right:0;
-
+        font-size: 20px;
+        text-align: center;
+        position: inherit; /* Change this */
+        justify-content: center;
+        display: flex;
+        top:550px;
+        z-index: 99;
+        margin-top:50px;
         
     }
+    

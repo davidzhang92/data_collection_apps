@@ -11,7 +11,7 @@
     <!-- from template -->
 
     <link rel="stylesheet" href="/styles/material-icons/material-icons.css">
-     <link rel="stylesheet" href="/icons/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/icons/css/fontawesome.min.css">
     <link rel="stylesheet" href="/icons/css/all.min.css">
     <link rel="stylesheet" href="/styles/bootstrap.min.css">
     <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
@@ -48,9 +48,7 @@
             </div>
         </form>
     </div>
-
-    <h5 class="version">Version: 1.0.0.b5aa81ef</h5>
-
+    <div class="version"><version ><b>Developed By : David Zhang | Version: 1.0.1.00806313</b></version></div>
 </body>
 
 </html>
