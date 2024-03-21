@@ -1,0 +1,121 @@
+<!DOCTYPE html>Charting
+<html lang="en" >
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="../../styles/bootstrap.min.css">
+    <link rel="stylesheet" href="/styles/charts.css">
+    <link rel="stylesheet" href="/icons/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/icons/css/all.min.css">
+    <link rel="stylesheet" href="/styles/version-dashboard.css">
+
+    <script src="/scripts/jquery/jquery.js"></script>   
+    <script src="/scripts/chartjs/chart.min.js"></script>
+    <script src="/scripts/charts.js"></script>
+    <script src="/scripts/refresh-token.js"></script>
+    <script src="/scripts/bootstrap.min.js"></script>
+
+
+
+  </head>
+<body>
+
+  <a href="/menus/dashboard/dashboard.html" id="href-back-button">
+    <button type="button" id="back-button" title="Back to main page">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+  </a>
+  
+
+  <div id="graph-container">
+    <canvas id="graph1"></canvas>
+  </div>
+
+  <div id="group-donut-container">
+    <div id="donut-1-container">Programming
+      <canvas id="donut1" ></canvas>
+      <div class="donut-label">NO DATA</div>
+      <div class="donut-1-part-description">NO DATA</div>
+      <div class="donut-1-part-no">NO DATA</div>
+    </div>
+  
+    <div id="donut-2-container">Leaktest
+      <canvas id="donut2"></canvas>
+      <div class="donut-label">NO DATA</div>
+      <div class="donut-2-part-description">NO DATA</div>
+      <div class="donut-2-part-no">NO DATA</div>
+    </div>
+  
+    <div id="donut-3-container">Endtest
+      <canvas id="donut3"></canvas>
+      <div class="donut-label">NO DATA</div>
+      <div class="donut-3-part-description">NO DATA</div>
+      <div class="donut-3-part-no">NO DATA</div>
+    </div>
+  
+    <div id="donut-4-container">Laser
+      <canvas id="donut4"></canvas>
+      <div class="donut-label">NO DATA</div>
+      <div class="donut-4-part-description">NO DATA</div>
+      <div class="donut-4-part-no">NO DATA</div>
+    </div>
+  
+    <div id="donut-5-container">OQC
+      <canvas id="donut5"></canvas>
+      <div class="donut-label">NO DATA</div>
+      <div class="donut-5-part-description">NO DATA</div>
+      <div class="donut-5-part-no">NO DATA</div>
+    </div>
+  
+  </div>
+
+
+
+  <table class="table table-striped table-hover" id="table-overall">
+    <thead>
+        <tr>
+            <th>Process</th>
+            <th>Pass</th>
+            <th>Fail</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Programming</td>
+        <td id="donut-1-pass">0</td>
+        <td id="donut-1-fail">0</td>
+        <td id="donut-1-total">0</td>
+      </tr>
+      <tr>
+        <td>Leaktest</td>
+        <td id="donut-2-pass">0</td>
+        <td id="donut-2-fail">0</td>
+        <td id="donut-2-total">0</td>
+    </tr>
+      <tr>
+        <td>Endtest</td>
+        <td id="donut-3-pass">0</td>
+        <td id="donut-3-fail">0</td>
+        <td id="donut-3-total">0</td>
+      </tr>
+      <tr>
+        <td>Laser</td>
+        <td id="donut-4-pass">0</td>
+        <td id="donut-4-fail">0</td>
+        <td id="donut-4-total">0</td>
+      </tr>			
+      <tr>
+        <td>OQC</td>
+        <td id="donut-5-pass">0</td>
+        <td id="donut-5-fail">0</td>
+        <td id="donut-5-total">0</td>
+      </tr> 
+    </tbody>
+</table>
+
+  
+<version class="version"><b>Developed By : David Zhang | Version: 1.0.2</b></version>
+</body>
+</html>

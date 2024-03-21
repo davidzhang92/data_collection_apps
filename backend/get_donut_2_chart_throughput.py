@@ -84,7 +84,7 @@ def fetch_data_donut(query):
 
 # API endpoint to get pass and fail counts
 @app.route('/api/get_donut_2', methods=['GET'])
-@token_required
+# @token_required
 def get_donut_2():
     try:
         # Execute the queries to retrieve pass and fail counts
@@ -121,7 +121,7 @@ def get_donut_2():
 
     
 @app.route('/api/get_donut_2_details', methods=['GET'])
-@token_required
+# @token_required
 def get_donut_2_details():
     try:
         # Execute the queries to retrieve pass and fail counts

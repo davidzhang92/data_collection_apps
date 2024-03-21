@@ -76,7 +76,7 @@ def fetch_data(query):
 # API endpoint get overall throughput
 # --------------------
 @app.route('/api/get_overall_throughput', methods=['GET'])
-@token_required
+# @token_required
 def get_overall_throughput():
     try:
 

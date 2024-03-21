@@ -1,0 +1,38 @@
+CREATE PROCEDURE InsertAndDeleteVwResultEntry
+AS
+BEGIN
+    INSERT INTO vw_result_entry(id, record_id, part_id, result, process_type, created_date)
+    SELECT 
+        newid(), 
+        COALESCE(pr.id, lr.id,  er.id, lsr.id, oqcr.id), 
+        COALESCE(pr.part_id, lr.part_id,  er.part_id, lsr.part_id, oqcr.part_id), 
+        COALESCE(pr.result, lr.result,  er.dc_type, lsr.result, oqcr.result),
+        CASE 
+            WHEN pr.id IS NOT NULL THEN 'programming_result'
+            WHEN lr.id IS NOT NULL THEN 'leaktest_result'
+            WHEN lsr.id IS NOT NULL THEN 'laser_result'
+            WHEN oqcr.id IS NOT NULL THEN 'oqc_result'
+            ELSE 'unknown'
+        END,
+        COALESCE(pr.created_date, lr.created_date, lsr.created_date, oqcr.created_date)
+    FROM programming_result_entry pr
+    FULL JOIN leaktest_result_entry lr ON pr.id = lr.id
+    FULL JOIN endtest_result_entry er ON pr.id = er.id
+    FULL JOIN laser_result_entry lsr ON pr.id = lsr.id
+    FULL JOIN oqc_result_entry oqcr ON pr.id = oqcr.id
+    WHERE CAST(COALESCE(pr.created_date, lr.created_date, lsr.created_date, oqcr.created_date) AS DATE) = CAST(GETDATE() AS DATE)
+    and (COALESCE(pr.is_deleted, lr.is_deleted, lsr.is_deleted, oqcr.is_deleted) = 0)
+    AND NOT EXISTS (
+        SELECT 1 FROM vw_result_entry
+        WHERE record_id = COALESCE(pr.id, lr.id, oqcr.id, lsr.id)
+    )
+
+    DELETE vre
+    FROM vw_result_entry vre
+    LEFT JOIN programming_result_entry pr ON vre.record_id = pr.id AND pr.is_deleted = 1
+    LEFT JOIN leaktest_result_entry lr ON vre.record_id = lr.id AND lr.is_deleted = 1
+    LEFT JOIN endtest_result_entry er ON vre.record_id = er.id AND er.is_deleted = 1
+    LEFT JOIN laser_result_entry lsr ON vre.record_id = lsr.id AND lsr.is_deleted = 1
+    LEFT JOIN oqc_result_entry oqcr ON vre.record_id = oqcr.id AND oqcr.is_deleted = 1
+    WHERE pr.id IS NOT NULL OR lr.id IS NOT NULL OR er.id IS NOT NULL OR lsr.id IS NOT NULL OR oqcr.id IS NOT NULL;
+END
