@@ -1,0 +1,22 @@
+CREATE PROCEDURE CopytoVwDashboardHistory
+AS
+BEGIN
+
+INSERT INTO vw_dashboard_history (id, part_id, part_no, part_description, pass_count, fail_count, total_count, process_type, created_day)
+SELECT 
+    NEWID(), 
+    a.part_id, 
+    b.part_no, 
+    b.part_description,
+    COUNT(CASE WHEN result = 'pass' THEN record_id END),
+    COUNT(CASE WHEN result = 'fail' THEN record_id END),
+    COUNT(record_id),
+    process_type,
+    a.created_date
+FROM vw_result_entry a
+LEFT JOIN part_master b ON a.part_id = b.id
+GROUP BY a.part_id, b.part_no, b.part_description, process_type;
+
+TRUNCATE TABLE vw_result_entry
+
+END
