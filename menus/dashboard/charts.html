@@ -36,181 +36,124 @@
     <table id="table-content">
     <thead>
         <tr>
-          <td class="fixed-width-thead" rowspan="2" id="model-width">P/N</td>
-          <td class="fixed-width-thead" colspan="3">1</td>
-          <td class="fixed-width-thead" colspan="3">2</td>
-          <td class="fixed-width-thead" colspan="3">3</td>
-          <td class="fixed-width-thead" colspan="3">4</td>
-          <td class="fixed-width-thead" colspan="3">5</td>
+          <td class="fixed-width-thead" rowspan="2" id="model-width" style="border-right: 1px solid white">Parts</td>
+          <td class="fixed-width-thead" colspan="3">Programming</td>
+          <td class="fixed-width-thead" colspan="3">Leaktest</td>
+          <td class="fixed-width-thead" colspan="3">Endtest</td>
+          <td class="fixed-width-thead" colspan="3">Laser</td>
+          <td class="fixed-width-thead" colspan="3">OQC</td>
         </tr>
         <tr>
-          <td class="fixed-width-thead">a</td>
-          <td class="fixed-width-thead">b</td>
-          <td class="fixed-width-thead">c</td>
-          <td class="fixed-width-thead">a</td>
-          <td class="fixed-width-thead">b</td>
-          <td class="fixed-width-thead">c</td>
-          <td class="fixed-width-thead">a</td>
-          <td class="fixed-width-thead">b</td>
-          <td class="fixed-width-thead">c</td>
-          <td class="fixed-width-thead">a</td>
-          <td class="fixed-width-thead">b</td>
-          <td class="fixed-width-thead">c</td>
-          <td class="fixed-width-thead">a</td>
-          <td class="fixed-width-thead">b</td>
-          <td class="fixed-width-thead">c</td>
+          <td class="fixed-width-thead">Pass</td>
+          <td class="fixed-width-thead">Fail</td>
+          <td class="fixed-width-thead">Total</td>
+          <td class="fixed-width-thead">Pass</td>
+          <td class="fixed-width-thead">Fail</td>
+          <td class="fixed-width-thead">Total</td>
+          <td class="fixed-width-thead">Pass</td>
+          <td class="fixed-width-thead">Fail</td>
+          <td class="fixed-width-thead">Total</td>
+          <td class="fixed-width-thead">Pass</td>
+          <td class="fixed-width-thead">Fail</td>
+          <td class="fixed-width-thead">Total</td>
+          <td class="fixed-width-thead">Pass</td>
+          <td class="fixed-width-thead">Fail</td>
+          <td class="fixed-width-thead">Total</td>
         </tr>
 
     </thead>
     <tbody>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
+      <!-- <tr part-id="">
+        <td class="fixed-width" id="model-width" id="model" style="border-right: 1px solid white;>some_model<br>some_details</td>
+        <td class="fixed-width-thead" id="programming-pass-count">-</td>
+        <td class="fixed-width-thead" id="programming-fail-count">-</td>
+        <td class="fixed-width-thead" id="programming-total-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
+        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
+        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
+        <td class="fixed-width-thead" id="endtest-total-count">-</td>
+        <td class="fixed-width-thead" id="laser-pass-count">-</td>
+        <td class="fixed-width-thead" id="laser-fail-count">-</td>
+        <td class="fixed-width-thead" id="laser-total-count">-</td>
+        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
+        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
+        <td class="fixed-width-thead" id="oqc-total-count">-</td>
+      </tr> -->
+      <!-- <tr>
+        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
+        <td class="fixed-width-thead" id="programming-pass-count">-</td>
+        <td class="fixed-width-thead" id="programming-fail-count">-</td>
+        <td class="fixed-width-thead" id="programming-total-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
+        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
+        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
+        <td class="fixed-width-thead" id="endtest-total-count">-</td>
+        <td class="fixed-width-thead" id="laser-pass-count">-</td>
+        <td class="fixed-width-thead" id="laser-fail-count">-</td>
+        <td class="fixed-width-thead" id="laser-total-count">-</td>
+        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
+        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
+        <td class="fixed-width-thead" id="oqc-total-count">-</td>
       </tr>
       <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
+        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
+        <td class="fixed-width-thead" id="programming-pass-count">-</td>
+        <td class="fixed-width-thead" id="programming-fail-count">-</td>
+        <td class="fixed-width-thead" id="programming-total-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
+        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
+        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
+        <td class="fixed-width-thead" id="endtest-total-count">-</td>
+        <td class="fixed-width-thead" id="laser-pass-count">-</td>
+        <td class="fixed-width-thead" id="laser-fail-count">-</td>
+        <td class="fixed-width-thead" id="laser-total-count">-</td>
+        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
+        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
+        <td class="fixed-width-thead" id="oqc-total-count">-</td>
       </tr>
       <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
+        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
+        <td class="fixed-width-thead" id="programming-pass-count">-</td>
+        <td class="fixed-width-thead" id="programming-fail-count">-</td>
+        <td class="fixed-width-thead" id="programming-total-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
+        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
+        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
+        <td class="fixed-width-thead" id="endtest-total-count">-</td>
+        <td class="fixed-width-thead" id="laser-pass-count">-</td>
+        <td class="fixed-width-thead" id="laser-fail-count">-</td>
+        <td class="fixed-width-thead" id="laser-total-count">-</td>
+        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
+        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
+        <td class="fixed-width-thead" id="oqc-total-count">-</td>
       </tr>
       <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-      </tr>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-      </tr>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-      </tr>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-      </tr>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">NO DATA</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">-</td>
-        <td class="fixed-width">12</td>
-        <td class="fixed-width">-</td>
-      </tr>
-    
-     
-  
-    
+        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
+        <td class="fixed-width-thead" id="programming-pass-count">-</td>
+        <td class="fixed-width-thead" id="programming-fail-count">-</td>
+        <td class="fixed-width-thead" id="programming-total-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
+        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
+        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
+        <td class="fixed-width-thead" id="endtest-total-count">-</td>
+        <td class="fixed-width-thead" id="laser-pass-count">-</td>
+        <td class="fixed-width-thead" id="laser-fail-count">-</td>
+        <td class="fixed-width-thead" id="laser-total-count">-</td>
+        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
+        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
+        <td class="fixed-width-thead" id="oqc-total-count">-</td>
+      </tr> -->
+    </tbody>
   </table>
 </div>
 

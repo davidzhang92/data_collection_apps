@@ -42,11 +42,7 @@ from get_endtest_result_entry_view import get_endtest_result_entry_view, get_fil
 # from delete_endtest_result_entry_view import delete_endtest_result_entry_view
 from get_laser_result_entry import get_laser_result_entry
 from get_overall_throughput import get_overall_throughput
-from get_donut_1_chart_throughput import get_donut_1, get_donut_1_details
-from get_donut_2_chart_throughput import get_donut_2, get_donut_2_details
-from get_donut_3_chart_throughput import get_donut_3, get_donut_3_details
-from get_donut_4_chart_throughput import get_donut_4, get_donut_4_details
-from get_donut_5_chart_throughput import get_donut_5, get_donut_5_details
+from get_dashboard_data import get_dashboard_part_id, get_dashboard_part_detail_counts
 from post_refresh_token import post_refresh_access_token
 # from get_token_authentication import get_token_authentication
 from update_user_profiles import update_user_profiles
@@ -484,69 +480,23 @@ def get_endtest_result_report_api():
 # graph-overall-throughput-GET
 # --------------------------------
 
+@app.route('/api/dashboard_part_id_api', methods=['GET'])
+def get_dashboard_part_id_api():
+    return get_dashboard_part_id()
+
+# --------------------------------
+# dashboard-table-GET
+# --------------------------------
+
 @app.route('/api/overall_throughput_api', methods=['GET'])
 def get_overall_throughput_api():
     return get_overall_throughput()
 
-# --------------------------------
-# graph-donut-1-throughput-GET
-# --------------------------------
+@app.route('/api/dashboard_part_detail_counts_api', methods=['GET'])
+def get_dashboard_part_detail_counts_api():
+    return get_dashboard_part_detail_counts()
 
-@app.route('/api/donut_1_api', methods=['GET'])
-def get_donut_1_api():
-    return get_donut_1()
 
-@app.route('/api/donut_1_details', methods=['GET'])
-def get_donut_1_details_api():
-    return get_donut_1_details()
-
-# --------------------------------
-# graph-donut-2-throughput-GET
-# --------------------------------
-
-@app.route('/api/donut_2_api', methods=['GET'])
-def get_donut_2_api():
-    return get_donut_2()
-
-@app.route('/api/donut_2_details', methods=['GET'])
-def get_donut_2_details_api():
-    return get_donut_2_details()
-
-# --------------------------------
-# graph-donut-3-throughput-GET
-# --------------------------------
-
-@app.route('/api/donut_3_api', methods=['GET'])
-def get_donut_3_api():
-    return get_donut_3()
-
-@app.route('/api/donut_3_details', methods=['GET'])
-def get_donut_3_details_api():
-    return get_donut_3_details()
-
-# --------------------------------
-# graph-donut-4-throughput-GET
-# --------------------------------
-
-@app.route('/api/donut_4_api', methods=['GET'])
-def get_donut_4_api():
-    return get_donut_4()
-
-@app.route('/api/donut_4_details', methods=['GET'])
-def get_donut_4_details_api():
-    return get_donut_4_details()
-
-# --------------------------------
-# graph-donut-5-throughput-GET
-# --------------------------------
-
-@app.route('/api/donut_5_api', methods=['GET'])
-def get_donut_5_api():
-    return get_donut_5()
-
-@app.route('/api/donut_5_details', methods=['GET'])
-def get_donut_5_details_api():
-    return get_donut_5_details()
 
 
 ###############################

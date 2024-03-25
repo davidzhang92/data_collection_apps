@@ -389,6 +389,7 @@ width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
 }
 
 .fixed-width-thead {
@@ -397,6 +398,7 @@ width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
 }
 
 #model-width{
@@ -404,7 +406,7 @@ width: 100%;
 }
 
 
-#table-content tr, #table-content td {
+#table-content tr, #table-content {
     border: 1px solid #e9e9e9; /* Adjust border width and color as needed */
 }
 
