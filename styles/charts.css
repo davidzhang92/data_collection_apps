@@ -376,7 +376,7 @@ table.table tr td:first-child {
 #table-content tbody {
 max-height: 321px; 
 max-width: 100%;
-overflow-y: auto;
+overflow-y: scroll;
 display: block;
 width: 100%; 
 }
@@ -384,6 +384,9 @@ width: 100%;
 
 
 .fixed-width {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 107.45px;
     height: 80px;
     overflow: hidden;
@@ -401,7 +404,16 @@ width: 100%;
 
 }
 
-#model-width{
+.fixed-width-tbody {
+    width: 107.45px;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.model-width{
     width:200px;
 }
 

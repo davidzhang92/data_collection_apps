@@ -1,14 +1,22 @@
 #!/bin/bash
 
-# Path to your first script
+# Path to your  script
 UpdatePartIDWithGUID="/data-storage/sfdc_apps/sql_sp/bash_scripts/UpdatePartIDWithGUID.sh"
 
-# Path to your second script
 CalculateOverallThroughput="/data-storage/sfdc_apps/sql_sp/bash_scripts/CalculateOverallThroughput.sh"
+
+InsertToVwResultEntry="/data-storage/sfdc_apps/sql_sp/bash_scripts/InsertToVwResultEntry.sh"
+
+CopytoVwDashboardHistory="/data-storage/sfdc_apps/sql_sp/bash_scripts/CopytoVwDashboardHistory.sh"
 
 # Sleep duration in seconds for each script
 SLEEP_DURATION_1=5
 SLEEP_DURATION_2=1800
+SLEEP_DURATION_3=5
+
+
+# Time to run the script (24 hour format)
+TIME_TO_RUN="00:00"
 
 # Function to run a script with a sleep interval
 run_script() {
@@ -33,5 +41,10 @@ PID1=$!
 run_script "$CalculateOverallThroughput" $SLEEP_DURATION_2 &
 PID2=$!
 
+run_script "$InsertToVwResultEntry" $SLEEP_DURATION_3 &
+PID3=$!
+
+echo "/bin/bash $CopytoVwDashboardHistory" | at $TIME_TO_RUN
+
 # Wait for both processes to complete
-wait $PID1 $PID2
+wait $PID1 $PID2 $PID3

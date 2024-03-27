@@ -298,7 +298,8 @@ $(document).ready(function () {
 					// Update the row with the new data
 					rowToUpdate.find('td').eq(1).text(response.part_no);
 					rowToUpdate.find('td').eq(2).text(response.part_description);
-					rowToUpdate.find('td').eq(3).text(response.latest_date);
+					rowToUpdate.find('td').eq(3).text(response.username);
+					rowToUpdate.find('td').eq(4).text(response.latest_date.toISOString().slice(0, 16).replace('T', ' '));
 				}
 	
 				updateTableRow(response);

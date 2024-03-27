@@ -97,8 +97,8 @@ def update_defect():
         
         # Construct and execute the query to fetch updated data
         success_output_query = """
-        SELECT a.id, a.part_no, a.defect_description, b.username, a.modified_date from defect_master a
-        LEFT JOIN user_master b ON a.created_by = b.id
+        SELECT a.id, a.defect_no, a.defect_description, b.username, a.modified_date from defect_master a
+        LEFT JOIN user_master b ON a.created_by = b.id where a.id=? and a.is_deleted = 0
         """
 
         cursor.execute(success_output_query, (id,))
@@ -109,7 +109,7 @@ def update_defect():
                 'defect_no': updated_data_row[1],
                 'defect_description': updated_data_row[2],
                 'username' : updated_data_row[3],
-                'latest_date': updated_data_row[3],
+                'latest_date': updated_data_row[4],
                 # '(debug) raw_data_row': list(updated_data_row)  # Include the raw data row here
             }
             return jsonify(updated_data), 200

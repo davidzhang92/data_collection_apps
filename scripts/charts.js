@@ -233,87 +233,101 @@ $(document).ready(function() {
 		}
 	  
 		data.forEach(function (part) {
-	
-	var row = `<tr part-id="${part.part_id}">
-        <td class="fixed-width model-id-${part.part_id}" id="model-width" >${part.part_no}<br>${part.part_description}</td>
-        <td class="fixed-width-thead" id="programming-pass-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="programming-fail-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="programming-total-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="leaktest-pass-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="leaktest-fail-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="leaktest-total-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="endtest-pass-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="endtest-fail-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="endtest-total-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="laser-pass-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="laser-fail-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="laser-total-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="oqc-pass-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="oqc-fail-count-${part.part_id}">-</td>
-        <td class="fixed-width-thead" id="oqc-total-count-${part.part_id}">-</td>
-      </tr>`;
-	
-		  tableBody.append(row);
-		});
+    
+            var row = `<tr part-id="${part.part_id}">
+            <td class="fixed-width model-id-${part.part_id} model-width">${part.part_no}<br>${part.part_description}</td>
+            <td class="fixed-width-tbody" id="programming-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="programming-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="programming-total-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="leaktest-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="leaktest-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="leaktest-total-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="endtest-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="endtest-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="endtest-total-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="laser-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="laser-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="laser-total-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="oqc-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="oqc-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-tbody" id="oqc-total-count-${part.part_id}">-</td>
+            </tr>`;
+        
+            tableBody.append(row);
+            });
     }
 
-    $.ajax({
-        url: 'http://' + window.location.hostname + ':4000/api/dashboard_part_id_api',
-        type: 'GET',
-        // data: requestData, 
-        contentType: 'application/json',
-        beforeSend: function(xhr) { 
-            xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
-        },	
-        success: function (data) {
-            // Handle success
-            renderData(data);
-            $.ajax({
-                url: 'http://' + window.location.hostname + ':4000/api/dashboard_part_detail_counts_api',
-                type: 'GET',
-                // data: requestData, 
-                contentType: 'application/json',
-                beforeSend: function(xhr) { 
-                    xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
-                },	
-                success: function (data_count) {
-                    // Handle success
-                    data_count.forEach(function (part) {
-                        $(`.model-id-${part.part_id}`).html(`${part.part_no}<br>${part.part_description}`);
-                        // Update the pass, fail, and total counts for each process type
-                        $(`#${part.process_type}-pass-count-${part.part_id}`).text(part.pass_count);
-                        $(`#${part.process_type}-fail-count-${part.part_id}`).text(part.fail_count);
-                        $(`#${part.process_type}-total-count-${part.part_id}`).text(part.total_count);
-                    })
-                    
-
-                },
-                error: function (xhr, error) {
-                    if (xhr.status === 401) {
-                        alert(xhr.responseJSON.message);
-                        // window.location.href = '/login.html'
-                        localStorage.removeItem('accessToken');
-                    } else if (xhr.status >= 400 && xhr.status < 600) {
-                        alert(xhr.responseJSON.message);
+    function fetchDataTable() {
+        return $.ajax({
+            url: 'http://' + window.location.hostname + ':4000/api/dashboard_part_id_api',
+            type: 'GET',
+            contentType: 'application/json',
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },	
+            success: function (data) {
+                renderData(data);
+            },
+            error: function (xhr, error) {
+                if (xhr.status === 401) {
+                    alert(xhr.responseJSON.message);
+                    localStorage.removeItem('accessToken');
+                } else if (xhr.status >= 400 && xhr.status < 600) {
+                    // alert(xhr.responseJSON.message);
+                } else {
+                    console.error(error);
+                    // alert('An error occurred while retrieving the data.');
+                }
+            },
+        });
+    }
+    
+    function fetchDataDetail() {
+        $.ajax({
+            url: 'http://' + window.location.hostname + ':4000/api/dashboard_part_detail_counts_api',
+            type: 'GET',
+            contentType: 'application/json',
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },	
+            success: function (data_count) {
+                data_count.forEach(function (part) {
+                    let row = $('#table-content tbody').find(`tr[part-id="${part.part_id}"]`);
+    
+                    if (row.length) {
+                        // Update the existing row
+                        row.find('.model-id-' + part.part_id).html(`${part.part_no}<br>${part.part_description}`);
+                        row.find(`#${part.process_type}-pass-count-${part.part_id}`).text(part.pass_count);
+                        row.find(`#${part.process_type}-fail-count-${part.part_id}`).text(part.fail_count);
+                        row.find(`#${part.process_type}-total-count-${part.part_id}`).text(part.total_count);
+                        // Add similar lines for other process types
                     } else {
-                        console.error(error);
-                        alert('An error occurred while retrieving the data.');
+                        // Fetch data table only when part id is not found
+                        fetchDataTable().done(function() {
+                            // You can add any additional logic here after fetchDataTable has completed
+                        });
                     }
-                },
-            });
-        },
-        error: function (xhr, error) {
-            if (xhr.status === 401) {
-                alert(xhr.responseJSON.message);
-                // window.location.href = '/login.html'
-                localStorage.removeItem('accessToken');
-            } else if (xhr.status >= 400 && xhr.status < 600) {
-                alert(xhr.responseJSON.message);
-            } else {
-                console.error(error);
-                alert('An error occurred while retrieving the data.');
-            }
-        },
-    });
+                });
+            },
+            error: function (xhr, error) {
+                if (xhr.status === 401) {
+                    alert(xhr.responseJSON.message);
+                    localStorage.removeItem('accessToken');
+                } else if (xhr.status >= 400 && xhr.status < 600) {
+                    // alert(xhr.responseJSON.message);
+                } else {
+                    console.error(error);
+                    // alert('An error occurred while retrieving the data.');
+                }
+            },
+        });
+    }
+    fetchDataTable()
+    setInterval(fetchDataDetail, 2000);
+    
+    
+
 });
+
+
 
