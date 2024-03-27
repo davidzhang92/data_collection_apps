@@ -79,31 +79,6 @@ $(document).ready(function() {
         }
     };
 
-        // config options for the donut chart
-    var donutOptions = {
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false,
-            },
-            title: {
-                display: true,
-                position: 'center',
-                color: 'black',
-                font: {
-                    family: 'Arial',
-                    size: 24
-                },
-                padding: 10
-            },
-            tooltip:{
-                enabled: true,
-                
-            }
-        },
-
-    };
-
 
     // Create a new Chart.js chart for the line chart
             //graph 1
@@ -283,6 +258,9 @@ $(document).ready(function() {
     }
     
     function fetchDataDetail() {
+
+
+
         $.ajax({
             url: 'http://' + window.location.hostname + ':4000/api/dashboard_part_detail_counts_api',
             type: 'GET',
@@ -291,7 +269,8 @@ $(document).ready(function() {
                 xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
             },	
             success: function (data_count) {
-                data_count.forEach(function (part) {
+                // loop thru to all data to update data in the table
+                $.each(data_count, function(index, part) {
                     let row = $('#table-content tbody').find(`tr[part-id="${part.part_id}"]`);
     
                     if (row.length) {
@@ -307,8 +286,33 @@ $(document).ready(function() {
                             // You can add any additional logic here after fetchDataTable has completed
                         });
                     }
+                }),
+                // loop thru to all data to get the pass, fail, total count
+                $.each(data_count, function(index, item) {
+                    let processes = {
+                        programming: {fail_count: 0, pass_count: 0, total_count: 0},
+                        leaktest: {fail_count: 0, pass_count: 0, total_count: 0},
+                        endtest: {fail_count: 0, pass_count: 0, total_count: 0},
+                        laser: {fail_count: 0, pass_count: 0, total_count: 0},
+                        oqc: {fail_count: 0, pass_count: 0, total_count: 0}
+                    };
+                    
+                    $.each(data_count, function(index, item) {
+                        if (processes.hasOwnProperty(item.process_type)) {
+                            processes[item.process_type].fail_count += item.fail_count;
+                            processes[item.process_type].pass_count += item.pass_count;
+                            processes[item.process_type].total_count += item.total_count;
+                    
+                            // Update the text of each id element inside the table for its corresponding id
+                            $('#' + item.process_type + '-fail').text(processes[item.process_type].fail_count);
+                            $('#' + item.process_type + '-pass').text(processes[item.process_type].pass_count);
+                            $('#' + item.process_type + '-total').text(processes[item.process_type].total_count);
+                        }
+                    });
                 });
-            },
+            }
+            
+            ,
             error: function (xhr, error) {
                 if (xhr.status === 401) {
                     alert(xhr.responseJSON.message);
@@ -323,7 +327,8 @@ $(document).ready(function() {
         });
     }
     fetchDataTable()
-    setInterval(fetchDataDetail, 2000);
+    fetchDataDetail()
+    setInterval(fetchDataDetail, 3000);
     
     
 
