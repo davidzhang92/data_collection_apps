@@ -37,25 +37,25 @@
     <thead>
         <tr>
           <td class="fixed-width-thead model-width" rowspan="2"  style="border-right: 1px solid white">Parts</td>
-          <td class="fixed-width-thead" colspan="3">Programming</td>
-          <td class="fixed-width-thead" colspan="3">Leaktest</td>
-          <td class="fixed-width-thead" colspan="3">Endtest</td>
-          <td class="fixed-width-thead" colspan="3">Laser</td>
-          <td class="fixed-width-thead" colspan="3">OQC</td>
+          <td class="fixed-width-thead" colspan="3" style="border-right: 1px solid white;">Programming</td>
+          <td class="fixed-width-thead" colspan="3" style="border-right: 1px solid white;">Leaktest</td>
+          <td class="fixed-width-thead" colspan="3" style="border-right: 1px solid white;">Endtest</td>
+          <td class="fixed-width-thead" colspan="3" style="border-right: 1px solid white;">Laser</td>
+          <td class="fixed-width-thead" colspan="3" style="border-right: 1px solid white;">OQC</td>
         </tr>
         <tr>
+          <td class="fixed-width-thead" >Pass</td>
+          <td class="fixed-width-thead">Fail</td>
+          <td class="fixed-width-thead" style="border-right: 1px solid white;">Total</td>
           <td class="fixed-width-thead">Pass</td>
           <td class="fixed-width-thead">Fail</td>
-          <td class="fixed-width-thead">Total</td>
+          <td class="fixed-width-thead" style="border-right: 1px solid white;">Total</td>
           <td class="fixed-width-thead">Pass</td>
           <td class="fixed-width-thead">Fail</td>
-          <td class="fixed-width-thead">Total</td>
+          <td class="fixed-width-thead" style="border-right: 1px solid white;">Total</td>
           <td class="fixed-width-thead">Pass</td>
           <td class="fixed-width-thead">Fail</td>
-          <td class="fixed-width-thead">Total</td>
-          <td class="fixed-width-thead">Pass</td>
-          <td class="fixed-width-thead">Fail</td>
-          <td class="fixed-width-thead">Total</td>
+          <td class="fixed-width-thead" style="border-right: 1px solid white;">Total</td>
           <td class="fixed-width-thead">Pass</td>
           <td class="fixed-width-thead">Fail</td>
           <td class="fixed-width-thead">Total</td>
@@ -63,96 +63,24 @@
 
     </thead>
     <tbody>
-      <!-- <tr part-id="">
-        <td class="fixed-width" id="model-width" id="model" style="border-right: 1px solid white;>some_model<br>some_details</td>
+      <tr part-id="">
+        <td class="fixed-width" id="model-width" id="model" style="border-right: 1px solid white;">some_model<br>some_details</td>
         <td class="fixed-width-thead" id="programming-pass-count">-</td>
         <td class="fixed-width-thead" id="programming-fail-count">-</td>
-        <td class="fixed-width-thead" id="programming-total-count">-</td>
+        <td class="fixed-width-thead" id="programming-total-count" style="border-right: 1px solid white;">-</td>
         <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
         <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
+        <td class="fixed-width-thead" id="leaktest-total-count" style="border-right: 1px solid white;">-</td>
         <td class="fixed-width-thead" id="endtest-pass-count">-</td>
         <td class="fixed-width-thead" id="endtest-fail-count">-</td>
-        <td class="fixed-width-thead" id="endtest-total-count">-</td>
+        <td class="fixed-width-thead" id="endtest-total-count" style="border-right: 1px solid white;">-</td>
         <td class="fixed-width-thead" id="laser-pass-count">-</td>
         <td class="fixed-width-thead" id="laser-fail-count">-</td>
-        <td class="fixed-width-thead" id="laser-total-count">-</td>
+        <td class="fixed-width-thead" id="laser-total-count" style="border-right: 1px solid white;">-</td>
         <td class="fixed-width-thead" id="oqc-pass-count">-</td>
         <td class="fixed-width-thead" id="oqc-fail-count">-</td>
-        <td class="fixed-width-thead" id="oqc-total-count">-</td>
-      </tr> -->
-      <!-- <tr>
-        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
-        <td class="fixed-width-thead" id="programming-pass-count">-</td>
-        <td class="fixed-width-thead" id="programming-fail-count">-</td>
-        <td class="fixed-width-thead" id="programming-total-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
-        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
-        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
-        <td class="fixed-width-thead" id="endtest-total-count">-</td>
-        <td class="fixed-width-thead" id="laser-pass-count">-</td>
-        <td class="fixed-width-thead" id="laser-fail-count">-</td>
-        <td class="fixed-width-thead" id="laser-total-count">-</td>
-        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
-        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
-        <td class="fixed-width-thead" id="oqc-total-count">-</td>
+        <td class="fixed-width-thead" id="oqc-total-count" style="border-right: 1px solid white;">-</td>
       </tr>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
-        <td class="fixed-width-thead" id="programming-pass-count">-</td>
-        <td class="fixed-width-thead" id="programming-fail-count">-</td>
-        <td class="fixed-width-thead" id="programming-total-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
-        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
-        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
-        <td class="fixed-width-thead" id="endtest-total-count">-</td>
-        <td class="fixed-width-thead" id="laser-pass-count">-</td>
-        <td class="fixed-width-thead" id="laser-fail-count">-</td>
-        <td class="fixed-width-thead" id="laser-total-count">-</td>
-        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
-        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
-        <td class="fixed-width-thead" id="oqc-total-count">-</td>
-      </tr>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
-        <td class="fixed-width-thead" id="programming-pass-count">-</td>
-        <td class="fixed-width-thead" id="programming-fail-count">-</td>
-        <td class="fixed-width-thead" id="programming-total-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
-        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
-        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
-        <td class="fixed-width-thead" id="endtest-total-count">-</td>
-        <td class="fixed-width-thead" id="laser-pass-count">-</td>
-        <td class="fixed-width-thead" id="laser-fail-count">-</td>
-        <td class="fixed-width-thead" id="laser-total-count">-</td>
-        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
-        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
-        <td class="fixed-width-thead" id="oqc-total-count">-</td>
-      </tr>
-      <tr>
-        <td class="fixed-width" id="model-width">some_model<br>some_details</td>
-        <td class="fixed-width-thead" id="programming-pass-count">-</td>
-        <td class="fixed-width-thead" id="programming-fail-count">-</td>
-        <td class="fixed-width-thead" id="programming-total-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-pass-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-fail-count">-</td>
-        <td class="fixed-width-thead" id="leaktest-total-count">-</td>
-        <td class="fixed-width-thead" id="endtest-pass-count">-</td>
-        <td class="fixed-width-thead" id="endtest-fail-count">-</td>
-        <td class="fixed-width-thead" id="endtest-total-count">-</td>
-        <td class="fixed-width-thead" id="laser-pass-count">-</td>
-        <td class="fixed-width-thead" id="laser-fail-count">-</td>
-        <td class="fixed-width-thead" id="laser-total-count">-</td>
-        <td class="fixed-width-thead" id="oqc-pass-count">-</td>
-        <td class="fixed-width-thead" id="oqc-fail-count">-</td>
-        <td class="fixed-width-thead" id="oqc-total-count">-</td>
-      </tr> -->
     </tbody>
   </table>
 </div>

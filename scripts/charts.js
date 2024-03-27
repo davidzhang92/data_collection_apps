@@ -235,22 +235,22 @@ $(document).ready(function() {
 		data.forEach(function (part) {
     
             var row = `<tr part-id="${part.part_id}">
-            <td class="fixed-width model-id-${part.part_id} model-width">${part.part_no}<br>${part.part_description}</td>
-            <td class="fixed-width-tbody" id="programming-pass-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="programming-fail-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="programming-total-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="leaktest-pass-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="leaktest-fail-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="leaktest-total-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="endtest-pass-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="endtest-fail-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="endtest-total-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="laser-pass-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="laser-fail-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="laser-total-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="oqc-pass-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="oqc-fail-count-${part.part_id}">-</td>
-            <td class="fixed-width-tbody" id="oqc-total-count-${part.part_id}">-</td>
+            <td class="fixed-width model-id-${part.part_id}  id="model-width" style="border-right: 1px solid white;">${part.part_no}<br>${part.part_description}</td>
+            <td class="fixed-width-thead" id="programming-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="programming-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="programming-total-count-${part.part_id}" style="border-right: 1px solid white;">-</td>
+            <td class="fixed-width-thead" id="leaktest-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="leaktest-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="leaktest-total-count-${part.part_id}" style="border-right: 1px solid white;">-</td>
+            <td class="fixed-width-thead" id="endtest-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="endtest-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="endtest-total-count-${part.part_id}" style="border-right: 1px solid white;">-</td>
+            <td class="fixed-width-thead" id="laser-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="laser-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="laser-total-count-${part.part_id}" style="border-right: 1px solid white;">-</td>
+            <td class="fixed-width-thead" id="oqc-pass-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="oqc-fail-count-${part.part_id}">-</td>
+            <td class="fixed-width-thead" id="oqc-total-count-${part.part_id}">-</td>
             </tr>`;
         
             tableBody.append(row);
