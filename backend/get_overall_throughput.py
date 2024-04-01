@@ -82,7 +82,7 @@ def get_overall_throughput():
 
         # Execute the query to retrieve data from the overall_throughput table
         query = """
-        SELECT distinct created_date, total_entries
+        SELECT distinct created_date, programming_entries,	leaktest_entries, endtest_entries, laser_entries, oqc_entries, total_entries
         FROM overall_throughput
         WHERE created_date >= DATEADD(HOUR, -8, GETDATE())
           AND created_date <= GETDATE();
@@ -90,7 +90,15 @@ def get_overall_throughput():
         rows = fetch_data(query)
 
         # Prepare the data as an array of objects
-        results = [{'created_date': row.created_date, 'total_entries': row.total_entries} for row in rows]
+        results = [{'created_date': row.created_date, 
+                    'programming_entries':row.programming_entries, 
+                    'leaktest_entries':row.leaktest_entries, 
+                    'endtest_entries':row.endtest_entries, 
+                    'laser_entries':row.laser_entries, 
+                    'oqc_entries':row.oqc_entries, 
+                    'total_entries': row.total_entries} 
+                    
+                    for row in rows]
 
         return jsonify(results)
 

@@ -1,0 +1,2 @@
+#executes everyday at 00:00
+0 0 * * * /data-storage/sfdc_apps/sql_sp/bash_scripts/CopytoVwDashboardHistory.sh
