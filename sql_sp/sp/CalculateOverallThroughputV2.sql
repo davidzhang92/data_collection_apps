@@ -35,11 +35,11 @@ DECLARE @WindowStartTime DATETIME;
 
 	--Calculate entries for each processes
 
-	SELECT @ProgrammingEntries = (SELECT COUNT(id) FROM programming_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @LeaktestEntries = (SELECT COUNT(id) FROM leaktest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @EndtestEntries = (SELECT COUNT(id) FROM endtest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @LaserEntries = (SELECT COUNT(id) FROM laser_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @OqcEntries = (SELECT COUNT(id) FROM oqc_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
+    SELECT @ProgrammingEntries = 0 + (SELECT COUNT(id) FROM programming_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
+	SELECT @LeaktestEntries = 0 + (SELECT COUNT(id) FROM leaktest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
+	SELECT @EndtestEntries = 0 + (SELECT COUNT(id) FROM endtest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
+	SELECT @LaserEntries = 0 + (SELECT COUNT(id) FROM laser_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
+	SELECT @OqcEntries = 0 + (SELECT COUNT(id) FROM oqc_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
 
 
 

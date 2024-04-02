@@ -22,63 +22,65 @@ $(document).ready(function() {
 
     // Configuration options for the chart
         //config for bar chart
-    var graphOption = {
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Time',
-                    color: 'white',
-                    font: {
-                        family: 'Helvetica',
-                        size: 18
-                    }
+        var graphOption = {
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Time',
+                        color: 'White',
+                        font: {
+                            family: 'Helvetica',
+                            size: 18
+                        }
+                    },
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            family: 'Helvetica',
+                            size: 14
+                        }
+                    },
+                    stacked: true,
                 },
-                ticks: {
-                    color: 'white',
-                    font: {
-                        family: 'Helvetica',
-                        size: 14
-                    }
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Units',
+                        color: 'white',
+                        font: {
+                            family: 'Helvetica',
+                            size: 20
+                        }
+                    },
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            family: 'Helvetica',
+                            size: 16
+                        },
+                        precision: 0 // Set precision to 0 to display whole numbers
+                    },
+                    stacked: true, // Move this inside the 'y' object
                 }
             },
-            y: {
-                beginAtZero: true,
-                title: {
+            plugins: {
+                legend: {
                     display: true,
-                    text: 'Units',
-                    color: 'white',
-                    font: {
-                        family: 'Helvetica',
-                        size: 20
-                    }
-                },
-                ticks: {
-                    color: 'white',
-                    font: {
-                        family: 'Helvetica',
-                        size: 16
-                    },
-                    precision: 0 // Set precision to 0 to display whole numbers
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                display: true,
-                labels: {
-                    color: 'white',
-                    font: {
-                        family: 'Helvetica',
-                        size: 16
+                    labels: {
+                        color: 'white',
+                        font: {
+                            family: 'Helvetica',
+                            size: 16
+                        }
                     }
                 }
             }
-        }
-    };
-
+        };
+        
 
     // Create a new Chart.js chart for the line chart
             //graph 1
@@ -92,15 +94,12 @@ $(document).ready(function() {
                 'Authorization': localStorage.getItem('accessToken')
             },
             success: function(data) {
-                console.log('Data from API:', data);
-    
                 // Process the data and generate data points
-                const { labels, values } = processData(data);
-                console.log('Processed data:', labels, values);
-    
+                const { labels, datasets } = processData(data);
+                // console.log('Processed data:', labels, datasets);
                 // Update the chart data with the dynamic data
                 myChart.data.labels = labels;
-                myChart.data.datasets[0].data = values;
+                myChart.data.datasets = datasets; // Update all datasets
                 myChart.update(); // Update the chart to reflect the changes
             },
             error: function(error) {
@@ -108,26 +107,35 @@ $(document).ready(function() {
             }
         });
     }
+            
     
     
     // Function to process the data and generate data points
     function processData(apiData) {
         const labels = generateLabels();
-        const values = new Array(labels.length).fill(0);
+        const datasets = [
+            { label: 'Programming', data: [], backgroundColor: 'rgba(66, 111, 245, 0.5)', borderColor: 'rgba(255, 99, 132, 1)' },
+            { label: 'Leaktest', data: [], backgroundColor: 'rgba(240, 70, 58, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
+            { label: 'Endtest', data: [], backgroundColor: 'rgba(216, 237, 55, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
+            { label: 'Laser', data: [], backgroundColor: 'rgba(89, 235, 63, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
+            { label: 'OQC', data: [], backgroundColor: 'rgba(164, 60, 230, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
+            // Add more datasets for each category of entries
+        ];
 
         $.each(apiData, function(idx, item) {
             const date = new Date(item.created_date);
             const index = labels.indexOf(formatDate(date));
-
+    
             if (index !== -1) {
-                const totalEntries = parseInt(item.total_entries);
-
-                if (totalEntries > values[index]) {
-                    values[index] = totalEntries; 
-                }
+                datasets[0].data[index] = parseInt(item.programming_entries);
+                datasets[1].data[index] = parseInt(item.leaktest_entries);
+                datasets[2].data[index] = parseInt(item.endtest_entries);
+                datasets[3].data[index] = parseInt(item.laser_entries);
+                datasets[4].data[index] = parseInt(item.oqc_entries);
+                // Add the values for each category of entries
             }
         });
-        return { labels, values };
+        return { labels, datasets };
     }
 
     // Function to format a date as HH:00 or HH:30 in UTC
@@ -176,18 +184,24 @@ $(document).ready(function() {
     };
     
     var myChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: initialData,
-        options: graphOption
+        options: {
+            ...graphOption,
+            animation: {
+                duration: 0 // this will disable the animation
+            }
+        }
     });
+    
     
     fetchDataFromAPI();
     // Fetch new data from the API and update the chart every 30 minutes
-    setInterval(fetchDataFromAPI, 1 * 60 * 1000);
+    setInterval(fetchDataFromAPI, 1 * 5 * 1000);
     // setInterval(fetchDataFromAPI, 60000);
 
     // Update the chart's labels every 15 mins
-    setInterval(generateLabels, 1 * 60 * 1000);
+    setInterval(generateLabels, 1 * 5 * 1000);
     // setInterval(generateLabels, 60000);
                 
     

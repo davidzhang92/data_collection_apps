@@ -96,7 +96,8 @@ def get_overall_throughput():
                     'endtest_entries':row.endtest_entries, 
                     'laser_entries':row.laser_entries, 
                     'oqc_entries':row.oqc_entries, 
-                    'total_entries': row.total_entries} 
+                    # 'total_entries': row.total_entries
+                    } 
                     
                     for row in rows]
 
