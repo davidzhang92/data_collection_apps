@@ -82,11 +82,15 @@ def get_overall_throughput():
 
         # Execute the query to retrieve data from the overall_throughput table
         query = """
-        SELECT distinct created_date, programming_entries,	leaktest_entries, endtest_entries, laser_entries, oqc_entries, total_entries
-        FROM overall_throughput
-        WHERE created_date >= DATEADD(HOUR, -8, GETDATE())
-          AND created_date <= GETDATE();
-        """
+               WITH RankedEntries AS (
+            SELECT id, programming_entries, leaktest_entries, endtest_entries, laser_entries, oqc_entries, total_entries, created_date, generated_date,
+                ROW_NUMBER() OVER(PARTITION BY created_date ORDER BY generated_date DESC) as rn
+            FROM overall_throughput
+            )
+            SELECT id, programming_entries, leaktest_entries, endtest_entries, laser_entries, oqc_entries, total_entries, created_date, generated_date
+            FROM RankedEntries
+            WHERE rn = 1
+                """
         rows = fetch_data(query)
 
         # Prepare the data as an array of objects

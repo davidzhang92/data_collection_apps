@@ -9,7 +9,7 @@ InsertToVwResultEntry="/data-storage/sfdc_apps/sql_sp/bash_scripts/InsertToVwRes
 
 # Sleep duration in seconds for each script
 SLEEP_DURATION_1=5
-SLEEP_DURATION_2=1800
+SLEEP_DURATION_2=5
 SLEEP_DURATION_3=5
 
 # Function to run a script with a sleep interval

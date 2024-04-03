@@ -114,11 +114,11 @@ $(document).ready(function() {
     function processData(apiData) {
         const labels = generateLabels();
         const datasets = [
-            { label: 'Programming', data: [], backgroundColor: 'rgba(66, 111, 245, 0.5)', borderColor: 'rgba(255, 99, 132, 1)' },
-            { label: 'Leaktest', data: [], backgroundColor: 'rgba(240, 70, 58, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
-            { label: 'Endtest', data: [], backgroundColor: 'rgba(216, 237, 55, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
-            { label: 'Laser', data: [], backgroundColor: 'rgba(89, 235, 63, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
-            { label: 'OQC', data: [], backgroundColor: 'rgba(164, 60, 230, 0.5)', borderColor: 'rgba(54, 162, 235, 1)' },
+            { label: 'Programming', data: [], backgroundColor: 'rgba(66, 111, 245, 0.7)', borderColor: 'rgba(255, 99, 132, 1)' },
+            { label: 'Leaktest', data: [], backgroundColor: 'rgba(240, 70, 58, 0.7)', borderColor: 'rgba(54, 162, 235, 1)' },
+            { label: 'Endtest', data: [], backgroundColor: 'rgba(216, 237, 55, 0.7)', borderColor: 'rgba(54, 162, 235, 1)' },
+            { label: 'Laser', data: [], backgroundColor: 'rgba(89, 235, 63, 0.7)', borderColor: 'rgba(54, 162, 235, 1)' },
+            { label: 'OQC', data: [], backgroundColor: 'rgba(164, 60, 230, 0.7)', borderColor: 'rgba(54, 162, 235, 1)' },
             // Add more datasets for each category of entries
         ];
 

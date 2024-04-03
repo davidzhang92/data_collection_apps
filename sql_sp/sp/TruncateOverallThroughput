@@ -1,0 +1,16 @@
+USE [DataCollection]
+GO
+
+/****** Object:  StoredProcedure [dbo].[CalculateOverallThroughput]    Script Date: 01-Apr-24 11:39:06 AM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[TruncateOverallThroughput]
+AS
+BEGIN
+truncate table [dbo].[overall_throughput]
+END
