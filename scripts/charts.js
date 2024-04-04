@@ -344,7 +344,8 @@ $(document).ready(function() {
     fetchDataDetail()
     setInterval(fetchDataDetail, 3000);
     
-    
+    setInterval(() => location.reload(), 2 * 60 * 60 * 1000);
+
 
 });
 
