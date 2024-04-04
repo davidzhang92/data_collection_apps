@@ -20,64 +20,53 @@ DECLARE @EndtestEntries INT;
 DECLARE @LaserEntries INT;
 DECLARE @OqcEntries INT;
 DECLARE @WindowStartTime DATETIME;
+DECLARE @WindowEndTime DATETIME;
 
--- Get the last row from overall_throughput
-DECLARE @LastRow TABLE (
-    programming_entries INT,
-    leaktest_entries INT,
-    endtest_entries INT,
-    laser_entries INT,
-    oqc_entries INT,
-    total_entries INT
-)
-
-
-    -- Calculate the sum of each select query based on the last 30 minutes of data
-    SELECT @TotalEntries = 
-        (SELECT COUNT(id) FROM programming_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-        + (SELECT COUNT(id) FROM leaktest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-        + (SELECT COUNT(id) FROM endtest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-        + (SELECT COUNT(id) FROM laser_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-        + (SELECT COUNT(id) FROM oqc_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()));
-
-
-	--Calculate entries for each processes
-
-	SELECT @ProgrammingEntries = 0 + (SELECT COUNT(id) FROM programming_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @LeaktestEntries = 0 + (SELECT COUNT(id) FROM leaktest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @EndtestEntries = 0 + (SELECT COUNT(id) FROM endtest_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @LaserEntries = 0 + (SELECT COUNT(id) FROM laser_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-	SELECT @OqcEntries = 0 + (SELECT COUNT(id) FROM oqc_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, GETDATE()))
-
-
-
-    -- Calculate the current 30-minute window start time
-
+-- Calculate the current 30-minute window start time
 SET @WindowStartTime = DATEADD(MINUTE, DATEDIFF(MINUTE, 0, GETDATE()) / 30 * 30, 0);
+SET @WindowEndTime = DATEADD(MINUTE, 30, @WindowStartTime);
+
+SELECT * FROM oqc_result_entry WHERE is_deleted = 0 AND created_date >= DATEADD(MINUTE, -30, @WindowStartTime)
+
+-- Calculate the sum of each select query based on the last 30 minutes of data
+SELECT @TotalEntries = 
+    (SELECT COUNT(id) FROM programming_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime)
+    + (SELECT COUNT(id) FROM leaktest_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime)
+    + (SELECT COUNT(id) FROM endtest_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime)
+    + (SELECT COUNT(id) FROM laser_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime)
+    + (SELECT COUNT(id) FROM oqc_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
+
+-- Calculate entries for each processes
+SELECT @ProgrammingEntries = 0 + (SELECT COUNT(id) FROM programming_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
+SELECT @LeaktestEntries = 0 + (SELECT COUNT(id) FROM leaktest_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
+SELECT @EndtestEntries = 0 + (SELECT COUNT(id) FROM endtest_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
+SELECT @LaserEntries = 0 + (SELECT COUNT(id) FROM laser_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
+SELECT @OqcEntries = 0 + (SELECT COUNT(id) FROM oqc_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
 
 
-INSERT INTO @LastRow
-SELECT TOP 1 programming_entries, leaktest_entries, endtest_entries, laser_entries, oqc_entries, total_entries
-FROM overall_throughput
-WHERE created_date = @WindowStartTime
-ORDER BY created_date DESC
 
--- Insert the result into the overall_throughput table only if the last row is different or does not exist
-IF NOT EXISTS (
-    SELECT *
-    FROM @LastRow
-    WHERE programming_entries = @ProgrammingEntries
-    AND leaktest_entries = @LeaktestEntries
-    AND endtest_entries = @EndtestEntries
-    AND laser_entries = @LaserEntries
-    AND oqc_entries = @OqcEntries
-    AND total_entries = @TotalEntries
-)
+-- Check if the row already exists
+IF EXISTS (SELECT 1 FROM overall_throughput WHERE created_date = @WindowStartTime)
 BEGIN
+    -- Update the existing row
+    UPDATE overall_throughput
+    SET programming_entries = @ProgrammingEntries,
+        leaktest_entries = @LeaktestEntries,
+        endtest_entries = @EndtestEntries,
+        laser_entries = @LaserEntries,
+        oqc_entries = @OqcEntries,
+        total_entries = @TotalEntries,
+        generated_date = GETDATE()
+    WHERE created_date = @WindowStartTime;
+END
+ELSE
+BEGIN
+    -- Insert a new row
     INSERT INTO overall_throughput (id, programming_entries, leaktest_entries, endtest_entries, laser_entries, oqc_entries, total_entries, created_date, generated_date)
-    VALUES (NEWID(), @ProgrammingEntries, @LeaktestEntries, @EndtestEntries, @LaserEntries, @OqcEntries,  @TotalEntries, @WindowStartTime, GETDATE());
+     VALUES (NEWID(), 0, 0, 0, 0, 0, 0, @WindowStartTime, GETDATE());
 END
 END
+
 
 GO
 
