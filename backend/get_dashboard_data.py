@@ -63,7 +63,7 @@ def token_required(f):
 
 # API endpoint to get parts
 @app.route('/api/get_dashboard_part_id', methods=['GET'])
-# @token_required
+@token_required
 def get_dashboard_part_id():
     try:
         # Execute the queries to retrieve parts id
@@ -91,7 +91,7 @@ def get_dashboard_part_id():
 
     
 @app.route('/api/get_dashboard_part_detail_counts', methods=['GET'])
-# @token_required
+@token_required
 def get_dashboard_part_detail_counts():
     try:
         # Execute the queries to retrieve pass and fail counts
