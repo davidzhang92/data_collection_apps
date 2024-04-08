@@ -1,12 +1,12 @@
-.version{
-
-    color: #fff;
-    font-size: 20px;
-    text-align: right;
-    position: fixed;
-    right:750px;
-    display: flex;
-    top:885px;
-
-
-  }
+.version {
+  color: #fff;
+  font-size: 20px;
+  text-align: center;
+  position: fixed;
+  bottom: 20px; /* Adjust this value to change the margin from the bottom */
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  /* transform: translateX(-50%); */
+}
