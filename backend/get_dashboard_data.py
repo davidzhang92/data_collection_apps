@@ -104,7 +104,7 @@ def get_dashboard_part_detail_counts():
             process_type
         FROM vw_result_entry a
         LEFT join part_master b on a.part_id = b.id
-        WHERE a.part_id is not null
+        WHERE a.part_id is not null and a.created_date BETWEEN CONVERT(datetime, CONVERT(date, GETDATE())) AND GETDATE() and b.is_deleted = 0
         GROUP BY  a.part_id, b.part_no, b.part_description, process_type
         """
 
