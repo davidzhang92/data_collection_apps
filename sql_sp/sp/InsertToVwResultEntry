@@ -15,7 +15,7 @@ BEGIN
             WHEN oqcr.id IS NOT NULL THEN 'oqc_result'
             ELSE 'unknown'
         END,
-        COALESCE(pr.created_date, lr.created_date, lsr.created_date, oqcr.created_date)
+       COALESCE(pr.created_date, lr.created_date, er.created_date, lsr.created_date, oqcr.created_date)
     FROM programming_result_entry pr
     FULL JOIN leaktest_result_entry lr ON pr.id = lr.id
     FULL JOIN endtest_result_entry er ON pr.id = er.id

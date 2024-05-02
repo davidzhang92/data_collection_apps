@@ -97,9 +97,9 @@ def post_part():
     
         if part_no_result is not None and part_no_result[0] != 0 and part_description_result is not None and part_description_result[0] == 0:
             return jsonify({'message': 'Error: Part No. is already exist'}), 400
-        elif part_no_result is not None and part_no_result[0] == 0 and part_description_result is not None and part_description_result[0] != 0:
+        if part_no_result is not None and part_no_result[0] == 0 and part_description_result is not None and part_description_result[0] != 0:
             return jsonify({'message': 'Error: This Description is already used'}), 400
-        elif part_no_result is not None and part_no_result[0] != 0 or part_description_result is not None and part_description_result[0] != 0:
+        elif part_no_result is not None and part_no_result[0] != 0 and part_description_result is not None and part_description_result[0] != 0:
             return jsonify({'message': 'Error: Data is a duplicate.'}), 400
         # Construct the SQL query to update the part_no and part_description for the given id
         query = "insert into part_master  (id, part_no, part_description, created_by, created_date, is_deleted) values (newid(),?, ?, ?, getdate(), 0)"
