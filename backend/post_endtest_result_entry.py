@@ -131,7 +131,7 @@ def post_endtest_upload_file():
                 idx, dc_type, sn, pcb_data_matrix, test_ok, date_time = row
                 if max_sql_datetime is None or date_time > max_sql_datetime:
                     # Check if the part_description matches the DCType
-                    cursor_sql.execute("SELECT id FROM part_master WHERE part_description = ?", (dc_type,))
+                    cursor_sql.execute("SELECT id FROM part_master WHERE part_description = ? and is_deleted = 0", (dc_type,))
                     part_id_row = cursor_sql.fetchone()
 
                     if part_id_row is not None and len(part_id_row) > 0:
