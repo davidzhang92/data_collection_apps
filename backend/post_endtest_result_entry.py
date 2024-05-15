@@ -53,6 +53,8 @@ def token_required(f):
         try:
             data = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
             access_level = data.get('access_level')
+            user = str(data.get('user'))
+            print(f"User in token_required: {user}") 
 
             # if access_level not in ['read-only', 'operator', 'admin']:
             if access_level not in ['operator', 'admin']:
@@ -62,7 +64,7 @@ def token_required(f):
             print(e)
             return jsonify({'message': 'Session timed out, please login again.', 'error': str(e)}), 401
 
-        return f(*args, **kwargs)
+        return f(user, *args, **kwargs)
 
     return decorated
 
@@ -73,7 +75,9 @@ def get_unique_filename():
 
 @app.route('/api/post_endtest_upload_file', methods=['POST'])
 @token_required
-def post_endtest_upload_file():
+def post_endtest_upload_file(user):
+    print(f"User in post_endtest_upload_file: {user}")
+    
     try:
         # Get the uploaded file from the request
         uploaded_file = request.files['file']
@@ -140,21 +144,21 @@ def post_endtest_upload_file():
                         part_id = None  # Set part_id to None when there's no match
 
                     # Append the row for insertion
-                    rows_to_insert.append((idx, part_id, dc_type, sn, pcb_data_matrix, test_ok, date_time))
+                    rows_to_insert.append((idx, part_id, dc_type, sn, pcb_data_matrix, test_ok, user, date_time))
 
         # Insert the rows into the endtest_result_entry table
         for row_to_insert in rows_to_insert:
-            idx, part_id, dc_type, sn, pcb_data_matrix, test_ok, date_time = row_to_insert
-            cursor_sql.execute("INSERT INTO endtest_result_entry (id, idx, part_id, dc_type, serial_no, data_matrix, test_ok, created_date, is_deleted) VALUES (NEWID(), ?, ?, ?, ?, ?, ?, ?, 0)",
-                                (idx, part_id, dc_type, sn, pcb_data_matrix, test_ok,date_time))
+            idx, part_id, dc_type, sn, pcb_data_matrix, test_ok, user, date_time = row_to_insert
+            cursor_sql.execute("INSERT INTO endtest_result_entry (id, idx, part_id, dc_type, serial_no, data_matrix, test_ok, created_by, created_date, is_deleted) VALUES (NEWID(), ?, ?, ?, ?, ?, ?, (select id from user_master where username = ? and is_deleted = 0), ?, 0)",
+                                (idx, part_id, dc_type, sn, pcb_data_matrix, test_ok, user, date_time))
 
         # Commit the changes to the SQL Server database
         conn.commit()
 
         # Close the cursor and the connection to the SQL Server database
         cursor_sql.close()
-
         return jsonify({'message': 'Data inserted successfully'}), 200
+        
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
