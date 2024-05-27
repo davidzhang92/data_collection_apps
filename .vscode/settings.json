@@ -1,5 +1,5 @@
 {
     "python.analysis.typeCheckingMode": "basic",
-    "liveServer.settings.port": 5547,
+    "liveServer.settings.port": 5548,
     "git.ignoreLimitWarning": true
 }

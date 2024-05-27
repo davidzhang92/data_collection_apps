@@ -1,8 +1,8 @@
 // -----initialization stateelement of page and rules---------
 $('.laser-result-entry-sub-card').hide();
-$('.laser-result-entry-sub-card-2').hide();
-$('.export-laser-result-entry-sub-card').hide();
-$('#input-result').text('');
+// $('.laser-result-entry-sub-card-2').hide();
+// $('.export-laser-result-entry-sub-card').hide();
+// $('#input-result').text('');
 $('#defect-code-field').attr('defect-id', '');
 $('#defect-code-field').prop('disabled', true);
 
