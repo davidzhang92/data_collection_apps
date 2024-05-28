@@ -98,6 +98,11 @@ body,
   background-color: rgb(214, 254, 255);
 }
 
+.input-field:disabled {
+  background-color: rgb(138, 138, 138);
+}
+
+
 .laser-result-entry-card{
     width: 1100px;
     height: 180px;

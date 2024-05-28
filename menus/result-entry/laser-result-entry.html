@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../../styles/side-menu.css">
     <link rel="stylesheet" href="../../icons/css/all.css">
     <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
-    <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui-timepicker-addon.min.css">
+    <link rel="stylesheet" href="/styles/jquery-ui/jquery.datetimepicker.min.css">
     <link rel="stylesheet" href="../../styles/laser-result-entry.css">
     <link rel="stylesheet" href="/styles/version.css">
   </head>
@@ -85,7 +85,7 @@
       <label class = label-field id="label-serial-no" for="serial-no-field" >
         <span class="product-field-lower-span">Product S/N</span>
         <span class="custom-checkbox">
-          <input type="checkbox" id="enable-serial-no-field" >
+          <input type="checkbox" id="enable-serial-no-field" checked>
           <label for="enable-serial-no-field"></label>
         </span>
         <input class = input-field type="text" id="serial-no-field" readonly="" />
@@ -93,15 +93,15 @@
       <label class = label-field id="label-data-matrix" for="data-matrix-field">
         <span class="product-field-lower-span">PCBA S/N</span>
         <span class="custom-checkbox">
-          <input type="checkbox" id="enable-data-matrix-field">
+          <input type="checkbox" id="enable-data-matrix-field" checked>
           <label for="enable-data-matrix-field"></label>
         </span>
-        <input class = input-field type="text" id="label-id-field" readonly=""/>
+        <input class = input-field type="text" id="data-matrix-field" readonly=""/>
       </label>
       <label class = label-field id="label-label-id" for="label-id-field">
         <span class="product-field-lower-span">Device ID</span>
         <span class="custom-checkbox">
-          <input type="checkbox" id="enable-label-id-field">
+          <input type="checkbox" id="enable-label-id-field" checked>
           <label for="enable-label-id-field"></label>
         </span>
         <input class = input-field type="text" id="label-id-field" readonly=""/>
@@ -143,9 +143,9 @@
 </html>
 
 
-<script src="/scripts/jquery/jquery.js"></script> 
-<script src="/scripts/jquery/jquery-ui.min.js"></script> 
-<script src="/scripts/jquery/jquery-ui-timepicker-addon.min.js"></script> 
+<script src="/scripts/jquery/jquery-1.12.4.js"></script> 
+<script src="/scripts/jquery/jquery-ui.js"></script> 
+<script src="/scripts/jquery/jquery.datetimepicker.full.min.js"></script> 
 <script src="/scripts/bootstrap.min.js"></script>
 <script src="/scripts/auto-complete-part.js"></script> 
 <script src="/scripts/auto-complete-defect.js"></script> 
