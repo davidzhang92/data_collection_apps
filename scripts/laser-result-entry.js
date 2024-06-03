@@ -1,8 +1,8 @@
 // -----initialization stateelement of page and rules---------
 $('.laser-result-entry-sub-card').hide();
-// $('.laser-result-entry-sub-card-2').hide();
-// $('.export-laser-result-entry-sub-card').hide();
-// $('#input-result').text('');
+$('.laser-result-entry-sub-card-2').hide();
+$('.export-laser-result-entry-sub-card').hide();
+$('#input-result').text('');
 $('#enable-serial-no-field').prop('checked', true);
 $('#enable-data-matrix-field').prop('checked', true);
 $('#enable-label-id-field').prop('checked', true);
@@ -36,13 +36,15 @@ $(document).ready(function (){
     event.preventDefault();
 
     // Check if the input with id 'pdesc' is empty
-    if ($('#pdesc').val() === '') {
-        // Display an alert if it's empty
-        alert('Error. Part No. is invalid or empty, please try again.');
-    } else {
-        // Perform your desired action if pdesc is not empty
-        // For example, you can submit a form or trigger another function.
-    }
+    if ($('#pdesc').val() === '' && $('#wono').val().match(/^\d+$/) === null) {
+        // Display an alert if both are empty
+        alert('Error. Part No. and Wo No. are invalid or empty, please try again.');
+    } 
+    else if ($('#wono').val().match(/^\d+$/) === null) {
+        // Display an alert if it's not a number
+        alert('Error. Wo No is invalid or empty, please try again.');
+    } 
+    
     });
 
     // select button logic    
@@ -59,9 +61,9 @@ $(document).ready(function (){
 
     // Function to update the button color based on #pdesc value
     function updateButtonColor() {
-        var pdescIsEmpty = $('#pdesc').val().trim() === '';
+        var InitialField = $('#pdesc').val().trim() === '';
 
-        if (pdescIsEmpty) {
+        if (InitialField) {
             $('#select-button').css('background-color', notEmptyColor);
         } else if (isSelected) {
             $('#select-button').css('background-color', selectedColor);
@@ -94,10 +96,10 @@ $(document).ready(function (){
 
 
         // Check if #pdesc is empty
-        var pdescIsEmpty = $('#pdesc').val().trim() === '';
+        var InitialField = $('#pdesc').val().trim() === '' || $('#wono').val().match(/^\d+$/) === null;
 
         // Toggle the selected state only if #pdesc is not empty
-        if (!pdescIsEmpty) {
+        if (!InitialField) {
             // Toggle the selected state
             isSelected = !isSelected;
 
@@ -115,6 +117,7 @@ $(document).ready(function (){
 
             // Enable or disable the input field based on the selected state
             $('#pname').prop('readonly', isSelected);
+            $('#wono').prop('readonly', isSelected);
 
             // Toggle the visibility of the elements with class laser-result-entry-sub-card
             $('.laser-result-entry-sub-card').toggle(isSelected);
@@ -227,10 +230,18 @@ $(document).ready(function (){
     });
 
 
-    function checkAndTriggerAjax() {
-        if ($('#serial-no-field').prop('checked') && $('#serial-no-field').val() &&
-            $('#data-matrix-field').prop('checked') && $('#data-matrix-field').val() &&
-            $('#label-id-field').prop('checked') && $('#label-id-field').val()) {
+    function PostAjax() {
+        var serialNoField = $('#serial-no-field');
+        var dataMatrixField = $('#data-matrix-field');
+        var labelIdField = $('#label-id-field');
+    
+        var serialNoCheck = !serialNoField.prop('disabled') && serialNoField.val();
+        var dataMatrixCheck = !dataMatrixField.prop('disabled') && dataMatrixField.val();
+        var labelIdCheck = !labelIdField.prop('disabled') && labelIdField.val();
+    
+        if ($('#enable-serial-no-field').prop('checked') ? serialNoCheck : true &&
+            $('#enable-data-matrix-field').prop('checked') ? dataMatrixCheck : true &&
+            $('#enable-label-id-field').prop('checked') ? labelIdCheck : true) {
             // Trigger your AJAX request here
 
             $.ajax({
@@ -241,7 +252,7 @@ $(document).ready(function (){
                     wo_no: $('#wono').val(),
                     serial_no: $('#serial-no-field').val(),
                     data_matrix: $('#data-matrix-field').val(),
-                    label_id:$('#data-matrix-field').val(),
+                    label_id:$('#label-id-field').val(),
                     user_id: localStorage.getItem('userId')
                 }),
                 contentType: 'application/json',
@@ -306,7 +317,7 @@ $(document).ready(function (){
                         } else {
                             $('#serial-no-field').val(value);
                             $('#scan-field').val('');
-                            checkAndTriggerAjax();
+                            PostAjax();
                         }
                         break;
                     case 18:
@@ -316,7 +327,7 @@ $(document).ready(function (){
                         } else {
                             $('#data-matrix-field').val(value);
                             $('#scan-field').val('');
-                            checkAndTriggerAjax();
+                            PostAjax();
                         }
                         break;
                     case 10:
@@ -326,7 +337,7 @@ $(document).ready(function (){
                         } else {
                             $('#label-id-field').val(value);
                             $('#scan-field').val('');
-                            checkAndTriggerAjax();
+                            PostAjax();
                         }
                         break;
                     default:

@@ -5,8 +5,6 @@ import hashlib
 import jwt
 from datetime import datetime, timedelta
 import pytz
-
-import jwt
 from secret_key import SECRET_KEY
 
 app = Flask(__name__)
