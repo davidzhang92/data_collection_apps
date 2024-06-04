@@ -86,6 +86,7 @@ def get_laser_result_entry():
         selected_part_id = request_data.get('part_id')
         selected_date_from = request_data.get('date_from')
         selected_date_to = request_data.get('date_to')
+        selected_wo_no = request_data.get('wo_no')
 
         # Check if required parameters are provided
         if not selected_part_id and not selected_date_from and not selected_date_to:
@@ -97,26 +98,31 @@ def get_laser_result_entry():
         query = """SELECT 
                     a.serial_no, 
                     a.data_matrix, 
-                    a.label_id 
+                    a.label_id,
+					a.wo_no,
+					c.username
+
                 FROM 
                     laser_result_entry a 
-                INNER JOIN 
-                    part_master b ON a.part_id = b.id """
-        parameters = []
+					
+                INNER JOIN part_master b ON a.part_id = b.id 
+				INNER JOIN user_master c ON a.created_by = c.id 
+                WHERE wo_no = ?"""
+        parameters = [selected_wo_no]
 
         if selected_part_id:
-            query += " WHERE a.part_id = ?"
+            query += " AND a.part_id = ?"
             parameters.append(selected_part_id)
 
         if selected_date_from:
-            date_from_with_time = f"{selected_date_from} 00:00:00"
+            date_from_with_time = f"{selected_date_from}"
             query += " AND a.created_date >= ?"
-            parameters.append(datetime.datetime.strptime(date_from_with_time, '%Y-%m-%d %H:%M:%S'))
+            parameters.append(datetime.datetime.strptime(date_from_with_time, '%Y/%m/%d %H:%M'))
 
         if selected_date_to:
-            date_to_with_time = f"{selected_date_to} 23:59:59"
+            date_to_with_time = f"{selected_date_to}"
             query += " AND a.created_date <= ?"
-            parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S'))
+            parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y/%m/%d %H:%M'))
 
         query += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
 
@@ -139,11 +145,15 @@ def get_laser_result_entry():
            
             column1_index = 1  # Column A
             column2_index = 2  # Column B
-            column3_index = 3  # Column C
+            column3_index = 3 # Column C
+            column4_index = 5 
+            column5_index = 6   
 
             worksheet.cell(row=row_number, column=column1_index, value=row_data[0])  
             worksheet.cell(row=row_number, column=column2_index, value=row_data[1]) 
-            worksheet.cell(row=row_number, column=column3_index, value=row_data[2]) 
+            worksheet.cell(row=row_number, column=column3_index, value=row_data[2])
+            worksheet.cell(row=row_number, column=column4_index, value=row_data[3])
+            worksheet.cell(row=row_number, column=column5_index, value=row_data[4]) 
 
             row_number += 1
 

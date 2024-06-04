@@ -239,11 +239,19 @@ $(document).ready(function (){
         var dataMatrixCheck = !dataMatrixField.prop('disabled') && dataMatrixField.val();
         var labelIdCheck = !labelIdField.prop('disabled') && labelIdField.val();
     
-        if ($('#enable-serial-no-field').prop('checked') ? serialNoCheck : true &&
-            $('#enable-data-matrix-field').prop('checked') ? dataMatrixCheck : true &&
-            $('#enable-label-id-field').prop('checked') ? labelIdCheck : true) {
-            // Trigger your AJAX request here
-
+        // Check if all readonly fields are populated
+        var allFieldsPopulated = true;
+        if ($('#enable-serial-no-field').prop('checked') && !serialNoCheck) {
+            allFieldsPopulated = false;
+        }
+        if ($('#enable-data-matrix-field').prop('checked') && !dataMatrixCheck) {
+            allFieldsPopulated = false;
+        }
+        if ($('#enable-label-id-field').prop('checked') && !labelIdCheck) {
+            allFieldsPopulated = false;
+        }
+    
+        if (allFieldsPopulated) {
             $.ajax({
                 url: 'http://' + window.location.hostname + ':4000/api/laser-result-entry-api',
                 type: 'POST',
@@ -298,7 +306,7 @@ $(document).ready(function (){
                         }
                     }
                 });
-        }
+        } 
     }
 
 
@@ -435,6 +443,7 @@ $(document).ready(function (){
     
         var dateFrom = $('#date-from-field').val();
         var dateTo = $('#date-to-field').val();
+        var WoNo = $('#wono').val();
     
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', 'http://' + window.location.hostname + ':4000/api/laser_result_entry_api', true);
@@ -464,7 +473,8 @@ $(document).ready(function (){
 		xhr.send(JSON.stringify({
             part_id: partId,
             date_from: dateFrom,
-            date_to: dateTo
+            date_to: dateTo,
+            wo_no :WoNo
             
 		}));
 	});
