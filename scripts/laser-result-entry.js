@@ -331,6 +331,7 @@ var labelId = $('#label-id-field').val();
             $('#serial-no-field').val('')
             $('#data-matrix-field').val('')
             $('#label-id-field').val('')
+<<<<<<< HEAD
             $('#defect-code-field').val('')
             $('#defect-code-field').attr('defect-id', '');
             defectId='';
@@ -360,6 +361,135 @@ var labelId = $('#label-id-field').val();
                 localStorage.removeItem('accessToken');
             } else if (xhr.status >= 400 && xhr.status < 600) {
                 alert(xhr.responseJSON.message);
+=======
+        }
+    });
+
+
+    function PostAjax() {
+        var serialNoField = $('#serial-no-field');
+        var dataMatrixField = $('#data-matrix-field');
+        var labelIdField = $('#label-id-field');
+    
+        var serialNoCheck = !serialNoField.prop('disabled') && serialNoField.val();
+        var dataMatrixCheck = !dataMatrixField.prop('disabled') && dataMatrixField.val();
+        var labelIdCheck = !labelIdField.prop('disabled') && labelIdField.val();
+    
+        // Check if all readonly fields are populated
+        var allFieldsPopulated = true;
+        if ($('#enable-serial-no-field').prop('checked') && !serialNoCheck) {
+            allFieldsPopulated = false;
+        }
+        if ($('#enable-data-matrix-field').prop('checked') && !dataMatrixCheck) {
+            allFieldsPopulated = false;
+        }
+        if ($('#enable-label-id-field').prop('checked') && !labelIdCheck) {
+            allFieldsPopulated = false;
+        }
+    
+        if (allFieldsPopulated) {
+            $.ajax({
+                url: 'http://' + window.location.hostname + ':4000/api/laser-result-entry-api',
+                type: 'POST',
+                data: JSON.stringify({
+                    part_id: partId,
+                    wo_no: $('#wono').val(),
+                    serial_no: $('#serial-no-field').val(),
+                    data_matrix: $('#data-matrix-field').val(),
+                    label_id:$('#label-id-field').val(),
+                    user_id: localStorage.getItem('userId')
+                }),
+                contentType: 'application/json',
+                beforeSend: function(xhr) { 
+                    xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+                },
+                success: function(response) {
+                    // handle successful response
+                    console.log(response);
+        
+                    // Reset other variables
+        
+                    $('#serial-no-field').val('')
+                    $('#data-matrix-field').val('')
+                    $('#label-id-field').val('')
+        
+                    // alert('Result submitted successfully.');
+                },
+                error: function(xhr, status, error) {
+                    // handle error response
+                    if (xhr.status === 400) {
+                        // The response status is 400, indicating a duplicate
+                        alert(xhr.responseJSON.message);
+                        $('#serial-no-field').val('')
+                        $('#data-matrix-field').val('')
+                        $('#label-id-field').val('')
+            
+                    } else if (xhr.status === 401) {
+                        alert(xhr.responseJSON.message);
+                        window.location.href = '/login.html'
+                        localStorage.removeItem('accessToken');
+                    } else if (xhr.status >= 400 && xhr.status < 600) {
+                        alert(xhr.responseJSON.message);
+                    } else {
+                        console.error(error);
+                        alert('An error occurred while submitting the result.');
+                        $('#input-result').text('');
+                        // Reset other variables
+                        result = ''; // Reset result
+                        $('#serial-no-field').val('')
+                        $('#data-matrix-field').val('')
+                        $('#label-id-field').val('')
+                        }
+                    }
+                });
+        } 
+    }
+
+
+    
+    $('#scan-field').on('keypress', function(e) {
+        if (e.which == 13) {
+            var value = $(this).val();
+            var regex = /^\d+$/;
+
+            if (regex.test(value)) {
+                switch (value.length) {
+                    case 13:
+                        if ($('#serial-no-field').prop('disabled')) {
+                            alert("Error : Product S/N field is disabled.");
+                            $(this).val('');
+                        } else {
+                            $('#serial-no-field').val(value);
+                            $('#scan-field').val('');
+                            PostAjax();
+                        }
+                        break;
+                    case 18:
+                        if ($('#data-matrix-field').prop('disabled')) {
+                            alert("Error : PCBA S/N field is disabled.");
+                            $(this).val('');
+                        } else {
+                            $('#data-matrix-field').val(value);
+                            $('#scan-field').val('');
+                            PostAjax();
+                        }
+                        break;
+                    case 10:
+                        if ($('#label-id-field').prop('disabled')) {
+                            alert("Error : Device ID field is disabled.");
+                            $(this).val('');
+                        } else {
+                            $('#label-id-field').val(value);
+                            $('#scan-field').val('');
+                            PostAjax();
+                        }
+                        break;
+                    default:
+                        $(this).val('');
+                        alert("Error: Data is not valid");
+                        break;
+                }
+>>>>>>> 8a0d3cfc (Version 1.2.0 : fixed SQL for all field populated in laser and removed sucessful alert message)
             } else {
                 console.error(error);
                 alert('An error occurred while submitting the result.');
