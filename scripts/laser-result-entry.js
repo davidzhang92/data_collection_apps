@@ -373,11 +373,11 @@ $(document).ready(function (){
 	// datepicker function for date to and date from
 	$(function() {
 		$("#date-from-field").datetimepicker({
-			dateFormat: "yy-mm-dd hh:mm"
+			dateFormat: "yy/mm/dd hh:mm"
 		});
 
 		$("#date-to-field").datetimepicker({
-			dateFormat: "yy-mm-dd hh:mm"
+			dateFormat: "yy/mm/dd hh:mm"
 		});
 
 		// Add an event listener to the "date-to-field" input
