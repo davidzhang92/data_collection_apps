@@ -277,7 +277,7 @@ $(document).ready(function (){
                     $('#data-matrix-field').val('')
                     $('#label-id-field').val('')
         
-                    alert('Result submitted successfully.');
+                    // alert('Result submitted successfully.');
                 },
                 error: function(xhr, status, error) {
                     // handle error response
