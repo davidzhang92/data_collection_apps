@@ -70,7 +70,7 @@ function renderData(data) {
         var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
 
         // Replace 'null' with '-'
-        var defectDescription = result.defect_description !== null ? result.defect_description : '-';
+		var errorCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
 		var userName = result.username !== null ? result.username : '-';
 
         var row = `<tr data-id="${result.id}">
@@ -83,7 +83,7 @@ function renderData(data) {
             <td>${result.part_no}</td>
             <td>${result.serial_no}</td>
             <td>${result.result}</td>
-            <td>${defectDescription}</td>
+            <td> ${errorCode}</td>
 			<td>${userName}</td>
             <td>${formattedDate}</td>
             <td>
