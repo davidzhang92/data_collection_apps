@@ -80,6 +80,29 @@
         margin: 0 -60px 0 20px; 
         padding-top: 10px; 
       }
+      #label-defect-code{
+        width: 65px;
+        height: 20px;
+        padding-top: 15px;
+        position: absolute;
+        top: 105px;
+        margin-left: 390px;
+        /* margin-top: 50px; */
+      }
+      #defect-desc{
+        width: 320px; 
+        border: 1px solid #000; 
+        margin-top: 15px;
+        padding: 5px; 
+        /* padding-top:5px; */
+        font-size: 18px;
+        position: absolute;
+        top: 147px;
+        left: 480px;
+      }
+      #defect-code-field{
+        width:80px;
+      }
 
   .product-field-span { 
     display: block; 
@@ -87,7 +110,13 @@
     font-size: 1.2em; 
     font-weight: bold; 
   }
-      
+  .product-field-def-code { 
+    display: inline-block; 
+    margin: 0 0 5px; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    width: 200px;
+  }
   .input-field { 
     width: 80%; 
     border: 1px solid #000; 
@@ -190,7 +219,7 @@
   }
   #save-button {
     position:absolute;
-    top:  215px;
+    top:  245px;
     left: 5px;
     padding: 32px 64px 32px ;
     margin-left: 20px;
@@ -207,7 +236,7 @@
     font-size: 72px;
     font-weight: bold;
     position:absolute;
-    top:  50px;
+    top:  15px;
     left: 40px;
   }
 
@@ -280,7 +309,7 @@
 
   #pass-button {
     position:absolute;
-    top:55px;
+    top:45px;
     left: 390px;
     padding: 19px 60px 18px;
     background-color: #5FCF80;
@@ -289,7 +318,7 @@
   }
   #fail-button {
     position:absolute;
-    top:  55px;
+    top:  45px;
     left: 590px;
     padding: 19px 60px 18px;
     margin-left: 20px;

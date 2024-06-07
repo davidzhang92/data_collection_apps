@@ -66,7 +66,7 @@ $(document).ready(function () {
 	
 		data.forEach(function (result) {
 			var failureDetails = [];
-		
+
 			// Check each "fail" property and add corresponding details to the array
 			if (result.fail_bluetooth) {
 				failureDetails.push('bluetooth');
@@ -86,9 +86,16 @@ $(document).ready(function () {
 			if (result.fail_sleep_mode) {
 				failureDetails.push('sleep mode');
 			}
-		
+
 			// Join the failure details into a comma-separated string
 			var failureDetailsString = failureDetails.join(', ');
+
+			// Check if failureDetailsString contains data
+			if (failureDetailsString.trim() === '') {
+				// If failureDetailsString does not contain data, assign the value from defect_no and defect_description
+				failureDetailsString = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
+			}
+
 		
 			// Parse the date string
 			var createDate = new Date(result.created_date);
