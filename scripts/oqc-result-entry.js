@@ -1,6 +1,6 @@
 // -----initialization stateelement of page and rules---------
-$('.oqc-result-entry-sub-card').hide();
-$('.oqc-result-entry-sub-card-2').hide();
+// $('.oqc-result-entry-sub-card').hide();
+// $('.oqc-result-entry-sub-card-2').hide();
 $('#input-result').text('');
 $('#defect-code-field').attr('defect-id', '');
 $('#defect-code-field').prop('disabled', true);
@@ -137,31 +137,27 @@ $(document).ready(function (){
     // Click event handler for the "FAIL" button
     $('#fail-button').click(function (e) {
         e.preventDefault();
-        inputResult.text('');
     
+  
         $('#defect-code-field').prop('disabled', false);
-
+        $('#defect-desc').prop('readonly', false);
+        inputResult.text('FAIL');
+        inputResult.css('color', '#ff0000');
+    
         // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
         if (isPassButtonPress === 1) {
             isPassButtonPress = 0;
             return;
         }
 
-        if ($('#defect-desc').val() === '') {
-            // Display an alert if it's empty
-            alert('Error. Defect No. is invalid or empty, please try again.');
-            inputResult.text('');
-        } else {
-        inputResult.text('FAIL');
-        inputResult.css('color', '#ff0000');
-        }
     });
+    
 
     // ---handing POST request---
 
     // Initialize partId and result variables
     var partId = localStorage.getItem('partId') || '';
-    var result = '';
+
 
     // Handling the button clicks
     $('#select-button').click(function () {
@@ -170,14 +166,11 @@ $(document).ready(function (){
         localStorage.setItem('partId', partId);
     });
 
-    $('#pass-button').click(function () {
-        result = $('#input-result').text();
-        
-    });
 
-    $('#fail-button').click(function () {
-        result = $('#input-result').text();
-    });
+
+    // $('#fail-button').click(function () {
+    //     result = $('#input-result').text();
+    // });
     // Update the partId during page load if it's stored in localStorage 
     // (so that the part-id attribute wil contain part-id GUID value after page refresh)
     var storedPartId = localStorage.getItem('partId');
@@ -225,7 +218,7 @@ $(document).ready(function (){
                 part_id: partId,
                 defect_id: $('#defect-code-field').attr('defect-id'),
                 serial_no: serialNumber,
-                result: result,
+                result: $('#input-result').text(),
                 user_id: localStorage.getItem('userId')
             }),
             contentType: 'application/json',
@@ -237,8 +230,6 @@ $(document).ready(function (){
                 console.log(response);
     
                 $('#input-result').text('');
-                // Reset other variables
-                result = ''; // Reset result
                 $('#serial-no-field').val('')
                 $('#defect-code-field').val('')
                 $('#defect-code-field').attr('defect-id', '');
@@ -284,7 +275,7 @@ $(document).ready(function (){
     
             // Check if result is "FAIL" and defectId is empty
             if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
-            alert('Result is "FAIL," but defectCode cannot be empty.');
+            alert('Error : Defect Code is invalid or empty, please try again.');
             return; // Prevent further processing if result is "FAIL" and defectId is empty
             }
     

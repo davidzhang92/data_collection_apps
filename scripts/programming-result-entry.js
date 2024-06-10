@@ -1,6 +1,7 @@
 // -----initialization state of page and rules---------
 $('.programming-result-entry-sub-card').hide();
 $('.programming-result-entry-sub-card-2').hide();
+$('#defect-code-field').prop('disabled', true);
 
 
 $(document).ready(function (){
@@ -112,50 +113,43 @@ $(document).ready(function (){
 
 // fail/pass button function
 
-    var inputResult = $('#input-result');
+var inputResult = $('#input-result');
 
-    // Click event handler for the "PASS" button
-    $('#pass-button').click(function (e) {
-        e.preventDefault();
-        
-        // Disable the entire div and its child elements
-        $('.check-boxes-fail-group').addClass('disabled');
-        $('.check-boxes-fail-group input').prop('disabled', true);
-    // Clear all checkboxes inside the div with class "check-boxes-fail-group"
-    $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
-        // Set the result text and color
-        inputResult.text('PASS');
-        inputResult.css('color', '#00ff2a');
-    });
+var isPassButtonPress = 0; // Initialize the variable
 
-    // Click event handler for the "FAIL" button
-    $('#fail-button').click(function (e) {
-        e.preventDefault();
-        
-        // Enable the entire div and its child elements
-        $('.check-boxes-fail-group').addClass('disabled');
-        $('.check-boxes-fail-group input').prop('disabled', false);
-        
-        // Set the result text and color
-        inputResult.text('FAIL');
-        inputResult.css('color', '#ff0000');
-    });
-
-    $("#serial-no-field").on("blur", function() {
-        var inputValue = $(this).val();
-        var errorMessage = $("#error-message");
+// Click event handler for the "PASS" button
+$('#pass-button').click(function (e) {
+    e.preventDefault();
+    // Set the result text and color
+    inputResult.text('PASS');
+    inputResult.css('color', '#00ff2a');
+    $('#defect-code-field').val('');
+    $('#defect-desc').val('');
+    $('#defect-code-field').attr('defect-id', '');
+    $('#defect-code-field').prop('disabled', true);
+    localStorage.removeItem('defectId');
     
-        if (inputValue.trim() === "") {
-            // Only display the alert if the field is empty
-            errorMessage.text("");
-        } else if (!/^\d+$/.test(inputValue)) {
-            alert("Please enter a numeric value.");
-            $(this).val("");
-            $(this).focus();
-        } else {
-            errorMessage.text("");
-        }
-    });
+    // Set isPassButtonPress to 1 when PASS button is clicked
+    isPassButtonPress = 1;
+});
+
+// Click event handler for the "FAIL" button
+$('#fail-button').click(function (e) {
+    e.preventDefault();
+
+
+    $('#defect-code-field').prop('disabled', false);
+    $('#defect-desc').prop('readonly', false);
+    inputResult.text('FAIL');
+    inputResult.css('color', '#ff0000');
+
+    // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
+    if (isPassButtonPress === 1) {
+        isPassButtonPress = 0;
+        return;
+    }
+
+});
     
     // Event handler for the #pname input
     $('#pname').on('input', function () {
@@ -181,15 +175,7 @@ $(document).ready(function (){
         localStorage.setItem('partId', partId);
     });
 
-    $('#pass-button').click(function () {
-        result = $('#input-result').text();
-        failCurrent = false; // Reset failCurrent
-        failHr = false; // Reset failHr
-        failPairing = false; // Reset failPairing
-        failBluetooth = false; // Reset failBluetooth
-        failSleepMode = false; // Reset failSleepMode
-        failOther = false; // Reset failOther
-    });
+
 
     $('#fail-button').click(function () {
         result = $('#input-result').text();
@@ -199,47 +185,34 @@ $(document).ready(function (){
     if (storedPartId) {
         $('#pname').attr('part-id', storedPartId);
     }
-    var serialPartNumber=$('#serial-no-field').val();
+    var serialNumber=$('#serial-no-field').val();
     // Add an event listener to the input field to update serialPartNumber on input changes
     $('#serial-no-field').on('input', function () {
-        serialPartNumber = $(this).val();
-    });
+        serialNumber = $('#serial-no-field').val();
+        });
     $('#serial-no-field').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
+            $('#defect-code-field').focus();
+        }
+        $("#serial-no-field").on("blur", function() {
+        var inputValue = $(this).val();
+        var errorMessage = $("#error-message");
+    
+        if (inputValue.trim() === "") {
+            // Only display the alert if the field is empty
+            errorMessage.text("");
+        } else if (!/^\d+$/.test(inputValue)) {
+            alert("Please enter a numeric value.");
+            $(this).val("");
+            $(this).focus();
+        } else {
+            errorMessage.text("");
         }
     });
+        });
     
-    // checkbox state capture
-    var failCurrent = $('#current-checkbox').prop('checked')
-    $('#current-checkbox').click(function () {
-        failCurrent = $('#current-checkbox').prop('checked');
-    });
     
-    var failHr = $('#hr-checkbox').prop('checked')
-    $('#hr-checkbox').click(function () {
-        failHr = $('#hr-checkbox').prop('checked');
-    });
-
-    var failPairing = $('#pairing-checkbox').prop('checked')
-    $('#pairing-checkbox').click(function () {
-        failPairing = $('#pairing-checkbox').prop('checked');
-    });
-
-    var failBluetooth = $('#bluetooth-checkbox').prop('checked')
-    $('#bluetooth-checkbox').click(function () {
-        failBluetooth = $('#bluetooth-checkbox').prop('checked');
-    });
-
-    var failSleepMode = $('#sleep-mode-checkbox').prop('checked')
-    $('#sleep-mode-checkbox').click(function () {
-        failSleepMode = $('#sleep-mode-checkbox').prop('checked');
-    });
-
-    var failOther = $('#other-checkbox').prop('checked')
-    $('#other-checkbox').click(function () {
-        failOther = $('#other-checkbox').prop('checked');
-    });
 
 
     $('#save-form').on('submit', function(event) {
@@ -249,14 +222,9 @@ $(document).ready(function (){
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
-                serial_no: serialPartNumber,
-                result: result,
-                fail_current: failCurrent,
-                fail_hr: failHr,
-                fail_pairing: failPairing,
-                fail_bluetooth: failBluetooth,
-                fail_sleep_mode: failSleepMode,
-                fail_other: failOther,
+                defect_id: $('#defect-code-field').attr('defect-id'),
+                serial_no: serialNumber,
+                result: $('#input-result').text(),
                 user_id: localStorage.getItem('userId')
             }),
             contentType: 'application/json',
@@ -266,43 +234,37 @@ $(document).ready(function (){
             success: function(response) {
                 // handle successful response
                 console.log(response);
-                // Clear input fields inside the div with class "programming-result-entry-sub-card"
-                $('.programming-result-entry-sub-card input[type="text"]').val('');
-                // Clear all checkboxes inside the div with class "check-boxes-fail-group"
-                $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
-                
+    
                 $('#input-result').text('');
-                // Reset other variables
-                result = ''; // Reset result
-                failCurrent = false; // Reset failCurrent
-                failHr = false; // Reset failHr
-                failPairing = false; // Reset failPairing
-                failBluetooth = false; // Reset failBluetooth
-                failSleepMode = false; // Reset failSleepMode
-                failOther = false; // Reset failOther
-                serialPartNumber = ''; // Reset serialPartNumber
+                $('#serial-no-field').val('')
+                $('#defect-code-field').val('')
+                $('#defect-code-field').attr('defect-id', '');
+                defectId='';
+                $('#defect-desc').val('')
+                localStorage.removeItem('defectId');
                 alert('Result submitted successfully.');
             },
-            error: function (xhr, error) {
-                if (xhr.status === 401) {
-                    alert(xhr.responseJSON.message);
-                    window.location.href = '/login.html'
-                    localStorage.removeItem('accessToken');
-                } else if (xhr.status >= 400 && xhr.status < 600) {
-                    alert(xhr.responseJSON.message);
-                } else {
-                    console.error(error);
-                    alert('An error occurred while retrieving the data.');
-                }
-            }
-        });
+            error: function(xhr, textStatus, error) {
+				if (xhr.status === 401) {
+					alert(xhr.responseJSON.message);
+					window.location.href = '/login.html'
+					localStorage.removeItem('accessToken');
+				} else if (xhr.status >= 400 && xhr.status < 600) {
+					alert(xhr.responseJSON.message);
+				} else {
+					console.error(error);
+					alert('An error occurred while retrieving the data.');
+				}
+			}
+                });
     });
 
     // Trigger the form submission when the anchor is clicked
     $('#save-button').click(function() {
         // Get the values of serial number and result
         var serialNumber = $('#serial-no-field').val();
-        var resultValue = $('#input-result').text();
+        var result = $('#input-result').text();
+
 
         // Check if serial number is empty
         if (serialNumber.trim() === '') {
@@ -310,35 +272,23 @@ $(document).ready(function (){
             return; // Prevent further processing if serial number is empty
         }
 
+
         // Check if result is empty
-        if (resultValue.trim() === '') {
-            alert('Result cannot be empty.');
-            return; // Prevent further processing if result is empty
+        if (result.trim() === '') {
+        alert('Result cannot be empty.');
+        return; // Prevent further processing if result is empty
         }
 
-        // If the result is FAIL, check if at least one fail condition is true
-        if (resultValue === 'FAIL') {
-            if (
-                !failCurrent &&
-                !failHr &&
-                !failPairing &&
-                !failBluetooth &&
-                !failSleepMode &&
-                !failOther
-            ) {
-                alert('At least one fail condition must be true for a FAIL result.');
-                return; // Prevent further processing if no fail conditions are true
-            }
+        // Check if result is "FAIL" and defectId is empty
+        if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
+        alert('Error : Defect Code is invalid or empty, please try again.');
+        return; // Prevent further processing if result is "FAIL" and defectId is empty
         }
 
         // If all checks pass, proceed with the form submission
         $('#save-form').submit();
-    });
 
-        //logout function, clear all access token upon log out
-	$('#logout').click(function(){
-		localStorage.clear();
-    });
+        });
 
  
 });

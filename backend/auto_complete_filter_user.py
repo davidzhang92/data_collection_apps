@@ -73,7 +73,19 @@ def get_filter_search_user_master():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the part_master table
-    query = "select a.id, username, b.access_type, CASE WHEN a.modified_date >= a.created_date THEN a.modified_date ELSE a.created_date END AS latest_date, last_login from user_master a inner join access_level_master b on a.access_level=b.id where username LIKE ?  and b.access_type LIKE ? and is_deleted='0' order by latest_date desc;"
+    query = """SELECT a.id, a.username, b.access_type, c.username AS created_by_username, 
+                CASE 
+                    WHEN a.modified_date >= a.created_date THEN a.modified_date 
+                    ELSE a.created_date 
+                END AS latest_date, 
+                a.last_login 
+                FROM user_master a 
+                INNER JOIN access_level_master b ON a.access_level=b.id
+                INNER JOIN user_master c ON a.created_by = c.id
+                WHERE a.username LIKE ?  
+                AND b.access_type LIKE ? 
+                AND a.is_deleted='0' 
+                ORDER BY latest_date DESC"""
 
     # Construct the parameter values with wildcards
     username_param = f"%{search_username}%"

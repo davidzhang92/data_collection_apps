@@ -125,7 +125,10 @@ body,
         font-size: 18px;
         position: absolute;
         top: 147px;
-        left:450px;
+        left: 480px;
+      }
+      #defect-code-field{
+        width:80px;
       }
   .product-field-span { 
     display: block; 

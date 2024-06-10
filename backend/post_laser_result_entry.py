@@ -73,13 +73,14 @@ def post_laser_result_entry():
 
         # Extract required fields from the payload
         new_part_id = uuid.UUID(data['part_id'])
+        new_wo_no = str(data['wo_no'])
         new_serial_no = str(data['serial_no'])
         new_data_matrix = str(data['data_matrix'])
         new_label_id = str(data['label_id'])
         user_id = data['user_id']
 
         # Concatenate part_id and serial_no
-        concatenated_values = str(new_part_id) + new_serial_no + new_data_matrix + new_label_id
+        concatenated_values = str(new_part_id) + new_wo_no + new_serial_no + new_data_matrix + new_label_id
 
         cursor = conn.cursor()
 
@@ -87,7 +88,7 @@ def post_laser_result_entry():
         duplicate_check_query = """
             SELECT COUNT(*) AS count
             FROM laser_result_entry
-            WHERE CONCAT(part_id, serial_no, data_matrix, label_id) = ?
+            WHERE CONCAT(part_id, wo_no, serial_no, data_matrix, label_id) = ?
             AND is_deleted = 0;
         """
         cursor.execute(duplicate_check_query, (concatenated_values,))
@@ -103,25 +104,37 @@ def post_laser_result_entry():
 
         # If no duplicates, insert the data
         new_part_id = uuid.UUID(data['part_id'])
-        new_result = str(data['result'])
-        new_serial_no = str(data['serial_no'])
-        new_data_matrix = str(data['data_matrix'])
-        new_label_id = str(data['label_id'])
-        defect_id_param = uuid.UUID(data['defect_id']) if data['defect_id'].strip() else None
+        new_wo_no = str(data['wo_no']) 
+        new_serial_no = str(data['serial_no']) if data['serial_no'].strip() else None
+        new_data_matrix = str(data['data_matrix']) if data['data_matrix'].strip() else None
+        new_label_id = str(data['label_id']) if data['label_id'].strip() else None
+        # defect_id_param = uuid.UUID(data['defect_id']) if data['defect_id'].strip() else None
         
         # Construct the SQL query to insert the data
-        if defect_id_param is None:
+        if new_serial_no is None:
             insert_query = """
-                INSERT INTO laser_result_entry (id, part_id, result, serial_no, data_matrix, label_id, created_by, created_date, is_deleted)
-                VALUES (newid(), ?, ?, ?, ?, ?, ?, GETDATE(), 0)
+                INSERT INTO laser_result_entry (id, part_id, wo_no, data_matrix, label_id, created_by, created_date, is_deleted)
+                VALUES (newid(), ?, ?, ?, ?, ?, GETDATE(), 0)
             """
-            cursor.execute(insert_query, (new_part_id, new_result, new_serial_no, new_data_matrix, new_label_id, user_id))
+            cursor.execute(insert_query, (new_part_id, new_wo_no, new_data_matrix, new_label_id, user_id))
+        elif new_data_matrix is None:
+            insert_query = """
+                INSERT INTO laser_result_entry (id, part_id, wo_no, serial_no, label_id, created_by, created_date, is_deleted)
+                VALUES (newid(), ?, ?, ?, ?, ?, GETDATE(), 0)
+            """
+            cursor.execute(insert_query, (new_part_id, new_wo_no, new_serial_no, new_label_id, user_id))
+        elif new_label_id is None:
+            insert_query = """
+                INSERT INTO laser_result_entry (id, part_id, wo_no, serial_no, data_matrix, created_by, created_date, is_deleted)
+                VALUES (newid(), ?, ?, ?, ?, ?, GETDATE(), 0)
+            """
+            cursor.execute(insert_query, (new_part_id, new_wo_no, new_serial_no, new_data_matrix, user_id))
         else:
             insert_query = """
                 INSERT INTO laser_result_entry (id, part_id, wo_no, serial_no, data_matrix, label_id, created_by, created_date, is_deleted)
                 VALUES (newid(), ?, ?, ?, ?, ?, ?, GETDATE(), 0)
             """
-            cursor.execute(insert_query, (new_part_id, defect_id_param, new_result, new_serial_no, new_data_matrix, new_label_id, user_id))
+            cursor.execute(insert_query, (new_part_id, new_wo_no, new_serial_no, new_data_matrix, new_label_id, user_id))
 
         conn.commit()
 
