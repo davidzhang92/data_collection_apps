@@ -5,17 +5,103 @@ body,
   height: 100%;
 }
 
-.input-field { 
-  width: 80%; 
+/* .input-field { 
+  width: 65%; 
   border: 1px solid #000; 
   margin-top: 15px;
-  padding: 5px; 
-  /* padding-top:5px; */
+  padding: 5px;
   font-size: 18px;
+} */
+
+
+#pdesc { 
+  width: 250px;
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 5px;
+  padding-top: 5px;
+  font-size: 18px;
+  left: 185px;
+  position: absolute;
 }
+
+#pname  { 
+  width: 150px;
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 5px;
+  padding-top: 5px;
+  font-size: 18px;
+  left: 20px;
+  position: absolute;
+}
+
+#wono  { 
+  width: 190px;
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 5px;
+  padding-top: 5px;
+  font-size: 18px;
+  left: 460px;
+  position: absolute;
+}
+
+#serial-no-field  { 
+  
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 5px;
+  padding-top: 5px;
+  font-size: 18px;
+  left : 50px;
+  position: absolute;
+}
+
+#data-matrix-field  { 
+  /* width: 190px; */
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 5px;
+  padding-top: 5px;
+  font-size: 18px;
+  left : 50px;
+  position: absolute;
+}
+
+#label-id-field  { 
+  /* width: 190px; */
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 5px;
+  padding-top: 5px;
+  font-size: 18px;
+  left : 50px;
+  position: absolute;
+}
+
+#scan-field  { 
+  width: 300px;
+  border: 1px solid #000;
+  margin-top: 15px;
+  padding: 5px;
+  padding-top: 5px;
+  font-size: 18px;
+  top:42px;
+  left : -100px;
+  position: absolute;
+  text-align: center;
+}
+
+
 .input-field:read-only {
   background-color: rgb(214, 254, 255);
 }
+
+.input-field:disabled {
+  background-color: rgb(138, 138, 138);
+}
+
 
 .laser-result-entry-card{
     width: 1100px;
@@ -36,35 +122,43 @@ body,
     }
       #label-part-no{
         margin-left: 1rem;
-        width: 300px; 
+         
         height:12px;
         float: left; 
-        margin: 0 -60px 0 20px; 
+        margin: 0 70px 0 20px; 
         padding-top: 10px; 
       }
       #label-part-description{
         margin-left: 1rem;
-        width: 300px; 
+        
         height:12px;
         float: left; 
-        margin: 0 -60px 0 20px; 
+        margin: 0 -145px 0 20px; 
+        padding-top: 10px; 
+      }
+      #label-wo-no{
+        margin-left: 1rem;
+        
+        height:12px;
+        float: left; 
+        margin: 0 0px 0 275px; 
         padding-top: 10px; 
       }
       #label-serial-no{
         margin-left: 1rem;
-        width: 300px; 
+        /* width: 300px;  */
         height:12px;
         float: left; 
         margin: 0 -60px 0 20px; 
         padding-top: 10px; 
       }
       #label-part-description{
-        width: 400px; 
+        /* width: 400px;  */
         height:12px;
         padding-top: 10px;  
       }
       #label-serial-no{
-        width: 400px;
+        /* width: 400px; */
         height: 20px;
         padding-top: 15px;
         position: absolute;
@@ -90,7 +184,7 @@ body,
         padding-top: 10px; 
       }
       #label-data-matrix{
-        width: 400px;
+        
         height: 20px;
         padding-top: 15px;
         position: absolute;
@@ -99,7 +193,7 @@ body,
         /* margin-top: 50px; */
       }
       #label-label-id{
-        width: 400px;
+        
         height: 20px;
         padding-top: 15px;
         position: absolute;
@@ -107,26 +201,17 @@ body,
         margin-left: 20px;
         /* margin-top: 50px; */
       }
-      #label-defect-code{
-        width: 65px;
+      #label-scan{
+        
         height: 20px;
         padding-top: 15px;
         position: absolute;
+        left:500px;
         top: 105px;
-        margin-left: 390px;
+        margin-left: 20px;
         /* margin-top: 50px; */
       }
-      #defect-desc{
-        width: 320px; 
-        border: 1px solid #000; 
-        margin-top: 15px;
-        padding: 5px; 
-        /* padding-top:5px; */
-        font-size: 18px;
-        position: absolute;
-        top: 147px;
-        left:450px;
-      }
+
   .product-field-span { 
     display: block; 
     margin: 0 0 5px; 
@@ -134,8 +219,45 @@ body,
     font-weight: bold; 
     color: #fff;
     font-family: 'Roboto', sans-serif;
+    position: relative;
+
+  }
+
+  .product-field-lower-span { 
+    display: block; 
+    margin: 0 0 5px; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    left:50px;
+  }
+
+  .product-field-lower-span-2 { 
+    display: block; 
+    margin: 0 0 5px; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    /* left:50px; */
   }
   
+  .date-field-span { 
+    display: block; 
+    margin: 0 0 5px; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+
+
+  }
+
+
   .product-field-def-code { 
     display: inline-block; 
     margin: 0 0 5px; 
@@ -235,15 +357,15 @@ body,
 
   #select-button {
     position:absolute;
-    top:95px;
-    margin-left: 20px;
+    top:97px;
+    left : 730px;
     /* background-color: #bf3f3f;
     border-color: #791e1e;    */
   }
   #view-button {
     position:absolute;
     top:95px;
-    right:50px;
+    right:20px;
     margin-left: 20px;
     background-color: #5FCF80;
     border-color: #3AC162;  
@@ -297,7 +419,7 @@ body,
 
 /* export laser result entry section */
   .export-laser-result-entry-sub-card{ 
-    width: 620px;
+    width: 820px;
     height: 150px;
     background-color: #1E2B32;
     border-radius: 10px 10px;
@@ -310,15 +432,14 @@ body,
     }
 
   
-    #date-from-field {
+  #date-from-field {
 
-      background-color: #ffffff;
-      font-size: 18px;
-      font-weight: normal;
-      margin-right:10px;
-      width:110px;
-      padding:4px;
-      border: 1px solid #000;
+    background-color: #ffffff;
+    font-size: 18px;
+    font-weight: normal;
+    width:190px;
+    padding:4px;
+    border: 1px solid #000;
   }
 
   #date-to-field {
@@ -326,8 +447,7 @@ body,
       background-color: #ffffff;
       font-size: 18px;
       font-weight: normal;
-      margin-right:10px;
-      width:110px;
+      width:190px;
       padding:4px;
       border: 1px solid #000;
   }
@@ -343,13 +463,13 @@ body,
     width: 120px;
     display: inline-block;
     position: relative;
-    left:30px;
+    left:130px;
     top:20px;
   }
   #export-data-button {
     position:absolute;
     top:  35px;
-    left: 355px;
+    left: 500px;
     padding: 20px 50px 20px ;
     background-color:  rgb(162, 172, 33);
     border-color:  rgb(145, 153, 30);  
@@ -358,3 +478,63 @@ body,
     text-align: center;
     z-index: 1;
   }
+
+  /* Custom checkbox */
+.custom-checkbox {
+  position: relative;
+  left: 10px;
+  top: 20px;
+}
+.custom-checkbox input[type="checkbox"] {    
+  opacity: 0;
+  position: absolute;
+  margin: 5px 0 0 3px;
+  z-index: 9;
+}
+.custom-checkbox label:before{
+  width: 24px;
+  height: 24px;
+}
+.custom-checkbox label:before {
+  content: '';
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: text-top;
+  background: white;
+  border: 1px solid #bbb;
+  border-radius: 2px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+.custom-checkbox input[type="checkbox"]:checked + label:after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 3px;
+  width: 6px;
+  height: 11px;
+  border: solid #000;
+  border-width: 0 3px 3px 0;
+  transform: inherit;
+  z-index: 3;
+  transform: rotateZ(45deg);
+}
+.custom-checkbox input[type="checkbox"]:checked + label:before {
+  border-color: #03A9F4;
+  background: #03A9F4;
+}
+.custom-checkbox input[type="checkbox"]:checked + label:after {
+  border-color: #fff;
+}
+.custom-checkbox input[type="checkbox"]:disabled + label:before {
+  color: #b8b8b8;
+  cursor: auto;
+  box-shadow: none;
+  background: #ddd;
+}
+
+
+#enable-serial-no-field {
+    /* position: relative;
+    left:100px; */
+}

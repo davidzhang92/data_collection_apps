@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../../styles/side-menu.css">
     <link rel="stylesheet" href="../../icons/css/all.css">
     <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
-    <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui-timepicker-addon.min.css">
+    <link rel="stylesheet" href="/styles/jquery-ui/jquery.datetimepicker.min.css">
     <link rel="stylesheet" href="../../styles/laser-result-entry.css">
     <link rel="stylesheet" href="/styles/version.css">
   </head>
@@ -63,13 +63,17 @@
     </div>
     <div class="body">
       <form class="input-field-form">
-        <label class=label-field id ="label-part-no" for="part-no">
+        <label class=label-field id ="label-part-no" for="pname">
           <span class="product-field-span">Part No.</span>
           <input class = input-field type="text" id="pname" placeholder="Enter Part No." />
         </label>
         <label class= label-field id="label-part-description" for="part-description">
           <span class="product-field-span">Part Description</span>
           <input class = input-field type="text" id="pdesc" value="" style="background-color: rgb(214, 254, 255)" readonly />
+        </label>
+        <label class=label-field id ="label-wo-no" for="wono">
+          <span class="product-field-span">WO No.</span>
+          <input class = input-field type="text" id="wono" placeholder="Enter WO No." />
         </label>
       </form>
       <a href='#' id='select-button' class='ph-button ph-btn-disabled'>Select</a>
@@ -78,39 +82,48 @@
   </div>
   <div class="laser-result-entry-sub-card">
     <form>
-      <label class = label-field id="label-serial-no" for="serial-no-field">
-        <span class="product-field-span">Product S/N</span>
-        <input class = input-field type="text" id="serial-no-field" placeholder="Enter Product S/N"  />
+      <label class = label-field id="label-serial-no" for="serial-no-field" >
+        <span class="product-field-lower-span">Product S/N</span>
+        <span class="custom-checkbox">
+          <input type="checkbox" id="enable-serial-no-field" checked>
+          <label for="enable-serial-no-field"></label>
+        </span>
+        <input class = input-field type="text" id="serial-no-field" readonly="" />
       </label>
       <label class = label-field id="label-data-matrix" for="data-matrix-field">
-        <span class="product-field-span">PCBA S/N</span>
-        <input class = input-field type="text" id="data-matrix-field" placeholder="Enter PCBA S/N."/>
+        <span class="product-field-lower-span">PCBA S/N</span>
+        <span class="custom-checkbox">
+          <input type="checkbox" id="enable-data-matrix-field" checked>
+          <label for="enable-data-matrix-field"></label>
+        </span>
+        <input class = input-field type="text" id="data-matrix-field" readonly=""/>
       </label>
       <label class = label-field id="label-label-id" for="label-id-field">
-        <span class="product-field-span">Device ID</span>
-        <input class = input-field type="text" id="label-id-field" placeholder="Enter Device ID."/>
+        <span class="product-field-lower-span">Device ID</span>
+        <span class="custom-checkbox">
+          <input type="checkbox" id="enable-label-id-field" checked>
+          <label for="enable-label-id-field"></label>
+        </span>
+        <input class = input-field type="text" id="label-id-field" readonly=""/>
       </label>
-      <label class = label-field id="label-defect-code" for="defect-code-field">
-        <span class="product-field-def-code">Defect Code</span>
-        <input class = input-field type="text" id="defect-code-field" defect-id="" placeholder="Code" maxlength="3" />
+
+      <label class = label-field id="label-scan" for="scan-field">
+        <span class="product-field-lower-span-2">Scan Field</span>
+        <input class = input-field type="text" id="scan-field" placeholder="Input Here"/>
       </label>
-      <input class = input-field type="text" id="defect-desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
-      <label class ="label-field" id="label-result" for="result">Result</label>
+      
     </form>
-    <form>
-      <a href='#' id='pass-button' class='ph-button ph-btn-green'>PASS</a>
-      <a href='#' id='fail-button' class='ph-button ph-btn-red'>FAIL</a>
-    </form>
+
   </div>
 
   <div class="export-laser-result-entry-sub-card">
     <a href="#" id="export-data-button" class="ph-button" style="background-color: rgb(162, 172, 33);">Export Data</a>
       <label id="date-from-label" for="date-from-field">
-        <label class="product-field-span">Date From</label>
+        <label class="date-field-span">Date From</label>
         <input type="text" id="date-from-field"/>
       </label>
       <label id="date-to-label" for="date-to-field">
-          <label class="product-field-span">Date To</label>
+          <label class="date-field-span">Date To</label>
           <input type="text" id="date-to-field"/>
       </label>
     </div>
@@ -118,21 +131,21 @@
 
   <div class="laser-result-entry-sub-card-2">
     <form id="save-form">
-      <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
+      <!-- <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a> -->
       <a href='#' id='export-button' class='ph-button ph-btn-green '><span class="fas fa-arrow-up-from-bracket"></span> &nbsp;Export</a>
     </form>
     <a id='input-result'>PASS</a>
   </div>
 </div>
 
-<version class="version"><b>Developed By : David Zhang | Version: 1.1.3</b></version>
+<version class="version"><b>Developed By : David Zhang | Version: 1.3.0</b></version>
 </body>
 </html>
 
 
-<script src="/scripts/jquery/jquery.js"></script> 
-<script src="/scripts/jquery/jquery-ui.min.js"></script> 
-<script src="/scripts/jquery/jquery-ui-timepicker-addon.min.js"></script> 
+<script src="/scripts/jquery/jquery-1.12.4.js"></script> 
+<script src="/scripts/jquery/jquery-ui.js"></script> 
+<script src="/scripts/jquery/jquery.datetimepicker.full.min.js"></script> 
 <script src="/scripts/bootstrap.min.js"></script>
 <script src="/scripts/auto-complete-part.js"></script> 
 <script src="/scripts/auto-complete-defect.js"></script> 

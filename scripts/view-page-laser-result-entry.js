@@ -70,7 +70,11 @@ function renderData(data) {
         var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
 
         // Replace 'null' with '-'
-        var defectDescription = result.defect_description !== null ? result.defect_description : '-';
+        var PartNo = result.part_no !== null ? result.part_no : '-';
+		var SerialNo = result.serial_no !== null ? result.serial_no : '-';
+		var DataMatrix = result.data_matrix !== null ? result.data_matrix : '-';
+		var LabelId = result.label_id !== null ? result.label_id : '-';
+		var WoNo = result.wo_no !== null ? result.wo_no : '-';
 		var userName = result.username !== null ? result.username : '-';
 
         var row = `<tr data-id="${result.id}">
@@ -80,12 +84,11 @@ function renderData(data) {
                     <label for="${result.id}"></label>
                 </span>
             </td>
-            <td>${result.part_no}</td>
-            <td>${result.serial_no}</td>
-            <td>${result.data_matrix}</td>
-            <td>${result.label_id}</td>
-            <td>${result.result}</td>
-            <td>${defectDescription}</td>
+            <td>${PartNo}</td>
+            <td>${SerialNo}</td>
+            <td>${DataMatrix}</td>
+            <td>${LabelId}</td>
+            <td>${WoNo}</td>
 			<td>${userName}</td>
             <td>${formattedDate}</td>
             <td>

@@ -85,23 +85,25 @@ def get_programming_result_entry_view():
 
         # Construct the SQL query to select data from the part_master table with OFFSET
         query = """SELECT 
-                        a.id, 
-                        b.part_no, 
-                        a.serial_no, 
-                        a.result, 
+                        b.part_no,
+                        b.part_description,
+                        serial_no, 
+                        result, 
                         a.fail_current, 
                         a.fail_hr, 
                         a.fail_pairing, 
                         a.fail_bluetooth, 
                         a.fail_sleep_mode, 
                         a.fail_other, 
-						c.username,
+						d.defect_no,
+						d.defect_description,
+                        c.username,
                         a.created_date 
                     FROM programming_result_entry a 
                     INNER JOIN part_master b ON a.part_id = b.id 
-					LEFT JOIN user_master c ON a.created_by = c.id
-                    WHERE a.is_deleted = '0' 
-                    ORDER BY a.created_date DESC
+                    LEFT JOIN user_master c ON a.created_by = c.id
+					LEFT JOIN defect_master d on a.defect_id = d.id
+					order by a.created_date desc
                     OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"""
 
         cursor.execute(query, (offset,))
@@ -139,8 +141,8 @@ def get_filter_search_programming_result_entry_view():
     
     # Construct the SQL query to select all data from the programming result entry table
     query = """SELECT 
-                    a.id AS id, 
                     b.part_no,
+                    b.part_description,
                     serial_no, 
                     result, 
                     a.fail_current, 
@@ -149,11 +151,14 @@ def get_filter_search_programming_result_entry_view():
                     a.fail_bluetooth, 
                     a.fail_sleep_mode, 
                     a.fail_other, 
+                    d.defect_no,
+                    d.defect_description,
                     c.username,
                     a.created_date 
                 FROM programming_result_entry a 
                 INNER JOIN part_master b ON a.part_id = b.id 
                 LEFT JOIN user_master c ON a.created_by = c.id
+                LEFT JOIN defect_master d on a.defect_id = d.id
                 WHERE 1=1"""
 
     parameters = []
@@ -253,17 +258,23 @@ def get_programming_result_report():
                         b.part_description,
                         serial_no, 
                         result, 
-                        a.fail_current, 
-                        a.fail_hr, 
-                        a.fail_pairing, 
-                        a.fail_bluetooth, 
-                        a.fail_sleep_mode, 
-                        a.fail_other, 
+                        d.defect_no,
+                        CONCAT(
+                            d.defect_description,
+                            CASE WHEN a.fail_current = 1 THEN ' current' ELSE '' END,
+                            CASE WHEN a.fail_hr = 1 THEN ' hr' ELSE '' END,
+                            CASE WHEN a.fail_pairing = 1 THEN 'pairing' ELSE '' END,
+                            CASE WHEN a.fail_bluetooth = 1 THEN ' bluetooth' ELSE '' END,
+                            CASE WHEN a.fail_sleep_mode = 1 THEN ' sleep mode' ELSE '' END,
+                            CASE WHEN a.fail_other = 1 THEN ' other' ELSE '' END
+                        ) AS defect_description,
                         c.username,
                         a.created_date 
                     FROM programming_result_entry a 
                     INNER JOIN part_master b ON a.part_id = b.id 
-                    LEFT JOIN user_master c ON a.created_by = c.id"""
+                    LEFT JOIN user_master c ON a.created_by = c.id
+                    LEFT JOIN defect_master d on d.id = a.defect_id
+                    """
         parameters_data = []
 
         conditions = []
@@ -321,14 +332,14 @@ def get_programming_result_report():
         worksheet['C6'] = part_description_joined
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
-        worksheet['M6'] = generated_by
-        worksheet['M5'] = date.today().strftime('%Y-%m-%d')
+        worksheet['I6'] = generated_by
+        worksheet['I5'] = date.today().strftime('%Y-%m-%d')
 
 
 
         # Merge cells again and adjust the allignment
-        worksheet.merge_cells('C5:E5')
-        worksheet.merge_cells('C6:E6')
+        worksheet.merge_cells('C5:F5')
+        worksheet.merge_cells('C6:F6')
         worksheet['C5'].alignment = Alignment(horizontal='left')
         worksheet['C6'].alignment = Alignment(horizontal='left')
 
@@ -345,10 +356,7 @@ def get_programming_result_report():
             column7_index = 7 
             column8_index = 8 
             column9_index = 9 
-            column10_index = 10 
-            column11_index = 11
-            column12_index = 12
-            column13_index = 13
+
 
 
             worksheet.cell(row=row_number, column=column2_index, value=row_data[0]) 
@@ -359,10 +367,7 @@ def get_programming_result_report():
             worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
             worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
             worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
-            worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
-            worksheet.cell(row=row_number, column=column11_index, value=row_data[9])  
-            worksheet.cell(row=row_number, column=column12_index, value=row_data[10])
-            worksheet.cell(row=row_number, column=column13_index, value=row_data[11]) 
+ 
 
 
             row_number += 1

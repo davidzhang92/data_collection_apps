@@ -13,6 +13,7 @@ body {
     width: 1500px;
     position: absolute;
     left: 380px;
+    
 }
 .table-title {        
     padding-bottom: 15px;
@@ -140,6 +141,7 @@ table.table .avatar {
 /* Custom checkbox */
 .custom-checkbox {
     position: relative;
+
 }
 .custom-checkbox input[type="checkbox"] {    
     opacity: 0;
