@@ -83,7 +83,7 @@ def get_leaktest_result_entry_view():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "SELECT a.id AS id, b.part_no, housing_no, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
 
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()
@@ -214,15 +214,18 @@ def get_leaktest_result_report():
                         b.part_no,
                         b.part_description,
                         housing_no, 
-                        result, 
                         fine_value, 
 						gross_value, 
 						others_value,
+                        a.result,
+						d.defect_no,
+						d.defect_description,
                         c.username, 
                         a.created_date 
                     FROM leaktest_result_entry a 
                     INNER JOIN part_master b ON a.part_id = b.id
-                    LEFT JOIN user_master c on a.created_by = c.id  """
+                    LEFT JOIN user_master c on a.created_by = c.id
+                    LEFT JOIN defect_master d on a.defect_id = d.id  """
         parameters_data = []
 
         if selected_part_no:
@@ -277,13 +280,13 @@ def get_leaktest_result_report():
         worksheet['C6'] = part_description_joined
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
-        worksheet['J5'] = date.today().strftime('%Y-%m-%d')
-        worksheet['J6'] = generated_by
+        worksheet['L5'] = date.today().strftime('%Y-%m-%d')
+        worksheet['L6'] = generated_by
 
 
         # Merge cells again and adjust the allignment
-        worksheet.merge_cells('C5:F5')
-        worksheet.merge_cells('C6:F6')
+        worksheet.merge_cells('C5:I5')
+        worksheet.merge_cells('C6:I6')
         worksheet['C5'].alignment = Alignment(horizontal='left')
         worksheet['C6'].alignment = Alignment(horizontal='left')
 
@@ -300,7 +303,9 @@ def get_leaktest_result_report():
             column7_index = 7 
             column8_index = 8 
             column9_index = 9 
-            column10_index = 10 
+            column10_index = 10
+            column11_index = 11
+            column12_index = 12 
 
 
             worksheet.cell(row=row_number, column=column2_index, value=row_data[0]) 
@@ -311,7 +316,9 @@ def get_leaktest_result_report():
             worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
             worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
             worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
-            worksheet.cell(row=row_number, column=column10_index, value=row_data[8]) 
+            worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
+            worksheet.cell(row=row_number, column=column11_index, value=row_data[9])
+            worksheet.cell(row=row_number, column=column12_index, value=row_data[10])
 
 
             row_number += 1
