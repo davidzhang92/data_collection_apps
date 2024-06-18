@@ -13,7 +13,15 @@ $('#enable-label-id-field').prop('checked', true);
 
 $(document).ready(function (){
 
+    // set the counter for each sucessful POST and reset upon export and reset from the part id
 
+    var displayCounter = localStorage.getItem('displayCounter');
+
+    if (!displayCounter) {
+        displayCounter = 0;
+        localStorage.setItem('displayCounter', displayCounter);
+      }
+    
 
     // set the zoom level based on resolution
     var screenWidth = window.innerWidth;
@@ -113,6 +121,10 @@ $(document).ready(function (){
                 // When not selected
                 $(this).text(originalText);
                 updateButtonColor(); // Update the button color when not selected
+                displayCounter = 0;
+                localStorage.setItem('counter', displayCounter);
+                $('.display-counter').text(displayCounter);
+                
             }
 
             // Enable or disable the input field based on the selected state
@@ -276,6 +288,9 @@ $(document).ready(function (){
                     $('#serial-no-field').val('')
                     $('#data-matrix-field').val('')
                     $('#label-id-field').val('')
+                    displayCounter++;
+                    localStorage.setItem('counter', displayCounter);
+                    $('.display-counter').text(displayCounter);
         
                     // alert('Result submitted successfully.');
                 },
@@ -459,6 +474,9 @@ $(document).ready(function (){
 				a.download = "laser_report.xlsx";
 				document.body.appendChild(a);
 				a.click();
+                displayCounter = 0;
+                localStorage.setItem('counter', displayCounter);
+                $('.display-counter').text(displayCounter);
 			} else if (this.status === 401) {
 				alert('Unauthorized');
 				window.location.href = '/login.html'
@@ -468,7 +486,7 @@ $(document).ready(function (){
 			}
 		};
 		xhr.onerror = function() {
-			alert('An error occurred while retrieving the data.');
+			alert(this.response);
 		};
 		xhr.send(JSON.stringify({
             part_id: partId,
