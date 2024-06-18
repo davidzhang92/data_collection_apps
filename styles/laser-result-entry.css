@@ -50,7 +50,7 @@ body,
 #serial-no-field  { 
   
   border: 1px solid #000;
-  margin-top: 15px;
+  margin-top: 30px;
   padding: 5px;
   padding-top: 5px;
   font-size: 18px;
@@ -61,7 +61,7 @@ body,
 #data-matrix-field  { 
   /* width: 190px; */
   border: 1px solid #000;
-  margin-top: 15px;
+  margin-top: 30px;
   padding: 5px;
   padding-top: 5px;
   font-size: 18px;
@@ -72,7 +72,7 @@ body,
 #label-id-field  { 
   /* width: 190px; */
   border: 1px solid #000;
-  margin-top: 15px;
+  margin-top: 30px;
   padding: 5px;
   padding-top: 5px;
   font-size: 18px;
@@ -207,7 +207,7 @@ body,
         padding-top: 15px;
         position: absolute;
         left:500px;
-        top: 105px;
+        top: 15px;
         margin-left: 20px;
         /* margin-top: 50px; */
       }
@@ -232,6 +232,7 @@ body,
     font-family: 'Roboto', sans-serif;
     position: relative;
     left:50px;
+    top:15px;
   }
 
   .product-field-lower-span-2 { 
@@ -244,7 +245,27 @@ body,
     position: relative;
     /* left:50px; */
   }
+
+  .label-display-counter { 
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    left: 450px;
+    top: 180px;
+  }
   
+  .display-counter { 
+    font-size: 72px;
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+    left: 470px;
+    top: 200px;
+  }
+    
   .date-field-span { 
     display: block; 
     margin: 0 0 5px; 
@@ -483,7 +504,7 @@ body,
 .custom-checkbox {
   position: relative;
   left: 10px;
-  top: 20px;
+  top: 35px;
 }
 .custom-checkbox input[type="checkbox"] {    
   opacity: 0;
