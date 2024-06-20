@@ -7,12 +7,40 @@ body,
   font-family: 'Roboto', sans-serif;
 }
 
+.input-field { 
+  width: 250px; 
+  border: 1px solid #000; 
+  margin-bottom: 20px;
+  /* margin-left:50px; */
+  padding: 5px; 
+  font-size: 18px;
+}
+.input-field:read-only {
+  background-color: rgb(214, 254, 255);
+}
 
+.qty-input-field { 
+  width: 100px; 
+  border: 1px solid #000; 
+  margin-bottom: 20px;
+  /* margin-left:50px; */
+  padding: 5px; 
+  font-size: 18px;
+}
+.qty-input-field:read-only {
+  background-color: rgb(214, 254, 255);
+}
 
+.input-field-form-part-field {
+  position: relative;
+  display: flex;
+  margin-left: 30px;
+  top: 170px;
+}
 
 .endtest-result-entry-card{
     width: 1100px;
-    height: 180px;
+    height: 540px;
     background-color: #1E2B32;
     border-radius: 10px 10px;
     position:absolute;
@@ -32,9 +60,62 @@ body,
     font-size: 1.2em; 
     font-weight: bold; 
   }
-      
 
+  .product-field-span-2 { 
+    display: block; 
+    margin-left: 30px;
+    margin-top: 8px;
+    font-size: 1.2em; 
+    font-weight: bold; 
+    position: relative;
+    top: 150px;
+  }
 
+  
+  .product-label { 
+    display: block; 
+    margin-left: 30px;
+    margin-top: 8px;
+    font-size: 1.2em; 
+    font-weight: bold; 
+  }
+
+  .part-input { 
+    display: block; 
+    width:200px;
+    margin-bottom: 10px;
+    margin-top: 8px;
+    font-size: 1.2em; 
+    font-weight: bold; 
+  }
+  .defect-input { 
+    display: block; 
+    width:200px;
+    margin-bottom: 10px;
+    /* margin-right:20px; */
+    margin-top: 8px;
+    font-size: 1.2em; 
+    font-weight: bold; 
+  }
+  .qty-input { 
+    display: block; 
+    width:200px;
+    margin-bottom: 10px;
+    /* margin-right:20px; */
+    margin-top: 8px;
+    font-size: 1.2em; 
+    font-weight: bold; 
+  }
+
+.defect-group {
+  position:relative;
+  left:25px;
+}
+
+.qty-group {
+  position:relative;
+  left:50px;
+}
 
 
 
@@ -75,9 +156,32 @@ body,
 
   #view-button {
     position: absolute;
-    top: 95px;
+    top: 100px;
     right: 50px;
     margin-left: 20px;
     background-color: #5FCF80;
     border-color: #3AC162;
   }
+
+  #view-vi-defect-result-button {
+    position: absolute;
+    top: 430px;
+    right: 50px;
+    margin-left: 20px;
+    background-color: #5fcfb7;
+    border-color: #5fcfb7;
+  }
+
+  #save-button {
+    position: relative;
+    top: 130px;
+    right: 145px;
+    padding: 22px 48px 22px ;
+    border-color: #326E99;
+    background-color: #3F8ABF;
+    font-size: 24px;
+    text-align: center;
+    z-index: 1;
+    align-self: flex-start; 
+  }
+  

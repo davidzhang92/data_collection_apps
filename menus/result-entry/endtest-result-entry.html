@@ -70,6 +70,35 @@
         <span id="selected-file-name"></span>
       </form>
       <a href="/menus/result-entry/view-page-endtest-result-entry.html" id="view-button" class="ph-button ph-btn-green">View Result</a>
+
+      <label class="product-field-span-2">VI Defect Result Entry</label>
+
+      <form class="input-field-form-part-field">
+        <div>
+
+          <label class="label-field" id="label-part-no" for="part-no">
+            <label class="part-input">Part No.</label>
+            <input class="input-field" type="text" id="pname" placeholder="Enter Part No." />
+          </label>
+          <label class="label-field" id="label-part-description" for="part-description">
+            <span class="part-input">Part Description</span>
+            <input class="input-field" type="text" id="pdesc" value="" style="background-color: rgb(214, 254, 255)" readonly />
+          </label>
+        </div >
+        <div class="defect-group">
+          <label class="defect-input" for="defect-code-field">Defect Code</label>
+          <input class="input-field" type="text" id="defect-code-field" placeholder="Enter Defect Code"/>
+          <label class="defect-input" for="defect-desc">Defect Description</label>
+          <input class="input-field" type="text" id="defect-desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
+        </div>
+        <div class="qty-group">
+          <label class="qty-input" for="qty-input-field">Quantity</label>
+          <input class="qty-input-field" type="text" id="qty-input-field" placeholder=""/>
+
+        </div>
+        <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
+      </form>
+      <a href="/menus/result-entry/view-page-defect-endtest-result-entry.html" id="view-vi-defect-result-button" class="ph-button ph-btn-green">View Result</a>
     </div>
   </div>
   
@@ -85,5 +114,5 @@
 <script src="/scripts/jquery/jquery.js"></script> 
 <script src="/scripts/jquery/jquery-ui.min.js"></script>  
 <script src="/scripts/endtest-result-entry.js"></script>
-<script src="/scripts/refresh-token.js"></script>
+<!-- <script src="/scripts/refresh-token.js"></script> -->
 <script src="/scripts/version.js"></script>
