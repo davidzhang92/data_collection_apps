@@ -174,8 +174,8 @@ body,
 
   #save-button {
     position: relative;
-    top: 130px;
-    right: 145px;
+    top: 110px;
+    left: 575px;
     padding: 22px 48px 22px ;
     border-color: #326E99;
     background-color: #3F8ABF;

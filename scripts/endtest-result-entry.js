@@ -17,6 +17,7 @@ $(document).ready(function () {
 
   $('.displayed-username').text(localStorage.getItem('userName'));
 
+
     // Perform the AJAX POST Upload mdb request
   $('#file-import').on('change', function () {
     // Get the selected file
@@ -56,16 +57,18 @@ $(document).ready(function () {
   
   // AJAX POST for vi defect entry
 
+
+
   $('#save-form').on('submit', function(event) {
     event.preventDefault();
+
     $.ajax({
-        url: '',
+        url: 'http://' + window.location.hostname + ':4000/api/endtest_defect_result_entry_api',
         type: 'POST',
         data: JSON.stringify({
-            part_id: partId,
-            defect_id: $('#defect-code-field').attr('defect-id'),
-            serial_no: serialNumber,
-            result: $('#input-result').text(),
+            part_id: $('#pname').attr('part-id'),
+            defect_id: $('#defect-code-field').attr('defect-id') ,
+            quantity: $('#qty-input-field').val(),
             user_id: localStorage.getItem('userId')
         }),
         contentType: 'application/json',
@@ -76,11 +79,11 @@ $(document).ready(function () {
             // handle successful response
             console.log(response);
 
-            $('#input-result').text('');
-            $('#serial-no-field').val('')
-            $('#defect-code-field').val('')
+            $('#qty-input-field').text('');
+            $('#pname').attr('part-id', '')
+            $('#pname').val('')
+            $('#defect-code-field').val('');
             $('#defect-code-field').attr('defect-id', '');
-            defectId='';
             $('#defect-desc').val('')
             localStorage.removeItem('defectId');
             alert('Result submitted successfully.');
@@ -102,29 +105,32 @@ $(document).ready(function () {
 
     // Trigger the form submission when the anchor is clicked
     $('#save-button').click(function() {
+
         // Get the values of serial number and result
-        var serialNumber = $('#serial-no-field').val();
-        var result = $('#input-result').text();
+        var pname = $('#pname').attr('part-id');
+        var defectId = $('#defect-code-field').attr('defect-id');
+        var quantity = $('#qty-input-field').val()
 
-
-        // Check if serial number is empty
-        if (serialNumber.trim() === '') {
-            alert('Serial number cannot be empty.');
-            return; // Prevent further processing if serial number is empty
+        if (pname.trim() === '') {
+          alert('Error: Part No. is invalid or empty, please try again.');
+          return;
         }
 
+        if (defectId.trim() === '') {
+          alert('Error: Defect Code is invalid or empty, please try again.');
+          return; 
+          }
 
-        // Check if result is empty
-        if (result.trim() === '') {
-        alert('Result cannot be empty.');
-        return; // Prevent further processing if result is empty
-        }
+        if (quantity.trim() === '') {
+          alert('Error: Quantity cannot be empty.');
+          return; 
+          }
 
-        // Check if result is "FAIL" and defectId is empty
-        if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
-        alert('Error : Defect Code is invalid or empty, please try again.');
-        return; // Prevent further processing if result is "FAIL" and defectId is empty
-        }
+        if (quantity.match(/^\d+$/) === null) {
+        alert('Error: Quantity is invalid, please try again.'); 
+        return;
+          }
+
 
         // If all checks pass, proceed with the form submission
         $('#save-form').submit();

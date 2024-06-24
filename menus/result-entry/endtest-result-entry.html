@@ -78,7 +78,7 @@
 
           <label class="label-field" id="label-part-no" for="part-no">
             <label class="part-input">Part No.</label>
-            <input class="input-field" type="text" id="pname" placeholder="Enter Part No." />
+            <input class="input-field" type="text" id="pname" part-id="" placeholder="Enter Part No." />
           </label>
           <label class="label-field" id="label-part-description" for="part-description">
             <span class="part-input">Part Description</span>
@@ -96,6 +96,8 @@
           <input class="qty-input-field" type="text" id="qty-input-field" placeholder=""/>
 
         </div>
+      </form>
+      <form id="save-form">
         <a href='#' id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
       </form>
       <a href="/menus/result-entry/view-page-defect-endtest-result-entry.html" id="view-vi-defect-result-button" class="ph-button ph-btn-green">View Result</a>
@@ -114,5 +116,7 @@
 <script src="/scripts/jquery/jquery.js"></script> 
 <script src="/scripts/jquery/jquery-ui.min.js"></script>  
 <script src="/scripts/endtest-result-entry.js"></script>
-<!-- <script src="/scripts/refresh-token.js"></script> -->
+<script src="/scripts/auto-complete-part.js"></script> 
+<script src="/scripts/auto-complete-defect.js"></script> 
+<script src="/scripts/refresh-token.js"></script>
 <script src="/scripts/version.js"></script>

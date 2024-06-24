@@ -37,6 +37,7 @@ from get_oqc_result_entry_view import get_oqc_result_entry_view, get_filter_sear
 from get_pagination_oqc_result_entry_count import get_pagination_oqc_result_entry_count
 from delete_oqc_result_entry_view import delete_oqc_result_entry_view
 from post_endtest_result_entry import post_endtest_upload_file
+from post_endtest_defect_result_entry import post_endtest_defect_result_entry
 from get_pagination_endtest_result_entry_count import get_pagination_endtest_result_entry_count
 from get_endtest_result_entry_view import get_endtest_result_entry_view, get_filter_search_endtest_result_entry_view, get_endtest_result_report
 # from delete_endtest_result_entry_view import delete_endtest_result_entry_view
@@ -444,6 +445,10 @@ def get_oqc_result_report_api():
 @app.route('/api/endtest_upload_file_api', methods=['POST'])
 def post_endtest_upload_file_api():
     return post_endtest_upload_file()
+
+@app.route('/api/endtest_defect_result_entry_api', methods=['POST'])
+def post_endtest_defect_result_entry_api():
+    return post_endtest_defect_result_entry()
 
 # API endpoint to retrieve number of entries on result-endtest-entry
 @app.route('/api/pagination_endtest_result_entry_count_api', methods=['GET'])
