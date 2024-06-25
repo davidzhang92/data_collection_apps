@@ -79,13 +79,13 @@ $(document).ready(function () {
             // handle successful response
             console.log(response);
 
-            $('#qty-input-field').text('');
+            $('#qty-input-field').val('');
             $('#pname').attr('part-id', '')
             $('#pname').val('')
+            $('#pdesc').val('')
             $('#defect-code-field').val('');
             $('#defect-code-field').attr('defect-id', '');
             $('#defect-desc').val('')
-            localStorage.removeItem('defectId');
             alert('Result submitted successfully.');
         },
         error: function(xhr, textStatus, error) {
