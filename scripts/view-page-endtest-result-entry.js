@@ -82,12 +82,9 @@ function renderData(data) {
            	<td>${partNumber}</td>
             <td>${result.serial_no}</td>
             <td>${result.data_matrix}</td>
+			<td>${result.test_ok}</td>
 			<td>${userName}</td>
             <td id='created-date'>${formattedDate}</td>
-			<td>
-			<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-			</td>
-
         </tr>`;
 
 	

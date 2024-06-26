@@ -460,13 +460,13 @@ def get_pagination_endtest_result_entry_count_api():
 
 # API endpoint using the get_filter_search_endtest_result_entry function
 @app.route('/api/filter_search_endtest_result_entry_view_api', methods=['GET'])
-def get_filter_search_endtest_defect_result_entry_view_api():
-    return get_filter_search_endtest_defect_result_entry_view()
-
-# API endpoint using the get_filter_search_endtest_defect_result_entry function
-@app.route('/api/filter_search_endtest_result_entry_view_api', methods=['GET'])
 def get_filter_search_endtest_result_entry_view_api():
     return get_filter_search_endtest_result_entry_view()
+
+# API endpoint using the get_filter_search_endtest_defect_result_entry function
+@app.route('/api/filter_search_endtest_defect_result_entry_view_api', methods=['GET'])
+def get_filter_search_endtest_defect_result_entry_view_api():
+    return get_filter_search_endtest_defect_result_entry_view()
 
 # API endpoint using the get_endtest_result_entry_view function
 @app.route('/api/endtest_result_entry_view_api', methods=['GET'])
