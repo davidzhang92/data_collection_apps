@@ -107,29 +107,32 @@ $(document).ready(function () {
     $('#save-button').click(function() {
 
         // Get the values of serial number and result
-        var pname = $('#pname').attr('part-id');
-        var defectId = $('#defect-code-field').attr('defect-id');
-        var quantity = $('#qty-input-field').val()
 
-        if (pname.trim() === '') {
+
+        if ($('#pname').attr('part-id').trim() === '') {
           alert('Error: Part No. is invalid or empty, please try again.');
           return;
         }
 
-        if (defectId.trim() === '') {
+        if ($('#defect-code-field').attr('defect-id').trim() === '') {
           alert('Error: Defect Code is invalid or empty, please try again.');
           return; 
           }
 
-        if (quantity.trim() === '') {
+        if ($('#qty-input-field').val().trim() === '') {
           alert('Error: Quantity cannot be empty.');
           return; 
           }
 
-        if (quantity.match(/^\d+$/) === null) {
+        if ($('#qty-input-field').val().match(/^\d+$/) === null) {
         alert('Error: Quantity is invalid, please try again.'); 
         return;
           }
+        
+        if ($('#qty-input-field').val() < 1) {
+          alert('Error: Quantity cannot be zero, please try again.'); 
+          return;
+            }
 
 
         // If all checks pass, proceed with the form submission

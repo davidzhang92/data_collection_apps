@@ -417,20 +417,21 @@ $(document).ready(function (){
     var originalColor = '#5FCF80'; // Color when #pdesc has a value
     var cancelColor = '#bf3f3f'; // Color when selected
 
-    // Initialize the selected state as false
-    var isSelected = false;
+
 
 
     // Click event handler for the button
+    var isSelectedExport = false;
     $('#export-button').click(function () {
-        // Clear input fields inside the div with class "export-laser-result-entry-sub-card"
+        
         $('.export-laser-result-entry-sub-card input[type="text"]').val('');
 
         // Toggle the selected state
-        isSelected = !isSelected;
+
+        isSelectedExport = !isSelectedExport;
 
         // Change text and background color based on the selected state
-        if (isSelected) {
+        if (isSelectedExport) {
             // When selected
             $('#export-button').text(cancelText);
             $('#export-button').css('background-color', cancelColor);
@@ -448,7 +449,7 @@ $(document).ready(function (){
         }
 
         // Toggle the visibility of the elements with class export-laser-result-entry-sub-card
-        $('.export-laser-result-entry-sub-card').toggle(isSelected);
+        $('.export-laser-result-entry-sub-card').toggle(isSelectedExport);
 
     });
     //POST data parameter for data export
