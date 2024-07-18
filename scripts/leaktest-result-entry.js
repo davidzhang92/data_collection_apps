@@ -1,6 +1,6 @@
 // -----initialization state of page and rules---------
-// $('.leaktest-result-entry-sub-card').hide();
-// $('.leaktest-result-entry-sub-card-2').hide();
+$('.leaktest-result-entry-sub-card').hide();
+$('.leaktest-result-entry-sub-card-2').hide();
 
 $(document).ready(function (){
 

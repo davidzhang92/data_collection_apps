@@ -1,6 +1,6 @@
 // -----initialization stateelement of page and rules---------
-// $('.oqc-result-entry-sub-card').hide();
-// $('.oqc-result-entry-sub-card-2').hide();
+$('.oqc-result-entry-sub-card').hide();
+$('.oqc-result-entry-sub-card-2').hide();
 $('#input-result').text('');
 $('#defect-code-field').attr('defect-id', '');
 $('#defect-code-field').prop('disabled', true);
