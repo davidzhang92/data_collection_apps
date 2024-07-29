@@ -1,4 +1,6 @@
 from flask import Flask
+from flask_cors import CORS
+from waitress import serve
 from auto_complete_part import get_auto_complete_part_no, get_auto_complete_part_name
 from auto_complete_filter_part import get_auto_complete_filter_part_no, get_auto_complete_filter_part_name_for_part_no, get_auto_complete_filter_part_name, get_auto_complete_filter_part_no_for_part_name, get_filter_search_part_master
 from get_part import get_part
@@ -37,17 +39,19 @@ from get_oqc_result_entry_view import get_oqc_result_entry_view, get_filter_sear
 from get_pagination_oqc_result_entry_count import get_pagination_oqc_result_entry_count
 from delete_oqc_result_entry_view import delete_oqc_result_entry_view
 from post_endtest_result_entry import post_endtest_upload_file
+from post_endtest_defect_result_entry import post_endtest_defect_result_entry
 from get_pagination_endtest_result_entry_count import get_pagination_endtest_result_entry_count
 from get_endtest_result_entry_view import get_endtest_result_entry_view, get_filter_search_endtest_result_entry_view, get_endtest_result_report
 # from delete_endtest_result_entry_view import delete_endtest_result_entry_view
+from get_endtest_defect_result_entry_view import get_endtest_defect_result_entry_view, get_endtest_defect_result_report, get_filter_search_endtest_defect_result_entry_view
+from delete_endtest_defect_result_entry_view import delete_endtest_defect_result_entry_view
 from get_laser_result_entry import get_laser_result_entry
 from get_overall_throughput import get_overall_throughput
 from get_dashboard_data import get_dashboard_part_id, get_dashboard_part_detail_counts
 from post_refresh_token import post_refresh_access_token
 # from get_token_authentication import get_token_authentication
 from update_user_profiles import update_user_profiles
-from flask_cors import CORS
-from waitress import serve
+
 
 app = Flask(__name__)
 CORS(app)
@@ -445,6 +449,10 @@ def get_oqc_result_report_api():
 def post_endtest_upload_file_api():
     return post_endtest_upload_file()
 
+@app.route('/api/endtest_defect_result_entry_api', methods=['POST'])
+def post_endtest_defect_result_entry_api():
+    return post_endtest_defect_result_entry()
+
 # API endpoint to retrieve number of entries on result-endtest-entry
 @app.route('/api/pagination_endtest_result_entry_count_api', methods=['GET'])
 def get_pagination_endtest_result_entry_count_api():
@@ -455,21 +463,39 @@ def get_pagination_endtest_result_entry_count_api():
 def get_filter_search_endtest_result_entry_view_api():
     return get_filter_search_endtest_result_entry_view()
 
+# API endpoint using the get_filter_search_endtest_defect_result_entry function
+@app.route('/api/filter_search_endtest_defect_result_entry_view_api', methods=['GET'])
+def get_filter_search_endtest_defect_result_entry_view_api():
+    return get_filter_search_endtest_defect_result_entry_view()
+
 # API endpoint using the get_endtest_result_entry_view function
 @app.route('/api/endtest_result_entry_view_api', methods=['GET'])
 def get_endtest_result_entry_view_api():
     return get_endtest_result_entry_view()
+
+@app.route('/api/endtest_defect_result_entry_view_api', methods=['GET'])
+def get_endtest_defect_result_entry_view_api():
+    return get_endtest_defect_result_entry_view()
+
 
 # # API endpoint using the delete_data function
 # @app.route('/api/delete_endtest_result_entry_view_api', methods=['DELETE'])
 # def delete_endtest_result_entry_view_api():
 #     return delete_endtest_result_entry_view()
 
-# # API endpoint to download report from endtest result entry view
+@app.route('/api/delete_endtest_defect_result_entry_view_api', methods=['DELETE'])
+def delete_endtest_defect_result_entry_view_api():
+    return delete_endtest_defect_result_entry_view()
+
+# API endpoint to download report from endtest result entry view
 @app.route('/api/endtest_result_report_api', methods=['POST'])
 def get_endtest_result_report_api():
     return get_endtest_result_report()
 
+# API endpoint to download report from endtest defect result entry view
+@app.route('/api/endtest_defect_result_report_api', methods=['POST'])
+def get_endtest_defect_result_report_api():
+    return get_endtest_defect_result_report()
 
 
 ###############################

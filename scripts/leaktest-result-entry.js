@@ -109,25 +109,43 @@ $(document).ready(function (){
 
   // fail/pass button function
 
-    var inputResult = $('#input-result');
+  var inputResult = $('#input-result');
+
+  var isPassButtonPress = 0; // Initialize the variable
 
   // Click event handler for the "PASS" button
   $('#pass-button').click(function (e) {
       e.preventDefault();
-        // Set the result text and color
-        inputResult.text('PASS');
-        inputResult.css('color', '#00ff2a');
-  });
-
-  // Click event handler for the "FAIL" button
-  $('#fail-button').click(function (e) {
-      e.preventDefault();
       // Set the result text and color
-      inputResult.text('FAIL');
-      inputResult.css('color', '#ff0000');
+      inputResult.text('PASS');
+      inputResult.css('color', '#00ff2a');
+      $('#defect-code-field').val('');
+      $('#defect-desc').val('');
+      $('#defect-code-field').attr('defect-id', '');
+      $('#defect-code-field').prop('disabled', true);
+      localStorage.removeItem('defectId');
+      
+      // Set isPassButtonPress to 1 when PASS button is clicked
+      isPassButtonPress = 1;
   });
 
+    // Click event handler for the "FAIL" button
+    $('#fail-button').click(function (e) {
+        e.preventDefault();
 
+
+        $('#defect-code-field').prop('disabled', false);
+        $('#defect-desc').prop('readonly', false);
+        inputResult.text('FAIL');
+        inputResult.css('color', '#ff0000');
+
+        // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
+        if (isPassButtonPress === 1) {
+            isPassButtonPress = 0;
+            return;
+        }
+
+    });
 
 
 
@@ -275,8 +293,9 @@ $(document).ready(function (){
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
+                defect_id: $('#defect-code-field').attr('defect-id'),
                 housing_no: housingPartNumber,
-                result: result,
+                result: $('#input-result').text(),
                 fine_value: fineValue,
                 gross_value: grossValue,
                 others_value: othersValue,
@@ -297,6 +316,11 @@ $(document).ready(function (){
                 $('#fine-field').val('')
                 $('#gross-field').val('')
                 $('#others-field').val('')
+                $('#defect-code-field').val('')
+                $('#defect-code-field').attr('defect-id', '');
+                defectId='';
+                $('#defect-desc').val('')
+                localStorage.removeItem('defectId');
 
                 alert('Result submitted successfully.');
             },
@@ -334,7 +358,11 @@ $(document).ready(function (){
             return; // Prevent further processing if result is empty
         }
 
-
+        // Check if result is "FAIL" and defectId is empty
+        if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
+            alert('Error : Defect Code is invalid or empty, please try again.');
+            return; // Prevent further processing if result is "FAIL" and defectId is empty
+            }
 
         // If all checks pass, proceed with the form submission
         $('#save-form').submit();

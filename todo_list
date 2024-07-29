@@ -14,10 +14,3 @@ enhancement =
 scrollable auto complete drop down selection, make the count unlimited.
 create a historic view for dashboard chart.
 
-progression = 
-work on user management
-work on user login page
-work on user token session and authentication
-user access level/rights
-
-update all other table to reflect user entity in backend.

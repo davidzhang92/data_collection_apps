@@ -71,6 +71,7 @@ $(document).ready(function () {
 			var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
 
 			// Replace 'null' with '-'
+			var errorCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
 			var userName = result.username !== null ? result.username : '-';
 		
 			var row = `<tr data-id="${result.id}">
@@ -82,10 +83,11 @@ $(document).ready(function () {
 				</td>
 				<td>${result.part_no}</td>
 				<td>${result.housing_no}</td>
-				<td>${result.result}</td>
 				<td>${result.fine_value}</td>
 				<td>${result.gross_value}</td>
 				<td>${result.others_value}</td>
+				<td>${result.result}</td>
+				<td id='error-field'>${errorCode}</td>
 				<td>${userName}</td>
 				<td>${formattedDate}</td>
 				<td>

@@ -10,6 +10,16 @@ $('#defect-code-field').prop('disabled', true);
 
 $(document).ready(function (){
 
+    // set the counter for each sucessful POST and reset upon export and reset from the part id
+
+    var displayCounter = localStorage.getItem('displayCounter');
+
+    if (!displayCounter) {
+        displayCounter = 0;
+        localStorage.setItem('displayCounter', displayCounter);
+      }
+    
+
     // set the zoom level based on resolution
     var screenWidth = window.innerWidth;
     var zoomLevel;
@@ -111,12 +121,78 @@ $('#select-button').click(function () {
         // Enable or disable the input field based on the selected state
         $('#pname').prop('readonly', isSelected);
 
-        // Toggle the visibility of the elements with class laser-result-entry-sub-card
-        $('.laser-result-entry-sub-card').toggle(isSelected);
-        $('.laser-result-entry-sub-card-2').toggle(isSelected);
-        
-    }
-});
+
+    // Bind an input event handler to #pdesc to update the button color immediately
+    $('#pdesc').on('input', function() {
+        updateButtonColor(); // Call the function to update the button color
+    });
+
+    // Click event handler for the button
+    $('#select-button').click(function () {
+        // Clear input fields inside the div with class "laser-result-entry-sub-card"
+        $('.laser-result-entry-sub-card input[type="text"]').val('');
+        // Clear all checkboxes inside the div with class "check-boxes-fail-group"
+        $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
+        $('.export-laser-result-entry-sub-card').hide();
+        $('#export-button').text(exportOriginalText);
+        $('#export-button').css('background-color', originalColor);
+        $('#save-button').show();
+
+
+        // Check if #pdesc is empty
+        var InitialField = $('#pdesc').val().trim() === '' || $('#wono').val().match(/^\d+$/) === null;
+
+        // Toggle the selected state only if #pdesc is not empty
+        if (!InitialField) {
+            // Toggle the selected state
+            isSelected = !isSelected;
+
+            // Change text based on the selected state
+            if (isSelected) {
+                // When selected
+                $(this).text(selectedText);
+                $('#select-button').css('background-color', selectedColor);
+
+            } else {
+                // When not selected
+                $(this).text(originalText);
+                updateButtonColor(); // Update the button color when not selected
+                displayCounter = 0;
+                localStorage.setItem('counter', displayCounter);
+                $('.display-counter').text(displayCounter);
+                
+            }
+
+            // Enable or disable the input field based on the selected state
+            $('#pname').prop('readonly', isSelected);
+            $('#wono').prop('readonly', isSelected);
+
+            // Toggle the visibility of the elements with class laser-result-entry-sub-card
+            $('.laser-result-entry-sub-card').toggle(isSelected);
+            $('.laser-result-entry-sub-card-2').toggle(isSelected);
+            
+        }
+    });
+
+
+    // fail/pass button function
+
+    var inputResult = $('#input-result');
+
+    var isPassButtonPress = 0; // Initialize the variable
+
+    // Click event handler for the "PASS" button
+    $('#pass-button').click(function (e) {
+        e.preventDefault();
+        // Set the result text and color
+        inputResult.text('PASS');
+        inputResult.css('color', '#00ff2a');
+        $('#defect-code-field').val('');
+        $('#defect-desc').val('');
+        $('#defect-code-field').attr('defect-id', '');
+        $('#defect-code-field').prop('disabled', true);
+        localStorage.removeItem('defectId');
+    });
 
 
 // fail/pass button function
@@ -331,37 +407,6 @@ var labelId = $('#label-id-field').val();
             $('#serial-no-field').val('')
             $('#data-matrix-field').val('')
             $('#label-id-field').val('')
-<<<<<<< HEAD
-            $('#defect-code-field').val('')
-            $('#defect-code-field').attr('defect-id', '');
-            defectId='';
-            $('#defect-desc').val('')
-            localStorage.removeItem('defectId');
-            alert('Result submitted successfully.');
-        },
-        error: function(xhr, status, error) {
-            // handle error response
-            if (xhr.status === 400) {
-                // The response status is 400, indicating a duplicate
-                alert(xhr.responseJSON.message);
-                $('#input-result').text('');
-                // Reset other variables
-                result = ''; // Reset result
-                $('#serial-no-field').val('')
-                $('#data-matrix-field').val('')
-                $('#label-id-field').val('')
-                $('#defect-code-field').val('')
-                $('#defect-code-field').attr('defect-id', '');
-                defectId='';
-                $('#defect-desc').val('')
-                localStorage.removeItem('defectId');
-            } else if (xhr.status === 401) {
-                alert(xhr.responseJSON.message);
-                window.location.href = '/login.html'
-                localStorage.removeItem('accessToken');
-            } else if (xhr.status >= 400 && xhr.status < 600) {
-                alert(xhr.responseJSON.message);
-=======
         }
     });
 
@@ -412,6 +457,9 @@ var labelId = $('#label-id-field').val();
                     $('#serial-no-field').val('')
                     $('#data-matrix-field').val('')
                     $('#label-id-field').val('')
+                    displayCounter++;
+                    localStorage.setItem('counter', displayCounter);
+                    $('.display-counter').text(displayCounter);
         
                     // alert('Result submitted successfully.');
                 },
@@ -489,7 +537,6 @@ var labelId = $('#label-id-field').val();
                         alert("Error: Data is not valid");
                         break;
                 }
->>>>>>> 8a0d3cfc (Version 1.2.0 : fixed SQL for all field populated in laser and removed sucessful alert message)
             } else {
                 console.error(error);
                 alert('An error occurred while submitting the result.');
@@ -588,20 +635,21 @@ var labelId = $('#label-id-field').val();
     var originalColor = '#5FCF80'; // Color when #pdesc has a value
     var cancelColor = '#bf3f3f'; // Color when selected
 
-    // Initialize the selected state as false
-    var isSelected = false;
+
 
 
     // Click event handler for the button
+    var isSelectedExport = false;
     $('#export-button').click(function () {
-        // Clear input fields inside the div with class "export-laser-result-entry-sub-card"
+        
         $('.export-laser-result-entry-sub-card input[type="text"]').val('');
 
         // Toggle the selected state
-        isSelected = !isSelected;
+
+        isSelectedExport = !isSelectedExport;
 
         // Change text and background color based on the selected state
-        if (isSelected) {
+        if (isSelectedExport) {
             // When selected
             $('#export-button').text(cancelText);
             $('#export-button').css('background-color', cancelColor);
@@ -619,7 +667,7 @@ var labelId = $('#label-id-field').val();
         }
 
         // Toggle the visibility of the elements with class export-laser-result-entry-sub-card
-        $('.export-laser-result-entry-sub-card').toggle(isSelected);
+        $('.export-laser-result-entry-sub-card').toggle(isSelectedExport);
 
     });
     //POST data parameter for data export
@@ -644,6 +692,9 @@ var labelId = $('#label-id-field').val();
 				a.download = "laser_report.xlsx";
 				document.body.appendChild(a);
 				a.click();
+                displayCounter = 0;
+                localStorage.setItem('counter', displayCounter);
+                $('.display-counter').text(displayCounter);
 			} else if (this.status === 401) {
 				alert('Unauthorized');
 				window.location.href = '/login.html'
@@ -653,7 +704,7 @@ var labelId = $('#label-id-field').val();
 			}
 		};
 		xhr.onerror = function() {
-			alert('An error occurred while retrieving the data.');
+			alert(this.response);
 		};
 		xhr.send(JSON.stringify({
             part_id: partId,

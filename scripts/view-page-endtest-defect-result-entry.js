@@ -72,6 +72,10 @@ function renderData(data) {
         var partNumber = result.part_no !== null ? result.part_no : '-';
 		var userName = result.username !== null ? result.username : '-';
 
+	//format the defect no and desc, if its null then hypen
+	
+	var defectCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
+
         var row = `<tr data-id="${result.id}">
             <td>
                 <span class="custom-checkbox">
@@ -79,12 +83,15 @@ function renderData(data) {
                     <label for="${result.id}"></label>
                 </span>
             </td>
-           	<td>${partNumber}</td>
-            <td>${result.serial_no}</td>
-            <td>${result.data_matrix}</td>
-			<td>${result.test_ok}</td>
+			<td>${partNumber}</td>
+            <td>${defectCode}</td>
+            <td>${result.quantity}</td>
 			<td>${userName}</td>
             <td id='created-date'>${formattedDate}</td>
+			<td>
+			<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+			</td>
+
         </tr>`;
 
 	
@@ -130,7 +137,7 @@ function renderData(data) {
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
 				'' :
-				'http://' + window.location.hostname + ':4000/api/endtest_result_entry_view_api';
+				'http://' + window.location.hostname + ':4000/api/endtest_defect_result_entry_view_api';
 		
 			const requestData = {
 				page: pageId, // Change the parameter name to 'page'
@@ -260,7 +267,7 @@ function renderData(data) {
 
 
 			$.ajax({
-				url: 'http://' + window.location.hostname + ':4000/api/delete_endtest_result_entry_view_api',
+				url: 'http://' + window.location.hostname + ':4000//api/delete_endtest_defect_result_entry_view_api',
 				type: 'DELETE',
 				data: JSON.stringify({
 					id: deleteCurrentId,
@@ -331,7 +338,7 @@ function renderData(data) {
 		// console.log(idsToDelete);
 		// Get the data-id attribute of the row associated with the clicked button
 		$.ajax({
-			url: 'http://' + window.location.hostname + ':4000/api/delete_endtest_result_entry_view_api',
+			url: 'http://' + window.location.hostname + ':4000/api/delete_endtest_defect_result_entry_view_api',
 			type: 'DELETE',
 			data: JSON.stringify({ 
 				ids: idsToDelete, 
@@ -552,7 +559,7 @@ function renderData(data) {
         var dateTo = $('#date-to-field').val();
 		var partNumber = $('#part-number-field').val().trim()
     
-        fetch('http://' + window.location.hostname + ':4000/api/endtest_result_report_api', {
+        fetch('http://' + window.location.hostname + ':4000/api/endtest_defect_result_report_api', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
