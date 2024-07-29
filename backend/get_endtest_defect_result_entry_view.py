@@ -9,6 +9,7 @@ from secret_key import SECRET_KEY
 import jwt
 from functools import wraps
 
+
 app = Flask(__name__)
 
 # # Define your MS SQL Server connection details (Windows)
@@ -70,9 +71,9 @@ def token_required(f):
 # --------------------
 # API endpoint get all leaktest result entry
 # --------------------
-@app.route('/api/get_leaktest_result_entry_view', methods=['GET'])
+@app.route('/api/get_endtest_defect_result_entry_view', methods=['GET'])
 @token_required
-def get_leaktest_result_entry_view():
+def get_endtest_defect_result_entry_view():
     try:
         # Extract the page query parameter from the request
         page = int(request.args.get('page', 1))  # Default value is 1
@@ -83,7 +84,11 @@ def get_leaktest_result_entry_view():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        query = """select a.id as id, b.part_no, d.defect_no, d.defect_description, a.quantity, c.username, a.created_date from endtest_defect_result_entry a 
+                LEFT join part_master b on a.part_id = b.id
+                LEFT JOIN user_master c on a.created_by = c.id 
+                INNER JOIN defect_master d on a.defect_id = d.id
+                where a.is_deleted='0' order by created_date desc OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"""
 
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()
@@ -104,9 +109,9 @@ def get_leaktest_result_entry_view():
 # API endpoint filtering after clicking Search button
 # --------------------
 
-@app.route('/api/get_filter_search_leaktest_result_entry_view', methods=['GET'])
+@app.route('/api/get_filter_search_endtest_defect_result_entry_view', methods=['GET'])
 @token_required
-def get_filter_search_leaktest_result_entry_view():
+def get_filter_search_endtest_defect_result_entry_view():
         
     selected_part_no = request.args.get('search_part_no')  # Get the selected value from the query parameters
     selected_date_from = request.args.get('search_date_from')  # Get the selected value from the query parameters
@@ -118,8 +123,11 @@ def get_filter_search_leaktest_result_entry_view():
 
     cursor = conn.cursor()
     
-    # Construct the SQL query to select all data from the leaktest result entry table
-    query = "SELECT a.id AS id, b.part_no, housing_no, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
+    # Construct the SQL query to select all data from the defect result entry table
+    query = """select a.id as id, b.part_no, d.defect_no, d.defect_description, a.quantity, c.username, a.created_date from endtest_defect_result_entry a 
+                LEFT join part_master b on a.part_id = b.id
+                LEFT JOIN user_master c on a.created_by = c.id 
+                INNER JOIN defect_master d on a.defect_id = d.id WHERE 1=1"""
 
     parameters = []
 
@@ -160,11 +168,11 @@ def get_filter_search_leaktest_result_entry_view():
 # --------------------
 # API endpoint download report
 # --------------------
-@app.route('/api/get_leaktest_result_report', methods=['POST'])
+@app.route('/api/get_endtest_defect_result_report', methods=['POST'])
 @token_required
-def get_leaktest_result_report():
+def get_endtest_defect_result_report():
     # Define the path to the Excel template (modify this path accordingly)
-    template_path = r'/data-storage/sfdc_apps/excel_import/leaktest_report_template.xlsx'
+    template_path = r'/data-storage/sfdc_apps/excel_import/endtest_defect_report_template.xlsx'
 
     try:
         # Try to parse JSON data from the request body
@@ -193,7 +201,7 @@ def get_leaktest_result_report():
         query_header_data = """SELECT DISTINCT 
                                 b.part_no,
                                 b.part_description
-                            FROM leaktest_result_entry a 
+                            FROM endtest_defect_result_entry a 
                             INNER JOIN part_master b ON a.part_id = b.id """
         parameters_header_data = []
         
@@ -213,19 +221,15 @@ def get_leaktest_result_report():
         query_data = """SELECT 
                         b.part_no,
                         b.part_description,
-                        housing_no, 
-                        fine_value, 
-						gross_value, 
-						others_value,
-                        a.result,
-						d.defect_no,
-						d.defect_description,
-                        c.username, 
+                        d.defect_no,
+                        d.defect_description,
+                        a.quantity,
+                        c.username,
                         a.created_date 
-                    FROM leaktest_result_entry a 
+                    FROM endtest_defect_result_entry a 
                     INNER JOIN part_master b ON a.part_id = b.id
                     LEFT JOIN user_master c on a.created_by = c.id
-                    LEFT JOIN defect_master d on a.defect_id = d.id  """
+                    INNER JOIN defect_master d on a.defect_id = d.id"""
         parameters_data = []
 
         if selected_part_no:
@@ -280,13 +284,14 @@ def get_leaktest_result_report():
         worksheet['C6'] = part_description_joined
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
-        worksheet['L5'] = date.today().strftime('%Y-%m-%d')
-        worksheet['L6'] = generated_by
+        worksheet['H5'] = date.today().strftime('%Y-%m-%d')
+        worksheet['H6'] = generated_by
 
+  
 
         # Merge cells again and adjust the allignment
-        worksheet.merge_cells('C5:I5')
-        worksheet.merge_cells('C6:I6')
+        worksheet.merge_cells('C5:E5')
+        worksheet.merge_cells('C6:E6')
         worksheet['C5'].alignment = Alignment(horizontal='left')
         worksheet['C6'].alignment = Alignment(horizontal='left')
 
@@ -299,13 +304,10 @@ def get_leaktest_result_report():
             column3_index = 3  # Column C
             column4_index = 4  # Column D
             column5_index = 5 
-            column6_index = 6 
-            column7_index = 7 
-            column8_index = 8 
-            column9_index = 9 
-            column10_index = 10
-            column11_index = 11
-            column12_index = 12 
+            column6_index = 6
+            column7_index = 7
+            column8_index = 8
+
 
 
             worksheet.cell(row=row_number, column=column2_index, value=row_data[0]) 
@@ -314,11 +316,7 @@ def get_leaktest_result_report():
             worksheet.cell(row=row_number, column=column5_index, value=row_data[3]) 
             worksheet.cell(row=row_number, column=column6_index, value=row_data[4]) 
             worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
-            worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
-            worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
-            worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
-            worksheet.cell(row=row_number, column=column11_index, value=row_data[9])
-            worksheet.cell(row=row_number, column=column12_index, value=row_data[10])
+            worksheet.cell(row=row_number, column=column8_index, value=row_data[6])
 
 
             row_number += 1
@@ -333,12 +331,13 @@ def get_leaktest_result_report():
             excel_output,
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             headers={
-                'Content-Disposition': 'attachment; filename=leaktest_report.xlsx'
+                'Content-Disposition': 'attachment; filename=endtest_defect_report.xlsx'
             }
         )
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
     
 if __name__ == '__main__':
     app.run()

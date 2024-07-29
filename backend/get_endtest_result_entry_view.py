@@ -84,7 +84,7 @@ def get_endtest_result_entry_view():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "select a.id as id, b.part_no, a.serial_no, a.data_matrix, c.username, a.created_date from endtest_result_entry a left join part_master b on a.part_id = b.id LEFT JOIN user_master c on a.created_by = c.id where a.is_deleted='0' order by created_date desc OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        query = "select a.id as id, b.part_no, a.serial_no, a.data_matrix, a.test_ok, c.username, a.created_date from endtest_result_entry a left join part_master b on a.part_id = b.id LEFT JOIN user_master c on a.created_by = c.id where a.is_deleted='0' order by created_date desc OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
 
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()
@@ -120,7 +120,7 @@ def get_filter_search_endtest_result_entry_view():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the leaktest result entry table
-    query = "select a.id as id, b.part_no, a.serial_no, a.data_matrix, a.created_date from endtest_result_entry a left join part_master b on a.part_id = b.id WHERE 1=1"
+    query = "select a.id as id, b.part_no, a.serial_no, a.data_matrix, a.test_ok, c.username, a.created_date from endtest_result_entry a left join part_master b on a.part_id = b.id LEFT JOIN user_master c on a.created_by = c.id WHERE 1=1"
 
     parameters = []
 

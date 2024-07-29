@@ -87,12 +87,43 @@ body,
         padding-top: 10px; 
         left:50px;
       }
+      #label-defect-code{
+        width: 65px;
+        height: 20px;
+        padding-top: 15px;
+        position: absolute;
+        top: 120px;
+        margin-left: 390px;
+        /* margin-top: 50px; */
+      }
+      #defect-desc{
+        width: 320px; 
+        border: 1px solid #000; 
+        margin-top: 15px;
+        padding: 5px; 
+        /* padding-top:5px; */
+        font-size: 18px;
+        position: absolute;
+        top: 162px;
+        left: 480px;
+      }
+      #defect-code-field{
+        width:80px;
+      }
 
   .product-field-span { 
     display: block; 
     margin: 0 0 5px; 
     font-size: 1.2em; 
     font-weight: bold; 
+  }
+
+  .product-field-def-code { 
+    display: inline-block; 
+    margin: 0 0 5px; 
+    font-size: 1.2em; 
+    font-weight: bold; 
+    width: 200px;
   }
       
   .input-field { 
