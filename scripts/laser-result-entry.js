@@ -331,37 +331,6 @@ var labelId = $('#label-id-field').val();
             $('#serial-no-field').val('')
             $('#data-matrix-field').val('')
             $('#label-id-field').val('')
-<<<<<<< HEAD
-            $('#defect-code-field').val('')
-            $('#defect-code-field').attr('defect-id', '');
-            defectId='';
-            $('#defect-desc').val('')
-            localStorage.removeItem('defectId');
-            alert('Result submitted successfully.');
-        },
-        error: function(xhr, status, error) {
-            // handle error response
-            if (xhr.status === 400) {
-                // The response status is 400, indicating a duplicate
-                alert(xhr.responseJSON.message);
-                $('#input-result').text('');
-                // Reset other variables
-                result = ''; // Reset result
-                $('#serial-no-field').val('')
-                $('#data-matrix-field').val('')
-                $('#label-id-field').val('')
-                $('#defect-code-field').val('')
-                $('#defect-code-field').attr('defect-id', '');
-                defectId='';
-                $('#defect-desc').val('')
-                localStorage.removeItem('defectId');
-            } else if (xhr.status === 401) {
-                alert(xhr.responseJSON.message);
-                window.location.href = '/login.html'
-                localStorage.removeItem('accessToken');
-            } else if (xhr.status >= 400 && xhr.status < 600) {
-                alert(xhr.responseJSON.message);
-=======
         }
     });
 
@@ -489,7 +458,6 @@ var labelId = $('#label-id-field').val();
                         alert("Error: Data is not valid");
                         break;
                 }
->>>>>>> 8a0d3cfc (Version 1.2.0 : fixed SQL for all field populated in laser and removed sucessful alert message)
             } else {
                 console.error(error);
                 alert('An error occurred while submitting the result.');
