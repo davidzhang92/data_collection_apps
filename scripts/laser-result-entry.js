@@ -389,9 +389,9 @@ var labelId = $('#label-id-field').val();
                     if (xhr.status === 400) {
                         // The response status is 400, indicating a duplicate
                         alert(xhr.responseJSON.message);
-                        $('#serial-no-field').val('')
-                        $('#data-matrix-field').val('')
-                        $('#label-id-field').val('')
+                        // $('#serial-no-field').val('')
+                        // $('#data-matrix-field').val('')
+                        // $('#label-id-field').val('')
             
                     } else if (xhr.status === 401) {
                         alert(xhr.responseJSON.message);
@@ -630,9 +630,6 @@ var labelId = $('#label-id-field').val();
             
 		}));
 	});
-
-    
-    
 
 	//logout function, clear all access token upon log out
 	$('#logout').click(function(){

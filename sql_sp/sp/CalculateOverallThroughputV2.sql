@@ -49,7 +49,7 @@ BEGIN
         -- Calculate entries for each processes
         SELECT @ProgrammingEntries = 0 + (SELECT COUNT(id) FROM programming_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
         SELECT @LeaktestEntries = 0 + (SELECT COUNT(id) FROM leaktest_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
-        SELECT @EndtestEntries = 0 + (SELECT COUNT(id) FROM endtest_result_entry WHERE part_id is not null AND created_date BETWEEN @WindowStartTime AND @WindowEndTime) + (SELECT SUM(quantity) FROM endtest_defect_result_entry  WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
+        SELECT @EndtestEntries = 0 + (SELECT COUNT(id) FROM endtest_result_entry WHERE part_id is not null AND created_date BETWEEN @WindowStartTime AND @WindowEndTime) + ISNULL((SELECT SUM(quantity) FROM endtest_defect_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime), 0);
         SELECT @LaserEntries = 0 + (SELECT COUNT(id) FROM laser_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
         SELECT @OqcEntries = 0 + (SELECT COUNT(id) FROM oqc_result_entry WHERE is_deleted = 0 AND created_date BETWEEN @WindowStartTime AND @WindowEndTime);
 

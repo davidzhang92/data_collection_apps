@@ -79,28 +79,41 @@ def post_laser_result_entry():
         new_label_id = str(data['label_id'])
         user_id = data['user_id']
 
-        # Concatenate part_id and serial_no
-        concatenated_values = str(new_part_id) + new_wo_no + new_serial_no + new_data_matrix + new_label_id
+
 
         cursor = conn.cursor()
 
-        # Check for duplicates based on the concatenated values
-        duplicate_check_query = """
-            SELECT COUNT(*) AS count
-            FROM laser_result_entry
-            WHERE CONCAT(part_id, wo_no, serial_no, data_matrix, label_id) = ?
-            AND is_deleted = 0;
+        # Check for duplicates based on the serial_no
+        serial_no_duplicate_check_query = """
+        select serial_no from laser_result_entry where serial_no = ? and is_deleted = 0
         """
-        cursor.execute(duplicate_check_query, (concatenated_values,))
+        cursor.execute(serial_no_duplicate_check_query, (new_serial_no,))
         result = cursor.fetchone()
 
         if result is not None:
-            duplicate_count = result[0]
-        else:
-            duplicate_count = 0
+            return jsonify({'message': 'Error : Product S/N is a duplicate.'}), 400
+        else: 
+            # Check for duplicates based on the data_matrix
+            data_matrix_duplicate_check_query = """
+            select data_matrix from laser_result_entry where data_matrix = ? and is_deleted = 0
+            """
+            cursor.execute(data_matrix_duplicate_check_query, (new_data_matrix,))
+            result = cursor.fetchone()
 
-        if duplicate_count > 0:
-            return jsonify({'message': 'Data is a duplicate.'}), 400
+            if result is not None:
+                return jsonify({'message': 'Error : PCBA S/N is a duplicate.'}), 400
+            else:
+                # Check for duplicates based on the label_id
+                label_id_duplicate_check_query = """
+                select label_id from laser_result_entry where label_id = ? and is_deleted = 0
+                """
+                cursor.execute(label_id_duplicate_check_query, (new_label_id,))
+                result = cursor.fetchone()
+
+                if result is not None:
+                    return jsonify({'message': 'Error : Device ID is a duplicate.'}), 400
+
+
 
         # If no duplicates, insert the data
         new_part_id = uuid.UUID(data['part_id'])
