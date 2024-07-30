@@ -144,7 +144,15 @@ def get_dashboard_part_detail_counts():
             FROM endtest_defect ed
             INNER join part_master pm on ed.part_id=pm.id
         )
-        SELECT * FROM combined
+        SELECT 
+            part_id, part_no, part_description, 
+            SUM(pass_count) AS pass_count, 
+            SUM(fail_count) AS fail_count, 
+            SUM(total_count) AS total_count, 
+            process_type 
+        FROM combined
+        GROUP BY part_id, part_no, part_description, process_type
+
                 """
 
 
