@@ -203,6 +203,18 @@ def get_laser_result_report():
         if selected_part_no:
             query_header_data += "WHERE b.part_no LIKE ?"
             parameters_header_data.append('%' + selected_part_no + '%')
+        else: 
+
+            if selected_date_from:
+                query_header_data += "WHERE a.created_date >= ?"
+                parameters_header_data.append(selected_date_from)
+            elif selected_date_to:
+                query_header_data += "WHERE a.created_date <= ?"
+                parameters_header_data.append(selected_date_to)
+            elif selected_date_from and selected_date_to:
+                query_header_data += "WHERE a.created_date >= ? AND a.created_date <= ?"
+                parameters_header_data.append(selected_date_from)
+                parameters_header_data.append(selected_date_to)
 
         query_header_data += " AND a.is_deleted = '0' "
 
