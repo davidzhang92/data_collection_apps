@@ -228,11 +228,12 @@ def get_endtest_result_report():
                         b.part_description,
                         serial_no, 
                         data_matrix, 
+						a.test_ok,
                         c.username,
                         a.created_date 
                     FROM endtest_result_entry a 
                     INNER JOIN part_master b ON a.part_id = b.id
-                    LEFT JOIN user_master c on a.created_by = c.id  """
+                    LEFT JOIN user_master c on a.created_by = c.id """
         parameters_data = []
 
         conditions = []
@@ -293,8 +294,8 @@ def get_endtest_result_report():
         worksheet['C6'] = part_description_joined
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
-        worksheet['G5'] = date.today().strftime('%Y-%m-%d')
-        worksheet['G6'] = generated_by
+        worksheet['H5'] = date.today().strftime('%Y-%m-%d')
+        worksheet['H6'] = generated_by
 
   
 
@@ -315,6 +316,7 @@ def get_endtest_result_report():
             column5_index = 5 
             column6_index = 6
             column7_index = 7
+            column8_index = 8
 
 
 
@@ -324,7 +326,7 @@ def get_endtest_result_report():
             worksheet.cell(row=row_number, column=column5_index, value=row_data[3]) 
             worksheet.cell(row=row_number, column=column6_index, value=row_data[4]) 
             worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
-
+            worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
 
             row_number += 1
 

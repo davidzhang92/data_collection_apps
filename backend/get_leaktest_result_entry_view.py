@@ -119,7 +119,7 @@ def get_filter_search_leaktest_result_entry_view():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the leaktest result entry table
-    query = "SELECT a.id AS id, b.part_no, housing_no, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
+    query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
 
     parameters = []
 
