@@ -101,7 +101,7 @@ def post_leaktest_result_entry():
         # If no duplicates, insert the data
         new_part_id = uuid.UUID(data['part_id'])
         new_housing_no = str(data['housing_no'])
-        new_result = str(data['result'])
+        new_result = str(data['air_leaktest_result'])
         new_fine_value = float(data['fine_value'])
         new_gross_value = float(data['gross_value'])
         new_others_value = float(data['others_value'])
