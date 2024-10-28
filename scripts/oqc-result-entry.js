@@ -2,8 +2,8 @@
 $('.oqc-result-entry-sub-card').hide();
 $('.oqc-result-entry-sub-card-2').hide();
 $('#input-result').text('');
-$('#defect-code-field').attr('defect-id', '');
-$('#defect-code-field').prop('disabled', true);
+$('.defect-code-field').attr('defect-id', '');
+$('.defect-code-field').prop('disabled', true);
 
 
 
@@ -124,10 +124,10 @@ $(document).ready(function (){
         // Set the result text and color
         inputResult.text('PASS');
         inputResult.css('color', '#00ff2a');
-        $('#defect-code-field').val('');
+        $('.defect-code-field').val('');
         $('#defect-desc').val('');
-        $('#defect-code-field').attr('defect-id', '');
-        $('#defect-code-field').prop('disabled', true);
+        $('.defect-code-field').attr('defect-id', '');
+        $('.defect-code-field').prop('disabled', true);
         localStorage.removeItem('defectId');
         
         // Set isPassButtonPress to 1 when PASS button is clicked
@@ -139,7 +139,7 @@ $(document).ready(function (){
         e.preventDefault();
     
   
-        $('#defect-code-field').prop('disabled', false);
+        $('.defect-code-field').prop('disabled', false);
         $('#defect-desc').prop('readonly', false);
         inputResult.text('FAIL');
         inputResult.css('color', '#ff0000');
@@ -188,7 +188,7 @@ $(document).ready(function (){
     $('#serial-no-field').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
-            $('#defect-code-field').focus();
+            $('.defect-code-field').focus();
         }
         $("#serial-no-field").on("blur", function() {
         var inputValue = $(this).val();
@@ -216,7 +216,7 @@ $(document).ready(function (){
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
-                defect_id: $('#defect-code-field').attr('defect-id'),
+                defect_id: $('.defect-code-field').attr('defect-id'),
                 serial_no: serialNumber,
                 result: $('#input-result').text(),
                 user_id: localStorage.getItem('userId')
@@ -231,8 +231,8 @@ $(document).ready(function (){
     
                 $('#input-result').text('');
                 $('#serial-no-field').val('')
-                $('#defect-code-field').val('')
-                $('#defect-code-field').attr('defect-id', '');
+                $('.defect-code-field').val('')
+                $('.defect-code-field').attr('defect-id', '');
                 defectId='';
                 $('#defect-desc').val('')
                 localStorage.removeItem('defectId');
@@ -274,7 +274,7 @@ $(document).ready(function (){
             }
     
             // Check if result is "FAIL" and defectId is empty
-            if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
+            if (result.trim() === 'FAIL' && $('.defect-code-field').attr('defect-id').trim() === '') {
             alert('Error : Defect Code is invalid or empty, please try again.');
             return; // Prevent further processing if result is "FAIL" and defectId is empty
             }

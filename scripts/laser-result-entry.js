@@ -151,10 +151,10 @@ $(document).ready(function (){
         // Set the result text and color
         inputResult.text('PASS');
         inputResult.css('color', '#00ff2a');
-        $('#defect-code-field').val('');
+        $('.defect-code-field').val('');
         $('#defect-desc').val('');
-        $('#defect-code-field').attr('defect-id', '');
-        $('#defect-code-field').prop('disabled', true);
+        $('.defect-code-field').attr('defect-id', '');
+        $('.defect-code-field').prop('disabled', true);
         localStorage.removeItem('defectId');
         
         // Set isPassButtonPress to 1 when PASS button is clicked
@@ -166,7 +166,7 @@ $(document).ready(function (){
         e.preventDefault();
         inputResult.text('');
     
-        $('#defect-code-field').prop('disabled', false);
+        $('.defect-code-field').prop('disabled', false);
 
         // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
         if (isPassButtonPress === 1) {

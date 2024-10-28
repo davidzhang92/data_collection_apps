@@ -116,7 +116,18 @@ body,
         margin-left: 440px;
         /* margin-top: 50px; */
       }
-      #defect-desc{
+      #defect-desc{ /* airleaktest */
+        width: 320px; 
+        border: 1px solid #000; 
+        margin-top: 15px;
+        padding: 5px; 
+        /* padding-top:5px; */
+        font-size: 18px;
+        position: absolute;
+        top: 162px;
+        left: 530px;
+      }
+      #water-defect-desc{ /* waterleaktest */
         width: 320px; 
         border: 1px solid #000; 
         margin-top: 15px;
