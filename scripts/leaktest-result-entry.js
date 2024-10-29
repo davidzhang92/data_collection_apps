@@ -388,8 +388,9 @@ var isWaterPassButtonPress = 0; // Initialize the variable
             data: JSON.stringify({
                 part_id: partId,
                 defect_id: $('.defect-code-field').attr('defect-id'),
+                leaktest_type: $('#leaktest-type-selection').val(),
                 housing_no: airHousingPartNumber,
-                air_leaktest_result: $('#air-input-result').text(),
+                result: $('#air-input-result').text(),
                 fine_value: fineValue,
                 gross_value: grossValue,
                 others_value: othersValue,
@@ -415,7 +416,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
                 $('.defect-code-field').attr('defect-id', '');
                 $('.defect-code-field').attr('water-defect-id', '');
                 defectId='';
-                $('#defect-desc').val('')
+                $('#water-defect-desc').val('')
                 localStorage.removeItem('defectId');
 
                 alert('Result submitted successfully.');
@@ -474,8 +475,9 @@ var isWaterPassButtonPress = 0; // Initialize the variable
             data: JSON.stringify({
                 part_id: partId,
                 defect_id: $('.defect-code-field').attr('water-defect-id'),
+                leaktest_type: $('#leaktest-type-selection').val(),
                 housing_no: waterHousingPartNumber,
-                water_leaktest_result: $('#water-input-result').text(),
+                result: $('#water-input-result').text(),
                 user_id: localStorage.getItem('userId')
             }),
             contentType: 'application/json',
@@ -500,6 +502,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
                 $('.defect-code-field').attr('water-defect-id', '');
                 defectId='';
                 $('#defect-desc').val('')
+                $('#water-defect-desc').val('')
                 localStorage.removeItem('defectId');
 
                 alert('Result submitted successfully.');
