@@ -73,19 +73,20 @@ def token_required(f):
 @app.route('/api/get_leaktest_result_entry_view', methods=['GET'])
 @token_required
 def get_leaktest_result_entry_view():
+    leaktest_type = request.args.get('leaktest_type')
     try:
         # Extract the page query parameter from the request
         page = int(request.args.get('page', 1))  # Default value is 1
 
         # Calculate the offset based on the page number
         offset = (page - 1) * 10
-
+        
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
 
-        cursor.execute(query, (offset,))
+        cursor.execute(query, (leaktest_type,offset,))
         rows = cursor.fetchall()
 
         # Convert the result into a list of dictionaries for JSON serialization
@@ -108,9 +109,10 @@ def get_leaktest_result_entry_view():
 @token_required
 def get_filter_search_leaktest_result_entry_view():
         
-    selected_part_no = request.args.get('search_part_no')  # Get the selected value from the query parameters
-    selected_date_from = request.args.get('search_date_from')  # Get the selected value from the query parameters
-    selected_date_to = request.args.get('search_date_to')  # Get the selected value from the query parameters
+    selected_part_no = request.args.get('search_part_no')
+    selected_date_from = request.args.get('search_date_from')
+    selected_date_to = request.args.get('search_date_to')  
+    leaktest_type = request.args.get('leaktest_type')
 
     # if selected_part_no is None:
     #     return jsonify({'error': 'Search parameters not provided'})
@@ -119,7 +121,7 @@ def get_filter_search_leaktest_result_entry_view():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the leaktest result entry table
-    query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
+    query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
 
     parameters = []
 
@@ -141,10 +143,10 @@ def get_filter_search_leaktest_result_entry_view():
         parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'))
 
 
-    query += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
+    query += "  AND a.is_deleted = '0' AND leaktest_type=? ORDER BY a.created_date DESC;"
 
     # Construct the parameter values with wildcards
-    cursor.execute(query, parameters)
+    cursor.execute(query, (parameters, leaktest_type))
     rows = cursor.fetchall()
     print(selected_date_from)
     print(selected_date_to)
@@ -222,6 +224,8 @@ def get_leaktest_result_report():
 
 
         # Construct SQL for report data
+
+
         query_data = """SELECT 
                         b.part_no,
                         b.part_description,

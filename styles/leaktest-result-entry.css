@@ -54,6 +54,8 @@ body,
         float: left; 
         margin: 0 -60px 0 20px; 
         padding-top: 10px; 
+        color: #FFFFFF;
+        font-family: 'Roboto', sans-serif;
       }
       #leaktest-type-selection {
         width: 180px;

@@ -7,14 +7,26 @@ body {
 .table-wrapper {
     background: #1E2B32;
     padding: 20px 25px;
-    margin: -560px 0;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    display: inline-block; /* or use display: flex; */
+    position: fixed;
+    top: 40px;
+    left: 380px;
+    width: 1500px;
+    height: auto;
+
+}
+.data-table {
+    background: #1E2B32;
+    padding: 20px 25px;
     border-radius: 3px;
     box-shadow: 0 1px 1px rgba(0,0,0,.05);
     width: 1500px;
-    display: inline-block;
     position: absolute;
     left: 380px;
-    
+    top: 175px;
+    z-index: 1;
 }
 .table-title {        
     padding-bottom: 15px;
@@ -338,6 +350,44 @@ button.close-white{
         cursor: pointer;
     
         }
+
+    #label-leaktest-type{
+        margin-right: 1rem;
+        /* width: 400px;   */
+        height:12px;
+        float: left; 
+        /* margin: 0 -60px 0 20px;  */
+        padding-top: 10px; 
+        position: relative;
+        bottom: 10px;
+        }
+    #leaktest-type-selection {
+        width: 180px;
+        font-family: 'Roboto', sans-serif;
+        font-weight: normal;
+        height:35px;
+        font-size: inherit;
+        line-height: inherit;
+        /* position: relative; */
+        /* right: 25px;
+        top: 15px; */
+        }
+    #leaktest-type-selection:disabled {
+        background-color: rgb(214, 254, 255);
+        color:#000
+        }
+
+    .leaktest-dropdown-span { 
+        display: block; 
+        margin: 0 0 5px; 
+        font-size: 18px; 
+        font-weight: bold; 
+        /* position: relative; */
+        right: 25px;
+        color: #FFFFFF;
+        font-family: 'Roboto', sans-serif;
+    
+        }
     .btn-info {
         color: #fff;
         background-color: #2fb5dd;
@@ -352,7 +402,7 @@ button.close-white{
     line-height: inherit;
     font-family: inherit;
     color: #000;
-    left: 615px;
+    left: 415px;
     top: 25px;
     cursor: pointer;
     }
