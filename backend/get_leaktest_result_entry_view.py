@@ -125,6 +125,10 @@ def get_filter_search_leaktest_result_entry_view():
 
     parameters = []
 
+    if leaktest_type:
+        query += " AND leaktest_type = ?"
+        parameters.append(leaktest_type)
+
     if selected_part_no:
         query += " AND b.part_no like ?"
         parameters.append(f"%{selected_part_no}%")
@@ -143,21 +147,21 @@ def get_filter_search_leaktest_result_entry_view():
         parameters.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%d %H:%M:%S'))
 
 
-    query += "  AND a.is_deleted = '0' AND leaktest_type=? ORDER BY a.created_date DESC;"
+    query += "  AND a.is_deleted = '0' ORDER BY a.created_date DESC;"
 
     # Construct the parameter values with wildcards
-    cursor.execute(query, (parameters, leaktest_type))
+    cursor.execute(query, parameters)
     rows = cursor.fetchall()
-    print(selected_date_from)
-    print(selected_date_to)
     # Convert the result into a list of dictionaries for JSON serialization
     results = []
     columns = [column[0] for column in cursor.description]
     
     for row in rows:
         results.append(dict(zip(columns, row)))
-    
+ 
+
     return jsonify(results)
+
 
 # --------------------
 # API endpoint download report
