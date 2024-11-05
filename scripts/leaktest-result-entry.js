@@ -145,7 +145,7 @@ $(document).ready(function (){
       localStorage.removeItem('defectId');
       
       // Set isPassButtonPress to 1 when PASS button is clicked
-      isAirPassButtonPress = 1;
+      isAirPassButtonPress = 1
   });
 
     // Click event handler for the "FAIL" button
@@ -416,9 +416,9 @@ var isWaterPassButtonPress = 0; // Initialize the variable
                 $('.defect-code-field').attr('defect-id', '');
                 $('.defect-code-field').attr('water-defect-id', '');
                 defectId='';
-                $('#water-defect-desc').val('')
                 localStorage.removeItem('defectId');
-
+                $('#water-defect-desc').val('')
+                $('#defect-desc').val('')
                 alert('Result submitted successfully.');
             },
             error: function(xhr, textStatus, error) {
@@ -501,8 +501,9 @@ var isWaterPassButtonPress = 0; // Initialize the variable
                 $('.defect-code-field').attr('defect-id', '');
                 $('.defect-code-field').attr('water-defect-id', '');
                 defectId='';
-                $('#defect-desc').val('')
+
                 $('#water-defect-desc').val('')
+                $('#defect-desc').val('')
                 localStorage.removeItem('defectId');
 
                 alert('Result submitted successfully.');

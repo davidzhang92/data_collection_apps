@@ -2,6 +2,8 @@
 $('#air-leaktest-table').hide();
 $('#water-leaktest-table').hide();
 $(document).ready(function () {
+	$('#air-leaktest-table').hide();
+	$('#water-leaktest-table').hide();
 
 	// set the zoom level based on resolution
 	var screenWidth = window.innerWidth;
@@ -143,9 +145,6 @@ $(document).ready(function () {
 						</td>
 						<td>${result.part_no}</td>
 						<td>${result.housing_no}</td>
-						<td>${result.fine_value}</td>
-						<td>${result.gross_value}</td>
-						<td>${result.others_value}</td>
 						<td>${result.result}</td>
 						<td id='error-field'>${errorCode}</td>
 						<td>${userName}</td>
@@ -165,7 +164,7 @@ $(document).ready(function () {
 		function updateSelectAllCheckbox() {
 			var allCheckboxes = $('table tbody input[type="checkbox"]');
 			var checkedCount = allCheckboxes.filter(':checked').length;
-			var selectAllCheckbox = $("#selectAll");
+			var selectAllCheckbox = $(".selectAll");
 		
 			if (checkedCount === allCheckboxes.length) {
 			selectAllCheckbox.prop("checked", true);
@@ -174,7 +173,7 @@ $(document).ready(function () {
 			}
 		}
 		// Select/Deselect checkboxes
-		$("#selectAll").click(function () {
+		$(".selectAll").click(function () {
 			var isChecked = this.checked;
 			$('table tbody input[type="checkbox"]').each(function () {
 			this.checked = isChecked;
@@ -249,7 +248,7 @@ $(document).ready(function () {
 
 			if (partNumber || dateFrom || dateTo) {
 				// Hide the pagination container
-				$('#page_container').hide();
+				$('.page_container').hide();
 				if (partNumber) {
 					requestData.search_part_no = partNumber;
 				}
@@ -270,7 +269,7 @@ $(document).ready(function () {
 				filteredData = [];
 				resetCurrentPage(); // Reset the current page to 1
 				fetchData(); // Fetch all data
-				$('#page_container').show(); // Show the pagination container
+				$('.page_container').show(); // Show the pagination container
 			}
 
 
@@ -298,7 +297,7 @@ $(document).ready(function () {
 			} else {
 				// If all search fields are empty, reset filtering and show pagination container
 				filteredData = [];
-				$('#page_container').show(); // Show the pagination container
+				$('.page_container').show(); // Show the pagination container
 			}
 		});
 		// Handle delete and DELETE request
@@ -343,13 +342,11 @@ $(document).ready(function () {
 					console.log(response);
 
 					// Close the edit dialog box
-					$('#batchDeletePartModal').modal('hide');
+					$('#deletePartModal').modal('hide');
 
 					// Store the state of the "select all" checkbox
 					localStorage.setItem('selectAllState', 'unchecked');
-
-					// Refresh the page
-					location.reload();
+					$('tr[data-id="' + deleteCurrentId + '"]').remove();
 
 				},
 				error: function(xhr, textStatus, error) {
@@ -411,8 +408,12 @@ $(document).ready(function () {
 			success: function(response) {
 				// Handle successful deletion here
 				console.log(response);
+				$('.selectAll').prop("checked", false);
 						// Refresh the page
-				location.reload();
+				idsToDelete.forEach(function(id) {
+					$('tr[data-id="' + id + '"]').remove();
+				});
+				$('#batchDeletePartModal').modal('hide');
 			},
 			error: function(xhr, textStatus, error) {
 				if (xhr.status === 401) {
@@ -487,6 +488,7 @@ $(document).ready(function () {
                 leaktest_type: $('#leaktest-type-selection').val(),
             }),
 			contentType: 'application/json',
+			dataType: 'json',
 			success: function (response) {
 				totalEntries = response[0].count;
 				totalPages = Math.ceil(totalEntries / entriesPerPage);
@@ -526,7 +528,7 @@ $(document).ready(function () {
 		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
 
 		// Update the HTML of the page container with the generated pagination buttons
-		$('#page_container').html(paginationHTML);
+		$('.page_container').html(paginationHTML);
 	}
 
 	// Event handler for clicking a page number

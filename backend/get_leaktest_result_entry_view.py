@@ -73,7 +73,7 @@ def token_required(f):
 @app.route('/api/get_leaktest_result_entry_view', methods=['GET'])
 @token_required
 def get_leaktest_result_entry_view():
-    leaktest_type = request.args.get('leaktest_type')
+    
     try:
         # Extract the page query parameter from the request
         page = int(request.args.get('page', 1))  # Default value is 1
@@ -84,9 +84,16 @@ def get_leaktest_result_entry_view():
         cursor = conn.cursor()
 
         # Construct the SQL query to select data from the part_master table with OFFSET
-        query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        query = ''
 
-        cursor.execute(query, (leaktest_type,offset,))
+        if request.args.get('leaktest_type') == 'Air':
+            query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        elif request.args.get('leaktest_type') == 'Water':
+            query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+        else:
+            return jsonify({'message': 'Error: Invalid Leaktest Type.'}), 406
+
+        cursor.execute(query, (request.args.get('leaktest_type'),offset,))
         rows = cursor.fetchall()
 
         # Convert the result into a list of dictionaries for JSON serialization
