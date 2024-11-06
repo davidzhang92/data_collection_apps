@@ -290,8 +290,9 @@ $(document).ready(function () {
 						
 						renderData(filteredData); // Render the filtered data
 					},
-					error: function (error) {
-						console.error('Error fetching filtered data:', error);
+					error: function (xhr) {
+						console.error(xhr.responseJSON.message);
+						alert(xhr.responseJSON.message);
 					},
 				});
 			} else {
@@ -626,7 +627,7 @@ $(document).ready(function () {
 				var downloadUrl = URL.createObjectURL(blob);
 				var a = document.createElement("a");
 				a.href = downloadUrl;
-				a.download = "leaktest_report.xlsx";
+				a.download = leaktestType.toLowerCase() + "_leaktest_report.xlsx";
 				document.body.appendChild(a);
 				a.click();
 			} else if (this.status === 401) {

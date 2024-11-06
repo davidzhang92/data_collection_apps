@@ -87,11 +87,11 @@ def get_leaktest_result_entry_view():
         query = ''
 
         if request.args.get('leaktest_type') == 'Air':
-            query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+            query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"                
         elif request.args.get('leaktest_type') == 'Water':
             query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
         else:
-            return jsonify({'message': 'Error: Invalid Leaktest Type.'}), 406
+            return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
 
         cursor.execute(query, (request.args.get('leaktest_type'),offset,))
         rows = cursor.fetchall()
@@ -128,7 +128,13 @@ def get_filter_search_leaktest_result_entry_view():
     cursor = conn.cursor()
     
     # Construct the SQL query to select all data from the leaktest result entry table
-    query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
+    query = ''
+
+
+    if leaktest_type == 'Air' or leaktest_type == 'Water':
+        query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
+    else:
+        return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
 
     parameters = []
 
@@ -176,8 +182,7 @@ def get_filter_search_leaktest_result_entry_view():
 @app.route('/api/get_leaktest_result_report', methods=['POST'])
 @token_required
 def get_leaktest_result_report():
-    # Define the path to the Excel template (modify this path accordingly)
-    template_path = r'/data-storage/sfdc_apps/excel_import/leaktest_report_template.xlsx'
+    
 
     try:
         # Try to parse JSON data from the request body
@@ -192,6 +197,7 @@ def get_leaktest_result_report():
         selected_date_from = request_data.get('date_from')
         selected_date_to = request_data.get('date_to')
         user_generator = request_data.get('user_id')
+        leaktest_type = request_data.get('leaktest_type')
 
         # Check if required parameters are provided
         # if not selected_part_id and not selected_date_from and not selected_date_to:
@@ -199,18 +205,14 @@ def get_leaktest_result_report():
 
         cursor = conn.cursor()
 
-
-
-        # Construct the SQL query to select data based on the provided parameters
-        # Construct for Header report data
         query_header_data = """SELECT DISTINCT 
                                 b.part_no,
                                 b.part_description
                             FROM leaktest_result_entry a 
-                            INNER JOIN part_master b ON a.part_id = b.id """
-        parameters_header_data = []
+                            INNER JOIN part_master b ON a.part_id = b.id 
+                            """
         
-
+        parameters_header_data = []
         if selected_part_no:
                     query_header_data += "WHERE b.part_no LIKE ?"
                     parameters_header_data.append('%' + selected_part_no + '%')
@@ -227,17 +229,22 @@ def get_leaktest_result_report():
                 parameters_header_data.append(selected_date_from)
                 parameters_header_data.append(selected_date_to)
 
-        query_header_data += " AND a.is_deleted = '0' "
+        if leaktest_type == 'Air':
+            query_header_data += " AND a.is_deleted = '0' AND leaktest_type = 'Air' "
+        elif leaktest_type == 'Water':
+            query_header_data += " AND a.is_deleted = '0' AND leaktest_type = 'Water' "
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+
+        
 
         # Execute the SQL query and fetch data
         cursor.execute(query_header_data, parameters_header_data)
         query_header_result = cursor.fetchall()
 
-
         # Construct SQL for report data
 
-
-        query_data = """SELECT 
+        if leaktest_type == 'Air':
+            query_data = """SELECT 
                         b.part_no,
                         b.part_description,
                         housing_no, 
@@ -253,6 +260,23 @@ def get_leaktest_result_report():
                     INNER JOIN part_master b ON a.part_id = b.id
                     LEFT JOIN user_master c on a.created_by = c.id
                     LEFT JOIN defect_master d on a.defect_id = d.id  """
+        elif leaktest_type == 'Water':
+            query_data = """SELECT 
+                        b.part_no,
+                        b.part_description,
+                        housing_no, 
+                        a.result,
+						d.defect_no,
+						d.defect_description,
+                        c.username, 
+                        a.created_date 
+                    FROM leaktest_result_entry a 
+                    INNER JOIN part_master b ON a.part_id = b.id
+                    LEFT JOIN user_master c on a.created_by = c.id
+                    LEFT JOIN defect_master d on a.defect_id = d.id  """
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+     
+  
         parameters_data = []
 
         conditions = []    
@@ -270,7 +294,8 @@ def get_leaktest_result_report():
             conditions.append("a.created_date <= ?")
             parameters_data.append(datetime.datetime.strptime(date_to_with_time, '%Y-%m-%d %H:%M:%S'))
 
-        conditions.append("a.is_deleted = '0'")
+        conditions.append("leaktest_type = ? AND a.is_deleted = '0'")
+        parameters_data.append(leaktest_type)
 
         if conditions:
             query_data += " WHERE " + " AND ".join(conditions)
@@ -290,6 +315,14 @@ def get_leaktest_result_report():
         if generator_result is not None:
             generated_by, = generator_result
 
+        # Define the path to the Excel template (modify this path accordingly)
+        if leaktest_type == 'Air':
+            template_path = r'/data-storage/sfdc_apps/excel_import/air_leaktest_report_template.xlsx'
+        elif leaktest_type == 'Water':
+            template_path = r'/data-storage/sfdc_apps/excel_import/water_leaktest_report_template.xlsx'
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+        
+
         # Load the Excel template
         workbook = load_workbook(template_path)
         worksheet = workbook.active
@@ -307,53 +340,98 @@ def get_leaktest_result_report():
         # worksheet.unmerge_cells('C5')
         # worksheet.unmerge_cells('C6')
 
+
         # Write the data into the cells
-        worksheet['C5'] = part_no_joined
-        worksheet['C6'] = part_description_joined
-        worksheet['C3'] = selected_date_from
-        worksheet['C4'] = selected_date_to
-        worksheet['L5'] = date.today().strftime('%Y-%m-%d')
-        worksheet['L6'] = generated_by
+        if leaktest_type == 'Air':
+            worksheet['C5'] = part_no_joined
+            worksheet['C6'] = part_description_joined
+            worksheet['C3'] = selected_date_from
+            worksheet['C4'] = selected_date_to
+            worksheet['L5'] = date.today().strftime('%Y-%m-%d')
+            worksheet['L6'] = generated_by
 
 
-        # Merge cells again and adjust the allignment
-        worksheet.merge_cells('C5:I5')
-        worksheet.merge_cells('C6:I6')
-        worksheet['C5'].alignment = Alignment(horizontal='left')
-        worksheet['C6'].alignment = Alignment(horizontal='left')
+            # Merge cells again and adjust the allignment
+            worksheet.merge_cells('C5:I5')
+            worksheet.merge_cells('C6:I6')
+            worksheet['C5'].alignment = Alignment(horizontal='left')
+            worksheet['C6'].alignment = Alignment(horizontal='left')
 
-        ###########for data report#########
-        row_number = 9  # Start from row 9
+            ###########for data report#########
+            row_number = 9  # Start from row 9
 
-        for row_data in query_result:
+            for row_data in query_result:
+            
+                column2_index = 2  # Column B
+                column3_index = 3  # Column C
+                column4_index = 4  # Column D
+                column5_index = 5 
+                column6_index = 6 
+                column7_index = 7 
+                column8_index = 8 
+                column9_index = 9 
+                column10_index = 10
+                column11_index = 11
+                column12_index = 12 
+
+
+                worksheet.cell(row=row_number, column=column2_index, value=row_data[0]) 
+                worksheet.cell(row=row_number, column=column3_index, value=row_data[1]) 
+                worksheet.cell(row=row_number, column=column4_index, value=row_data[2]) 
+                worksheet.cell(row=row_number, column=column5_index, value=row_data[3]) 
+                worksheet.cell(row=row_number, column=column6_index, value=row_data[4]) 
+                worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
+                worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
+                worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
+                worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
+                worksheet.cell(row=row_number, column=column11_index, value=row_data[9])
+                worksheet.cell(row=row_number, column=column12_index, value=row_data[10])
+
+
+                row_number += 1
+        elif leaktest_type == 'Water':
+            worksheet['C5'] = part_no_joined
+            worksheet['C6'] = part_description_joined
+            worksheet['C3'] = selected_date_from
+            worksheet['C4'] = selected_date_to
+            worksheet['I5'] = date.today().strftime('%Y-%m-%d')
+            worksheet['I6'] = generated_by
+
+
+            # Merge cells again and adjust the allignment
+            worksheet.merge_cells('C5:G5')
+            worksheet.merge_cells('C6:G6')
+            worksheet['C5'].alignment = Alignment(horizontal='left')
+            worksheet['C6'].alignment = Alignment(horizontal='left')
+
+            ###########for data report#########
+            row_number = 9  # Start from row 9
+
+            for row_data in query_result:
+            
+                column2_index = 2  # Column B
+                column3_index = 3  # Column C
+                column4_index = 4  # Column D
+                column5_index = 5 
+                column6_index = 6 
+                column7_index = 7 
+                column8_index = 8 
+                column9_index = 9 
+
+
+
+                worksheet.cell(row=row_number, column=column2_index, value=row_data[0]) 
+                worksheet.cell(row=row_number, column=column3_index, value=row_data[1]) 
+                worksheet.cell(row=row_number, column=column4_index, value=row_data[2]) 
+                worksheet.cell(row=row_number, column=column5_index, value=row_data[3]) 
+                worksheet.cell(row=row_number, column=column6_index, value=row_data[4]) 
+                worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
+                worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
+                worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
+
+                row_number += 1
            
-            column2_index = 2  # Column B
-            column3_index = 3  # Column C
-            column4_index = 4  # Column D
-            column5_index = 5 
-            column6_index = 6 
-            column7_index = 7 
-            column8_index = 8 
-            column9_index = 9 
-            column10_index = 10
-            column11_index = 11
-            column12_index = 12 
-
-
-            worksheet.cell(row=row_number, column=column2_index, value=row_data[0]) 
-            worksheet.cell(row=row_number, column=column3_index, value=row_data[1]) 
-            worksheet.cell(row=row_number, column=column4_index, value=row_data[2]) 
-            worksheet.cell(row=row_number, column=column5_index, value=row_data[3]) 
-            worksheet.cell(row=row_number, column=column6_index, value=row_data[4]) 
-            worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
-            worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
-            worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
-            worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
-            worksheet.cell(row=row_number, column=column11_index, value=row_data[9])
-            worksheet.cell(row=row_number, column=column12_index, value=row_data[10])
-
-
-            row_number += 1
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
 
         # Save the modified workbook in memory
         excel_output = BytesIO()
@@ -361,16 +439,28 @@ def get_leaktest_result_report():
         excel_output.seek(0)
 
         # Send the modified Excel file as a binary attachment
+
+        if leaktest_type == 'Air':
+            headers={
+                'Content-Disposition': 'attachment; filename=air_leaktest_report.xlsx'
+            }
+        elif leaktest_type == 'Water':
+            headers={
+                'Content-Disposition': 'attachment; filename=water_leaktest_report.xlsx'
+            }
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+
         return Response(
             excel_output,
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            headers={
-                'Content-Disposition': 'attachment; filename=leaktest_report.xlsx'
-            }
+            headers=headers
+
         )
+
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
     
 if __name__ == '__main__':
     app.run()
