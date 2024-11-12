@@ -91,7 +91,7 @@ def get_leaktest_result_entry_view():
         elif request.args.get('leaktest_type') == 'Water':
             query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
         else:
-            return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+            return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 
         cursor.execute(query, (request.args.get('leaktest_type'),offset,))
         rows = cursor.fetchall()
@@ -134,7 +134,7 @@ def get_filter_search_leaktest_result_entry_view():
     if leaktest_type == 'Air' or leaktest_type == 'Water':
         query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
     else:
-        return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+        return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 
     parameters = []
 
@@ -233,7 +233,7 @@ def get_leaktest_result_report():
             query_header_data += " AND a.is_deleted = '0' AND leaktest_type = 'Air' "
         elif leaktest_type == 'Water':
             query_header_data += " AND a.is_deleted = '0' AND leaktest_type = 'Water' "
-        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 
         
 
@@ -274,7 +274,7 @@ def get_leaktest_result_report():
                     INNER JOIN part_master b ON a.part_id = b.id
                     LEFT JOIN user_master c on a.created_by = c.id
                     LEFT JOIN defect_master d on a.defect_id = d.id  """
-        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
      
   
         parameters_data = []
@@ -320,7 +320,7 @@ def get_leaktest_result_report():
             template_path = r'/data-storage/sfdc_apps/excel_import/air_leaktest_report_template.xlsx'
         elif leaktest_type == 'Water':
             template_path = r'/data-storage/sfdc_apps/excel_import/water_leaktest_report_template.xlsx'
-        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
         
 
         # Load the Excel template
@@ -431,7 +431,7 @@ def get_leaktest_result_report():
 
                 row_number += 1
            
-        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 
         # Save the modified workbook in memory
         excel_output = BytesIO()
@@ -448,7 +448,7 @@ def get_leaktest_result_report():
             headers={
                 'Content-Disposition': 'attachment; filename=water_leaktest_report.xlsx'
             }
-        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 406
+        else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 
         return Response(
             excel_output,
