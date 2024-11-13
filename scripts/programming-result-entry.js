@@ -1,6 +1,6 @@
 // -----initialization state of page and rules---------
-// $('.programming-result-entry-sub-card').hide();
-// $('.programming-result-entry-sub-card-2').hide();
+$('.programming-result-entry-sub-card').hide();
+$('.programming-result-entry-sub-card-2').hide();
 $('.defect-code-field').prop('disabled', true);
 
 

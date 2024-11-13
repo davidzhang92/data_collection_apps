@@ -87,6 +87,7 @@ def get_programming_result_entry_view():
         query = """SELECT 
                         b.part_no,
                         b.part_description,
+                        a.lot_no,
                         serial_no, 
                         result, 
                         a.fail_current, 
@@ -97,6 +98,7 @@ def get_programming_result_entry_view():
                         a.fail_other, 
 						d.defect_no,
 						d.defect_description,
+                        a.remarks,
                         c.username,
                         a.created_date 
                     FROM programming_result_entry a 
@@ -143,6 +145,7 @@ def get_filter_search_programming_result_entry_view():
     query = """SELECT 
                     b.part_no,
                     b.part_description,
+                    a.lot_no,
                     serial_no, 
                     result, 
                     a.fail_current, 
@@ -153,6 +156,7 @@ def get_filter_search_programming_result_entry_view():
                     a.fail_other, 
                     d.defect_no,
                     d.defect_description,
+                    a.remarks,
                     c.username,
                     a.created_date 
                 FROM programming_result_entry a 
@@ -269,6 +273,7 @@ def get_programming_result_report():
                         b.part_no,
                         b.part_description,
                         serial_no, 
+                        lot_no,
                         result, 
                         d.defect_no,
                         CONCAT(
@@ -280,6 +285,7 @@ def get_programming_result_report():
                             CASE WHEN a.fail_sleep_mode = 1 THEN ' sleep mode' ELSE '' END,
                             CASE WHEN a.fail_other = 1 THEN ' other' ELSE '' END
                         ) AS defect_description,
+                        remarks,
                         c.username,
                         a.created_date 
                     FROM programming_result_entry a 
@@ -344,14 +350,14 @@ def get_programming_result_report():
         worksheet['C6'] = part_description_joined
         worksheet['C3'] = selected_date_from
         worksheet['C4'] = selected_date_to
-        worksheet['I6'] = generated_by
-        worksheet['I5'] = date.today().strftime('%Y-%m-%d')
+        worksheet['K6'] = generated_by
+        worksheet['K5'] = date.today().strftime('%Y-%m-%d')
 
 
 
         # Merge cells again and adjust the allignment
-        worksheet.merge_cells('C5:F5')
-        worksheet.merge_cells('C6:F6')
+        worksheet.merge_cells('C5:H5')
+        worksheet.merge_cells('C6:H6')
         worksheet['C5'].alignment = Alignment(horizontal='left')
         worksheet['C6'].alignment = Alignment(horizontal='left')
 
@@ -368,6 +374,8 @@ def get_programming_result_report():
             column7_index = 7 
             column8_index = 8 
             column9_index = 9 
+            column10_index = 10
+            column11_index = 11
 
 
 
@@ -379,6 +387,8 @@ def get_programming_result_report():
             worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
             worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
             worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
+            worksheet.cell(row=row_number, column=column10_index, value=row_data[8]) 
+            worksheet.cell(row=row_number, column=column11_index, value=row_data[9]) 
  
 
 

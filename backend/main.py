@@ -556,6 +556,6 @@ def update_user_profiles_api():
 
 if __name__ == "__main__":
     # built-in flask server for development
-    app.run(debug=True, host='0.0.0.0', port=4000)
+    # app.run(debug=True, host='0.0.0.0', port=4000)
     #UAT / LIVE
-    # serve(app, host='0.0.0.0', port=4000, threads=1024)
+    serve(app, host='0.0.0.0', port=4000, threads=1024)
