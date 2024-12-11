@@ -85,7 +85,7 @@ def get_user():
                         a.access_level,
                         a.created_by
                     FROM user_master a
-                    WHERE a.is_deleted = 0
+                    WHERE a.is_deleted = 0 and is_superadmin = 0
                 ) AS a
                 INNER JOIN access_level_master b ON a.access_level = b.id
                 LEFT JOIN user_master c ON a.created_by = c.id
