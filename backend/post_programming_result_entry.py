@@ -137,8 +137,8 @@ def post_programming_result_entry():
 
     except Exception as e:
         error_message = f'Error occurred while inserting data: {str(e)}'
-        print(error_message)  # Print the error message to your server's log
-        return jsonify({'message': error_message}), 500
+        print(e)  # Print the error message to your server's log
+        return jsonify({'message': e}), 500
 
 if __name__ == '__main__':
     app.run()

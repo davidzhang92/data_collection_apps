@@ -187,7 +187,7 @@ $('#fail-button').click(function (e) {
     }
     var serialNumber=$('#serial-no-field').val();
     var lotNo=$('#lot-no-field').val();
-    var remarks;
+    var remarks='';
     // Add an event listener to the input field to update serialPartNumber on input changes
     $('#serial-no-field').on('input', function () {
         serialNumber = $('#serial-no-field').val();
