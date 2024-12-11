@@ -1,4 +1,9 @@
+// -----initialization state of page and rules---------
+$('#air-leaktest-table').hide();
+$('#water-leaktest-table').hide();
 $(document).ready(function () {
+	$('#air-leaktest-table').hide();
+	$('#water-leaktest-table').hide();
 
 	// set the zoom level based on resolution
 	var screenWidth = window.innerWidth;
@@ -49,71 +54,126 @@ $(document).ready(function () {
 
 	// renderData function
 	function renderData(data) {
-		var tableBody = $('table tbody');
-		tableBody.empty(); // Clear the existing table data
 
-		if (!Array.isArray(data)) {
-		console.error('Invalid data format. Expecting an array.');
-		return;
-		}
-
-		if (data.length === 0) {
-		console.log('No data received from the API.');
-		return;
-		}
-
-		data.forEach(function (result) {
-
-			// Parse the date string
-			var createDate = new Date(result.created_date);
-		
-			// Format the date as 'YYYY-MM-DD HH:MM:SS'
-			var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
-
-			// Replace 'null' with '-'
-			var errorCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
-			var userName = result.username !== null ? result.username : '-';
-		
-			var row = `<tr data-id="${result.id}">
-				<td>
-				<span class="custom-checkbox">
-					<input type="checkbox" class="row-checkbox" id="${result.id}">
-					<label for="${result.id}"></label>
-				</span>
-				</td>
-				<td>${result.part_no}</td>
-				<td>${result.housing_no}</td>
-				<td>${result.fine_value}</td>
-				<td>${result.gross_value}</td>
-				<td>${result.others_value}</td>
-				<td>${result.result}</td>
-				<td id='error-field'>${errorCode}</td>
-				<td>${userName}</td>
-				<td>${formattedDate}</td>
-				<td>
-				<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
-				</td>
-			</tr>`;
-		
-			tableBody.append(row);
-		});
-
-	}
-
-	// Function to update the "Select All" checkbox state
-	function updateSelectAllCheckbox() {
-		var allCheckboxes = $('table tbody input[type="checkbox"]');
-		var checkedCount = allCheckboxes.filter(':checked').length;
-		var selectAllCheckbox = $("#selectAll");
+		if ($('#leaktest-type-selection').val()==='Air') {
+			$('#water-leaktest-table').hide();
+			$('#air-leaktest-table').show();
+			var tableBody = $('table tbody');
+			tableBody.empty(); // Clear the existing table data
 	
-		if (checkedCount === allCheckboxes.length) {
-		selectAllCheckbox.prop("checked", true);
-		} else {
-		selectAllCheckbox.prop("checked", false);
+			if (!Array.isArray(data)) {
+			console.error('Invalid data format. Expecting an array.');
+			return;
+			}
+	
+			if (data.length === 0) {
+			console.log('No data received from the API.');
+			return;
+			}
+	
+			data.forEach(function (result) {
+	
+				// Parse the date string
+				var createDate = new Date(result.created_date);
+			
+				// Format the date as 'YYYY-MM-DD HH:MM:SS'
+				var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
+	
+				// Replace 'null' with '-'
+				var errorCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
+				var userName = result.username !== null ? result.username : '-';
+			
+				var row = `<tr data-id="${result.id}">
+					<td>
+					<span class="custom-checkbox">
+						<input type="checkbox" class="row-checkbox" id="${result.id}">
+						<label for="${result.id}"></label>
+					</span>
+					</td>
+					<td>${result.part_no}</td>
+					<td>${result.housing_no}</td>
+					<td>${result.fine_value}</td>
+					<td>${result.gross_value}</td>
+					<td>${result.others_value}</td>
+					<td>${result.result}</td>
+					<td id='error-field'>${errorCode}</td>
+					<td>${userName}</td>
+					<td>${formattedDate}</td>
+					<td>
+					<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+					</td>
+				</tr>`;
+			
+				tableBody.append(row);
+			});
 		}
+
+		else if ($('#leaktest-type-selection').val()==='Water') {
+				$('#air-leaktest-table').hide();
+				$('#water-leaktest-table').show();
+				var tableBody = $('table tbody');
+				tableBody.empty(); // Clear the existing table data
+		
+				if (!Array.isArray(data)) {
+				console.error('Invalid data format. Expecting an array.');
+				return;
+				}
+		
+				if (data.length === 0) {
+				console.log('No data received from the API.');
+				return;
+				}
+		
+				data.forEach(function (result) {
+		
+					// Parse the date string
+					var createDate = new Date(result.created_date);
+				
+					// Format the date as 'YYYY-MM-DD HH:MM:SS'
+					var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
+		
+					// Replace 'null' with '-'
+					var errorCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
+					var userName = result.username !== null ? result.username : '-';
+				
+					var row = `<tr data-id="${result.id}">
+						<td>
+						<span class="custom-checkbox">
+							<input type="checkbox" class="row-checkbox" id="${result.id}">
+							<label for="${result.id}"></label>
+						</span>
+						</td>
+						<td>${result.part_no}</td>
+						<td>${result.housing_no}</td>
+						<td>${result.result}</td>
+						<td id='error-field'>${errorCode}</td>
+						<td>${userName}</td>
+						<td>${formattedDate}</td>
+						<td>
+						<a href="#deletePartModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+						</td>
+					</tr>`;
+				
+					tableBody.append(row);
+				});
+			}
+		
 	}
+
+		// Function to update the "Select All" checkbox state
+		function updateSelectAllCheckbox() {
+			var allCheckboxes = $('table tbody input[type="checkbox"]');
+			var checkedCount = allCheckboxes.filter(':checked').length;
+			var selectAllCheckbox = $(".selectAll");
+		
+			if (checkedCount === allCheckboxes.length) {
+			selectAllCheckbox.prop("checked", true);
+			} else {
+			selectAllCheckbox.prop("checked", false);
+			}
+		}
 		// Select/Deselect checkboxes
-		$("#selectAll").click(function () {
+		$(".selectAll").click(function () {
 			var isChecked = this.checked;
 			$('table tbody input[type="checkbox"]').each(function () {
 			this.checked = isChecked;
@@ -124,29 +184,30 @@ $(document).ready(function () {
 			updateSelectAllCheckbox();
 		});
 
+
 	// Function to GET data from the backend API for pagination
 		// Function to handle the click event on page number links
 		$('.page-number').click(function () {
 			const pageId = $(this).attr('page-id'); // Get the page-id value from the clicked link
 			fetchData(pageId); // Fetch data with the specified page-id
 		});
-		
 		let filteredData = [];
 		
 		function fetchData(pageId) {
 			const apiEndpoint = filteredData.length > 0 ?
 				'' :
 				'http://' + window.location.hostname + ':4000/api/leaktest_result_entry_view_api';
+
 		
 			const requestData = {
-				page: pageId, // Change the parameter name to 'page'
+				page: pageId, 
+				leaktest_type: $('#leaktest-type-selection').val()
 			};
 		
 			$.ajax({
 				url: apiEndpoint,
 				type: 'GET',
 				data: requestData, // Send the data object directly
-				contentType: 'application/json',
 				beforeSend: function(xhr) { 
 					xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
 				},	
@@ -159,7 +220,7 @@ $(document).ready(function () {
 					if (xhr.status === 401) {
 						alert(xhr.responseJSON.message);
 						window.location.href = '/login.html'
-						localStorage.removeItem('accessToken');
+						//localStorage.removeItem('accessToken');
 					} else if (xhr.status >= 400 && xhr.status < 600) {
 						alert(xhr.responseJSON.message);
 					} else {
@@ -168,13 +229,6 @@ $(document).ready(function () {
 					}
 				},
 			});
-		}
-
-		// Fetch data on page load if both search fields are empty
-		const initialPartNumber = $('#part-number-field').val().trim();
-
-		if (!initialPartNumber) {
-			fetchData(); // Moved the initial fetch here
 		}
 		// Function to reset the current page to 1
 		function resetCurrentPage() {
@@ -187,13 +241,14 @@ $(document).ready(function () {
 			const partNumber = $('#part-number-field').val().trim();
 			const dateFrom = $('#date-from-field').val().trim();
 			const dateTo = $('#date-to-field').val().trim();
+			const leaktestType = $('#leaktest-type-selection').val()
 
 			// Create an empty object to store the data to send in the request
 			const requestData = {};
 
 			if (partNumber || dateFrom || dateTo) {
 				// Hide the pagination container
-				$('#page_container').hide();
+				$('.page_container').hide();
 				if (partNumber) {
 					requestData.search_part_no = partNumber;
 				}
@@ -203,19 +258,25 @@ $(document).ready(function () {
 				if (dateTo) {
 					requestData.search_date_to = dateTo;
 				}
+				if (leaktestType) {
+					requestData.leaktest_type = leaktestType;
+				}
+
 				resetCurrentPage(); // Reset the current page to 1
 			} else {
 				// If all search fields are empty, reset filtering and show the pagination container
+				fetchPaginationEntriesCount()
 				filteredData = [];
 				resetCurrentPage(); // Reset the current page to 1
 				fetchData(); // Fetch all data
-				$('#page_container').show(); // Show the pagination container
+				$('.page_container').show(); // Show the pagination container
 			}
 
 
 			
 			if (partNumber || dateFrom || dateTo) {
 				// First AJAX request to filter data
+
 				$.ajax({
 					url: 'http://' + window.location.hostname + ':4000/api/filter_search_leaktest_result_entry_view_api',
 					type: 'GET',
@@ -229,17 +290,18 @@ $(document).ready(function () {
 						
 						renderData(filteredData); // Render the filtered data
 					},
-					error: function (error) {
-						console.error('Error fetching filtered data:', error);
+					error: function (xhr) {
+						console.error(xhr.responseJSON.message);
+						alert(xhr.responseJSON.message);
 					},
 				});
 			} else {
 				// If all search fields are empty, reset filtering and show pagination container
 				filteredData = [];
-				$('#page_container').show(); // Show the pagination container
+				$('.page_container').show(); // Show the pagination container
 			}
 		});
-	// Handle delete and DELETE request
+		// Handle delete and DELETE request
 
 		// Handle click event for delete button
 		$(document).on('click', '.delete', function() {
@@ -281,20 +343,18 @@ $(document).ready(function () {
 					console.log(response);
 
 					// Close the edit dialog box
-					$('#batchDeletePartModal').modal('hide');
+					$('#deletePartModal').modal('hide');
 
 					// Store the state of the "select all" checkbox
 					localStorage.setItem('selectAllState', 'unchecked');
-
-					// Refresh the page
-					location.reload();
+					$('tr[data-id="' + deleteCurrentId + '"]').remove();
 
 				},
 				error: function(xhr, textStatus, error) {
 					if (xhr.status === 401) {
 						alert(xhr.responseJSON.message);
 						window.location.href = '/login.html'
-						localStorage.removeItem('accessToken');
+						//localStorage.removeItem('accessToken');
 					} else if (xhr.status >= 400 && xhr.status < 600) {
 						alert(xhr.responseJSON.message);
 					} else {
@@ -349,14 +409,18 @@ $(document).ready(function () {
 			success: function(response) {
 				// Handle successful deletion here
 				console.log(response);
+				$('.selectAll').prop("checked", false);
 						// Refresh the page
-				location.reload();
+				idsToDelete.forEach(function(id) {
+					$('tr[data-id="' + id + '"]').remove();
+				});
+				$('#batchDeletePartModal').modal('hide');
 			},
 			error: function(xhr, textStatus, error) {
 				if (xhr.status === 401) {
 					alert(xhr.responseJSON.message);
 					window.location.href = '/login.html'
-					localStorage.removeItem('accessToken');
+					//localStorage.removeItem('accessToken');
 				} else if (xhr.status >= 400 && xhr.status < 600) {
 					alert(xhr.responseJSON.message);
 				} else {
@@ -392,11 +456,7 @@ $(document).ready(function () {
 			minLength: 3
 			});
 		});
-
-
-
-
-
+	
 	// ==========================================================
 	// ***pagination section***
 	// ==========================================================
@@ -420,9 +480,15 @@ $(document).ready(function () {
 
 	// Function to fetch the total entries count from the API
 	function fetchPaginationEntriesCount() {
+
+	
 		$.ajax({
-			type: 'GET',
+			type: 'POST',
 			url: 'http://' + window.location.hostname + ':4000/api/pagination_leaktest_result_entry_count_api',
+            data: JSON.stringify({
+                leaktest_type: $('#leaktest-type-selection').val(),
+            }),
+			contentType: 'application/json',
 			dataType: 'json',
 			success: function (response) {
 				totalEntries = response[0].count;
@@ -434,6 +500,9 @@ $(document).ready(function () {
 			}
 		});
 	}
+	
+	
+
 
 
 	// Function to create pagination buttons
@@ -460,7 +529,7 @@ $(document).ready(function () {
 		paginationHTML += `<li class="page-item" id="lastPage"><a href="#" class="page-link">Last</a></li>`;
 
 		// Update the HTML of the page container with the generated pagination buttons
-		$('#page_container').html(paginationHTML);
+		$('.page_container').html(paginationHTML);
 	}
 
 	// Event handler for clicking a page number
@@ -537,16 +606,15 @@ $(document).ready(function () {
 			}
 		});
 	});
-
-
-    //POST data parameter for data export
-
+	
+	 //POST data parameter for data export
 	$('#download').click(function(event){
 		event.preventDefault();
 	
 		var dateFrom = $('#date-from-field').val();
 		var dateTo = $('#date-to-field').val();
 		var partNumber = $('#part-number-field').val().trim()
+		var leaktestType = $('#leaktest-type-selection').val()
 	
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', 'http://' + window.location.hostname + ':4000/api/leaktest_result_report_api', true);
@@ -559,13 +627,13 @@ $(document).ready(function () {
 				var downloadUrl = URL.createObjectURL(blob);
 				var a = document.createElement("a");
 				a.href = downloadUrl;
-				a.download = "leaktest_report.xlsx";
+				a.download = leaktestType.toLowerCase() + "_leaktest_report.xlsx";
 				document.body.appendChild(a);
 				a.click();
 			} else if (this.status === 401) {
 				alert('Unauthorized');
 				window.location.href = '/login.html'
-				localStorage.removeItem('accessToken');
+				//localStorage.removeItem('accessToken');
 			} else if (this.status >= 400 && this.status < 600) {
 				alert('Error occurred while retrieving the data.');
 			}
@@ -577,7 +645,8 @@ $(document).ready(function () {
 			date_from: dateFrom,
 			date_to: dateTo,
 			part_no: partNumber,
-			user_id: localStorage.getItem('userId')
+			user_id: localStorage.getItem('userId'),
+			leaktest_type: leaktestType
 		}));
 	});
 
@@ -585,6 +654,5 @@ $(document).ready(function () {
 	$('#logout').click(function(){
 		localStorage.clear();
     });
-	
-	
+
 });

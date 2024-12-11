@@ -104,6 +104,8 @@ $(document).ready(function () {
 			var formattedDate = createDate.toISOString().slice(0, 16).replace('T', ' ');
 
 			var userName = result.username !== null ? result.username : '-';
+			var lotNo = result.lot_no !== null ? result.lot_no : '-';
+			var remarks = result.remarks !== null ? result.remarks : '-';
 		
 			var row = `<tr data-id="${result.id}">
 				<td>
@@ -114,8 +116,10 @@ $(document).ready(function () {
 				</td>
 				<td>${result.part_no}</td>
 				<td>${result.serial_no}</td>
+				<td>${lotNo}</td>
 				<td>${result.result}</td>
 				<td>${failureDetailsString} </td> 
+				<td>${remarks}</td>
 				<td>${userName}</td>
 				<td>${formattedDate}</td>
 				<td>

@@ -15,7 +15,7 @@ $(document).ready(function () {
             },
             success: function(response) {
                 // handle successful response
-                console.log(response.message);
+                // console.log(response.message);
                 // alert(response.message);
                 // Store the access token in local storage
                 localStorage.setItem('accessToken', response.access_token);

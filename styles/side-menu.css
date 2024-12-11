@@ -100,7 +100,7 @@ li:hover{
   position: absolute;
   border-top-right-radius: 15px 15px;
   border-bottom-right-radius: 15px 15px;
-  z-index: 1;
+  z-index: 2;
 }
 
 .body li:hover > ul{

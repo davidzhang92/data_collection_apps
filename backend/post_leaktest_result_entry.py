@@ -70,67 +70,119 @@ def post_leaktest_result_entry():
     try:
         # Get data from the request payload
         data = request.get_json()
+        # Extract leaktest_type from the payload
+        leaktest_type = str(data['leaktest_type'])
 
-        # Extract required fields from the payload
-        new_part_id = uuid.UUID(data['part_id'])
-        new_housing_no = str(data['housing_no'])
+        if leaktest_type == 'Air':
+            new_part_id = uuid.UUID(data['part_id'])
+            air_housing_no = str(data['housing_no'])
 
-        # Concatenate part_id and serial_no
-        concatenated_values = str(new_part_id) + new_housing_no
-
-        cursor = conn.cursor()
-
-        # Check for duplicates based on the concatenated values
-        duplicate_check_query = """
-            SELECT COUNT(*) AS count
-            FROM leaktest_result_entry
-            WHERE CONCAT(part_id, housing_no) = ?
-        """
-        cursor.execute(duplicate_check_query, (concatenated_values,))
-        result = cursor.fetchone()
-
-        if result is not None:
-            duplicate_count = result[0]
-        else:
-            duplicate_count = 0
-
-        if duplicate_count > 0:
-            return jsonify({'message': 'Data is a duplicate.'}), 400
-
-
-        # If no duplicates, insert the data
-        new_part_id = uuid.UUID(data['part_id'])
-        new_housing_no = str(data['housing_no'])
-        new_result = str(data['result'])
-        new_fine_value = float(data['fine_value'])
-        new_gross_value = float(data['gross_value'])
-        new_others_value = float(data['others_value'])
-        defect_id_param = uuid.UUID(data['defect_id']) if data['defect_id'].strip() else None
-        user_id = data['user_id']
-
-
-        # Construct the SQL query to insert the data
-
-        if defect_id_param is None:
-            insert_query = """
-            insert into leaktest_result_entry (id, part_id, housing_no, result, fine_value, gross_value, others_value, created_by, created_date, is_deleted)
-            values (newid(),?,?,?,?,?,?,?, GETDATE(), 0)
+            # Concatenate part_id and serial_no 
+            duplicate_check = str(new_part_id) + air_housing_no + leaktest_type
+            # Check for duplicates based on the concatenated values
+            cursor = conn.cursor()
+            duplicate_check_query = """
+                SELECT COUNT(*) AS count
+                FROM leaktest_result_entry
+                WHERE CONCAT(part_id, housing_no, leaktest_type) = ?
             """
-            cursor.execute(insert_query, (new_part_id, new_housing_no, new_result, new_fine_value, new_gross_value, new_others_value, user_id))
-        else:
+            cursor.execute(duplicate_check_query, (duplicate_check,))
+            result = cursor.fetchone()
 
-            insert_query = """
-            insert into leaktest_result_entry (id, part_id, housing_no, result, defect_id, fine_value, gross_value, others_value, created_by, created_date, is_deleted)
-            values (newid(),?,?,?,?,?,?,?,?, GETDATE(), 0)
+            if result is not None:
+                duplicate_count = result[0]
+            else:
+                duplicate_count = 0
+
+            if duplicate_count > 0:
+                return jsonify({'message': 'Data is a duplicate.'}), 400
+            
+            # If no duplicates, insert the data
+            new_part_id = uuid.UUID(data['part_id'])
+            new_leaktest_type = str(data['leaktest_type']).upper()
+            new_housing_no = str(data['housing_no'])
+            new_result = str(data['result'])
+            new_fine_value = float(data['fine_value'])
+            new_gross_value = float(data['gross_value'])
+            new_others_value = float(data['others_value'])
+            defect_id_param = uuid.UUID(data['defect_id']) if data['defect_id'].strip() else None
+            user_id = data['user_id']
+
+            # Construct the SQL query to insert the data
+
+            if defect_id_param is None:
+                insert_query = """
+                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, fine_value, gross_value, others_value, created_by, created_date, is_deleted)
+                values (newid(),?,?,?,?,?,?,?,?, GETDATE(), 0)
+                """
+                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, new_fine_value, new_gross_value, new_others_value, user_id))
+            else:
+
+                insert_query = """
+                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, defect_id, fine_value, gross_value, others_value, created_by, created_date, is_deleted)
+                values (newid(),?,?,?,?,?,?,?,?,?, GETDATE(), 0)
+                """
+                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, defect_id_param, new_fine_value, new_gross_value, new_others_value, user_id))
+
+            conn.commit()
+            return jsonify({'message': 'Data inserted successfully.'}), 200
+
+
+
+        elif leaktest_type == 'Water':
+            new_part_id = uuid.UUID(data['part_id'])
+            water_housing_no = str(data['housing_no'])
+
+            # Concatenate part_id and serial_no 
+            duplicate_check = str(new_part_id) + water_housing_no + leaktest_type
+            # Check for duplicates based on the concatenated values
+            cursor = conn.cursor()
+            duplicate_check_query = """
+                SELECT COUNT(*) AS count
+                FROM leaktest_result_entry
+                WHERE CONCAT(part_id, housing_no, leaktest_type) = ?
             """
-            cursor.execute(insert_query, (new_part_id, new_housing_no, new_result, defect_id_param, new_fine_value, new_gross_value, new_others_value, user_id))
+            cursor.execute(duplicate_check_query, (duplicate_check,))
+            result = cursor.fetchone()
 
-        conn.commit()
+            if result is not None:
+                duplicate_count = result[0]
+            else:
+                duplicate_count = 0
 
+            if duplicate_count > 0:
+                return jsonify({'message': 'Data is a duplicate.'}), 400
+            
+            # If no duplicates, insert the data
+            new_part_id = uuid.UUID(data['part_id'])
+            new_leaktest_type = str(data['leaktest_type']).upper()
+            new_housing_no = str(data['housing_no'])
+            new_result = str(data['result'])
+            defect_id_param = uuid.UUID(data['defect_id']) if data['defect_id'].strip() else None
+            user_id = data['user_id']
 
+            # Construct the SQL query to insert the data
 
+            if defect_id_param is None:
+                insert_query = """
+                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, created_by, created_date, is_deleted)
+                values (newid(),?,?,?,?,?, GETDATE(), 0)
+                """
+                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, user_id))
+            else:
 
-        return jsonify({'message': 'Data inserted successfully.'}), 200
+                insert_query = """
+                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, defect_id, created_by, created_date, is_deleted)
+                values (newid(),?,?,?,?,?,?, GETDATE(), 0)
+                """
+                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, defect_id_param, user_id))
+
+            conn.commit()
+            return jsonify({'message': 'Data inserted successfully.'}), 200
+        else:
+            return jsonify({'message': 'Error: Leaktest Type is invalid.'}), 400
+
+        
 
     except Exception as e:
         error_message = f'Error occurred while inserting data: {str(e)}'

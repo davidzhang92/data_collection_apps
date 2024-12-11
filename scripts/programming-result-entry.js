@@ -1,7 +1,7 @@
 // -----initialization state of page and rules---------
 $('.programming-result-entry-sub-card').hide();
 $('.programming-result-entry-sub-card-2').hide();
-$('#defect-code-field').prop('disabled', true);
+$('.defect-code-field').prop('disabled', true);
 
 
 $(document).ready(function (){
@@ -123,10 +123,10 @@ $('#pass-button').click(function (e) {
     // Set the result text and color
     inputResult.text('PASS');
     inputResult.css('color', '#00ff2a');
-    $('#defect-code-field').val('');
+    $('.defect-code-field').val('');
     $('#defect-desc').val('');
-    $('#defect-code-field').attr('defect-id', '');
-    $('#defect-code-field').prop('disabled', true);
+    $('.defect-code-field').attr('defect-id', '');
+    $('.defect-code-field').prop('disabled', true);
     localStorage.removeItem('defectId');
     
     // Set isPassButtonPress to 1 when PASS button is clicked
@@ -138,7 +138,7 @@ $('#fail-button').click(function (e) {
     e.preventDefault();
 
 
-    $('#defect-code-field').prop('disabled', false);
+    $('.defect-code-field').prop('disabled', false);
     $('#defect-desc').prop('readonly', false);
     inputResult.text('FAIL');
     inputResult.css('color', '#ff0000');
@@ -186,6 +186,8 @@ $('#fail-button').click(function (e) {
         $('#pname').attr('part-id', storedPartId);
     }
     var serialNumber=$('#serial-no-field').val();
+    var lotNo=$('#lot-no-field').val();
+    var remarks;
     // Add an event listener to the input field to update serialPartNumber on input changes
     $('#serial-no-field').on('input', function () {
         serialNumber = $('#serial-no-field').val();
@@ -193,7 +195,7 @@ $('#fail-button').click(function (e) {
     $('#serial-no-field').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
-            $('#defect-code-field').focus();
+            $('#lot-no-field').focus();
         }
         $("#serial-no-field").on("blur", function() {
         var inputValue = $(this).val();
@@ -211,6 +213,41 @@ $('#fail-button').click(function (e) {
         }
     });
         });
+
+    $('#lot-no-field').on('input', function () {
+        lotNo = $('#lot-no-field').val();
+        });
+    $('#lot-no-field').on('keydown', function(event) {
+        if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+            event.preventDefault(); // Prevent the default behavior of the Enter key
+            $('#remarks-field').focus();
+        }
+        $("#lot-no-field").on("blur", function() {
+        var inputValue = $(this).val();
+        var errorMessage = $("#error-message");
+    
+        if (inputValue.trim() === "") {
+            // Only display the alert if the field is empty
+            errorMessage.text("");
+        } else if (!/^\d+$/.test(inputValue)) {
+            alert("Please enter a numeric value.");
+            $(this).val("");
+            $(this).focus();
+        } else {
+            errorMessage.text("");
+        }
+    });
+            }); 
+    $('#remarks-field').on('input', function () {
+            remarks = $('#remarks-field').val();
+            });
+    $('#remarks-field').on('keydown', function(event) {
+        if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+            event.preventDefault(); // Prevent the default behavior of the Enter key
+            $('#defect-code-field').focus();
+        }
+            });     
+    
     
     
 
@@ -222,8 +259,10 @@ $('#fail-button').click(function (e) {
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
-                defect_id: $('#defect-code-field').attr('defect-id'),
+                defect_id: $('.defect-code-field').attr('defect-id'),
                 serial_no: serialNumber,
+                lot_no:lotNo,
+                remarks:remarks,
                 result: $('#input-result').text(),
                 user_id: localStorage.getItem('userId')
             }),
@@ -237,10 +276,14 @@ $('#fail-button').click(function (e) {
     
                 $('#input-result').text('');
                 $('#serial-no-field').val('')
-                $('#defect-code-field').val('')
-                $('#defect-code-field').attr('defect-id', '');
+                $('.defect-code-field').val('')
+                $('.defect-code-field').attr('defect-id', '');
                 defectId='';
                 $('#defect-desc').val('')
+                $('#lot-no-field').val('')
+                $('#remarks-field').val('')
+                lotNo='';
+                remarks='';
                 localStorage.removeItem('defectId');
                 alert('Result submitted successfully.');
             },
@@ -280,7 +323,7 @@ $('#fail-button').click(function (e) {
         }
 
         // Check if result is "FAIL" and defectId is empty
-        if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
+        if (result.trim() === 'FAIL' && $('.defect-code-field').attr('defect-id').trim() === '') {
         alert('Error : Defect Code is invalid or empty, please try again.');
         return; // Prevent further processing if result is "FAIL" and defectId is empty
         }

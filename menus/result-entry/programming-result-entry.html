@@ -77,9 +77,17 @@
   </div>
   <div class="programming-result-entry-sub-card" >
     <form>
-      <label class="label-field" id="label-serial-no" for="serial-no-field">
+    <label class="label-field" id="label-serial-no" for="serial-no-field">
         <span class="product-field-span">Serial No.</span>
-        <input class="input-field" type="text" id="serial-no-field" placeholder="Enter Serial No." />
+        <input type="text" id="serial-no-field" placeholder="Enter Serial No." />
+    </label>
+    <label class="label-field" id="label-lot-no" for="lot-no-field">
+        <span class="product-field-span">Lot No.</span>
+        <input type="text" id="lot-no-field" placeholder="Enter Lot No." />
+    </label>
+    <label class="label-field" id="label-remark" for="remarks-field">
+        <span class="product-field-span">Remarks</span>
+        <input type="text" id="remarks-field" placeholder="Enter Remarks." />
     </label>
       <label class ="label-field" id="label-result" for="result">Result</label>
     </form>
@@ -89,7 +97,7 @@
     </form>
     <label class = label-field id="label-defect-code" for="defect-code-field">
         <span class="product-field-def-code">Defect Code</span>
-        <input class = input-field type="text" id="defect-code-field" placeholder="Code"  />
+        <input class = "input-field defect-code-field" id="defect-code-field" type="text" placeholder="Code"  />
     </label>
       <input class = input-field type="text" id="defect-desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
     </form>

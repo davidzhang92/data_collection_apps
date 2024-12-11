@@ -49,6 +49,61 @@
         margin: 0 -60px 0 20px; 
         padding-top: 10px; 
       }
+      #label-remark{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
+        position: absolute;
+        top: 220px;
+        left: 0px;
+      }
+      #label-lot-no{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
+        position: absolute;
+        top: 110px;
+        left: 0px;
+      }
+
+      #label-remark{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
+      }
+      #serial-no-field{
+        width: 80%;
+        border: 1px solid #000;
+        margin-top: 15px;
+        padding: 5px;
+        padding-top: 5px;
+        font-size: 18px;
+      }
+      #lot-no-field{
+        width: 107%;
+        border: 1px solid #000;
+        margin-top: 15px;
+        padding: 5px;
+        padding-top: 5px;
+        font-size: 18px;
+      }
+      #remarks-field{
+        width: 107%;
+        border: 1px solid #000;
+        margin-top: 15px;
+        padding: 5px;
+        padding-top: 5px;
+        font-size: 18px;
+      }
       #label-part-description{
         width: 400px; 
         height:12px;

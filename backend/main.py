@@ -335,7 +335,7 @@ def post_leaktest_result_entry_api():
 ###############################
 
 # API endpoint to retrieve number of entries on result-leaktest-entry
-@app.route('/api/pagination_leaktest_result_entry_count_api', methods=['GET'])
+@app.route('/api/pagination_leaktest_result_entry_count_api', methods=['POST'])
 def get_pagination_leaktest_result_entry_count_api():
     return get_pagination_leaktest_result_entry_count()
 

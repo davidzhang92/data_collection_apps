@@ -182,44 +182,24 @@ $('#pass-button').click(function () {
     
 });
 
-$('#fail-button').click(function () {
-    result = $('#input-result').text();
-});
-// Update the partId during page load if it's stored in localStorage 
-// (so that the part-id attribute wil contain part-id GUID value after page refresh)
-var storedPartId = localStorage.getItem('partId');
-if (storedPartId) {
-    $('#pname').attr('part-id', storedPartId);
-}
+    // Click event handler for the "PASS" button
+    $('#pass-button').click(function (e) {
+        e.preventDefault();
+        // Set the result text and color
+        inputResult.text('PASS');
+        inputResult.css('color', '#00ff2a');
+        $('.defect-code-field').val('');
+        $('#defect-desc').val('');
+        $('.defect-code-field').attr('defect-id', '');
+        $('.defect-code-field').prop('disabled', true);
+        localStorage.removeItem('defectId');
+        
+        // Set isPassButtonPress to 1 when PASS button is clicked
+        isPassButtonPress = 1;
+    });
 
     
-// result value assignment and checking
-var serialNumber=$('#serial-no-field').val();
-// Add an event listener to the input field to update serialPartNumber on input changes
-$('#serial-no-field').on('input', function () {
-  serialNumber = $('#serial-no-field').val();
-});
-$('#serial-no-field').on('keydown', function(event) {
-    if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
-        event.preventDefault(); // Prevent the default behavior of the Enter key
-        $('#data-matrix-field').focus();
-    }
-    $("#serial-no-field").on("blur", function() {
-      var inputValue = $(this).val();
-      var errorMessage = $("#error-message");
-  
-      if (inputValue.trim() === "") {
-          // Only display the alert if the field is empty
-          errorMessage.text("");
-      } else if (!/^\d+$/.test(inputValue)) {
-          alert("Please enter a numeric value.");
-          $(this).val("");
-          $(this).focus();
-      } else {
-          errorMessage.text("");
-      }
-  });
-});
+        $('.defect-code-field').prop('disabled', false);
 
 
 

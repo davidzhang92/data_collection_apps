@@ -75,10 +75,15 @@ def post_programming_result_entry():
         # Extract required fields from the payload
         new_part_id = uuid.UUID(data['part_id'])
         new_serial_no = str(data['serial_no'])
+        new_lot_no = str(data['lot_no'])
         user_id = data['user_id']
 
+        ##lot no validation
+        if new_lot_no == '' or None:
+            return jsonify({'message': 'Error: Lot No cannot be empty.'}), 400
+
         # Concatenate part_id and serial_no
-        concatenated_values = str(new_part_id) + new_serial_no
+        concatenated_values = str(new_part_id) + new_serial_no + new_lot_no
 
         cursor = conn.cursor()
 
@@ -86,7 +91,7 @@ def post_programming_result_entry():
         duplicate_check_query = """
             SELECT COUNT(*) AS count
             FROM programming_result_entry
-            WHERE CONCAT(part_id, serial_no) = ?
+            WHERE CONCAT(part_id, serial_no, lot_no) = ?
         """
         cursor.execute(duplicate_check_query, (concatenated_values,))
         result = cursor.fetchone()
@@ -98,27 +103,34 @@ def post_programming_result_entry():
 
         if duplicate_count > 0:
             return jsonify({'message': 'Data is a duplicate.'}), 400
+        
+        
+
+       
 
 
         # If no duplicates, insert the data
         new_part_id = uuid.UUID(data['part_id'])
         new_result = str(data['result'])
         new_serial_no = str(data['serial_no'])
+        new_lot_no = (data['lot_no'])
         defect_id_param = uuid.UUID(data['defect_id']) if data['defect_id'].strip() else None
+        new_remarks = (data['remarks']) if data['remarks'].strip() else None
+
 
         # Construct the SQL query to insert the data
         if defect_id_param is None:
             insert_query = """
-                insert into programming_result_entry (id, part_id, result, serial_no, created_by,created_date, is_deleted)
-                values (NEWID(),?,?,?,?, GETDATE(), 0)
+                insert into programming_result_entry (id, part_id, result, serial_no, lot_no, remarks, created_by, created_date, is_deleted)
+                values (NEWID(),?,?,?,?,?,?, GETDATE(), 0)
             """
-            cursor.execute(insert_query, (new_part_id, new_result, new_serial_no, user_id))
+            cursor.execute(insert_query, (new_part_id, new_result, new_serial_no, new_lot_no, new_remarks, user_id))
         else:
             insert_query = """
-                insert into programming_result_entry (id, part_id, defect_id, result, serial_no, created_by, created_date, is_deleted)
-                values (NEWID(),?,?,?,?,?, GETDATE(), 0)
+                insert into programming_result_entry (id, part_id, defect_id, result, serial_no, lot_no, remarks, created_by, created_date, is_deleted)
+                values (NEWID(),?,?,?,?,?,?,?, GETDATE(), 0)
             """
-            cursor.execute(insert_query, (new_part_id, defect_id_param, new_result, new_serial_no, user_id))
+            cursor.execute(insert_query, (new_part_id, defect_id_param, new_result, new_serial_no, new_lot_no, new_remarks, user_id))
         conn.commit()
 
         return jsonify({'message': 'Data inserted successfully.'}), 200

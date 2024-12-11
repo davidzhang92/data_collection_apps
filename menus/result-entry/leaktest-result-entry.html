@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../icons/css/all.css">
     <link rel="stylesheet" href="/styles/jquery-ui/jquery-ui.css">
     <link rel="stylesheet" href="/styles/version.css">
+    
   </head>
 <body>
   <div class="container">
@@ -70,24 +71,36 @@
           <span class="product-field-span">Part Description</span>
           <input class = input-field type="text" id="pdesc" value="" style="background-color: rgb(214, 254, 255)" readonly />
         </label>
+        <label class= label-field id="label-leaktest-type" for="leaktest-type">
+          <span class="leaktest-dropdown-span">Leaktest Type</span>
+          <select name="leaktest-type-select" id="leaktest-type-selection">
+            <option value="" selected disabled>Select Type</option>
+            <option leaktest-type="Air">Air</option>
+            <option leaktest-type="Water">Water</option>
+        </select>
+        </label>
+
       </form>
       <a href='#' id='select-button' class='ph-button ph-btn-disabled'>Select</a>
       <a href='/menus/result-entry/view-page-leaktest-result-entry.html' id='view-button' class='ph-button ph-btn-green'>View Result</a>
       
     </div>
   </div>
-  <div class="leaktest-result-entry-sub-card">
+
+  <!-- #######airleaktest##### -->
+  <div class="air-leaktest-result-entry-sub-card">
+ 
     <form>
-      <label class = label-field id="label-serial-no" for="housing-no-field">
+      <label class = label-field id="label-serial-no" for="housing-no-field-airtest">
         <span class="product-field-span">Housing No.</span>
-        <input class = input-field type="text" id="housing-no-field" placeholder="Enter Housing No."  />
+        <input class = input-field type="text" id="housing-no-field-airtest" placeholder="Enter Housing No."  />
       </label>
     </form>
     <div class="result-button-group">
       <label class ="label-field" id="label-result" for="result">Result</label>
       <form>
-        <a href='#' id='pass-button' class='ph-button ph-btn-green'>PASS</a>
-        <a href='#' id='fail-button' class='ph-button ph-btn-red'>FAIL</a>
+        <a href='#' id='air-pass-button' class='ph-button ph-btn-green'>PASS</a>
+        <a href='#' id='air-fail-button' class='ph-button ph-btn-red'>FAIL</a>
       </form>
     </div>
     
@@ -96,33 +109,65 @@
           <label class = "label-field product-field-span" id="label-fail-status" for="fail-status">Result Value</label>
           <div class= "label-field" id = "fail-1">
             <label for="fine-checkbox">Fine</label>
-            <!-- <input class= "fail-checkbox" type="checkbox" id="fine-checkbox" name="fail-1" for="fine-field"value="Fine"/> -->
+
             <input type="text" id="fine-field" placeholder="0.00000" />
         </div>
         <div class= "label-field" id = "fail-2">
           <label for="gross-checkbox">Gross</label>
-          <!-- <input class= "fail-checkbox" type="checkbox" id="gross-checkbox" name="fail-2" value="Gross"/> -->
+ 
           <input type="text" id="gross-field" placeholder="0.00000" />
         </div>
         <div class= "label-field" id = "fail-3">
           <label for="others-checkbox">Others</label>
-          <!-- <input class= "fail-checkbox" type="checkbox" id="others-checkbox" name="fail-3" value="Others"/> -->
+
           <input type="text" id="others-field" placeholder="0.00000" />
         </div>
       </div>
       <label class = label-field id="label-defect-code" for="defect-code-field">
         <span class="product-field-def-code">Defect Code</span>
-        <input class = input-field type="text" id="defect-code-field" placeholder="Code"  />
+        <input class = "input-field defect-code-field" id="defect-code-field" type="text" placeholder="Code" air-defect-id="" />
       </label>
       <input class = input-field type="text" id="defect-desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
   </div>
-  <div class="leaktest-result-entry-sub-card-2">
-    <form id="save-form">
-      <a href='#'  id='save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
+  <div class="air-leaktest-result-entry-sub-card-2">
+ 
+    <form id="air-save-form">
+      <a href='#'  id='air-save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
     </form>
-    <a id='input-result'></a>
+    <a id='air-input-result'></a>
   </div>
 </div>
+  <!-- #######airleaktest##### -->
+  <!-- #######waterleaktest##### -->
+  <div class="water-leaktest-result-entry-sub-card">
+    <form>
+      <label class = label-field id="label-serial-no" for="housing-no-field-watertest">
+        <span class="product-field-span">Housing No.</span>
+        <input class = input-field type="text" id="housing-no-field-watertest" placeholder="Enter Housing No."  />
+      </label>
+    </form>
+    <div class="result-button-group">
+      <label class ="label-field" id="label-result" for="result">Result</label>
+      <form>
+        <a href='#' id='water-pass-button' class='ph-button ph-btn-green'>PASS</a>
+        <a href='#' id='water-fail-button' class='ph-button ph-btn-red'>FAIL</a>
+      </form>
+    </div>
+    
+      <label class = label-field id="label-defect-code" for="defect-code-field">
+        <span class="product-field-def-code">Defect Code</span>
+        <input class = "input-field defect-code-field" id="defect-code-field" type="text" placeholder="Code" water-defect-id="" />
+      </label>
+      <input class = input-field type="text" id="water-defect-desc" value="" style="background-color: rgb(214, 254, 255)" readonly />
+  </div>
+  <div class="water-leaktest-result-entry-sub-card-2">
+    <form id="water-save-form">
+      <a href='#'  id='water-save-button' class='ph-button ph-btn-blue '><span class="fas fa-save"></span> &nbsp;Save</a>
+    </form>
+    <a id='water-input-result'></a>
+  </div>
+</div>
+  <!-- #######waterleaktest##### -->
 <version class="version"><b>Developed By : David Zhang | Version:  Checking..</b></version>
 </body>
 </html>

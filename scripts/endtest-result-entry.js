@@ -67,7 +67,7 @@ $(document).ready(function () {
         type: 'POST',
         data: JSON.stringify({
             part_id: $('#pname').attr('part-id'),
-            defect_id: $('#defect-code-field').attr('defect-id') ,
+            defect_id: $('.defect-code-field').attr('defect-id') ,
             quantity: $('#qty-input-field').val(),
             user_id: localStorage.getItem('userId')
         }),
@@ -83,8 +83,8 @@ $(document).ready(function () {
             $('#pname').attr('part-id', '')
             $('#pname').val('')
             $('#pdesc').val('')
-            $('#defect-code-field').val('');
-            $('#defect-code-field').attr('defect-id', '');
+            $('.defect-code-field').val('');
+            $('.defect-code-field').attr('defect-id', '');
             $('#defect-desc').val('')
             alert('Result submitted successfully.');
         },
@@ -114,7 +114,7 @@ $(document).ready(function () {
           return;
         }
 
-        if ($('#defect-code-field').attr('defect-id').trim() === '') {
+        if ($('.defect-code-field').attr('defect-id').trim() === '') {
           alert('Error: Defect Code is invalid or empty, please try again.');
           return; 
           }

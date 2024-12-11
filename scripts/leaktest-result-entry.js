@@ -1,6 +1,10 @@
 // -----initialization state of page and rules---------
-$('.leaktest-result-entry-sub-card').hide();
-$('.leaktest-result-entry-sub-card-2').hide();
+$('.air-leaktest-result-entry-sub-card').hide();
+$('.air-leaktest-result-entry-sub-card-2').hide();
+$('.water-leaktest-result-entry-sub-card').hide();
+$('.water-leaktest-result-entry-sub-card-2').hide();
+$('.defect-code-field').prop('disabled', true);
+
 
 $(document).ready(function (){
 
@@ -23,14 +27,16 @@ $(document).ready(function (){
     $('#select-button').click(function(event) {
         // Prevent the default behavior of the anchor element
         event.preventDefault();
+        var leaktestType = $('#leaktest-type-selection').val()
+
     
         // Check if the input with id 'pdesc' is empty
         if ($('#pdesc').val() === '') {
           // Display an alert if it's empty
-          alert('Error. Part No. is invalid or empty, please try again.');
-        } else {
-          // Perform your desired action if pdesc is not empty
-          // For example, you can submit a form or trigger another function.
+          alert('Error: Part No. is invalid or empty, please try again.');
+        } 
+        else if (leaktestType === '' || leaktestType !== 'Air' && leaktestType !== 'Water') {
+            alert('Error: Leaktest Type cannot be empty, please try again.');
         }
       });
   
@@ -48,9 +54,9 @@ $(document).ready(function (){
 
     // Function to update the button color based on #pdesc value
     function updateButtonColor() {
-        var pdescIsEmpty = $('#pdesc').val().trim() === '';
+        var InitialField = $('#pdesc').val().trim() === '';
 
-        if (pdescIsEmpty) {
+        if (InitialField) {
             $('#select-button').css('background-color', notEmptyColor);
         } else if (isSelected) {
             $('#select-button').css('background-color', selectedColor);
@@ -78,10 +84,12 @@ $(document).ready(function (){
         $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
 
         // Check if #pdesc is empty
-        var pdescIsEmpty = $('#pdesc').val().trim() === '';
+        var InitialField = $('#pdesc').val().trim() === '' || ($('#leaktest-type-selection').val() !== 'Air' && $('#leaktest-type-selection').val() !== 'Water');
+
+
 
         // Toggle the selected state only if #pdesc is not empty
-        if (!pdescIsEmpty) {
+        if (!InitialField) {
             // Toggle the selected state
             isSelected = !isSelected;
 
@@ -99,54 +107,104 @@ $(document).ready(function (){
 
             // Enable or disable the input field based on the selected state
             $('#pname').prop('readonly', isSelected);
+            $('#leaktest-type-selection').prop('disabled', isSelected);
 
             // Toggle the visibility of the elements with class leaktest-result-entry-sub-card
-            $('.leaktest-result-entry-sub-card').toggle(isSelected);
-            $('.leaktest-result-entry-sub-card-2').toggle(isSelected);
+            const leaktestType = $('#leaktest-type-selection').val();
+            if (leaktestType === 'Air') {
+                $('.air-leaktest-result-entry-sub-card').toggle(isSelected);
+                $('.air-leaktest-result-entry-sub-card-2').toggle(isSelected);
+                $('.water-leaktest-result-entry-sub-card').hide();
+                $('.water-leaktest-result-entry-sub-card-2').hide();
+            } else if (leaktestType === 'Water') {
+                $('.water-leaktest-result-entry-sub-card').toggle(isSelected);
+                $('.water-leaktest-result-entry-sub-card-2').toggle(isSelected);
+                $('.air-leaktest-result-entry-sub-card').hide();
+                $('.air-leaktest-result-entry-sub-card-2').hide();
+            }
         }
     });
 
+ 
+  // fail/pass button function for AIR leaktest
 
-  // fail/pass button function
+  var airInputResult = $('#air-input-result');
 
-  var inputResult = $('#input-result');
+  var isAirPassButtonPress = 0; // Initialize the variable
 
-  var isPassButtonPress = 0; // Initialize the variable
-
-  // Click event handler for the "PASS" button
-  $('#pass-button').click(function (e) {
+  // Click event handler for the "PASS" button 
+  $('#air-pass-button').click(function (e) {
       e.preventDefault();
       // Set the result text and color
-      inputResult.text('PASS');
-      inputResult.css('color', '#00ff2a');
-      $('#defect-code-field').val('');
+      airInputResult.text('PASS');
+      airInputResult.css('color', '#00ff2a');
+      $('.defect-code-field').val('');
       $('#defect-desc').val('');
-      $('#defect-code-field').attr('defect-id', '');
-      $('#defect-code-field').prop('disabled', true);
+      $('.defect-code-field').attr('defect-id', '');
+      $('.defect-code-field').prop('disabled', true);
       localStorage.removeItem('defectId');
       
       // Set isPassButtonPress to 1 when PASS button is clicked
-      isPassButtonPress = 1;
+      isAirPassButtonPress = 1
   });
 
     // Click event handler for the "FAIL" button
-    $('#fail-button').click(function (e) {
+  $('#air-fail-button').click(function (e) {
         e.preventDefault();
 
 
-        $('#defect-code-field').prop('disabled', false);
+        $('.defect-code-field').prop('disabled', false);
         $('#defect-desc').prop('readonly', false);
-        inputResult.text('FAIL');
-        inputResult.css('color', '#ff0000');
+        airInputResult.text('FAIL');
+        airInputResult.css('color', '#ff0000');
 
         // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
-        if (isPassButtonPress === 1) {
-            isPassButtonPress = 0;
+        if (isAirPassButtonPress === 1) {
+            isAirPassButtonPress = 0;
+            return;
+        }
+
+  });
+
+// fail/pass button function for WATER leaktest
+
+var waterInputResult = $('#water-input-result');
+
+var isWaterPassButtonPress = 0; // Initialize the variable
+
+    // Click event handler for the "PASS" button 
+    $('#water-pass-button').click(function (e) {
+        e.preventDefault();
+        // Set the result text and color
+        waterInputResult.text('PASS');
+        waterInputResult.css('color', '#00ff2a');
+        $('.defect-code-field').val('');
+        $('#water-defect-desc').val('');
+        $('.defect-code-field').attr('defect-id', '');
+        $('.defect-code-field').prop('disabled', true);
+        localStorage.removeItem('defectId');
+        
+        // Set isPassButtonPress to 1 when PASS button is clicked
+        isWaterPassButtonPress = 1;
+    });
+
+    // Click event handler for the "FAIL" button
+    $('#water-fail-button').click(function (e) {
+        e.preventDefault();
+
+
+        $('.defect-code-field').prop('disabled', false);
+        $('#water-defect-desc').prop('readonly', false);
+        waterInputResult.text('FAIL');
+        waterInputResult.css('color', '#ff0000');
+
+        // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
+        if (isWaterPassButtonPress === 1) {
+            isWaterPassButtonPress = 0;
             return;
         }
 
     });
-
 
 
 // ---handing POST request---
@@ -161,13 +219,22 @@ $(document).ready(function (){
         localStorage.setItem('partId', partId);
     });
 
-    $('#pass-button').click(function () {
-        result = $('#input-result').text();
+    $('#air-pass-button').click(function () {
+        airLeaktestResult = $('#air-input-result').text();
         
     });
 
-    $('#fail-button').click(function () {
-        result = $('#input-result').text();
+    $('#air-fail-button').click(function () {
+        airLeaktestResult = $('#air-input-result').text();
+    });
+
+    $('#water-pass-button').click(function () {
+        waterLeaktestResult = $('#water-input-result').text();
+        
+    });
+
+    $('#water-fail-button').click(function () {
+        waterLeaktestResult = $('#water-input-result').text();
     });
     // Update the partId during page load if it's stored in localStorage 
     // (so that the part-id attribute wil contain part-id GUID value after page refresh)
@@ -178,17 +245,17 @@ $(document).ready(function (){
 
         
 // result value assignment and checking
-    var housingPartNumber=$('#housing-no-field').val();
+    var airHousingPartNumber=$('#housing-no-field-airtest').val();
     // Add an event listener to the input field to update serialPartNumber on input changes
-    $('#housing-no-field').on('input', function () {
-      housingPartNumber = $('#housing-no-field').val();
+    $('#housing-no-field-airtest').on('input', function () {
+        airHousingPartNumber = $('#housing-no-field-airtest').val();
     });
-    $('#housing-no-field').on('keydown', function(event) {
+    $('#housing-no-field-airtest').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
             $('#fine-field').focus();
         }
-        $("#housing-no-field").on("blur", function() {
+        $("#housing-no-field-airtest").on("blur", function() {
           var inputValue = $(this).val();
           var errorMessage = $("#error-message");
       
@@ -205,6 +272,32 @@ $(document).ready(function (){
       });
     });
     
+    var waterHousingPartNumber=$('#housing-no-field-watertest').val();
+    // Add an event listener to the input field to update serialPartNumber on input changes
+    $('#housing-no-field-watertest').on('input', function () {
+        waterHousingPartNumber = $('#housing-no-field-watertest').val();
+    });
+    $('#housing-no-field-watertest').on('keydown', function(event) {
+        if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
+            event.preventDefault(); // Prevent the default behavior of the Enter key
+            $('#fine-field').focus();
+        }
+        $("#housing-no-field-watertest").on("blur", function() {
+        var inputValue = $(this).val();
+        var errorMessage = $("#error-message");
+    
+        if (inputValue.trim() === "") {
+            // Only display the alert if the field is empty
+            errorMessage.text("");
+        } else if (!/^\d+$/.test(inputValue)) {
+            alert("Please enter a numeric value.");
+            $(this).val("");
+            $(this).focus();
+        } else {
+            errorMessage.text("");
+        }
+    });
+    });
 
 
     var fineValue = $('#fine-field').val() || '0.0000';
@@ -286,16 +379,18 @@ $(document).ready(function (){
       });
     });
 
-    $('#save-form').on('submit', function(event) {
+// --------------airtest---------------
+    $('#air-save-form').on('submit', function(event) {
         event.preventDefault();
         $.ajax({
             url: 'http://' + window.location.hostname + ':4000/api/leaktest-result-entry-api',
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
-                defect_id: $('#defect-code-field').attr('defect-id'),
-                housing_no: housingPartNumber,
-                result: $('#input-result').text(),
+                defect_id: $('.defect-code-field').attr('defect-id'),
+                leaktest_type: $('#leaktest-type-selection').val(),
+                housing_no: airHousingPartNumber,
+                result: $('#air-input-result').text(),
                 fine_value: fineValue,
                 gross_value: grossValue,
                 others_value: othersValue,
@@ -309,19 +404,21 @@ $(document).ready(function (){
                 // handle successful response
                 console.log(response);
 
-                $('#input-result').text('');
+                $('#air-input-result').text('');
                 // Reset other variables
                 result = ''; // Reset result
-                $('#housing-no-field').val('')
+                $('#housing-no-field-airtest').val('')
+                $('#housing-no-field-watertest').val('')
                 $('#fine-field').val('')
                 $('#gross-field').val('')
                 $('#others-field').val('')
-                $('#defect-code-field').val('')
-                $('#defect-code-field').attr('defect-id', '');
+                $('.defect-code-field').val('')
+                $('.defect-code-field').attr('defect-id', '');
+                $('.defect-code-field').attr('water-defect-id', '');
                 defectId='';
-                $('#defect-desc').val('')
                 localStorage.removeItem('defectId');
-
+                $('#water-defect-desc').val('')
+                $('#defect-desc').val('')
                 alert('Result submitted successfully.');
             },
             error: function(xhr, textStatus, error) {
@@ -333,17 +430,17 @@ $(document).ready(function (){
 					alert(xhr.responseJSON.message);
 				} else {
 					console.error(error);
-					alert('An error occurred while retrieving the data.');
+					alert(error);
 				}
 			}
         });
     });
 
     // Trigger the form submission when the anchor is clicked
-    $('#save-button').click(function() {
+    $('#air-save-button').click(function() {
         // Get the values of serial number and result
-        var housingPartNumber = $('#housing-no-field').val();
-        var resultValue = $('#input-result').text();
+        var housingPartNumber = $('#housing-no-field-airtest').val();
+        var resultValue = $('#air-input-result').text();
 
 
         // Check if serial number is empty
@@ -359,14 +456,102 @@ $(document).ready(function (){
         }
 
         // Check if result is "FAIL" and defectId is empty
-        if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
+        if (result.trim() === 'FAIL' && $('.defect-code-field').attr('defect-id').trim() === '') {
             alert('Error : Defect Code is invalid or empty, please try again.');
             return; // Prevent further processing if result is "FAIL" and defectId is empty
             }
 
         // If all checks pass, proceed with the form submission
-        $('#save-form').submit();
+        $('#air-save-form').submit();
     });
+
+// --------------watertest---------------
+
+    $('#water-save-form').on('submit', function(event) {
+        event.preventDefault();
+        $.ajax({
+            url: 'http://' + window.location.hostname + ':4000/api/leaktest-result-entry-api',
+            type: 'POST',
+            data: JSON.stringify({
+                part_id: partId,
+                defect_id: $('.defect-code-field').attr('water-defect-id'),
+                leaktest_type: $('#leaktest-type-selection').val(),
+                housing_no: waterHousingPartNumber,
+                result: $('#water-input-result').text(),
+                user_id: localStorage.getItem('userId')
+            }),
+            contentType: 'application/json',
+            beforeSend: function(xhr) { 
+                xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
+            },	
+            success: function(response) {
+                // handle successful response
+                console.log(response);
+
+                $('#water-input-result').text('');
+                $('#air-input-result').text('');
+                // Reset other variables
+                result = ''; // Reset result
+                $('#housing-no-field-airtest').val('')
+                $('#housing-no-field-watertest').val('')
+                $('#fine-field').val('')
+                $('#gross-field').val('')
+                $('#others-field').val('')
+                $('.defect-code-field').val('')
+                $('.defect-code-field').attr('defect-id', '');
+                $('.defect-code-field').attr('water-defect-id', '');
+                defectId='';
+
+                $('#water-defect-desc').val('')
+                $('#defect-desc').val('')
+                localStorage.removeItem('defectId');
+
+                alert('Result submitted successfully.');
+            },
+            error: function(xhr, textStatus, error) {
+                if (xhr.status === 401) {
+                    alert(xhr.responseJSON.message);
+                    window.location.href = '/login.html'
+                    localStorage.removeItem('accessToken');
+                } else if (xhr.status >= 400 && xhr.status < 600) {
+                    alert(xhr.responseJSON.message);
+                } else {
+                    console.error(error);
+                    alert(error);
+                }
+            }
+        });
+    });
+
+    // Trigger the form submission when the anchor is clicked
+    $('#water-save-button').click(function() {
+        // Get the values of serial number and result
+        var housingPartNumber = $('#housing-no-field-watertest').val();
+        var resultValue = $('#water-input-result').text();
+
+
+        // Check if serial number is empty
+        if (housingPartNumber.trim() === '') {
+            alert('Serial number cannot be empty.');
+            return; // Prevent further processing if serial number is empty
+        }
+
+        // Check if result is empty
+        if (resultValue.trim() === '') {
+            alert('Result cannot be empty.');
+            return; // Prevent further processing if result is empty
+        }
+
+        // Check if result is "FAIL" and defectId is empty
+        if (result.trim() === 'FAIL' && $('.defect-code-field').attr('defect-id').trim() === '') {
+            alert('Error : Defect Code is invalid or empty, please try again.');
+            return; // Prevent further processing if result is "FAIL" and defectId is empty
+            }
+
+        // If all checks pass, proceed with the form submission
+        $('#water-save-form').submit();
+    });
+
 
     	//logout function, clear all access token upon log out
 	$('#logout').click(function(){
