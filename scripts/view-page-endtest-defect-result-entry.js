@@ -426,7 +426,7 @@ function renderData(data) {
 	function fetchPaginationEntriesCount() {
 		$.ajax({
 			type: 'GET',
-			url: 'http://' + window.location.hostname + ':4000/api/pagination_endtest_result_entry_count_api',
+			url: 'http://' + window.location.hostname + ':4000/api/pagination_endtest_defect_result_entry_count_api',
 			dataType: 'json',
 			success: function (response) {
 				totalEntries = response[0].count;
