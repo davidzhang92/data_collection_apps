@@ -144,6 +144,7 @@ def get_filter_search_programming_result_entry_view():
     
     # Construct the SQL query to select all data from the programming result entry table
     query = """SELECT 
+                    a.id,
                     b.part_no,
                     b.part_description,
                     a.lot_no,
