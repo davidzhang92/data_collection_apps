@@ -85,6 +85,7 @@ def get_programming_result_entry_view():
 
         # Construct the SQL query to select data from the part_master table with OFFSET
         query = """SELECT 
+						a.id,
                         b.part_no,
                         b.part_description,
                         a.lot_no,
