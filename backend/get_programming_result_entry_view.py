@@ -272,6 +272,7 @@ def get_programming_result_report():
 
         # Construct SQL for report data
         query_data = """SELECT 
+                        a.id,
                         b.part_no,
                         b.part_description,
                         serial_no, 
