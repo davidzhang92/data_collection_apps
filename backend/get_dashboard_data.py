@@ -104,7 +104,7 @@ def get_dashboard_part_detail_counts():
     try:
         # Execute the queries to retrieve pass and fail counts
         details_query = """
-        WITH endtest_defect AS (
+WITH endtest_defect AS (
             SELECT part_id, SUM(quantity) AS defect_quantity
             FROM endtest_defect_result_entry
             WHERE created_date BETWEEN CONVERT(datetime, CONVERT(date, GETDATE())) AND GETDATE() 
@@ -129,8 +129,8 @@ def get_dashboard_part_detail_counts():
             SELECT 
                 re.part_id, re.part_no, re.part_description,
                 re.pass_count,
-                re.fail_count + CASE WHEN re.process_type = 'endtest' THEN ISNULL(ed.defect_quantity, 0) ELSE 0 END AS fail_count,
-                re.total_count,
+				re.fail_count + CASE WHEN re.process_type = 'endtest' THEN ISNULL(ed.defect_quantity, 0) ELSE 0 END AS fail_count,
+				re.total_count + CASE WHEN re.process_type = 'endtest' THEN ISNULL(ed.defect_quantity, 0) ELSE 0 END AS total_count,
                 re.process_type
             FROM result_entry re
             LEFT JOIN endtest_defect ed ON re.part_id = ed.part_id AND re.process_type = 'endtest'
@@ -143,6 +143,11 @@ def get_dashboard_part_detail_counts():
                 'endtest' AS process_type
             FROM endtest_defect ed
             INNER join part_master pm on ed.part_id=pm.id
+			WHERE NOT EXISTS (
+		    SELECT 1 FROM result_entry re 
+		    WHERE re.part_id = ed.part_id AND re.process_type = 'endtest'
+			)
+
         )
         SELECT 
             part_id, part_no, part_description, 
