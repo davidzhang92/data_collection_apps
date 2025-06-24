@@ -3,12 +3,25 @@ $('.laser-result-entry-sub-card').hide();
 $('.laser-result-entry-sub-card-2').hide();
 $('.export-laser-result-entry-sub-card').hide();
 $('#input-result').text('');
-$('#defect-code-field').attr('defect-id', '');
-$('#defect-code-field').prop('disabled', true);
+$('#enable-serial-no-field').prop('checked', true);
+$('#enable-data-matrix-field').prop('checked', true);
+$('#enable-label-id-field').prop('checked', true);
+
+
 
 
 
 $(document).ready(function (){
+
+    // set the counter for each sucessful POST and reset upon export and reset from the part id
+
+    var displayCounter = localStorage.getItem('displayCounter');
+
+    if (!displayCounter) {
+        displayCounter = 0;
+        localStorage.setItem('displayCounter', displayCounter);
+      }
+    
 
     // set the zoom level based on resolution
     var screenWidth = window.innerWidth;
@@ -31,156 +44,106 @@ $(document).ready(function (){
     event.preventDefault();
 
     // Check if the input with id 'pdesc' is empty
-    if ($('#pdesc').val() === '') {
-        // Display an alert if it's empty
-        alert('Error. Part No. is invalid or empty, please try again.');
-    } else {
-        // Perform your desired action if pdesc is not empty
-        // For example, you can submit a form or trigger another function.
-    }
+    if ($('#pdesc').val() === '' && $('#wono').val().match(/^\d+$/) === null) {
+        // Display an alert if both are empty
+        alert('Error. Part No. and Wo No. are invalid or empty, please try again.');
+    } 
+    else if ($('#wono').val().match(/^\d+$/) === null) {
+        // Display an alert if it's not a number
+        alert('Error. Wo No is invalid or empty, please try again.');
+    } 
+    
     });
 
-// select button logic    
+    // select button logic    
 
-// Define variables for text and color changes
-var originalText = 'Select';
-var selectedText = 'Selected';
-// var emptyColor = '#4e4e4e'; // Color when #pdesc is empty
-var notEmptyColor = '#3F8ABF'; // Color when #pdesc has a value
-var selectedColor = '#28a745'; // Color when selected
+    // Define variables for text and color changes
+    var originalText = 'Select';
+    var selectedText = 'Selected';
+    // var emptyColor = '#4e4e4e'; // Color when #pdesc is empty
+    var notEmptyColor = '#3F8ABF'; // Color when #pdesc has a value
+    var selectedColor = '#28a745'; // Color when selected
 
-// Initialize the selected state as false
-var isSelected = false;
+    // Initialize the selected state as false
+    var isSelected = false;
 
-// Function to update the button color based on #pdesc value
-function updateButtonColor() {
-    var pdescIsEmpty = $('#pdesc').val().trim() === '';
+    // Function to update the button color based on #pdesc value
+    function updateButtonColor() {
+        var InitialField = $('#pdesc').val().trim() === '';
 
-    if (pdescIsEmpty) {
-        $('#select-button').css('background-color', notEmptyColor);
-    } else if (isSelected) {
-        $('#select-button').css('background-color', selectedColor);
-    } else {
-        $('#select-button').css('background-color', notEmptyColor);
-    }
-}
-
-// Initial button color setup
-updateButtonColor();
-// Attach the function to the window object so it can be accessed globally
-window.updateButtonColor = updateButtonColor;
-
-
-// Bind an input event handler to #pdesc to update the button color immediately
-$('#pdesc').on('input', function() {
-    updateButtonColor(); // Call the function to update the button color
-});
-
-// Click event handler for the button
-$('#select-button').click(function () {
-    // Clear input fields inside the div with class "laser-result-entry-sub-card"
-    $('.laser-result-entry-sub-card input[type="text"]').val('');
-    // Clear all checkboxes inside the div with class "check-boxes-fail-group"
-    $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
-    $('.export-laser-result-entry-sub-card').hide();
-    $('#export-button').text(exportOriginalText);
-    $('#export-button').css('background-color', originalColor);
-    $('#save-button').show();
-
-
-    // Check if #pdesc is empty
-    var pdescIsEmpty = $('#pdesc').val().trim() === '';
-
-    // Toggle the selected state only if #pdesc is not empty
-    if (!pdescIsEmpty) {
-        // Toggle the selected state
-        isSelected = !isSelected;
-
-        // Change text based on the selected state
-        if (isSelected) {
-            // When selected
-            $(this).text(selectedText);
+        if (InitialField) {
+            $('#select-button').css('background-color', notEmptyColor);
+        } else if (isSelected) {
             $('#select-button').css('background-color', selectedColor);
-
         } else {
-            // When not selected
-            $(this).text(originalText);
-            updateButtonColor(); // Update the button color when not selected
+            $('#select-button').css('background-color', notEmptyColor);
         }
-
-        // Enable or disable the input field based on the selected state
-        $('#pname').prop('readonly', isSelected);
-
-        // Toggle the visibility of the elements with class laser-result-entry-sub-card
-        $('.laser-result-entry-sub-card').toggle(isSelected);
-        $('.laser-result-entry-sub-card-2').toggle(isSelected);
-        
-    }
-});
-
-
-// fail/pass button function
-
-var inputResult = $('#input-result');
-
-var isPassButtonPress = 0; // Initialize the variable
-
-// Click event handler for the "PASS" button
-$('#pass-button').click(function (e) {
-    e.preventDefault();
-    // Set the result text and color
-    inputResult.text('PASS');
-    inputResult.css('color', '#00ff2a');
-    $('#defect-code-field').val('');
-    $('#defect-desc').val('');
-    $('#defect-code-field').attr('defect-id', '');
-    $('#defect-code-field').prop('disabled', true);
-    localStorage.removeItem('defectId');
-    
-    // Set isPassButtonPress to 1 when PASS button is clicked
-    isPassButtonPress = 1;
-});
-
-// Click event handler for the "FAIL" button
-$('#fail-button').click(function (e) {
-    e.preventDefault();
-    inputResult.text('');
-   
-    $('#defect-code-field').prop('disabled', false);
-
-    // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
-    if (isPassButtonPress === 1) {
-        isPassButtonPress = 0;
-        return;
     }
 
-    if ($('#defect-desc').val() === '') {
-        // Display an alert if it's empty
-        alert('Error. Defect No. is invalid or empty, please try again.');
-        inputResult.text('');
-    } else {
-      inputResult.text('FAIL');
-      inputResult.css('color', '#ff0000');
-    }
-});
+    // Initial button color setup
+    updateButtonColor();
+    // Attach the function to the window object so it can be accessed globally
+    window.updateButtonColor = updateButtonColor;
 
-// ---handing POST request---
 
-// Initialize partId and result variables
-var partId = localStorage.getItem('partId') || '';
-var result = '';
+    // Bind an input event handler to #pdesc to update the button color immediately
+    $('#pdesc').on('input', function() {
+        updateButtonColor(); // Call the function to update the button color
+    });
 
-// Handling the button clicks
-$('#select-button').click(function () {
-    partId = $('#pname').attr('part-id');
-// Store the partId in localStorage
-    localStorage.setItem('partId', partId);
-});
+    // Click event handler for the button
+    $('#select-button').click(function () {
+        // Clear input fields inside the div with class "laser-result-entry-sub-card"
+        $('.laser-result-entry-sub-card input[type="text"]').val('');
+        // Clear all checkboxes inside the div with class "check-boxes-fail-group"
+        $('.check-boxes-fail-group input[type="checkbox"]').prop('checked', false);
+        $('.export-laser-result-entry-sub-card').hide();
+        $('#export-button').text(exportOriginalText);
+        $('#export-button').css('background-color', originalColor);
+        $('#save-button').show();
 
-$('#pass-button').click(function () {
-    result = $('#input-result').text();
-    
-});
+
+        // Check if #pdesc is empty
+        var InitialField = $('#pdesc').val().trim() === '' || $('#wono').val().match(/^\d+$/) === null;
+
+        // Toggle the selected state only if #pdesc is not empty
+        if (!InitialField) {
+            // Toggle the selected state
+            isSelected = !isSelected;
+
+            // Change text based on the selected state
+            if (isSelected) {
+                // When selected
+                $(this).text(selectedText);
+                $('#select-button').css('background-color', selectedColor);
+
+            } else {
+                // When not selected
+                $(this).text(originalText);
+                updateButtonColor(); // Update the button color when not selected
+                displayCounter = 0;
+                localStorage.setItem('counter', displayCounter);
+                $('.display-counter').text(displayCounter);
+                
+            }
+
+            // Enable or disable the input field based on the selected state
+            $('#pname').prop('readonly', isSelected);
+            $('#wono').prop('readonly', isSelected);
+
+            // Toggle the visibility of the elements with class laser-result-entry-sub-card
+            $('.laser-result-entry-sub-card').toggle(isSelected);
+            $('.laser-result-entry-sub-card-2').toggle(isSelected);
+            
+        }
+    });
+
+
+    // fail/pass button function
+
+    var inputResult = $('#input-result');
+
+    var isPassButtonPress = 0; // Initialize the variable
 
     // Click event handler for the "PASS" button
     $('#pass-button').click(function (e) {
@@ -198,118 +161,82 @@ $('#pass-button').click(function () {
         isPassButtonPress = 1;
     });
 
+    // Click event handler for the "FAIL" button
+    $('#fail-button').click(function (e) {
+        e.preventDefault();
+        inputResult.text('');
     
         $('.defect-code-field').prop('disabled', false);
 
+        // Check if isPassButtonPress is 1, if so, reset it to 0 and return without showing the alert
+        if (isPassButtonPress === 1) {
+            isPassButtonPress = 0;
+            return;
+        }
 
-
-var dataMatrix = $('#data-matrix-field').val();
-$('#data-matrix-field').on('input', function () {
-  dataMatrix = $(this).val() 
-});
-
-$('#data-matrix-field').on('keydown', function(event) {
-  if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
-      event.preventDefault(); // Prevent the default behavior of the Enter key
-      $('#label-id-field').focus(); // Move focus to the next field,
-  }
-  $("#data-matrix-field").on("blur", function() {
-      var inputValue = $(this).val();
-      var errorMessage = $("#error-message");
-
-      if (inputValue.trim() === "") {
-          // Only display the alert if the field is empty
-          errorMessage.text("");
-      } else if (!/^\d+(\.\d+)?$/.test(inputValue)) {
-          alert("Please enter a numeric or float value.");
-          $(this).val("");
-          $(this).focus();
-      } else {
-          errorMessage.text("");
-      }
-  });
-});
-
-
-var labelId = $('#label-id-field').val();
-    $('#label-id-field').on('input', function () {
-    labelId = $(this).val();
+        if ($('#defect-desc').val() === '') {
+            // Display an alert if it's empty
+            alert('Error. Defect No. is invalid or empty, please try again.');
+            inputResult.text('');
+        } else {
+        inputResult.text('FAIL');
+        inputResult.css('color', '#ff0000');
+        }
     });
-    $('#label-id-field').on('keydown', function(event) {
-    if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
-        event.preventDefault(); // Prevent the default behavior of the Enter key
-        $('#defect-code-field').focus(); // Move focus to the next field,
+
+    // ---handing POST request---
+
+    // Initialize partId and result variables
+    var partId = localStorage.getItem('partId') || '';
+    var result = '';
+
+    // Handling the button clicks
+    $('#select-button').click(function () {
+        partId = $('#pname').attr('part-id');
+    // Store the partId in localStorage
+        localStorage.setItem('partId', partId);
+    });
+
+
+    // Update the partId during page load if it's stored in localStorage 
+    // (so that the part-id attribute wil contain part-id GUID value after page refresh)
+    var storedPartId = localStorage.getItem('partId');
+    if (storedPartId) {
+        $('#pname').attr('part-id', storedPartId);
     }
-    $("#label-id-field").on("blur", function() {
-        var inputValue = $(this).val();
-        var errorMessage = $("#error-message");
-
-      if (inputValue.trim() === "") {
-          // Only display the alert if the field is empty
-          errorMessage.text("");
-      } else if (!/^\d+(\.\d+)?$/.test(inputValue)) {
-          alert("Please enter a numeric or float value.");
-          $(this).val("");
-          $(this).focus();
-      } else {
-          errorMessage.text("");
-      }
-  });
-});
 
 
+    // checkbox state for each value field
 
-  // Initialize defectId and result variables
-  var defectId = $('#defect-code-field').attr('defect-id')
-  // var defectId = localStorage.getItem('defectId') || '';
-
-
-
-  // // Handling the button clicks
-  // $('#fail-button').click(function () {
-  //   defectId = $('#defect-code-field').attr('defect-id');
-  // // Store the defectId in localStorage
-  //     localStorage.setItem('defectId', defectId);
-  // });
-
- 
-  // // (so that the defect-id attribute will contain defectId GUID value after page refresh)
-  // var storedDefectId = localStorage.getItem('defectId');
-  // if (storedDefectId) {
-  //   $('#defect-code-field').attr('defect-id', storedDefectId);
-  // }
-
-
-
-
-
-    $('#save-form').on('submit', function(event) {
-    event.preventDefault();
-    $.ajax({
-        url: 'http://' + window.location.hostname + ':4000/api/laser-result-entry-api',
-        type: 'POST',
-        data: JSON.stringify({
-            part_id: partId,
-            defect_id: $('#defect-code-field').attr('defect-id'),
-            serial_no: serialNumber,
-            result: result,
-            data_matrix: dataMatrix,
-            label_id:labelId,
-            user_id: localStorage.getItem('userId')
-        }),
-        contentType: 'application/json',
-        beforeSend: function(xhr) { 
-            xhr.setRequestHeader('Authorization', localStorage.getItem('accessToken')); 
-        },
-        success: function(response) {
-            // handle successful response
-            console.log(response);
-
-            $('#input-result').text('');
-            // Reset other variables
-            result = ''; // Reset result
+    $('#enable-serial-no-field').change(function() {
+        if(this.checked) {
+            $('#serial-no-field').prop('readonly', true);
+            $('#serial-no-field').prop('disabled', false);
+        } else {
+            $('#serial-no-field').prop('readonly', false);
+            $('#serial-no-field').prop('disabled', true);
             $('#serial-no-field').val('')
+        }
+    });
+
+    $('#enable-data-matrix-field').change(function() {
+        if(this.checked) {
+            $('#data-matrix-field').prop('readonly', true);
+            $('#data-matrix-field').prop('disabled', false);
+        } else {
+            $('#data-matrix-field').prop('readonly', false);
+            $('#data-matrix-field').prop('disabled', true);
             $('#data-matrix-field').val('')
+        }
+    });
+
+    $('#enable-label-id-field').change(function() {
+        if(this.checked) {
+            $('#label-id-field').prop('readonly', true);
+            $('#label-id-field').prop('disabled', false);
+        } else {
+            $('#label-id-field').prop('readonly', false);
+            $('#label-id-field').prop('disabled', true);
             $('#label-id-field').val('')
         }
     });
@@ -361,6 +288,9 @@ var labelId = $('#label-id-field').val();
                     $('#serial-no-field').val('')
                     $('#data-matrix-field').val('')
                     $('#label-id-field').val('')
+                    displayCounter++;
+                    localStorage.setItem('counter', displayCounter);
+                    $('.display-counter').text(displayCounter);
         
                     // alert('Result submitted successfully.');
                 },
@@ -439,79 +369,30 @@ var labelId = $('#label-id-field').val();
                         break;
                 }
             } else {
-                console.error(error);
-                alert('An error occurred while submitting the result.');
-                $('#input-result').text('');
-                // Reset other variables
-                result = ''; // Reset result
-                $('#serial-no-field').val('')
-                $('#data-matrix-field').val('')
-                $('#label-id-field').val('')
-                $('#defect-code-field').val('')
-                $('#defect-code-field').attr('defect-id', '');
-                defectId='';
-                $('#defect-desc').val('')
-                localStorage.removeItem('defectId');
+                alert("Error: Data is not valid");
+                $(this).val('');
             }
+            e.preventDefault();
         }
-            });
-        });
+    });
 
-    // Trigger the form submission when the anchor is clicked
-    $('#save-button').click(function() {
-        // Get the values of serial number and result
-        var serialNumber = $('#serial-no-field').val();
-        var dataMatrix = $('#data-matrix-field').val();
-        var labelId = $('#label-id-field').val();
-        var result = $('#input-result').text();
+    
 
 
-        // Check if serial number is empty
-        if (serialNumber.trim() === '') {
-            alert('Serial number cannot be empty.');
-            return; // Prevent further processing if serial number is empty
-        }
-
-        // Check if dataMatrix is empty
-        if (dataMatrix.trim() === '') {
-            alert('Data Matrix cannot be empty.');
-            return; // Prevent further processing if result is empty
-        }
-
-        // Check if labelId is empty
-        if (labelId.trim() === '') {
-            alert('Label ID cannot be empty.');
-            return; // Prevent further processing if result is empty
-        }
 
 
-        // Check if result is empty
-        if (result.trim() === '') {
-        alert('Result cannot be empty.');
-        return; // Prevent further processing if result is empty
-        }
 
-        // Check if result is "FAIL" and defectId is empty
-        if (result.trim() === 'FAIL' && $('#defect-code-field').attr('defect-id').trim() === '') {
-        alert('Result is "FAIL," but defectCode cannot be empty.');
-        return; // Prevent further processing if result is "FAIL" and defectId is empty
-        }
-
-        // If all checks pass, proceed with the form submission
-        $('#save-form').submit();
-
-        });
 
 
     //Laser Export Section
 	// datepicker function for date to and date from
 	$(function() {
-		$("#date-from-field").datepicker({
-			dateFormat: "yy-mm-dd"
+		$("#date-from-field").datetimepicker({
+			dateFormat: "yy/mm/dd hh:mm"
 		});
 
-		$("#date-to-field").datepicker({
-			dateFormat: "yy-mm-dd"
+		$("#date-to-field").datetimepicker({
+			dateFormat: "yy/mm/dd hh:mm"
 		});
 
 		// Add an event listener to the "date-to-field" input
@@ -536,20 +417,21 @@ var labelId = $('#label-id-field').val();
     var originalColor = '#5FCF80'; // Color when #pdesc has a value
     var cancelColor = '#bf3f3f'; // Color when selected
 
-    // Initialize the selected state as false
-    var isSelected = false;
+
 
 
     // Click event handler for the button
+    var isSelectedExport = false;
     $('#export-button').click(function () {
-        // Clear input fields inside the div with class "export-laser-result-entry-sub-card"
+        
         $('.export-laser-result-entry-sub-card input[type="text"]').val('');
 
         // Toggle the selected state
-        isSelected = !isSelected;
+
+        isSelectedExport = !isSelectedExport;
 
         // Change text and background color based on the selected state
-        if (isSelected) {
+        if (isSelectedExport) {
             // When selected
             $('#export-button').text(cancelText);
             $('#export-button').css('background-color', cancelColor);
@@ -567,7 +449,7 @@ var labelId = $('#label-id-field').val();
         }
 
         // Toggle the visibility of the elements with class export-laser-result-entry-sub-card
-        $('.export-laser-result-entry-sub-card').toggle(isSelected);
+        $('.export-laser-result-entry-sub-card').toggle(isSelectedExport);
 
     });
     //POST data parameter for data export
@@ -577,6 +459,7 @@ var labelId = $('#label-id-field').val();
     
         var dateFrom = $('#date-from-field').val();
         var dateTo = $('#date-to-field').val();
+        var WoNo = $('#wono').val();
     
 		var xhr = new XMLHttpRequest();
 		xhr.open('POST', 'http://' + window.location.hostname + ':4000/api/laser_result_entry_api', true);
@@ -592,6 +475,9 @@ var labelId = $('#label-id-field').val();
 				a.download = "laser_report.xlsx";
 				document.body.appendChild(a);
 				a.click();
+                displayCounter = 0;
+                localStorage.setItem('counter', displayCounter);
+                $('.display-counter').text(displayCounter);
 			} else if (this.status === 401) {
 				alert('Unauthorized');
 				window.location.href = '/login.html'
@@ -601,12 +487,13 @@ var labelId = $('#label-id-field').val();
 			}
 		};
 		xhr.onerror = function() {
-			alert('An error occurred while retrieving the data.');
+			alert(this.response);
 		};
 		xhr.send(JSON.stringify({
             part_id: partId,
             date_from: dateFrom,
-            date_to: dateTo
+            date_to: dateTo,
+            wo_no :WoNo
             
 		}));
 	});
