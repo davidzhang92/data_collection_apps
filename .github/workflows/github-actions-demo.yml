@@ -19,6 +19,6 @@ jobs:
       - run: ip a
       - run: hostnamectl 
       - run:  echo $(ping google.com -c 5)
-      - run: yum install -y htop
+      - run: apt install htop
       - run: htop
 
