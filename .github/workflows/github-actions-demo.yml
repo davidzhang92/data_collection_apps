@@ -16,4 +16,5 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-      - run: echo "$(ping -c 4 1.1.1.1)"
+      - run: ip a
+      - run: hostnamectl 
