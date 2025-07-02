@@ -91,7 +91,7 @@ def post_programming_result_entry():
         duplicate_check_query = """
             SELECT COUNT(*) AS count
             FROM programming_result_entry
-            WHERE CONCAT(part_id, serial_no, lot_no) = ?
+            WHERE CONCAT(part_id, serial_no, lot_no) = ? AND is_deleted = 0
         """
         cursor.execute(duplicate_check_query, (concatenated_values,))
         result = cursor.fetchone()

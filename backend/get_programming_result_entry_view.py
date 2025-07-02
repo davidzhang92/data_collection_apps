@@ -106,9 +106,9 @@ def get_programming_result_entry_view():
                     INNER JOIN part_master b ON a.part_id = b.id 
                     LEFT JOIN user_master c ON a.created_by = c.id
 					LEFT JOIN defect_master d on a.defect_id = d.id
+					WHERE a.is_deleted = 0
 					order by a.created_date desc
                     OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"""
-
         cursor.execute(query, (offset,))
         rows = cursor.fetchall()
 
