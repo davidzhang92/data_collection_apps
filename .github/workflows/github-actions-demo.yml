@@ -10,6 +10,6 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: sudo apt install htop
+      - run: htop
       - run: sudo apt install neofetch
       - run: neofetch
