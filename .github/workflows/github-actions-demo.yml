@@ -11,7 +11,7 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - name: python infinite loopp..wohoo...
-      - run: | 
+        run: | 
           python <<EOF
           x = 0
           while True:
