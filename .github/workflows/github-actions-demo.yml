@@ -14,7 +14,7 @@ jobs:
         run: | 
           python <<EOF
           x = 0
-          while True:
+          while x < 100000:
             x += 1
             print(x)
           EOF
