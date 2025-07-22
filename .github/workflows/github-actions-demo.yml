@@ -10,11 +10,18 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: python infinite loopp..wohoo...
-        run: | 
-          python3 <<EOF
-          x = 0
-          while x<1000:
-            x += 1
-            print(x)
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to remote VM
+        run: |
+          ssh sfdc_admin@${{ secrets.VM_HOST }} << 'EOF'
+            cd /
+            ls -la
+           
           EOF
