@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v4
       - name: python infinite loopp..wohoo...
         run: | 
-          python <<EOF
+          python3 <<EOF
           x = 0
           while x<1000:
             x += 1
