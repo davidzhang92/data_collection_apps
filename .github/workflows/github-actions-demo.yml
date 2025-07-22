@@ -17,4 +17,4 @@ jobs:
 
       
     - name: Check SSH access
-      run: ssh -v sfdc_admin@192.168.100.131 "echo connected"
+      run: ssh -v sfdc_admin@192.168.100.131
