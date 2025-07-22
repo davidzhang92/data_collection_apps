@@ -1,6 +1,6 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+on: push
 jobs:
   Explore-GitHub-Actions:
     runs-on: self-hosted
@@ -13,5 +13,5 @@ jobs:
 
 
       - name: Deploy to remote VM
-        run: ssh sfdc_admin@192.168.100.131 "cd / && ls -la"
+        run: ping google.com
 
