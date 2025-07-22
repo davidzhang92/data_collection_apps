@@ -11,17 +11,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.VM_HOST }} >> ~/.ssh/known_hosts
 
       - name: Deploy to remote VM
         run: |
-          ssh sfdc_admin@${{ secrets.VM_HOST }} << 'EOF'
+          ssh sfdc_admin@192.168.100.132 << 'EOF'
             cd /
             ls -la
-           
           EOF
