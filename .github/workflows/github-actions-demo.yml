@@ -13,4 +13,4 @@ jobs:
 
 
       - name: Deploy to remote VM
-        run: ssh sfdc_admin@192.168.100.132 "cd / && ls -la"
+        run: ssh sfdc_admin@192.168.100.131 "cd / && ls -la"
