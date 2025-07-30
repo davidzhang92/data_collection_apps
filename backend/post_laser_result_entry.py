@@ -126,26 +126,26 @@ def post_laser_result_entry():
         # Construct the SQL query to insert the data
         if new_serial_no is None:
             insert_query = """
-                INSERT INTO laser_result_entry (id, part_id, wo_no, data_matrix, label_id, created_by, created_date, is_deleted)
-                VALUES (newid(), ?, ?, ?, ?, ?, GETDATE(), 0)
+                INSERT INTO laser_result_entry (id, part_id, result, wo_no, data_matrix, label_id, created_by, created_date, is_deleted)
+                VALUES (newid(), ?, 'PASS', ?, ?, ?, ?, GETDATE(), 0)
             """
             cursor.execute(insert_query, (new_part_id, new_wo_no, new_data_matrix, new_label_id, user_id))
         elif new_data_matrix is None:
             insert_query = """
-                INSERT INTO laser_result_entry (id, part_id, wo_no, serial_no, label_id, created_by, created_date, is_deleted)
-                VALUES (newid(), ?, ?, ?, ?, ?, GETDATE(), 0)
+                INSERT INTO laser_result_entry (id, part_id, result, wo_no, serial_no, label_id, created_by, created_date, is_deleted)
+                VALUES (newid(), ?, 'PASS', ?, ?, ?, ?, GETDATE(), 0)
             """
             cursor.execute(insert_query, (new_part_id, new_wo_no, new_serial_no, new_label_id, user_id))
         elif new_label_id is None:
             insert_query = """
-                INSERT INTO laser_result_entry (id, part_id, wo_no, serial_no, data_matrix, created_by, created_date, is_deleted)
-                VALUES (newid(), ?, ?, ?, ?, ?, GETDATE(), 0)
+                INSERT INTO laser_result_entry (id, part_id, result, wo_no, serial_no, data_matrix, created_by, created_date, is_deleted)
+                VALUES (newid(), ?, 'PASS', ?, ?, ?, ?, GETDATE(), 0)
             """
             cursor.execute(insert_query, (new_part_id, new_wo_no, new_serial_no, new_data_matrix, user_id))
         else:
             insert_query = """
-                INSERT INTO laser_result_entry (id, part_id, wo_no, serial_no, data_matrix, label_id, created_by, created_date, is_deleted)
-                VALUES (newid(), ?, ?, ?, ?, ?, ?, GETDATE(), 0)
+                INSERT INTO laser_result_entry (id, part_id, result, wo_no, serial_no, data_matrix, label_id, created_by, created_date, is_deleted)
+                VALUES (newid(), ?, 'PASS', ?, ?, ?, ?, ?, GETDATE(), 0)
             """
             cursor.execute(insert_query, (new_part_id, new_wo_no, new_serial_no, new_data_matrix, new_label_id, user_id))
 
