@@ -28,4 +28,4 @@ jobs:
         run: rsync -r --mkpath -a -v ~/_work/data_collection_apps/data_collection_apps/ sfdc_admin@192.168.100.131:/data-storage/sfdc_apps
       # Runs a set of commands using the runners shell
       - name: Restarting API, SP job, and nginx services
-        run: systemctl restart backend-api-sfdc.service backend-sql-sp-sfdc.service nginx.service
+        run: ssh sfdc_admin@192.168.100.131 && sudo systemctl restart backend-api-sfdc.service backend-sql-sp-sfdc.service nginx.service
