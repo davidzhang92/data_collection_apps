@@ -143,6 +143,9 @@ body,
       #defect-code-field{
         width:80px;
       }
+      #water-defect-code-field{
+        width:80px;
+      }
 
   .product-field-span { 
     display: block; 

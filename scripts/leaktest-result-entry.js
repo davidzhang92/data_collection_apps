@@ -140,7 +140,7 @@ $(document).ready(function (){
       airInputResult.css('color', '#00ff2a');
       $('.defect-code-field').val('');
       $('#defect-desc').val('');
-      $('.defect-code-field').attr('defect-id', '');
+      $('.defect-code-field').attr('air-defect-id', '');
       $('.defect-code-field').prop('disabled', true);
       localStorage.removeItem('defectId');
       
@@ -180,7 +180,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
         waterInputResult.css('color', '#00ff2a');
         $('.defect-code-field').val('');
         $('#water-defect-desc').val('');
-        $('.defect-code-field').attr('defect-id', '');
+        $('.defect-code-field').attr('air-defect-id', '');
         $('.defect-code-field').prop('disabled', true);
         localStorage.removeItem('defectId');
         
@@ -387,7 +387,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
-                defect_id: $('.defect-code-field').attr('defect-id'),
+                defect_id: $('.defect-code-field').attr('air-defect-id'),
                 leaktest_type: $('#leaktest-type-selection').val(),
                 housing_no: airHousingPartNumber,
                 result: $('#air-input-result').text(),
@@ -456,7 +456,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
         }
 
         // Check if result is "FAIL" and defectId is empty
-        if (result.trim() === 'FAIL' && $('.defect-code-field').attr('defect-id').trim() === '') {
+        if (resultValue.trim() === 'FAIL' && $('.defect-code-field').attr('defect-id').trim() === '') {
             alert('Error : Defect Code is invalid or empty, please try again.');
             return; // Prevent further processing if result is "FAIL" and defectId is empty
             }
@@ -474,7 +474,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
             type: 'POST',
             data: JSON.stringify({
                 part_id: partId,
-                defect_id: $('.defect-code-field').attr('water-defect-id'),
+                defect_id: $('#water-defect-code-field').attr('water-defect-id'),
                 leaktest_type: $('#leaktest-type-selection').val(),
                 housing_no: waterHousingPartNumber,
                 result: $('#water-input-result').text(),
@@ -490,8 +490,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
 
                 $('#water-input-result').text('');
                 $('#air-input-result').text('');
-                // Reset other variables
-                result = ''; // Reset result
+                result = ''; 
                 $('#housing-no-field-airtest').val('')
                 $('#housing-no-field-watertest').val('')
                 $('#fine-field').val('')
@@ -499,12 +498,12 @@ var isWaterPassButtonPress = 0; // Initialize the variable
                 $('#others-field').val('')
                 $('.defect-code-field').val('')
                 $('.defect-code-field').attr('defect-id', '');
-                $('.defect-code-field').attr('water-defect-id', '');
+                $('#water-defect-code-field').attr('water-defect-id', '');
                 defectId='';
-
+                localStorage.removeItem('defectId');
                 $('#water-defect-desc').val('')
                 $('#defect-desc').val('')
-                localStorage.removeItem('defectId');
+                
 
                 alert('Result submitted successfully.');
             },
@@ -543,7 +542,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
         }
 
         // Check if result is "FAIL" and defectId is empty
-        if (result.trim() === 'FAIL' && $('.defect-code-field').attr('defect-id').trim() === '') {
+        if (resultValue.trim() === 'FAIL' && $('#water-defect-code-field').attr('water-defect-id').trim() === '') {
             alert('Error : Defect Code is invalid or empty, please try again.');
             return; // Prevent further processing if result is "FAIL" and defectId is empty
             }
