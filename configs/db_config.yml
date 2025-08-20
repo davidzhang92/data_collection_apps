@@ -1,0 +1,6 @@
+driver:  ODBC Driver 18 for SQL Server
+server: sfdc-dev-cicd
+database: DataCollection
+uid: sa
+pwd: Cannon45!
+trust_server_certificate: "yes"
