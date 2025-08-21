@@ -5,10 +5,29 @@ import os
 
 app = Flask(__name__)
 
-dsn = 'DataCollection'
+# # Load config from YAML
 
-# Establish the connection
-conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
+current_file = Path(__file__).resolve()
+project_root = current_file.parent.parent  
+
+config_path = project_root /'configs'/'db_config.yml'
+
+
+with open(config_path, 'r') as file:
+    config = yaml.safe_load(file)
+
+
+conn_str = (
+    f"DRIVER={{{config['driver']}}};"
+    f"SERVER={config['server']};"
+    f"DATABASE={config['database']};"
+    f"UID={config['uid']};"
+    f"PWD={config['pwd']};"
+    f"TrustServerCertificate={config['trust_server_certificate']};"
+
+)
+
+conn = pyodbc.connect(conn_str)
 
 # Define a function to generate a unique filename
 def get_unique_filename():

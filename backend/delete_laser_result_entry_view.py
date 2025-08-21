@@ -3,6 +3,8 @@ import pyodbc
 from functools import wraps
 import jwt
 from secret_key import SECRET_KEY
+import yaml
+from pathlib import Path
 app = Flask(__name__)
 
 # # Define your MS SQL Server connection details (Windows)
@@ -25,10 +27,29 @@ app = Flask(__name__)
 # Define your MS SQL Server connection details (Linux)
 # Use the DSN you've defined in your odbc.ini file
 
-dsn = 'DataCollection'
+# # Load config from YAML
 
-# Establish the connection
-conn = pyodbc.connect('DSN=DataCollection;UID=sa;PWD=Cannon45!')
+current_file = Path(__file__).resolve()
+project_root = current_file.parent.parent  
+
+config_path = project_root /'configs'/'db_config.yml'
+
+
+with open(config_path, 'r') as file:
+    config = yaml.safe_load(file)
+
+
+conn_str = (
+    f"DRIVER={{{config['driver']}}};"
+    f"SERVER={config['server']};"
+    f"DATABASE={config['database']};"
+    f"UID={config['uid']};"
+    f"PWD={config['pwd']};"
+    f"TrustServerCertificate={config['trust_server_certificate']};"
+
+)
+
+conn = pyodbc.connect(conn_str)
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
