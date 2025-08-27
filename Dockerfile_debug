@@ -1,0 +1,3 @@
+FROM ubuntu:latest AS base
+COPY ./requirements.txt /sfdc_apps
+ENTRYPOINT ["tail", "-f", "/dev/null"]
