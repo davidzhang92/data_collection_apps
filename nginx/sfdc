@@ -1,7 +1,5 @@
 server {
     listen 3000;
-    # server_name 192.168.100.121; # Replace with your domain or IP address
-
     root /data-storage/sfdc_apps/; # Set to your web app's directory
 
     location / {
