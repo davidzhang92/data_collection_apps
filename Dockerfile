@@ -8,17 +8,18 @@ RUN apt update && apt install \
     python3.12-venv \
     nginx \
     nano \
+    unixodbc \
     -y 
 
 ADD  . /data-storage/sfdc_apps
 COPY ./nginx/sfdc /etc/nginx/sites-enabled
+COPY ./supervisord_backend_container.conf /etc/supervisor/conf.d
+
 
 RUN python3 -m venv env0
 # same as running source /env0/bin/activate
 RUN bash -c "source /env0/bin/activate" 
 RUN bash -c "/env0/bin/pip install --upgrade pip"
 RUN bash -c "/env0/bin/pip install -r /data-storage/sfdc_apps/requirements.txt"
-# RUN service nginx start
-
-# CMD ["sh", "-c", "ls -la /etc >> /logs/ls.log && ip a >> /logs/ip_a.log"]
+# CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
 ENTRYPOINT ["tail", "-f", "/dev/null"]
