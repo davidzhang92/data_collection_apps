@@ -1,0 +1,3 @@
+FROM prometheus:latest AS base
+EXPOSE 9091
+COPY ./configs/prometheus.yml /etc/prometheus/prometheus.yml

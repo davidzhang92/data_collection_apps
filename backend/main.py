@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
 from waitress import serve
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import make_wsgi_app
 from auto_complete_part import get_auto_complete_part_no, get_auto_complete_part_name
 from auto_complete_filter_part import get_auto_complete_filter_part_no, get_auto_complete_filter_part_name_for_part_no, get_auto_complete_filter_part_name, get_auto_complete_filter_part_no_for_part_name, get_filter_search_part_master
 from get_part import get_part
@@ -557,6 +559,14 @@ def post_refresh_access_token_api():
 @app.route('/api/user_profiles', methods=['PATCH'])
 def update_user_profiles_api():
     return update_user_profiles()
+
+########################################
+# --------------------------------
+# metrics endpoint for Prometheus
+# --------------------------------
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+    '/api/metrics': make_wsgi_app()
+})
 
 
 if __name__ == "__main__":

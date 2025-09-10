@@ -8,6 +8,10 @@ import pytz
 from secret_key import SECRET_KEY
 import yaml
 from pathlib import Path
+from prometheus_client import Counter
+
+
+REQUEST_COUNTER = Counter('request_processing_seconds', 'Time spent processing request')
 
 app = Flask(__name__)
 
@@ -57,6 +61,7 @@ conn = pyodbc.connect(conn_str)
 
 
 
+@REQUEST_COUNTER.count_exceptions()
 @app.route('/api/post-user-authentication', methods=['POST'])
 def post_user_authentication():
     try:
