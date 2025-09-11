@@ -16,4 +16,6 @@ scrape_configs:
     scrape_interval: 5s
 
     static_configs:
-      - targets: ['localhost:4000']
+      - targets: ['192.168.100.131:4000']
+    
+    metrics_path: /api/metrics
