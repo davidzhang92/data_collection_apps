@@ -1,0 +1,7 @@
+# docker buildx build -t grafana -f grafana_dockerfile .
+# docker run -d --name=grafana -p 3200:3000 grafana
+
+FROM grafana/grafana:main AS base
+EXPOSE 3200
+COPY ./dashboards /etc/grafana/provisioning/dashboards
+COPY ./datasources /etc/grafana/provisioning/datasources

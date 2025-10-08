@@ -1,4 +1,18 @@
-FROM ubuntu:24.10 AS base
+# run a container from the images, with mounted external storage and specified cpu and mem
+
+# docker buildx build -t sfdc:1.4.9 -f ./dockerfiles/sfdc_dockerfile .
+
+# docker run \
+#  --mount type=bind,src=/data-storage/logs,dst=/logs \
+#  --mount type=bind,src=/data-storage/sfdc_apps,dst=/sfdc_apps \
+#   -m 2048m --cpus="2" --detach \
+#  -p 3000:3000  -p 4000:4000 -p 9001:9001 \
+# sfdc:1.4.9
+
+
+
+
+FROM ubuntu:22.04 AS base
 
 EXPOSE 3000 4000
 RUN apt update && apt install \
@@ -10,6 +24,7 @@ RUN apt update && apt install \
     nano \
     unixodbc \
     curl \
+    iputils-ping \
     -y 
 
 #Download and install the Microsoft ODBC driver for SQL Server on Ubuntu
