@@ -1,0 +1,41 @@
+# docker compose -f 'compose.yaml' -p dev up -d --build
+
+networks:
+  app_net:
+    driver: bridge
+
+services:
+  sfdc_app:
+    build:
+      context: .
+      dockerfile: ./docker/sfdc/sfdc_dockerfile
+    container_name: sfdc_app
+    networks:
+      - app_net
+    ports:
+      - "4000:4000"
+      - "3000:3000"
+    # volumes:
+    #   - ./config/backend:/app/config:ro
+
+  prometheus:
+    build:
+      context: .
+      dockerfile: ./docker/prometheus/prometheus_dockerfile
+    container_name: prometheus
+    networks:
+      - app_net
+    ports:
+      - "9091:9090"
+
+  grafana:
+    build:
+      context: .
+      dockerfile: ./docker/grafana/grafana_dockerfile
+    container_name: grafana
+    networks:
+      - app_net
+    ports:
+      - "3200:3000"
+    depends_on: 
+      - prometheus
