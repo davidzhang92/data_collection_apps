@@ -3,5 +3,6 @@
 
 FROM grafana/grafana:main AS base
 EXPOSE 3200
-COPY ./docker/grafana/dashboards /etc/grafana/provisioning/dashboards
-COPY ./docker/grafana/datasources /etc/grafana/provisioning/datasources
+COPY ./docker/grafana/provisioning/dashboards /etc/grafana/provisioning/dashboards
+COPY ./docker/grafana/provisioning/datasources /etc/grafana/provisioning/datasources
+COPY ./docker/grafana/grafana.ini /etc/grafana/grafana.ini

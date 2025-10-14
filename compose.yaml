@@ -1,8 +1,12 @@
 # docker compose -f 'compose.yaml' -p dev up -d --build
+# docker compose -f 'compose.yaml' -p dev down
 
 networks:
   app_net:
     driver: bridge
+
+volumes:
+  prometheus_data:
 
 services:
   sfdc_app:
@@ -15,6 +19,8 @@ services:
     ports:
       - "4000:4000"
       - "3000:3000"
+    extra_hosts:
+      - "sfdc-dev-cicd:192.168.100.131"
     # volumes:
     #   - ./config/backend:/app/config:ro
 
@@ -27,6 +33,8 @@ services:
       - app_net
     ports:
       - "9091:9090"
+    volumes:
+      - prometheus_data:/prometheus
 
   grafana:
     build:
@@ -37,5 +45,7 @@ services:
       - app_net
     ports:
       - "3200:3000"
+    volumes:
+      - /data-storage/grafana.db:/var/lib/grafana/grafana.db
     depends_on: 
       - prometheus
