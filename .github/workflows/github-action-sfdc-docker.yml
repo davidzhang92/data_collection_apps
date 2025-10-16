@@ -34,7 +34,7 @@ jobs:
 
       - name: Add remote server to known_hosts
         run: |
-                    ssh-keyscan sfdc_admin@192.168.100.131 >> ~/.ssh/known_hosts
+                    ssh-keyscan 192.168.100.131 >> ~/.ssh/known_hosts
 
       - name: Deploy to server
         run: |
