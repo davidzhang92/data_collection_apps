@@ -6,7 +6,7 @@ on:
     branches: [ "develop_cicd" ]
     
   workflow_dispatch:
-  inputs:
+   inputs:
     logLevel:
       description: 'Log level'
       required: true
