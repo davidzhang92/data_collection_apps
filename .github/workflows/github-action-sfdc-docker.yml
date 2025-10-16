@@ -1,0 +1,27 @@
+# https://ecostack.dev/posts/automated-docker-compose-deployment-github-actions/
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "develop_cicd" ]
+
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add remote server to known_hosts
+        run: |
+                    ssh-keyscan sfdc_admin@192.168.100.131 >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          ssh sfdc_admin@192.168.100.131 << 'EOF'   
+            cd /data-storage/sfdc_apps
+            sed -i 's/^DOCKER_TAG=.*/DOCKER_TAG=${{ needs.build-push-image.outputs.date }}/' .env
+            docker compose -f 'compose.yaml' -p dev up -d --build
+          EOF          
