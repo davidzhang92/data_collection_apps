@@ -38,6 +38,5 @@ on:
         run: |
           ssh sfdc_admin@192.168.100.131 << 'EOF'   
             cd /data-storage/sfdc_apps
-            sed -i 's/^DOCKER_TAG=.*/DOCKER_TAG=${{ needs.build-push-image.outputs.date }}/' .env
             docker compose -f 'compose.yaml' -p dev up -d --build
           EOF          
