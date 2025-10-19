@@ -16,16 +16,35 @@ app = Flask(__name__)
 # password = 'Cannon45!'
 
 # Create a pool of connections
+
+current_file = Path(__file__).resolve()
+project_root = current_file.parent.parent  
+
+config_path = project_root /'configs'/'db_config.yml'
+
+with open(config_path, 'r') as file:
+    config = yaml.safe_load(file)
+
+
+conn_str = (
+    f"DRIVER={{{config['driver']}}};"
+    f"SERVER={config['server']};"
+    f"DATABASE={config['database']};"
+    f"UID={config['uid']};"
+    f"PWD={config['pwd']};"
+    f"TrustServerCertificate={config['trust_server_certificate']};"
+
+)
+
 pool = PooledDB(
     creator=pyodbc,
     maxconnections=6,
-    dsn='DataCollection',  # Use the DSN you've defined in your odbc.ini file
+    connectstring=conn_str,
     UID = 'sa',
     PWD = 'Cannon45!'
 )
 
-conn = pool.connection()
-cursor = conn.cursor()
+conn = pyodbc.connect(conn_str)
 
 def token_required(f):
     @wraps(f)
@@ -80,7 +99,7 @@ def get_dashboard_part_id():
                             FROM vw_result_entry 
                             WHERE part_id IS NOT NULL
                             """
-
+        cursor = conn.cursor()
         cursor.execute(part_ids_query)
         rows = cursor.fetchall()
 
@@ -162,7 +181,7 @@ WITH endtest_defect AS (
 
                 """
 
-
+        cursor = conn.cursor()
         cursor.execute(details_query)
         rows = cursor.fetchall()
 
