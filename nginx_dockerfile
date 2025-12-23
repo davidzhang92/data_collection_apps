@@ -1,0 +1,8 @@
+# docker buildx build -t nginx:mainline -f nginx_dockerfile .
+# docker run -d --name=nginx-web-server -p 3000:3000 nginx:mainline 
+
+FROM nginx:mainline AS base
+EXPOSE 3000
+COPY ./docker/nginx/sfdc.conf /etc/nginx/conf.d/sfdc.conf
+ADD  . /data-storage/sfdc_apps
+# RUN rm /etc/init.d/nginx
