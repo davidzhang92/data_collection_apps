@@ -118,6 +118,17 @@ body,
         margin-left: 440px;
         /* margin-top: 50px; */
       }
+      #label-remark-watertest{
+        margin-left: 1rem;
+        width: 300px; 
+        height:12px;
+        float: left; 
+        margin: 0 -60px 0 20px; 
+        padding-top: 10px; 
+        position: absolute;
+        top: 130px;
+        left: 0px;
+      }
       #defect-desc{ /* airleaktest */
         width: 320px; 
         border: 1px solid #000; 
@@ -290,6 +301,16 @@ body,
       margin-top: 15px;
       padding: 5px; */
       }
+
+    #remarks-field-watertest{
+      width: 107%;
+      border: 1px solid #000;
+      margin-top: 15px;
+      padding: 5px;
+      padding-top: 5px;
+      font-size: 18px;
+      }
+      
 .air-leaktest-result-entry-sub-card-2{
   width: 270px;
   height: 360px;
