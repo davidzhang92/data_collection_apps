@@ -160,22 +160,23 @@ def post_leaktest_result_entry():
             new_result = str(data['result'])
             defect_id_param = uuid.UUID(data['defect_id']) if data['defect_id'].strip() else None
             user_id = data['user_id']
+            remarks = data['remarks']
 
             # Construct the SQL query to insert the data
 
             if defect_id_param is None:
                 insert_query = """
-                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, created_by, created_date, is_deleted)
-                values (newid(),?,?,?,?,?, GETDATE(), 0)
+                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, remarks, created_by, created_date, is_deleted)
+                values (newid(),?,?,?,?,?,?, GETDATE(), 0)
                 """
-                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, user_id))
+                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, remarks, user_id))
             else:
 
                 insert_query = """
-                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, defect_id, created_by, created_date, is_deleted)
-                values (newid(),?,?,?,?,?,?, GETDATE(), 0)
+                insert into leaktest_result_entry (id, part_id, leaktest_type, housing_no, result, defect_id, remarks, created_by, created_date, is_deleted)
+                values (newid(),?,?,?,?,?,?,?, GETDATE(), 0)
                 """
-                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, defect_id_param, user_id))
+                cursor.execute(insert_query, (new_part_id, new_leaktest_type, new_housing_no, new_result, defect_id_param, remarks, user_id))
 
             conn.commit()
             return jsonify({'message': 'Data inserted successfully.'}), 200

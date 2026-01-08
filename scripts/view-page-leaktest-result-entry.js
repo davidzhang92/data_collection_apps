@@ -82,6 +82,7 @@ $(document).ready(function () {
 				// Replace 'null' with '-'
 				var errorCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
 				var userName = result.username !== null ? result.username : '-';
+
 			
 				var row = `<tr data-id="${result.id}">
 					<td>
@@ -135,6 +136,7 @@ $(document).ready(function () {
 					// Replace 'null' with '-'
 					var errorCode = (result.defect_description !== null && result.defect_no !== null) ? result.defect_no + " : " + result.defect_description : '-';
 					var userName = result.username !== null ? result.username : '-';
+					var remarks = result.remarks !== null ? result.remarks : '-';
 				
 					var row = `<tr data-id="${result.id}">
 						<td>
@@ -147,6 +149,7 @@ $(document).ready(function () {
 						<td>${result.housing_no}</td>
 						<td>${result.result}</td>
 						<td id='error-field'>${errorCode}</td>
+						<td>${remarks}</td>						
 						<td>${userName}</td>
 						<td>${formattedDate}</td>
 						<td>

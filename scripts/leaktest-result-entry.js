@@ -1,8 +1,8 @@
 // -----initialization state of page and rules---------
 $('.air-leaktest-result-entry-sub-card').hide();
 $('.air-leaktest-result-entry-sub-card-2').hide();
-// $('.water-leaktest-result-entry-sub-card').hide();
-// $('.water-leaktest-result-entry-sub-card-2').hide();
+$('.water-leaktest-result-entry-sub-card').hide();
+$('.water-leaktest-result-entry-sub-card-2').hide();
 $('.defect-code-field').prop('disabled', true);
 
 
