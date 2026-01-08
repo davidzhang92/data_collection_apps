@@ -210,7 +210,6 @@ var isWaterPassButtonPress = 0; // Initialize the variable
 // ---handing POST request---
     // Initialize partId and result variables
     var partId = localStorage.getItem('partId') || '';
-    var result = '';
 
     // Handling the button clicks
     $('#select-button').click(function () {
@@ -275,22 +274,21 @@ var isWaterPassButtonPress = 0; // Initialize the variable
     var waterHousingPartNumber=$('#housing-no-field-watertest').val();
     // Add an event listener to the input field to update serialPartNumber on input changes
     $('#housing-no-field-watertest').on('input', function () {
-        waterHousingPartNumber = $('#housing-no-field-watertest').val();
+        waterHousingPartNumber = $('#housing-no-field-watertest').val().toUpperCase();
     });
     $('#housing-no-field-watertest').on('keydown', function(event) {
         if (event.keyCode === 13) { // Check if the key pressed is Enter (key code 13)
             event.preventDefault(); // Prevent the default behavior of the Enter key
-            $('#fine-field').focus();
         }
         $("#housing-no-field-watertest").on("blur", function() {
-        var inputValue = $(this).val();
+        var inputValue = $(this).val().toUpperCase().trim();
         var errorMessage = $("#error-message");
     
-        if (inputValue.trim() === "") {
+        if (inputValue === "") {
             // Only display the alert if the field is empty
             errorMessage.text("");
-        } else if (!/^\d+$/.test(inputValue)) {
-            alert("Please enter a numeric value.");
+        } else if (!/^([0-9]+|[0-9]+R|[0-9]+R[12])$/.test(inputValue)) {
+            alert("Error: Please enter a valid housing part number and rework count. (Examples: 12345, 12345R, 12345R1, 12345R2)");
             $(this).val("");
             $(this).focus();
         } else {
@@ -478,7 +476,8 @@ var isWaterPassButtonPress = 0; // Initialize the variable
                 leaktest_type: $('#leaktest-type-selection').val(),
                 housing_no: waterHousingPartNumber,
                 result: $('#water-input-result').text(),
-                user_id: localStorage.getItem('userId')
+                user_id: localStorage.getItem('userId'),
+                remarks:  $('#remarks-field-watertest').val()
             }),
             contentType: 'application/json',
             beforeSend: function(xhr) { 
@@ -503,6 +502,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
                 localStorage.removeItem('defectId');
                 $('#water-defect-desc').val('')
                 $('#defect-desc').val('')
+                $('#remarks-field-watertest').val('')
                 
 
                 alert('Result submitted successfully.');
