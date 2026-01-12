@@ -132,7 +132,7 @@ def get_filter_search_leaktest_result_entry_view():
 
 
     if leaktest_type == 'Air' or leaktest_type == 'Water':
-        query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
+        query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, remarks, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
     else:
         return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 

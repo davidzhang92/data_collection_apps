@@ -287,7 +287,7 @@ var isWaterPassButtonPress = 0; // Initialize the variable
         if (inputValue === "") {
             // Only display the alert if the field is empty
             errorMessage.text("");
-        } else if (!/^([0-9]+|[0-9]+R|[0-9]+R[12])$/.test(inputValue)) {
+        } else if (!/^(?=.{1,7}$)([0-9]+|[0-9]+R|[0-9]+R[12])$/.test(inputValue)) {
             alert("Error: Please enter a valid housing part number and rework count. (Examples: 12345, 12345R, 12345R1, 12345R2)");
             $(this).val("");
             $(this).focus();
