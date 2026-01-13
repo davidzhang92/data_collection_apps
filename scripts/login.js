@@ -48,14 +48,14 @@ $(document).ready(function () {
                 // Redirect to a certain page
                 window.location.href = '/menus/dashboard/dashboard.html';
             },
-            error: function(xhr, status, error) {
+           error: function(xhr, status, error) {
                 // handle error response
-                if (xhr.status === 400) {
+                if (xhr.status) {
                     alert(xhr.responseJSON.message);
                     $('#input-password').val('');
                 } else {
                     console.error(error);
-                    alert('login error');
+                    alert('Error: Backend server is not reachable. Please try again later.');
                     $('#input-password').val('');
                 }
             }

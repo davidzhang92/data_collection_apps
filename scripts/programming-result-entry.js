@@ -247,10 +247,6 @@ $('#fail-button').click(function (e) {
             $('#defect-code-field').focus();
         }
             });     
-    
-    
-    
-
 
     $('#save-form').on('submit', function(event) {
         event.preventDefault();

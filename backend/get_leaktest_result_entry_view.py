@@ -109,7 +109,7 @@ def get_leaktest_result_entry_view():
         if request.args.get('leaktest_type') == 'Air':
             query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"                
         elif request.args.get('leaktest_type') == 'Water':
-            query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
+            query = "SELECT a.id AS id, b.part_no, housing_no, d.defect_no, d.defect_description, result, remarks, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id WHERE a.is_deleted = '0' AND leaktest_type = ? ORDER BY a.created_date DESC OFFSET ? ROWS FETCH NEXT 10 ROWS ONLY"
         else:
             return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 
@@ -152,7 +152,7 @@ def get_filter_search_leaktest_result_entry_view():
 
 
     if leaktest_type == 'Air' or leaktest_type == 'Water':
-        query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
+        query = "SELECT a.id AS id, b.part_no, d.defect_no, d.defect_description, housing_no, leaktest_type, result, remarks, fine_value, gross_value, others_value, c.username, a.created_date  from leaktest_result_entry a inner join part_master b on a.part_id = b.id left join defect_master d on a.defect_id = d.id LEFT JOIN user_master c on a.created_by = c.id  WHERE 1=1"
     else:
         return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
 
@@ -288,6 +288,7 @@ def get_leaktest_result_report():
                         a.result,
 						d.defect_no,
 						d.defect_description,
+                        a.remarks,
                         c.username, 
                         a.created_date 
                     FROM leaktest_result_entry a 
@@ -414,13 +415,13 @@ def get_leaktest_result_report():
             worksheet['C6'] = part_description_joined
             worksheet['C3'] = selected_date_from
             worksheet['C4'] = selected_date_to
-            worksheet['I5'] = date.today().strftime('%Y-%m-%d')
-            worksheet['I6'] = generated_by
+            worksheet['J5'] = date.today().strftime('%Y-%m-%d')
+            worksheet['J6'] = generated_by
 
 
             # Merge cells again and adjust the allignment
-            worksheet.merge_cells('C5:G5')
-            worksheet.merge_cells('C6:G6')
+            worksheet.merge_cells('C5:H5')
+            worksheet.merge_cells('C6:H6')
             worksheet['C5'].alignment = Alignment(horizontal='left')
             worksheet['C6'].alignment = Alignment(horizontal='left')
 
@@ -437,6 +438,7 @@ def get_leaktest_result_report():
                 column7_index = 7 
                 column8_index = 8 
                 column9_index = 9 
+                column10_index = 10
 
 
 
@@ -447,8 +449,8 @@ def get_leaktest_result_report():
                 worksheet.cell(row=row_number, column=column6_index, value=row_data[4]) 
                 worksheet.cell(row=row_number, column=column7_index, value=row_data[5]) 
                 worksheet.cell(row=row_number, column=column8_index, value=row_data[6]) 
-                worksheet.cell(row=row_number, column=column9_index, value=row_data[7]) 
-
+                worksheet.cell(row=row_number, column=column9_index, value=row_data[7])
+                worksheet.cell(row=row_number, column=column10_index, value=row_data[8])
                 row_number += 1
            
         else: return jsonify({'message': 'Error: Select the Leaktest Type first.'}), 400
